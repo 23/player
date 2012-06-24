@@ -35,7 +35,6 @@ Glue.provide('video-display',
   {
     className:'video-display'
   }, 
-
   function(Glue,$,opts){
       var $this = this;
       $.extend($this, opts);
