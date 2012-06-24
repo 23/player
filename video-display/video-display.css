@@ -1,0 +1,17 @@
+.glue-video-display {
+    position:absolute; 
+    top:0; 
+    left:0;
+    width:100%; 
+    height:100%; 
+}
+.glue-video-display .video-canvas {
+    position:absolute; 
+}
+.glue-video-display .video-canvas video {
+    position:absolute; 
+    top:0; 
+    left:0;
+    width:100%; 
+    height:100%; 
+}

@@ -1,0 +1,26 @@
+{% glue core with "domain":"reinvent.23video.com", "autoPlay":true %}
+{% glue analytics with "timeReportRate":30 %}
+
+<div id="player">
+  <!-- Video display -->
+  {% glue video-display %}
+
+  <!-- Control bar or tray -->
+  <div id="tray">
+    <div class="tray-left">
+      <div class="tray-button">{% glue play-button %}</div>
+    </div>
+    <div class="tray-scrubber">{% glue scrubber %}</div>
+    <div class="tray-right">
+      <div class="tray-button">{% glue playlist-button %}</div>
+      <div class="tray-button">{% glue share-button %}</div>
+      <div class="tray-button">{% glue fullscreen-button %}</div>
+      <div class="tray-button">{% glue volume-button "volume":.5 %}</div>
+      <div class="tray-button">{% glue volume-button %}</div>
+      <div class="tray-button">{% glue quality-button with "quality":"hd" %}</div>
+    </div>
+  </div>
+
+  {% glue logo %}
+</div>
+
