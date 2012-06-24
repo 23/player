@@ -1,3 +1,7 @@
-<div class="player-{{component.name}} {% if component.className != empty %}{{component.className}}{% endif %}">
-  <a href="#"><span>{{component.label}}</span></a>
-</div>
+<a href="#play">
+   {% if playing %}
+      Pause
+   {% else %}
+      Play
+   {% endif %}
+</a>

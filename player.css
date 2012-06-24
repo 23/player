@@ -1,0 +1,29 @@
+body {
+    margin:0; 
+    background-color:black; 
+    color:white; 
+    font:11px/14px Helvetica; 
+    overflow:hidden;
+}
+#tray {
+    position:absolute;
+    top:0; 
+    left:0;
+    width:100%;
+}
+.tray-button {
+    position:absolute;
+    top:40px;
+    left:10px;
+}
+.tray-button a {
+    display:block;
+    height:28px;
+    width:32px;
+    border-radius:3px;
+    background-color:black; 
+    color:white;
+    line-height:30px;
+    text-decoration:none;
+    text-align:center;
+}
