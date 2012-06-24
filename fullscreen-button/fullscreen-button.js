@@ -47,7 +47,11 @@ Glue.provide('fullscreen-button',
     /* GETTERS */
     Glue.getter('supportsFullscreen', function(){
         var de = document.documentElement;
-        return (de.requestFullScreen||de.mozRequestFullScreen||de.webkitRequestFullScreen ? true : false);
+        return ((
+                 (de.requestFullScreen||de.mozRequestFullScreen||de.webkitRequestFullScreen)
+                 &&
+                 (document.fullScreenEnabled||document.mozFullScreenEnabled||document.webkitFullscreenEnabled)
+                 ) ? true : false);
       });
     Glue.getter('fullscreen', function(){
         return Glue.get('supportsFullscreen') && (document.mozFullScreen||document.webkitIsFullScreen);
@@ -78,5 +82,4 @@ Glue.provide('fullscreen-button',
       
     return $this;
   }
-          
 );

@@ -10,9 +10,7 @@
 */
 
 Glue.provide('scrubber', 
-  {
-    className:'tray-scrubber'
-  },
+  {},
   function(Glue,$,opts){
       var $this = this;
       $.extend($this, opts);

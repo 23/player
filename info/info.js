@@ -22,7 +22,7 @@ Glue.provide('info',
         });
 
       // Bind to events
-      Glue.bind('player:video:loaded', function(e,video){
+      Glue.bind('player:video:loaded player:video:play player:video:playing player:video:pause player:video:ended', function(e,video){
           $this.render();
         });
 

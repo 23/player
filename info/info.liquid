@@ -1,4 +1,4 @@
-{% if showInfo == true %}
+{% if showDescriptions == true and playing == false %}
   {% if video_title != empty or video_content != empty %}
     <div class="info-pane">
       {% if video_title != empty%}<h1>{{video_title|truncatewords:15}}</h1>{% endif %}

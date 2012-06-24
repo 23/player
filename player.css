@@ -7,23 +7,51 @@ body {
 }
 #tray {
     position:absolute;
-    top:0; 
-    left:0;
-    width:100%;
+    bottom:10px;
+    left:10px;
+    right:10px;
 }
 .tray-button {
+    float:left;
+    margin-right:10px;
+}
+.tray-right {
     position:absolute;
-    top:40px;
-    left:10px;
+    right:0;
+}    
+.tray-scrubber {
+    position:absolute;
+    width:100%;
+    left:55px;
+    top:-5px;
 }
 .tray-button a {
     display:block;
     height:28px;
-    width:32px;
+    width:50px;
     border-radius:3px;
-    background-color:black; 
+    background-color:#34783d; 
     color:white;
     line-height:30px;
     text-decoration:none;
     text-align:center;
+}
+.big-button {
+    position:absolute;
+    left:50%;
+    top:50%;
+}
+.big-button a {
+    display:block;
+    height:32px;
+    width:130px;
+    margin-top:-50%;
+    margin-left:-50%;
+    border-radius:10px;
+    background-color:#34783d; 
+    color:white;
+    line-height:34px;
+    text-decoration:none;
+    text-align:center;
+    font-size:16px;
 }

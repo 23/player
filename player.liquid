@@ -7,14 +7,13 @@
   {% glue video-display %}
 
   <!-- Control bar or tray -->
+  <div id="info">{% glue info %}</div>
   <div id="tray">
-    <div id="info">{% glue info %}</div>
-
     <div class="tray-left">
       <div class="tray-button">{% glue play-button %}</div>
     </div>
     
-    {% glue scrubber %}
+    <div class="tray-scrubber">{% glue scrubber %}</div>
 
     <div class="tray-right">
       {% if 0 %}<div class="tray-button">{% glue playlist-button %}</div>{% endif %}
