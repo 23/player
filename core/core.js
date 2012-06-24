@@ -28,7 +28,7 @@
   - video_photo_id [get]
   - video_tree_id [get]
   - video_token [get]
-  - video_link [get]
+  - video_one [get]
 
 */
 
@@ -97,6 +97,8 @@ var PlayerVideo = function(Glue,$,type,data){
 Glue.provide('core', 
   {
     domain:'reinvent.23video.com',
+    start: 0,
+    player_id: 0,
 
     backgroundColor: 'black',
     trayBackgroundColor: 'black',
@@ -108,8 +110,6 @@ Glue.provide('core',
     trayContentFontWeight: 'normal',
     trayAlpha: 0.8,
     showTray: true,
-    showDescriptions: false,
-    showShare: true,
     showBrowse: true,
     browseMode: false,
 
@@ -132,13 +132,6 @@ Glue.provide('core',
     enableLiveStreams: true,
     playflowInstreamVideo: '',
     playflowInstreamOverlay: '',
-    start: 0,
-    player_id: 0,
-    rssLink: '',
-    podcastLink: '',
-    embedCode: '',
-    currentVideoEmbedCode: '',
-    socialSharing: true,
     autoPlay: false,
     loop: false,
     playHD: false
@@ -224,7 +217,7 @@ Glue.provide('core',
       Glue.getter('video_photo_id', function(){return $this.video.photo_id||'';});
       Glue.getter('video_tree_id', function(){return $this.video.tree_id||'';});
       Glue.getter('video_token', function(){return $this.video.token||'';});
-      Glue.getter('video_link', function(){return $this.video.link||'';});
+      Glue.getter('video_one', function(){return $this.video.one||'';});
 
       // Load the player
       $this.bootstrap = function(){

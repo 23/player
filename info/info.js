@@ -7,7 +7,7 @@
    - player:video:loaded: New title and description to show
    
    Answers properties:
-   - showInfo [get/set]
+   - showDescriptions [get/set]
 */
 
 Glue.provide('info', 
@@ -18,7 +18,7 @@ Glue.provide('info',
       
       // Listen to find if we show show info
       Glue.bind('player:settings', function(e,settings){
-          if(typeof(settings.showInfo)!='undefined') $this.showInfo = settings.showInfo;
+          if(typeof(settings.showDescriptions)!='undefined') $this.showDescriptions = settings.showDescriptions;
         });
 
       // Bind to events
@@ -27,12 +27,12 @@ Glue.provide('info',
         });
 
       /* GETTERS */
-      Glue.getter('showInfo', function(){
+      Glue.getter('showDescriptions', function(){
           return (typeof($this.showLogo)=='undefined'||($this.showLogo&&$this.showLogo!='0'));
         });
      
       /* SETTERS */
-      Glue.setter('showInfo', function(si){
+      Glue.setter('showDescriptions', function(si){
           $this.showLogo = si;
           $this.render();
         });

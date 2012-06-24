@@ -30,6 +30,10 @@ Glue.provide('logo',
           if(!/\/\//.test($this.logoSource)) $this.logoSource = Glue.get('url')+$this.logoSource;
           $this.render();
         });
+      Glue.bind('player:sharing', function(){
+          $this.render();
+        });
+    
 
       /* GETTERS */
       Glue.getter('showLogo', function(){
