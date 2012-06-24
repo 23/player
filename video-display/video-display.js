@@ -92,11 +92,11 @@ Glue.provide('video-display',
       $(window).keydown(function(e){
           if(!e.ctrlKey && !e.altKey) {
             // Increase volume on +/up
-            if(e.charCode==43 || e.keyCode==38) Glue.set('volume', Glue.get('volume')+0.1);
+            if(e.charCode==43 || e.keyCode==38) Glue.set('volume', Glue.get('volume')+0.2);
             // Decrease volume on -/down
-            if(e.charCode==45 || e.keyCode==40) Glue.set('volume', Glue.get('volume')-0.1);
+            if(e.charCode==45 || e.keyCode==40) Glue.set('volume', Glue.get('volume')-0.2);
             // Scrub on right arrow            
-            if(e.keyCode==39) Glue.set('currentTime', Glue.get('currentTime')+30);  // @siracusa
+            if(e.keyCode==39) Glue.set('currentTime', Glue.get('currentTime')+30);
             // Scrub on left arrow
             if(e.keyCode==37) Glue.set('currentTime', Glue.get('currentTime')-30);
           }

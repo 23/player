@@ -19,7 +19,6 @@ Glue.provide('play-button',
     $this.container.click(function(e){
         e.stopPropagation();
         Glue.set('playing', !Glue.get('playing'));
-        $this.render();
         return false;
       });
 

@@ -6,8 +6,8 @@
    - player:settings: The app was loaded, time to show the logo
    
    Answers properties:
+   - showLogo [get/set]
    - logoSource [get]
-   - showLogo [get]
    - logoPosition [get]
    - logoAlpha [get]
    - logoWidth [get]
@@ -27,19 +27,13 @@ Glue.provide('logo',
               if(typeof($this[i])=='undefined'&&typeof(settings[i])!='undefined') $this[i]=settings[i];
             });
 
-          if(!Glue.get('showLogo')) {
-            // If logo is hidden, clear it
-            $($this.container).html('');
-          } else {
-            // Otherwise, render in the template
-            if(!/\/\//.test($this.logoSource)) $this.logoSource = Glue.get('url')+$this.logoSource;
-            $this.render();
-          }
+          if(!/\/\//.test($this.logoSource)) $this.logoSource = Glue.get('url')+$this.logoSource;
+          $this.render();
         });
 
       /* GETTERS */
       Glue.getter('showLogo', function(){
-          return (typeof($this.showLogo)=='undefined'||$this.showLogo);
+          return (typeof($this.showLogo)=='undefined'||($this.showLogo&&$this.showLogo!='0'));
         });
       Glue.getter('logoSource', function(){return $this.logoSource||'';});
       Glue.getter('logoPosition', function(){return $this.logoPosition||'';});
@@ -47,6 +41,12 @@ Glue.provide('logo',
       Glue.getter('logoWidth', function(){return $this.logoWidth||'';});
       Glue.getter('logoHeight', function(){return $this.logoHeight||'';});
      
+      /* SETTERS */
+      Glue.setter('showLogo', function(sl){
+          $this.showLogo = sl;
+          $this.render();
+        });
+
       return $this;
   }
 );

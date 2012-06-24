@@ -23,6 +23,13 @@
   - api [get]
   - clips [get]
   - streams [get]
+  - video_title [get]
+  - video_content [get]
+  - video_photo_id [get]
+  - video_tree_id [get]
+  - video_token [get]
+  - video_link [get]
+
 */
 
 // PlayerVideo is an object type for both on-demand clips and live streams.
@@ -102,7 +109,6 @@ Glue.provide('core',
     trayAlpha: 0.8,
     showTray: true,
     showDescriptions: false,
-    showBigPlay: false,
     showShare: true,
     showBrowse: true,
     browseMode: false,
@@ -211,6 +217,14 @@ Glue.provide('core',
       Glue.getter('clips', function(){return $this.clips;});
       Glue.getter('streams', function(){return $this.streams;});
       Glue.getter('settings', function(){return $this.settings;});
+
+      // Information about the current video
+      Glue.getter('video_title', function(){return $this.video.title||'';});
+      Glue.getter('video_content', function(){return $this.video.content||'';});
+      Glue.getter('video_photo_id', function(){return $this.video.photo_id||'';});
+      Glue.getter('video_tree_id', function(){return $this.video.tree_id||'';});
+      Glue.getter('video_token', function(){return $this.video.token||'';});
+      Glue.getter('video_link', function(){return $this.video.link||'';});
 
       // Load the player
       $this.bootstrap = function(){
