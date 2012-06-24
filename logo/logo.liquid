@@ -1,5 +1,5 @@
 {% if showLogo == true and logoSource != empty %}
-  <div class="logo" style="
+  <div class="logo" value="stuff" style="
       {% case logoPosition %} 
         {% when 'top left' %} 
           top:20px; 
@@ -15,7 +15,6 @@
           right:20px;
       {% endcase %}
     ">
-    {{logoPosition}}
     <a href="{{siteLink}}">
       <img 
           src="{{logoSource}}"

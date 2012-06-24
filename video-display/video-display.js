@@ -80,7 +80,7 @@ Glue.provide('video-display',
       $this.container.click(_togglePlayback);
       // Handle keyboard events
       $(window).keypress(function(e){
-          if(!e.ctrlKey && !e.altKey) {
+          if(!e.ctrlKey && !e.altKey && !e.metaKey) {
             // Toogle playbac k on space/enter press
             if(e.charCode==32 || e.keyCode==13) _togglePlayback();
             // Mute on 0 press
@@ -90,7 +90,7 @@ Glue.provide('video-display',
           }
       });
       $(window).keydown(function(e){
-          if(!e.ctrlKey && !e.altKey) {
+          if(!e.ctrlKey && !e.altKey && !e.metaKey) {
             // Increase volume on +/up
             if(e.charCode==43 || e.keyCode==38) Glue.set('volume', Glue.get('volume')+0.2);
             // Decrease volume on -/down
