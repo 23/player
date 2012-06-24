@@ -1,0 +1,29 @@
+{% if logoSource != empty %}
+  <div class="logo" style="
+      {% case logoPosition %} 
+        {% when 'top left' %} 
+          top:20px; 
+          left:20px;
+        {% when 'bottom left' %} 
+          bottom:20px; 
+          left:20px;
+        {% when 'bottom right'  %} 
+          bottom:20px; 
+          right:20px;
+        {% else %} 
+          top:20px; 
+          right:20px;
+      {% endcase %}
+    ">
+    <a href="{{url}}">
+      <img 
+          src="{{logoSource}}"
+          style="
+                 {%if logoWidth!=empty%}max-width:{{logoWidth}}px;{%endif%}
+                 {%if logoHeight!=empty%}max-height:{{logoHeight}}px;{%endif%}
+                 {%if logoAlpha!=empty%}opacity:{{logoAlpha}}{%endif%}
+                 "
+          />
+    </a>
+  </div>
+{% endif %}

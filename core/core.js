@@ -13,6 +13,7 @@
   - player:video:loaded
   - player:init
   - player:loaded
+  - player:settings
 
   Answers properties:
   - domain [get/set]
@@ -89,6 +90,7 @@ var PlayerVideo = function(Glue,$,type,data){
 Glue.provide('core', 
   {
     domain:'reinvent.23video.com',
+
     backgroundColor: 'black',
     trayBackgroundColor: 'black',
     trayTextColor: 'white',
@@ -100,16 +102,11 @@ Glue.provide('core',
     trayAlpha: 0.8,
     showTray: true,
     showDescriptions: false,
-    logoSource: '',
     showBigPlay: false,
-    showLogo: true,
     showShare: true,
     showBrowse: true,
     browseMode: false,
-    logoPosition: 'top right',
-    logoAlpha: 0.7,
-    logoWidth: 80,
-    logoHeight: 40,
+
     verticalPadding: 0,
     horizontalPadding: 0,
     trayTimeout: 0,
@@ -156,9 +153,10 @@ Glue.provide('core',
       // Load settings for the player from 23 Video
       $this.loadSettings = function(callback){
           $this.api.player.settings(
-              {player_id:$this.player_id, params:Glue.parametersString},
+              {player_id:$this.settings.player_id, params:Glue.parametersString},
               function(data){
                   $.extend($this.settings, data.settings);
+                  Glue.fire('player:settings', $this.settings)
                   callback();
               },
               Glue.fail

@@ -1,0 +1,10 @@
+.logo {
+    position:absolute; 
+    top:20px;
+    right:20px;
+    opacity:.8;
+}
+.logo img {
+    max-width:80px;
+    max-height:80px;
+}
