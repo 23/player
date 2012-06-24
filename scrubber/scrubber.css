@@ -1,0 +1,31 @@
+.scrubber-container {
+    position:absolute; 
+    top:10px;
+    left:10px;
+    width:50%;
+    background-color:#ddd;
+    height:8px;
+    border-radius:4px;
+    box-shadow:1px 1px black 0.8;
+}
+.scrubber-buffer, .scrubber-play {
+    border-radius:4px;
+    position:absolute; 
+    top:0;
+    left:0;
+    height:100%;
+    width:0;
+}
+.scrubber-buffer {
+    background-color:#333;
+    opacity:.1;
+}
+.scrubber-play {
+    background-color:green;
+    opacity:.8;
+}
+.scrubber-time {
+    position:absolute; 
+    top:20px;
+    left:10px;
+}

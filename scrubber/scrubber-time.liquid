@@ -1,0 +1,5 @@
+{% if duration|formatTime != empty %}
+  {{currentTime|formatTime}} / {{duration|formatTime}}
+{% else %}
+  {{currentTime|formatTime}}
+{% endif %}

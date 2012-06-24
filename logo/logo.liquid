@@ -10,11 +10,12 @@
         {% when 'bottom right'  %} 
           bottom:20px; 
           right:20px;
-        {% else %} 
+        {% when 'top right'  %} 
           top:20px; 
           right:20px;
       {% endcase %}
     ">
+    {{logoPosition}}
     <a href="{{url}}">
       <img 
           src="{{logoSource}}"

@@ -29,6 +29,9 @@
   - duration [get]
   - bufferTime [get]
   - displayDevice [get]
+
+  Liquid filters:
+  - formatTime: Formats number of seconds as a nice readable timestamp
 */
 
 Glue.provide('video-display', 
@@ -228,5 +231,12 @@ Glue.provide('video-display',
       
       return $this;
   }
-          
 );
+
+
+Liquid.Template.registerFilter({
+    formatTime: function(time) {
+      if (isNaN(time)||time<0) return("");
+      return(Math.floor(time/60).toString() +':'+ (time%60<10?'0':'') + Math.round(time%60).toString());
+    }
+  });
