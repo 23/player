@@ -31,7 +31,10 @@
   - displayDevice [get]
 */
 
-Glue.provide('video-display', {}, 
+Glue.provide('video-display', 
+  {
+    className:'video-display'
+  }, 
 
   function(Glue,$,opts){
       var $this = this;

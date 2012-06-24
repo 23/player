@@ -17,6 +17,7 @@
   Answers properties:
   - domain [get/set]
   - video [get/set]
+  - settings [get/set]
   - url [get]
   - api [get]
   - clips [get]
@@ -157,7 +158,6 @@ Glue.provide('core',
           $this.api.player.settings(
               {player_id:$this.player_id, params:Glue.parametersString},
               function(data){
-                  console.log(1.2,data);
                   $.extend($this.settings, data.settings);
                   callback();
               },

@@ -10,14 +10,18 @@
     <div class="tray-left">
       <div class="tray-button">{% glue play-button %}</div>
     </div>
-    <div class="tray-scrubber">{% glue scrubber %}</div>
+    
+    {% glue scrubber %}
+
     <div class="tray-right">
+      {% if 0 %}
       <div class="tray-button">{% glue playlist-button %}</div>
       <div class="tray-button">{% glue share-button %}</div>
       <div class="tray-button">{% glue fullscreen-button %}</div>
       <div class="tray-button">{% glue volume-button "volume":.5 %}</div>
       <div class="tray-button">{% glue volume-button %}</div>
       <div class="tray-button">{% glue quality-button with "quality":"hd" %}</div>
+      {% endif %}
     </div>
   </div>
 
