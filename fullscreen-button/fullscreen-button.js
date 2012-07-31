@@ -10,9 +10,9 @@
    - fullscreen [get/set]
 */
 
-Glue.provide('fullscreen-button', 
+Player.provide('fullscreen-button', 
   {}, 
-  function(Glue,$,opts){
+  function(Player,$,opts){
     var $this = this;
     $.extend($this, opts);
     $this.render();
@@ -20,8 +20,8 @@ Glue.provide('fullscreen-button',
     // Toogle fullscreen on click
     $this.container.click(function(e){
         e.stopPropagation();
-        Glue.set('fullscreen', !Glue.get('fullscreen'));
-        Glue.set('playing', true);
+        Player.set('fullscreen', !Player.get('fullscreen'));
+        Player.set('playing', true);
         return false;
       });
 
@@ -29,23 +29,23 @@ Glue.provide('fullscreen-button',
     $(window).keydown(function(e){
         console.debug(e);
         if((e.altKey||e.metaKey) && (e.charCode==32 || e.keyCode==13)) {
-          Glue.set('fullscreen', !Glue.get('fullscreen'));
-          Glue.set('playing', true);
+          Player.set('fullscreen', !Player.get('fullscreen'));
+          Player.set('playing', true);
         }
       });
 
     // Notify elements when fullscreen changes
     $(document).bind('fullscreenchange mozfullscreenchange webkitfullscreenchange', function(e){
-        Glue.fire('player:fullscreenchange');
+        Player.fire('player:fullscreenchange');
       });
 
     // Update UI when full screen changes
-    Glue.bind('player:fullscreenchange', function(e){
+    Player.bind('player:fullscreenchange', function(e){
         $this.render();
       });
 
     /* GETTERS */
-    Glue.getter('supportsFullscreen', function(){
+    Player.getter('supportsFullscreen', function(){
         var de = document.documentElement;
         return ((
                  (de.requestFullScreen||de.mozRequestFullScreen||de.webkitRequestFullScreen)
@@ -53,13 +53,13 @@ Glue.provide('fullscreen-button',
                  (document.fullScreenEnabled||document.mozFullScreenEnabled||document.webkitFullscreenEnabled)
                  ) ? true : false);
       });
-    Glue.getter('fullscreen', function(){
-        return Glue.get('supportsFullscreen') && (document.mozFullScreen||document.webkitIsFullScreen);
+    Player.getter('fullscreen', function(){
+        return Player.get('supportsFullscreen') && (document.mozFullScreen||document.webkitIsFullScreen);
       });
 
     /* SETTERS */
-    Glue.setter('fullscreen', function(fs){
-        if(!Glue.get('supportsFullscreen')) return;
+    Player.setter('fullscreen', function(fs){
+        if(!Player.get('supportsFullscreen')) return;
         if(fs) {
           var de = document.documentElement;
           if(de.requestFullScreen) {

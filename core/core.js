@@ -33,9 +33,9 @@
 */
 
 // PlayerVideo is an object type for both on-demand clips and live streams.
-// Generally, these will be available through Glue.get('video'), Glue.get('streams')
-// and Glue.get('clips') -- and can be used using Glue.get('clips')[2].switchTo();
-var PlayerVideo = function(Glue,$,type,data){
+// Generally, these will be available through Player.get('video'), Player.get('streams')
+// and Player.get('clips') -- and can be used using Player.get('clips')[2].switchTo();
+var PlayerVideo = function(Player,$,type,data){
     // Set up the object
     var $v = this;
     $v.type = type; // 'clip' or 'stream'
@@ -68,14 +68,14 @@ var PlayerVideo = function(Glue,$,type,data){
     // Init data model for extra information about the clip 
     // from modules, for example as sections array.
     // (all data needed even when the clip isn't active)
-    $v = Glue.fire('player:video:init', $v);
+    $v = Player.fire('player:video:init', $v);
 
     // Populate the clip with extra information 
     // such as subtitles, sections and more,
     // depending on whether modules are activated.
     // (all data needed only when the clip activated)
     $v.populate = function(callback){
-        $v = Glue.fire('player:video:populate', $v);
+        $v = Player.fire('player:video:populate', $v);
         $v.populated = true;
         callback();
     }
@@ -86,15 +86,15 @@ var PlayerVideo = function(Glue,$,type,data){
             $v.populate($v.switchTo);
             return;
         }
-        Glue.set('video', $v);
-        Glue.fire('player:video:loaded', $v);
-        Glue.set('video', $v);
+        Player.set('video', $v);
+        Player.fire('player:video:loaded', $v);
+        Player.set('video', $v);
     }
 
     return $v;
 }
 
-Glue.provide('core', 
+Player.provide('core', 
   {
     domain:'reinvent.23video.com',
     start: 0,
@@ -136,8 +136,9 @@ Glue.provide('core',
     loop: false,
     playHD: false
   }, 
-  function(Glue,$,opts){
+  function(Player,$,opts){
       var $this = this;
+      $.extend($this, opts);
 
       // PROPERTIES
       $this.settings = opts;
@@ -152,81 +153,81 @@ Glue.provide('core',
       // Load settings for the player from 23 Video
       $this.loadSettings = function(callback){
           $this.api.player.settings(
-              {player_id:$this.settings.player_id, params:Glue.parametersString},
+              {player_id:$this.settings.player_id, params:Player.parametersString},
               function(data){
                   $.extend($this.settings, data.settings);
-                  Glue.fire('player:settings', $this.settings)
+                  Player.fire('player:settings', $this.settings)
                   callback();
               },
-              Glue.fail
+              Player.fail
           );
       }
       // Load on-demand clips
       $this.loadClips = function(callback){
           $this.clips = [];
           $this.api.photo.list(
-              $.extend(Glue.parameters, {include_related_p:1}),
+              $.extend(Player.parameters, {include_related_p:1}),
               function(data){
                   $.each(data.photos, function(i,photo){
-                      $this.clips.push(new PlayerVideo(Glue,$,'clip',photo));
+                      $this.clips.push(new PlayerVideo(Player,$,'clip',photo));
                   });
                   callback();
               },
-              Glue.fail
+              Player.fail
           );
       }
       // Load live streams
       $this.loadStreams = function(callback){
           $this.streams = [];
           $this.api.liveevent.stream.list(
-              $.extend(Glue.parameters, {include_related_p:1}),
+              $.extend(Player.parameters, {include_related_p:1}),
               function(data){
                   $.each(data.streams, function(i,stream){
-                      $this.streams.push(new PlayerVideo(Glue,$,'stream',stream));
+                      $this.streams.push(new PlayerVideo(Player,$,'stream',stream));
                   });
                   callback();
               },
-              Glue.fail
+              Player.fail
           );
       }
 
       /* SETTERS */
-      Glue.setter('domain', function(d){
+      Player.setter('domain', function(d){
           $this.domain = d;
           $this.url = 'http://' + $this.domain;
       });
-      Glue.setter('video', function(v){
+      Player.setter('video', function(v){
           $this.video = v;
       });
-      Glue.setter('settings', function(s){
+      Player.setter('settings', function(s){
           $this.settings = s;
       });
 
       /* GETTERS */
-      Glue.getter('domain', function(){return $this.domain;});
-      Glue.getter('url', function(){return $this.url;});
-      Glue.getter('api', function(){return $this.api;});
-      Glue.getter('video', function(){return $this.video;});
-      Glue.getter('clips', function(){return $this.clips;});
-      Glue.getter('streams', function(){return $this.streams;});
-      Glue.getter('settings', function(){return $this.settings;});
+      Player.getter('domain', function(){return $this.domain;});
+      Player.getter('url', function(){return $this.url;});
+      Player.getter('api', function(){return $this.api;});
+      Player.getter('video', function(){return $this.video;});
+      Player.getter('clips', function(){return $this.clips;});
+      Player.getter('streams', function(){return $this.streams;});
+      Player.getter('settings', function(){return $this.settings;});
 
       // Information about the current video
-      Glue.getter('video_title', function(){return $this.video.title||'';});
-      Glue.getter('video_content', function(){return $this.video.content||'';});
-      Glue.getter('video_photo_id', function(){return $this.video.photo_id||'';});
-      Glue.getter('video_tree_id', function(){return $this.video.tree_id||'';});
-      Glue.getter('video_token', function(){return $this.video.token||'';});
-      Glue.getter('video_one', function(){return $this.video.one||'';});
+      Player.getter('video_title', function(){return $this.video.title||'';});
+      Player.getter('video_content', function(){return $this.video.content||'';});
+      Player.getter('video_photo_id', function(){return $this.video.photo_id||'';});
+      Player.getter('video_tree_id', function(){return $this.video.tree_id||'';});
+      Player.getter('video_token', function(){return $this.video.token||'';});
+      Player.getter('video_one', function(){return $this.video.one||'';});
 
       // Load the player
       $this.bootstrap = function(){
-          Glue.fire('player:init');
+          Player.fire('player:init');
           $this.loadSettings(function(){
               $this.loadClips(function(){
                   $this.loadStreams(function(){
                       $this.loaded = true;
-                      Glue.fire('player:loaded');
+                      Player.fire('player:loaded');
                       if($this.clips.length>0) $this.clips[0].switchTo();
                   });
               });

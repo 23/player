@@ -9,10 +9,12 @@
     <!-- External dependencies: For the player -->
     <script src="https://raw.github.com/23/visualplatform.js/master/visualplatform.js"></script>
 
-    <!-- Modules -->
+    <!-- Bootstrap Glue instance and load modules -->
+    <script>var Player = new Glue({alias:'player'});</script>
     <script src="core/core.js"></script>
     <script src="analytics/analytics.js"></script>
     <script src="sharing/sharing.js"></script>
+    <script src="social-button/social-button.js"></script>
     <script src="video-display/video-display.js"></script>
     <script src="logo/logo.js"></script>
     <script src="scrubber/scrubber.js"></script>
@@ -30,6 +32,8 @@
     <link rel="stylesheet" type="text/css" href="info/info.css" />
   </head>
   <body>
-    <script>Glue.load('player.liquid', 'body');</script>
+    <script>
+      Player.load('player.liquid', 'body');
+    </script>
   </body>
 </html>

@@ -25,83 +25,86 @@
    - twitterLink [get]
    - tumblrLink [get]
    - googleLink [get]
+   - linkedinLink [get]
+   - diggLink [get]
    - mailLink [get]
 */
 
-Glue.provide('sharing', 
+Player.provide('sharing', 
   {},
-  function(Glue,$,opts){
+  function(Player,$,opts){
       var $this = this;
       $.extend($this, opts);
 
       // Helper function
       var absolutize = function(u){
-        if(!/\/\//.test(u)) u = Glue.get('url')+u;
+        if(!/\/\//.test(u)) u = Player.get('url')+u;
         return u;
       }
 
       // Bind to events
-      Glue.bind('player:settings', function(e,settings){
+      Player.bind('player:settings', function(e,settings){
           $(['socialSharing', 'showShare', 'rssLink', 'podcastLink', 'embedCode']).each(function(ignore,i){
               if(typeof($this[i])=='undefined'&&typeof(settings[i])!='undefined') $this[i]=settings[i];
             });
           $this.socialSharing = ($this.socialSharing||false ? true : false);
           $this.showShare = ($this.showShare||true ? true : false);;
-          $this.rssLink = absolutize($this.rssLink||Glue.get('url') + '/rss');
-          $this.podcastLink = absolutize($this.podcastLink||Glue.get('url') + '/podcast');
+          $this.rssLink = absolutize($this.rssLink||Player.get('url') + '/rss');
+          $this.podcastLink = absolutize($this.podcastLink||Player.get('url') + '/podcast');
           $this.embedCode = $this.embedCode||'';
 
-          Glue.fire('player:sharing', {});
+          Player.fire('player:sharing', {});
         });
       $this.videoLink = '';
-      Glue.bind('player:video:loaded', function(){
-          $this.videoLink = absolutize(Glue.get('video_one'));
-          Glue.fire('player:sharing', {});
+      Player.bind('player:video:loaded', function(){
+          $this.videoLink = absolutize(Player.get('video_one'));
+          Player.fire('player:sharing', {});
         });
 
       /* GETTERS */
-      Glue.getter('socialSharing', function(){
+      Player.getter('socialSharing', function(){
           return (typeof($this.socialSharing)!='undefined'&&$this.socialSharing&&$this.socialSharing!='0');
         });
-      Glue.getter('showShare', function(){
-          if(!Glue.get('socialSharing')) return(false);
+      Player.getter('showShare', function(){
+          if(!Player.get('socialSharing')) return(false);
           return (typeof($this.showShare)=='undefined'||($this.showShare&&$this.showShare!='0'));
         });
-      Glue.getter('rssLink', function(){
-          if(!Glue.get('socialSharing')) return('');
+      Player.getter('rssLink', function(){
+          if(!Player.get('socialSharing')) return('');
           return $this.rssLink;
         });
-      Glue.getter('podcastLink', function(){
-          if(!Glue.get('socialSharing')) return('');
+      Player.getter('podcastLink', function(){
+          if(!Player.get('socialSharing')) return('');
           return $this.podcastLink;
         });
-      Glue.getter('embedCode', function(){
-          if(!Glue.get('socialSharing')) return('');
+      Player.getter('embedCode', function(){
+          if(!Player.get('socialSharing')) return('');
           return $this.embedCode;
         });
-      Glue.getter('videoLink', function(){
-          if(!Glue.get('socialSharing')) return('');
+      Player.getter('videoLink', function(){
+          if(!Player.get('socialSharing')) return('');
           return $this.videoLink;
         });
-      Glue.getter('siteLink', function(){
-          return Glue.get('url');
+      Player.getter('siteLink', function(){
+          return Player.get('url');
         });
 
       var socialLink = function(service){
-        if(!Glue.get('socialSharing')) return('');
-        return Glue.get('videoLink') + '/' + service;
+        if(!Player.get('socialSharing')) return('');
+        return Player.get('videoLink') + '/' + service;
       };
-      Glue.getter('facebookLink', function(){return socialLink('facebook');});
-      Glue.getter('twitterLink', function(){return socialLink('twitter');});
-      Glue.getter('tumblrLink', function(){return socialLink('tumblr');});
-      Glue.getter('googleLink', function(){return socialLink('google');});
-      Glue.getter('linkedinLink', function(){return socialLink('linkedin');});
-      Glue.getter('mailLink', function(){return socialLink('mail');});
+      Player.getter('facebookLink', function(){return socialLink('facebook');});
+      Player.getter('twitterLink', function(){return socialLink('twitter');});
+      Player.getter('tumblrLink', function(){return socialLink('tumblr');});
+      Player.getter('googleLink', function(){return socialLink('google');});
+      Player.getter('linkedinLink', function(){return socialLink('linkedin');});
+      Player.getter('diggLink', function(){return socialLink('digg');});
+      Player.getter('mailLink', function(){return socialLink('mail');});
      
       /* SETTERS */
-      Glue.setter('showShare', function(ss){
+      Player.setter('showShare', function(ss){
           $this.showShare = ss;
-          Glue.fire('player:sharing', {});
+          Player.fire('player:sharing', {});
         });
 
       return $this;

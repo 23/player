@@ -6,20 +6,20 @@
  - player:video:volumechange
 */
 
-Glue.provide('volume-button', 
+Player.provide('volume-button', 
   {}, 
-  function(Glue,$,opts){
+  function(Player,$,opts){
     var $this = this;
     $.extend($this, opts);
     $this.render();
     
     $this.container.click(function(e){
         e.stopPropagation();
-        Glue.set('volume', (Glue.get('volume')>0 ? 0 : 1));
+        Player.set('volume', (Player.get('volume')>0 ? 0 : 1));
         return false;
       });
 
-    Glue.bind('player:video:volumechange', function(e){
+    Player.bind('player:video:volumechange', function(e){
         $this.render();
       });
       

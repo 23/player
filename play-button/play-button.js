@@ -9,20 +9,20 @@
  - player:video:ended
 */
 
-Glue.provide('play-button', 
+Player.provide('play-button', 
   {}, 
-  function(Glue,$,opts){
+  function(Player,$,opts){
     var $this = this;
     $.extend($this, opts);
     $this.render();
     
     $this.container.click(function(e){
         e.stopPropagation();
-        Glue.set('playing', !Glue.get('playing'));
+        Player.set('playing', !Player.get('playing'));
         return false;
       });
 
-    Glue.bind('player:video:playing player:video:seeked player:video:pause player:video:ended', function(e){
+    Player.bind('player:video:playing player:video:seeked player:video:pause player:video:ended', function(e){
         $this.render();
       });
       

@@ -34,11 +34,11 @@
   - formatTime: Formats number of seconds as a nice readable timestamp
 */
 
-Glue.provide('video-display', 
+Player.provide('video-display', 
   {
     className:'video-display'
   }, 
-  function(Glue,$,opts){
+  function(Player,$,opts){
       var $this = this;
       $.extend($this, opts);
 
@@ -48,13 +48,13 @@ Glue.provide('video-display',
       $this.video = $(document.createElement('video'))
           .attr({'x-webkit-airplay':'allow', tabindex:0})    
           .bind('loadeddata progress timeupdate seeked canplay play playing pause loadedmetadata ended volumechange', function(e){
-              Glue.fire('player:video:'+e.type, $this.video, e);
+              Player.fire('player:video:'+e.type, $this.video, e);
           });
       $this.canvas.append($this.video);
 
       // Handle size of the video canvas
       var _resize = function(){
-          var v = Glue.get('video');
+          var v = Player.get('video');
           if(!v||!v.aspectRatio) return;
 
           var conw = $this.container.width();
@@ -76,7 +76,7 @@ Glue.provide('video-display',
       $(window).resize(_resize);
 
       // Toogle playback on click
-      var _togglePlayback = function(){Glue.set('playing', !Glue.get('playing'))}
+      var _togglePlayback = function(){Player.set('playing', !Player.get('playing'))}
       $this.container.click(_togglePlayback);
       // Handle keyboard events
       $(window).keypress(function(e){
@@ -84,21 +84,21 @@ Glue.provide('video-display',
             // Toogle playbac k on space/enter press
             if(e.charCode==32 || e.keyCode==13) _togglePlayback();
             // Mute on 0 press
-            if(e.charCode==48) Glue.set('volume', 0);
+            if(e.charCode==48) Player.set('volume', 0);
             // Full volume on 1 press
-            if(e.charCode==49) Glue.set('volume', 1);
+            if(e.charCode==49) Player.set('volume', 1);
           }
       });
       $(window).keydown(function(e){
           if(!e.ctrlKey && !e.altKey && !e.metaKey) {
             // Increase volume on +/up
-            if(e.charCode==43 || e.keyCode==38) Glue.set('volume', Glue.get('volume')+0.2);
+            if(e.charCode==43 || e.keyCode==38) Player.set('volume', Player.get('volume')+0.2);
             // Decrease volume on -/down
-            if(e.charCode==45 || e.keyCode==40) Glue.set('volume', Glue.get('volume')-0.2);
+            if(e.charCode==45 || e.keyCode==40) Player.set('volume', Player.get('volume')-0.2);
             // Scrub on right arrow            
-            if(e.keyCode==39) Glue.set('currentTime', Glue.get('currentTime')+30);
+            if(e.keyCode==39) Player.set('currentTime', Player.get('currentTime')+30);
             // Scrub on left arrow
-            if(e.keyCode==37) Glue.set('currentTime', Glue.get('currentTime')-30);
+            if(e.keyCode==37) Player.set('currentTime', Player.get('currentTime')-30);
           }
       });
 
@@ -109,10 +109,10 @@ Glue.provide('video-display',
       $this.startTime = 0;
 
       /* EVENT HANDLERS */
-      Glue.bind('player:video:loaded', function(e,video){
+      Player.bind('player:video:loaded', function(e,video){
           // Load up the new video
-          var v = Glue.get('video');
-          var s = Glue.get('settings');
+          var v = Player.get('video');
+          var s = Player.get('settings');
 
           // Use and reset start time
           $this.startTime = s.start;
@@ -122,110 +122,110 @@ Glue.provide('video-display',
           _resize();
 
           // Handle formats or qualities
-          $this.video.prop('poster', Glue.get('url') + v.large_download);
+          $this.video.prop('poster', Player.get('url') + v.large_download);
           $this.qualities = {};
           $this.rawSource = "";
           if($this.video[0].canPlayType('video/mp4; codecs="avc1.42E01E"')) {
               // H.264
               if (typeof(v.video_mobile_high_download)!='undefined' && v.video_mobile_high_download.length>0) 
-	          $this.qualities['low'] = {format:'video_mobile_high', codec:'h264', source:Glue.get('url') + v.video_mobile_high_download};
+	          $this.qualities['low'] = {format:'video_mobile_high', codec:'h264', source:Player.get('url') + v.video_mobile_high_download};
               if (typeof(v.video_medium_download)!='undefined' && v.video_medium_download.length>0) 
-	          $this.qualities['standard'] = {format:'video_medium', codec:'h264', source:Glue.get('url') + v.video_medium_download}; 
+	          $this.qualities['standard'] = {format:'video_medium', codec:'h264', source:Player.get('url') + v.video_medium_download}; 
               if (typeof(v.video_hd_download)!='undefined' && v.video_hd_download.length>0) 
-	          $this.qualities['hd'] = {format:'video_hd', codec:'h264', source:Glue.get('url') + v.video_hd_download}; 
+	          $this.qualities['hd'] = {format:'video_hd', codec:'h264', source:Player.get('url') + v.video_hd_download}; 
               if (typeof(v.video_1080p_download)!='undefined' && v.video_1080p_download.length>0 && v.video_1080p_size>0) 
-	          $this.qualities['fullhd'] = {format:'video_1080p', codec:'h264', source:Glue.get('url') + v.video_1080p_download};
+	          $this.qualities['fullhd'] = {format:'video_1080p', codec:'h264', source:Player.get('url') + v.video_1080p_download};
           } else {
               // WebM
               if (typeof(v.video_webm_360p_download)!='undefined' && v.video_webm_360p_download.length>0) 
-	          $this.qualities['standard'] = {format:'video_webm_720p', codec:'webm', source:Glue.get('url') + v.video_webm_720p_download}; 
+	          $this.qualities['standard'] = {format:'video_webm_720p', codec:'webm', source:Player.get('url') + v.video_webm_720p_download}; 
               if (typeof(v.video_webm_720p_download)!='undefined' && v.video_webm_720p_download.length>0) 
-	          $this.qualities['hd'] = {format:'video_webm_720p', codec:'webm', source:Glue.get('url') + v.video_webm_720p_download}; 
+	          $this.qualities['hd'] = {format:'video_webm_720p', codec:'webm', source:Player.get('url') + v.video_webm_720p_download}; 
           }
           if($this.qualities[$this.quality]) {
-            Glue.set('quality', $this.quality);
+            Player.set('quality', $this.quality);
           }else{
-            Glue.set('quality', ($this.qualities['hd'] && s.playHD ? 'hd' : 'standard'));
+            Player.set('quality', ($this.qualities['hd'] && s.playHD ? 'hd' : 'standard'));
           }
 
           // Might want to autoPlay it
-          if(s.autoPlay||s.loop) Glue.set('playing', true);
+          if(s.autoPlay||s.loop) Player.set('playing', true);
       });
 
       /* SETTERS */
-      Glue.setter('playing', function(playing){
+      Player.setter('playing', function(playing){
           if(playing) 
               $this.video[0].play();
           else 
               $this.video[0].pause();
       });
-      Glue.setter('paused', function(paused){
-          Glue.set('playing', !paused)
+      Player.setter('paused', function(paused){
+          Player.set('playing', !paused)
       });
-      Glue.setter('currentTime', function(currentTime){
+      Player.setter('currentTime', function(currentTime){
           try {
               $this.video.prop('currentTime', Math.max(0,currentTime));
           }catch(e){}
       });
-      Glue.setter('volume', function(volume){
+      Player.setter('volume', function(volume){
           try {
               $this.video.prop('volume', volume);
           }catch(e){}
       });
-      Glue.setter('quality', function(quality){
+      Player.setter('quality', function(quality){
           // Sanity check
           if(!$this.qualities[quality]) return;
 
           // Update the global value
           $this.quality = quality;
           // Switch the source and jump to current spot
-          var currentTime = Glue.get('currentTime');
-          var playing = Glue.get('playing');
+          var currentTime = Player.get('currentTime');
+          var playing = Player.get('playing');
           $this.rawSource = $this.qualities[$this.quality].source;
           $this.video.prop('src', $this.rawSource);
-          Glue.set('currentTime', currentTime);
-          Glue.set('playing', playing);
+          Player.set('currentTime', currentTime);
+          Player.set('playing', playing);
       });
 
       /* GETTERS */
-      Glue.getter('playing', function(){
+      Player.getter('playing', function(){
           return !($this.video.prop('paused')||$this.video.prop('seeking'));
       });
-      Glue.getter('startTime', function(){
+      Player.getter('startTime', function(){
           return $this.startTime;
       });
-      Glue.getter('currentTime', function(){
+      Player.getter('currentTime', function(){
           return ($this.video.prop('currentTime')||0) + $this.startTime;
       });
-      Glue.getter('volume', function(){
+      Player.getter('volume', function(){
           return $this.video.prop('volume');
       });
-      Glue.getter('quality', function(){
+      Player.getter('quality', function(){
           return $this.quality;
       });
-      Glue.getter('qualities', function(){
+      Player.getter('qualities', function(){
           return $this.qualities;
       });
-      Glue.getter('ended', function(){
+      Player.getter('ended', function(){
           return $this.video.prop('ended');
       });
-      Glue.getter('seeking', function(){
+      Player.getter('seeking', function(){
           return $this.video.prop('seeking');
       });
-      Glue.getter('paused', function(){
+      Player.getter('paused', function(){
           return $this.video.prop('paused');
       });
-      Glue.getter('duration', function(){
+      Player.getter('duration', function(){
           return $this.video.prop('duration') + $this.startTime;
       });
-      Glue.getter('bufferTime', function(){
+      Player.getter('bufferTime', function(){
           var b = $this.video.prop('buffered');
           return(b && b.length ? b.end(0)||0 : 0);
       });
-      Glue.getter('src', function(){
+      Player.getter('src', function(){
           return $this.video.prop('src');
       });
-      Glue.getter('displayDevice', function(){
+      Player.getter('displayDevice', function(){
           return 'html5';
       });
       

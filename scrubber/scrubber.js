@@ -9,9 +9,9 @@
   - player:video:ended
 */
 
-Glue.provide('scrubber', 
+Player.provide('scrubber', 
   {},
-  function(Glue,$,opts){
+  function(Player,$,opts){
       var $this = this;
       $.extend($this, opts);
 
@@ -25,18 +25,18 @@ Glue.provide('scrubber',
 
           // Handle clicks on the time line
           $this.scrubberContainer.click(function(e){
-              var duration = Glue.get('duration');
+              var duration = Player.get('duration');
               if(isNaN(duration)||duration<=0) {
-                Glue.set('playing', true);
+                Player.set('playing', true);
               } else {
-                Glue.set('currentTime', e.offsetX / $this.scrubberContainer.width() * duration);
-                Glue.set('playing', true);
+                Player.set('currentTime', e.offsetX / $this.scrubberContainer.width() * duration);
+                Player.set('playing', true);
               }
             });
         });
 
-      Glue.bind('player:video:progress player:video:timeupdate player:video:seeked player:video:ended', function(e,o){
-          var duration = Glue.get('duration');
+      Player.bind('player:video:progress player:video:timeupdate player:video:seeked player:video:ended', function(e,o){
+          var duration = Player.get('duration');
           if(isNaN(duration)||duration<=0) return;
 
           // Update time labels
@@ -44,10 +44,10 @@ Glue.provide('scrubber',
 
           // Update buffer and play progress
           try {
-            $this.bufferContainer.css({width:(100.0*Glue.get('bufferTime')/duration)+'%'});
+            $this.bufferContainer.css({width:(100.0*Player.get('bufferTime')/duration)+'%'});
           }catch(e){}
           try {
-            $this.playContainer.css({width:(100.0*Glue.get('currentTime')/duration)+'%'});
+            $this.playContainer.css({width:(100.0*Player.get('currentTime')/duration)+'%'});
           }catch(e){}
         });
 

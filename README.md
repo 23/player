@@ -12,7 +12,6 @@ Video player framework for 23 Video build on Glue and the visualplatform API
 * PlayFlow/VAST
 * Share button (+ pane)
 * Playlist button (+ pane)
-* Facebook/Twitter/Link buttons
 * Quality button and menu
 * Streams buttons and menu (if this is how we want to integrate it?)
 
@@ -21,12 +20,14 @@ Video player framework for 23 Video build on Glue and the visualplatform API
 * *Analytics*: Embed source
 * *Scrubber*: Drag handle
 
-**Missing features:**
+**Missing features in Glue:**
 
 * Include same module multiple times: `{% glue share-button with "service":"facebook" %}`
+
+**Missing features in player:**
+
 * Load parameters, including `domain`
 * Only show content after video is loaded
-* Subclass `Glue` and call it player, rather than calling Glue.get etc at all times
 * Play livestreams
 * Flash fallback
 * API concatenation

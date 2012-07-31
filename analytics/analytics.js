@@ -11,11 +11,11 @@
   - player:video:timeupdate: Log playhead to 23 Analytics continuously
 */
 
-Glue.provide('analytics', 
+Player.provide('analytics', 
   {
       timeReportRate:10
   }, 
-  function(Glue,$,opts){
+  function(Player,$,opts){
       var $this = this;
       $.extend($this, opts);
       delete $this.container;
@@ -24,27 +24,27 @@ Glue.provide('analytics',
       var _context = function(o,video){
           o.photo_id = video.id;
           o.type = video.type;
-	  o.user_player_type = Glue.get('displayDevice');
+	  o.user_player_type = Player.get('displayDevice');
 	  o.user_player_resolution = screen.width+'x'+screen.height;
-	  o.user_player_version = Glue.version;
+	  o.user_player_version = Player.version;
           return o;
       }
       
       // Bind to events
-      Glue.bind('player:videoloaded', function(e,video){                  
-          Glue.get('api').analytics.report.event(_context({event:'load'},video));
+      Player.bind('player:videoloaded', function(e,video){                  
+          Player.get('api').analytics.report.event(_context({event:'load'},video));
       });
 
       var _lastTimeUpdate = 0;
       var _reportTime = 
-      Glue.bind('player:video:play player:video:pause player:video:end player:video:timeupdate', function(e,video){
+      Player.bind('player:video:play player:video:pause player:video:end player:video:timeupdate', function(e,video){
           if(e=='player:video:timeupdate') {
               // Throttle time update reports
               if(((new Date)-_lastTimeUpdate)/1000.0 < $this.timeReportRate)
                   return;
           }
           _lastTimeUpdate = new Date();
-          Glue.get('api').analytics.report.play(_context({time_start:Glue.get('startTime'), time_end:Glue.get('currentTime'), time_total:Glue.get('duration')},video));
+          Player.get('api').analytics.report.play(_context({time_start:Player.get('startTime'), time_end:Player.get('currentTime'), time_total:Player.get('duration')},video));
       });
      
       return $this;
