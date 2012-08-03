@@ -7,22 +7,18 @@ Video player framework for 23 Video build on Glue and the visualplatform API
 **Missing modules:**
 
 * Loading indicator
-* Subtitles
+* Subtitles (+ menu)
 * Sections
 * PlayFlow/VAST
 * Share button (+ pane)
 * Playlist button (+ pane)
-* Quality button and menu
+* Quality button (+ menu)
 * Streams buttons and menu (if this is how we want to integrate it?)
 
 **Missing features in modules:**
 
 * *Analytics*: Embed source
 * *Scrubber*: Drag handle
-
-**Missing features in Glue:**
-
-* Include same module multiple times: `{% glue share-button with "service":"facebook" %}`
 
 **Missing features in player:**
 

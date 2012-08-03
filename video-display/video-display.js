@@ -36,7 +36,8 @@
 
 Player.provide('video-display', 
   {
-    className:'video-display'
+    className:'video-display',
+    displayDevice:'flash'
   }, 
   function(Player,$,opts){
       var $this = this;
@@ -45,35 +46,103 @@ Player.provide('video-display',
       // Create a container with the correct aspect ratio and a video element
       $this.canvas = $(document.createElement('div')).addClass('video-canvas');
       $this.container.append($this.canvas);
-      $this.video = $(document.createElement('video'))
+
+      if ($this.displayDevice=='html5') {
+        // HTML5 Display
+        $this.video = $(document.createElement('video'))
           .attr({'x-webkit-airplay':'allow', tabindex:0})    
           .bind('loadeddata progress timeupdate seeked canplay play playing pause loadedmetadata ended volumechange', function(e){
               Player.fire('player:video:'+e.type, $this.video, e);
-          });
-      $this.canvas.append($this.video);
+            });
+        $this.canvas.append($this.video);
 
-      // Handle size of the video canvas
-      var _resize = function(){
+        // Handle size of the video canvas
+        var _resize = function(){
           var v = Player.get('video');
           if(!v||!v.aspectRatio) return;
-
+          
           var conw = $this.container.width();
           var conh = $this.container.height();
           var conar = conw/conh;
           if(v.apectRatio<conar) {
-              $this.canvas.width(conw);
-              var h = conw/v.aspectRatio;
-              $this.canvas.height(h);
-              $this.canvas.css({top:((conh-h)/2)+'px', left:0});
+            $this.canvas.width(conw);
+            var h = conw/v.aspectRatio;
+            $this.canvas.height(h);
+            $this.canvas.css({top:((conh-h)/2)+'px', left:0});
           } else {
-              $this.canvas.height(conh);
-              var w = conh*v.aspectRatio;
-              $this.canvas.width(w);
-              $this.canvas.css({top:0, left:((conw-w)/2)+'px'});
+            $this.canvas.height(conh);
+            var w = conh*v.aspectRatio;
+            $this.canvas.width(w);
+            $this.canvas.css({top:0, left:((conw-w)/2)+'px'});
           }
+        }
+        $this.container.resize(_resize);
+        $(window).resize(_resize);
+      } else {
+        // Flash Display
+        window.FlashFallbackCallback = function(e){
+          ev = {type:e};
+          Player.fire('player:video:'+e, $this.video, ev);
+        };
+        $this.canvas.flash({
+            id:"FlashFallback",
+            src:"/FlashFallback/FlashFallbackDebug.swf",
+            width:'100%',
+            height:'100%',
+            bgcolor:"#000000",
+            quality:"high",
+            wmode:"opaque",
+            access:"domain",
+            express:"/resources/um/script/swfobject/expressInstall.swf",
+            mime:"application/x-shockwave-flash",
+            version:"9.0.115",
+            expressInstall:true
+        });
+
+        // Emulate enough of the jQuery <video> object for our purposes
+        $this.video = {
+          queue:[],
+          0: {
+            canPlayType: function(t){return t=='video/mp4; codecs="avc1.42E01E"';},
+            play:function(){$this.video.call('setPlaying', true);},
+            pause:function(){$this.video.call('setPlaying', false);}
+          },
+          prop:function(key,value){
+            if(key=='src') key='source';
+            key = key.substring(0,1).toUpperCase() + key.substring(1);
+            return (typeof(value)!='undefined' ? $this.video.call('set' + key, value): $this.video.call('get' + key));
+          },
+          call:function(method,arg1,arg2){
+            if($this.video.element) {
+              if(typeof(arg2)!='undefined') {
+                console.debug('flash call():', method, arg1, arg2);
+                return $this.video.element[method](arg1,arg2);
+              } else if(typeof(arg1)!='undefined') { 
+                console.debug('flash call():', method, arg1);
+                return $this.video.element[method](arg1);
+              } else {
+                console.debug('flash call():', method);
+                return $this.video.element[method]();
+              }
+            } else {
+              $this.video.element = window['FlashFallback']||document['FlashFallback'];
+              if($this.video.element) {
+                // Run queue
+                $.each($this.video.queue, function(i,q){
+                    $this.video.call(q[0],q[1],q[2]);
+                  });
+                $this.video.queue = [];
+                // Run the calling method
+                $this.video.call(method,arg1,arg2);
+              } else {
+                // Enqueue
+                $this.video.queue.push([method,arg1,arg2]);
+              }
+            }
+          },
+          element:undefined
+        }
       }
-      $this.container.resize(_resize);
-      $(window).resize(_resize);
 
       // Toogle playback on click
       var _togglePlayback = function(){Player.set('playing', !Player.get('playing'))}
@@ -119,13 +188,13 @@ Player.provide('video-display',
           s.start = 0;
 
           // Resize to fit
-          _resize();
+          if(_resize) _resize();
 
           // Handle formats or qualities
           $this.video.prop('poster', Player.get('url') + v.large_download);
           $this.qualities = {};
           $this.rawSource = "";
-          if($this.video[0].canPlayType('video/mp4; codecs="avc1.42E01E"')) {
+          if($this.displayDevice!='html5' || $this.video[0].canPlayType('video/mp4; codecs="avc1.42E01E"')) {
               // H.264
               if (typeof(v.video_mobile_high_download)!='undefined' && v.video_mobile_high_download.length>0) 
 	          $this.qualities['low'] = {format:'video_mobile_high', codec:'h264', source:Player.get('url') + v.video_mobile_high_download};
@@ -226,7 +295,10 @@ Player.provide('video-display',
           return $this.video.prop('src');
       });
       Player.getter('displayDevice', function(){
-          return 'html5';
+          return $this.displayDevice;
+      });
+      Player.getter('videoElement', function(){
+          return $this.video;
       });
       
       return $this;
