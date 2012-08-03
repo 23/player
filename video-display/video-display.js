@@ -86,7 +86,7 @@ Player.provide('video-display',
         };
         $this.canvas.flash({
             id:"FlashFallback",
-            src:"/FlashFallback/FlashFallbackDebug.swf",
+            src:"lib/FlashFallback/FlashFallbackDebug.swf",
             width:'100%',
             height:'100%',
             bgcolor:"#000000",
@@ -115,13 +115,10 @@ Player.provide('video-display',
           call:function(method,arg1,arg2){
             if($this.video.element) {
               if(typeof(arg2)!='undefined') {
-                console.debug('flash call():', method, arg1, arg2);
                 return $this.video.element[method](arg1,arg2);
               } else if(typeof(arg1)!='undefined') { 
-                console.debug('flash call():', method, arg1);
                 return $this.video.element[method](arg1);
               } else {
-                console.debug('flash call():', method);
                 return $this.video.element[method]();
               }
             } else {

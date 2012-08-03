@@ -1,7 +1,6 @@
 // Live stream, Pseudostreaming, Background color, Controls
 // NetStream.* etc events bliver ikke kaldt
 // Poster
-// Progress/timeupdate events
 
 package com.visual {
   /* Flash widgets */
@@ -12,6 +11,7 @@ package com.visual {
   import flash.net.NetConnection;
   import flash.net.NetStream;
   import flash.utils.setTimeout;
+  import flash.utils.setInterval;
 
   /* Event types */
   import flash.events.AsyncErrorEvent;
@@ -51,6 +51,7 @@ package com.visual {
       if(inited) return;
 
       this.stage.addEventListener(Event.RESIZE, matchVideoSize);
+      setInterval(updateProgress, 200);
 
       inited = true;
     }
