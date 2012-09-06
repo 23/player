@@ -1,7 +1,3 @@
-// Live stream, Pseudostreaming, Background color, Controls
-// NetStream.* etc events bliver ikke kaldt
-// Poster
-
 package com.visual {
   /* Flash widgets */
   import flash.display.Sprite;
@@ -12,6 +8,7 @@ package com.visual {
   import flash.net.NetStream;
   import flash.utils.setTimeout;
   import flash.utils.setInterval;
+  import flash.external.ExternalInterface;
 
   /* Event types */
   import flash.events.AsyncErrorEvent;
@@ -41,6 +38,14 @@ package com.visual {
       PAUSED: 'paused',
       STOPPED: 'stopped'
     };
+
+    // Logging
+    private function trace(s:String):void {
+      try {
+        ExternalInterface.call("console.log", "FlashFallback", s);
+      }catch(e:ErrorEvent){}
+    }
+
     // Callback for events
     public var callback:Function = function():void{};
     
@@ -51,7 +56,7 @@ package com.visual {
       if(inited) return;
 
       this.stage.addEventListener(Event.RESIZE, matchVideoSize);
-      setInterval(updateProgress, 200);
+      setInterval(updateProgress, 250);
 
       inited = true;
     }
@@ -91,7 +96,10 @@ package com.visual {
     // Property: Source
     private var _source:String = null;
     public function set source(s:String):void {
+      /////s = "rtmp://live.visualplatform.net/vod/mp4:ninja.mp4";
+      /////s = "rtmp://live.visualplatform.net/live/mp4:5200003-efeb7014d4283e9d066534d285b34c55.mp4";
       if(_source==s) return;
+      trace('Loading ' + s);
       _source=s;
       reset();
     }
@@ -103,7 +111,6 @@ package com.visual {
     private var _poster:String = null;
     public function set poster(p:String):void {
       if(_poster==p) return;
-      trace(p);
       _poster=p;
     }
     public function get poster():String {
@@ -112,7 +119,7 @@ package com.visual {
 
     // Property: Playing
     public function set playing(p:Boolean):void {
-      if (this.playing) {
+      if (!p) {
         pause();
       } else {
         play();
@@ -120,14 +127,6 @@ package com.visual {
     }
     public function get playing():Boolean {
       return isPlaying;
-      /*
-        return (
-        this.state = VideoStatus.PLAYING || 
-        this.state = VideoStatus.LOADING || 
-        this.state = VideoStatus.BUFFERING || 
-        this.state = VideoStatus.SEEKING
-        );
-      */
     }
 
     // Property: Seeking
@@ -231,6 +230,7 @@ package com.visual {
       if(!this.connection.connected) {
         connect();
       } if(this.stream) {
+        if(!isPlaying&&isLive) this.stream.play(this.streamName); // force the live stream to restart after a pausing
         this.stream.resume();
         isPlaying = true;
         this.state = VideoStatus.PLAYING;
@@ -278,6 +278,7 @@ package com.visual {
       this.stream.addEventListener(AsyncErrorEvent.ASYNC_ERROR, genericErrorEvent);
       this.stream.addEventListener(IOErrorEvent.IO_ERROR, genericErrorEvent);
       this.stream.addEventListener(NetStatusEvent.NET_STATUS, netStatusHandler);
+      this.stream.addEventListener('onPlayStatus', netStatusHandler);
       // Defaults for the video display
       if(!this.video) {
         var v:Video = new Video();
@@ -290,6 +291,7 @@ package com.visual {
       this.video.attachNetStream(this.stream);
       this.state = VideoStatus.BUFFERING;
       this.stream.play(this.streamName);
+      ///////pause();
       matchVideoSize();
     }
     private function subscribe():void {
@@ -303,6 +305,7 @@ package com.visual {
         return {
           onFCSubscribe:function(info:Object):void{
             switch(info.code){
+
             case "NetStream.Play.StreamNotFound":
             if(fcSubscribeCount >= fcSubscribeMaxRetries){
               fcSubscribeCount = 0;
@@ -311,6 +314,7 @@ package com.visual {
               setTimeout(context.subscribe, 1000);
             }
             break;
+
             case "NetStream.Play.Start":
             fcSubscribeCount = 0;
             context.attachStreamToVideo();
@@ -332,7 +336,19 @@ package com.visual {
         }
       })(this);
 		
+    private var _retryConnect:Boolean = false;
     private function genericErrorEvent(event:Event):void {
+      // Possibly try connecting again
+      trace('Lost connection: Retrying in 6s...');
+      _retryConnect = true;
+      setTimeout(function():void{
+          if(isPlaying&&_retryConnect) {
+            trace('Lost connection: Retrying now.');
+            _retryConnect = false;
+            reset();
+            play();
+          }
+        }, 6000);
       this.state = VideoStatus.CONNECTION_ERROR;
     }
     private function netStatusHandler(event:NetStatusEvent):void {
@@ -347,7 +363,8 @@ package com.visual {
       case "NetStream.Play.Failed":
       case "NetStream.Play.StreamNotFound":
         this.state = VideoStatus.CONNECTION_ERROR;
-      break;
+        genericErrorEvent(event);
+        break;
       case "NetConnection.Connect.Closed":
         this.state = VideoStatus.DISCONNECTED;
         break;
@@ -371,6 +388,13 @@ package com.visual {
           if(isPlaying) this.state = VideoStatus.BUFFERING;
         }
         break;
+      case "NetStream.Play.UnpublishNotify":
+        stop();
+        break;
+      case "NetStream.Play.PublishNotify":
+        reset();
+        play();
+        break;
       case "NetStream.Seek.Notify":        
       case "NetStream.Unpause.Notify":
         this.callback('seeked');
@@ -379,6 +403,8 @@ package com.visual {
         if(isPlaying) {
           this.state = VideoStatus.PLAYING;
         }
+        break;
+      case "NetStream.Buffer.Flush":
         break;
       case "NetStream.Play.Start":
         isPlaying = true;
@@ -413,15 +439,6 @@ package com.visual {
           x = 0;
           y = (this.stage.stageHeight-h)/2;
         }
-
-        /*
-        trace('_videoAspectRatio = ' + _videoAspectRatio);
-        trace('stageAspectRatio = ' + stageAspectRatio);
-        trace('w = ' + w);
-        trace('h = ' + h);
-        trace('x = ' + x);
-        trace('y = ' + y);
-        */
 
         this.video.x = x;
         this.video.y = y;

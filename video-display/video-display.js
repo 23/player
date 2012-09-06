@@ -5,6 +5,7 @@
 
   Fires events:
   - player:video:loadeddata
+  - player:video:ready
   - player:video:progress
   - player:video:timeupdate
   - player:video:seeked
@@ -28,6 +29,7 @@
   - paused [get/set]
   - duration [get]
   - bufferTime [get]
+  - isLive [get]
   - displayDevice [get]
 
   Liquid filters:
@@ -44,7 +46,7 @@ Player.provide('video-display',
       $.extend($this, opts);
 
       // Create a container with the correct aspect ratio and a video element
-      $this.canvas = $(document.createElement('div')).addClass('video-canvas');
+      $this.canvas = $(document.createElement('div')).addClass('video-canvas')
       $this.container.append($this.canvas);
 
       if ($this.displayDevice=='html5') {
@@ -84,20 +86,10 @@ Player.provide('video-display',
           ev = {type:e};
           Player.fire('player:video:'+e, $this.video, ev);
         };
-        $this.canvas.flash({
-            id:"FlashFallback",
-            src:"lib/FlashFallback/FlashFallbackDebug.swf",
-            width:'100%',
-            height:'100%',
-            bgcolor:"#000000",
-            quality:"high",
-            wmode:"opaque",
-            access:"domain",
-            express:"/resources/um/script/swfobject/expressInstall.swf",
-            mime:"application/x-shockwave-flash",
-            version:"9.0.115",
-            expressInstall:true
-        });
+        // ie won't work with this, classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"
+        // http://code.google.com/p/swfobject/source/browse/trunk/swfobject/src/swfobject.js
+        $this.canvas.html('<object type="application/x-shockwave-flash" id="FlashFallback" name="FlashFallback" data="lib/FlashFallback/FlashFallbackDebug.swf" width="100%" height="100%" style="visibility: visible; "><param name="allowscriptaccess" value="always"><param name="allowfullscreen" value="true"><param name="wmode" value="direct"><param name="bgcolor" value="#000000"></object>');
+        var o = $this.canvas.select('object'); 
 
         // Emulate enough of the jQuery <video> object for our purposes
         $this.video = {
@@ -122,7 +114,7 @@ Player.provide('video-display',
                 return $this.video.element[method]();
               }
             } else {
-              $this.video.element = window['FlashFallback']||document['FlashFallback'];
+              $this.video.element = document['FlashFallback']||window['FlashFallback'];
               if($this.video.element) {
                 // Run queue
                 $.each($this.video.queue, function(i,q){
@@ -138,7 +130,7 @@ Player.provide('video-display',
             }
           },
           element:undefined
-        }
+        };
       }
 
       // Toogle playback on click
@@ -214,8 +206,16 @@ Player.provide('video-display',
             Player.set('quality', ($this.qualities['hd'] && s.playHD ? 'hd' : 'standard'));
           }
 
-          // Might want to autoPlay it
-          if(s.autoPlay||s.loop) Player.set('playing', true);
+          if(s.autoPlay||s.loop) {
+            // Might want to autoPlay it
+            Player.set('playing', true);
+          } else {
+            // Otherwise fire a non-event
+            Player.fire('player:video:pause', $this.video, e);
+          }
+
+          // We're ready now
+          Player.fire('player:video:ready', $this.video, e);
       });
 
       /* SETTERS */
@@ -287,6 +287,9 @@ Player.provide('video-display',
       Player.getter('bufferTime', function(){
           var b = $this.video.prop('buffered');
           return(b && b.length ? b.end(0)||0 : 0);
+      });
+      Player.getter('isLive', function(){
+          return($this.video.prop('isLive')||false);
       });
       Player.getter('src', function(){
           return $this.video.prop('src');

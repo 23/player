@@ -27,7 +27,6 @@ Player.provide('fullscreen-button',
 
     // Toogle fullscreen on alt+enter
     $(window).keydown(function(e){
-        console.debug(e);
         if((e.altKey||e.metaKey) && (e.charCode==32 || e.keyCode==13)) {
           Player.set('fullscreen', !Player.get('fullscreen'));
           Player.set('playing', true);

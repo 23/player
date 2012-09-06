@@ -222,6 +222,7 @@ package com.visual {
         this.stream.addEventListener(AsyncErrorEvent.ASYNC_ERROR, genericErrorEvent);
         this.stream.addEventListener(IOErrorEvent.IO_ERROR, genericErrorEvent);
         this.stream.addEventListener(NetStatusEvent.NET_STATUS, netStatusHandler);
+        this.stream.addEventListener('onPlayStatus', netStatusHandler);
         // Defaults for the video display
         if(!this.video) {
           var v:Video = new Video();
@@ -259,7 +260,9 @@ package com.visual {
                 fcSubscribeCount = 0;
                 context.attachStreamToVideo();
                 break;
-              }				
+              default:
+                trace('info.code = ' + info.code);
+              }
             },
             onFCUnsubscribe:function(info:Object):void{},
             onMetaData:function(item:Object):void{
