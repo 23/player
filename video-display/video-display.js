@@ -289,7 +289,7 @@ Player.provide('video-display',
           return(b && b.length ? b.end(0)||0 : 0);
       });
       Player.getter('isLive', function(){
-          return($this.video.prop('isLive')||false);
+          return($this.video.prop('isLive')||/.m3u8/.test(Player.get('src'))||/\/http$/.test(Player.get('src'))||false);
       });
       Player.getter('src', function(){
           return $this.video.prop('src');
