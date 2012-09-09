@@ -4,24 +4,23 @@ package {
   import flash.external.ExternalInterface;
   import com.visual.VisualVideo;
   import flash.events.ErrorEvent;
-  
+  import flash.system.Security;
+
   public class FlashFallback extends Sprite {
     private var video:VisualVideo;
     
     private function trace(s:String):void {
-      try {
-        ExternalInterface.call("console.log", "FlashFallback", s);
-      }catch(e:ErrorEvent){}
+      ExternalInterface.call("console.log", "FlashFallback", s);
     }
-
     public function FlashFallback() {
       stage.scaleMode = 'noScale'; //StageScaleMode.NO_SCALE
       stage.align = 'TL'; //StageAlign.TOP_LEFT;
+      Security.allowDomain('*');
+
       video = new VisualVideo();
       addChild(video);
       
       if (ExternalInterface.available) {
-        
         video.callback = function(ev:String):void {
           ExternalInterface.call("FlashFallbackCallback", ev);
         }
@@ -76,6 +75,7 @@ package {
         ExternalInterface.addCallback("getIsLive", function():Boolean{
             return video.isLive;
           });
+        trace('Loaded ExternalInterface');
       } else {
         trace('Error loading FlashFallback: No ExternalInterface');
       }

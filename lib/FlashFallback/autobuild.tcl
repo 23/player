@@ -10,7 +10,10 @@ proc sums {} {
 }
 
 proc build {} {
-    return [exec ./build.sh 2>@1]
+    catch {
+        return [exec ./build.sh 2>@1]
+    } err
+    return $err
 }
 
 puts [build]

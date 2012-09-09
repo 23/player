@@ -21,6 +21,7 @@ package com.visual {
   public class VisualVideo extends Sprite {
     // The video objects
     private var video:Object = null;
+    private var image:VisualImage = new VisualImage();
     private var connection:NetConnection = new NetConnection();
     private var stream:NetStream;
     // A few helpers for live stream subscriptions
@@ -99,7 +100,7 @@ package com.visual {
       /////s = "rtmp://live.visualplatform.net/vod/mp4:ninja.mp4";
       /////s = "rtmp://live.visualplatform.net/live/mp4:5200003-efeb7014d4283e9d066534d285b34c55.mp4";
       if(_source==s) return;
-      trace('Loading ' + s);
+      trace('Loading video: ' + s);
       _source=s;
       reset();
     }
@@ -111,6 +112,9 @@ package com.visual {
     private var _poster:String = null;
     public function set poster(p:String):void {
       if(_poster==p) return;
+      trace('Loading poster: ' + p);
+      this.addChild(image);
+      image.source = p;
       _poster=p;
     }
     public function get poster():String {
