@@ -20,7 +20,7 @@
   Answers properties:
   - playing [get/set]
   - currentTime [get/set]
-  - startTime [get]
+  - seekedTime [get]
   - volume [get/set]
   - quality [get/set]
   - qualities [get]
@@ -44,6 +44,7 @@ Player.provide('video-display',
   function(Player,$,opts){
       var $this = this;
       $.extend($this, opts);
+      $this.seekedTime = 0;
 
       // Create a container with the correct aspect ratio and a video element
       $this.canvas = $(document.createElement('div')).addClass('video-canvas')
@@ -164,59 +165,64 @@ Player.provide('video-display',
       $this.qualities = {};
       $this.quality = "";
       $this.rawSource = "";
-      $this.startTime = 0;
 
       /* EVENT HANDLERS */
-      Player.bind('player:video:loaded', function(e,video){
-          // Load up the new video
-          var v = Player.get('video');
-          var s = Player.get('settings');
-
-          // Use and reset start time
-          $this.startTime = s.start;
-          s.start = 0;
-
-          // Resize to fit
-          if(_resize) _resize();
-
-          // Handle formats or qualities
-          $this.video.prop('poster', Player.get('url') + v.large_download);
-          $this.qualities = {};
-          $this.rawSource = "";
-          if($this.displayDevice!='html5' || $this.video[0].canPlayType('video/mp4; codecs="avc1.42E01E"')) {
-              // H.264
-              if (typeof(v.video_mobile_high_download)!='undefined' && v.video_mobile_high_download.length>0) 
-	          $this.qualities['low'] = {format:'video_mobile_high', codec:'h264', source:Player.get('url') + v.video_mobile_high_download};
-              if (typeof(v.video_medium_download)!='undefined' && v.video_medium_download.length>0) 
-	          $this.qualities['standard'] = {format:'video_medium', codec:'h264', source:Player.get('url') + v.video_medium_download}; 
-              if (typeof(v.video_hd_download)!='undefined' && v.video_hd_download.length>0) 
-	          $this.qualities['hd'] = {format:'video_hd', codec:'h264', source:Player.get('url') + v.video_hd_download}; 
-              if (typeof(v.video_1080p_download)!='undefined' && v.video_1080p_download.length>0 && v.video_1080p_size>0) 
-	          $this.qualities['fullhd'] = {format:'video_1080p', codec:'h264', source:Player.get('url') + v.video_1080p_download};
-          } else {
-              // WebM
-              if (typeof(v.video_webm_360p_download)!='undefined' && v.video_webm_360p_download.length>0) 
-	          $this.qualities['standard'] = {format:'video_webm_720p', codec:'webm', source:Player.get('url') + v.video_webm_720p_download}; 
-              if (typeof(v.video_webm_720p_download)!='undefined' && v.video_webm_720p_download.length>0) 
-	          $this.qualities['hd'] = {format:'video_webm_720p', codec:'webm', source:Player.get('url') + v.video_webm_720p_download}; 
+      var _videoLoaded = function(e,video){
+        // Check that Flash is loaded, otherwise run again when it is
+        if($this.displayDevice=='flash') {
+          var _f = (document['FlashFallback']||window['FlashFallback']);
+          if(!_f || !_f.getPaused) {
+            Player.bind('player:video:flashloaded', _videoLoaded);
+            return;
           }
-          if($this.qualities[$this.quality]) {
-            Player.set('quality', $this.quality);
-          }else{
-            Player.set('quality', ($this.qualities['hd'] && s.playHD ? 'hd' : 'standard'));
-          }
-
-          if(s.autoPlay||s.loop) {
-            // Might want to autoPlay it
-            Player.set('playing', true);
-          } else {
-            // Otherwise fire a non-event
-            Player.fire('player:video:pause', $this.video, e);
-          }
-
-          // We're ready now
-          Player.fire('player:video:ready', $this.video, e);
-      });
+        }
+          
+        // Load up the new video
+        var v = Player.get('video');
+        var s = Player.get('settings');
+        
+        // Resize to fit
+        if(_resize) _resize();
+        
+        // Handle formats or qualities
+        $this.video.prop('poster', Player.get('url') + v.large_download);
+        $this.qualities = {};
+        $this.rawSource = "";
+        if($this.displayDevice!='html5' || $this.video[0].canPlayType('video/mp4; codecs="avc1.42E01E"')) {
+          // H.264
+          if (typeof(v.video_mobile_high_download)!='undefined' && v.video_mobile_high_download.length>0) 
+            $this.qualities['low'] = {format:'video_mobile_high', codec:'h264', source:Player.get('url') + v.video_mobile_high_download};
+          if (typeof(v.video_medium_download)!='undefined' && v.video_medium_download.length>0) 
+            $this.qualities['standard'] = {format:'video_medium', codec:'h264', source:Player.get('url') + v.video_medium_download}; 
+          if (typeof(v.video_hd_download)!='undefined' && v.video_hd_download.length>0) 
+            $this.qualities['hd'] = {format:'video_hd', codec:'h264', source:Player.get('url') + v.video_hd_download}; 
+          if (typeof(v.video_1080p_download)!='undefined' && v.video_1080p_download.length>0 && v.video_1080p_size>0) 
+            $this.qualities['fullhd'] = {format:'video_1080p', codec:'h264', source:Player.get('url') + v.video_1080p_download};
+        } else {
+          // WebM
+          if (typeof(v.video_webm_360p_download)!='undefined' && v.video_webm_360p_download.length>0) 
+            $this.qualities['standard'] = {format:'video_webm_720p', codec:'webm', source:Player.get('url') + v.video_webm_720p_download}; 
+          if (typeof(v.video_webm_720p_download)!='undefined' && v.video_webm_720p_download.length>0) 
+            $this.qualities['hd'] = {format:'video_webm_720p', codec:'webm', source:Player.get('url') + v.video_webm_720p_download}; 
+        }
+        if($this.qualities[$this.quality]) {
+          Player.set('quality', $this.quality);
+        }else{
+          Player.set('quality', ($this.qualities['hd'] && s.playHD ? 'hd' : 'standard'));
+        }
+        
+        if(s.autoPlay||s.loop) {
+          // Might want to autoPlay it
+          Player.set('playing', true);
+        } else {
+          // Otherwise fire a non-event
+          Player.fire('player:video:pause', $this.video, e);
+        }
+        
+        // We're ready now
+        Player.fire('player:video:ready', $this.video, e);
+      }
+      Player.bind('player:video:loaded', _videoLoaded);
 
       /* SETTERS */
       Player.setter('playing', function(playing){
@@ -229,6 +235,7 @@ Player.provide('video-display',
           Player.set('playing', !paused)
       });
       Player.setter('currentTime', function(currentTime){
+          $this.seekedTime = currentTime;
           try {
               $this.video.prop('currentTime', Math.max(0,currentTime));
           }catch(e){}
@@ -257,11 +264,11 @@ Player.provide('video-display',
       Player.getter('playing', function(){
           return !($this.video.prop('paused')||$this.video.prop('seeking'));
       });
-      Player.getter('startTime', function(){
-          return $this.startTime;
-      });
       Player.getter('currentTime', function(){
-          return ($this.video.prop('currentTime')||0) + $this.startTime;
+          return ($this.video.prop('currentTime')||0);
+      });
+      Player.getter('seekedTime', function(){
+          return $this.seekedTime||0;
       });
       Player.getter('volume', function(){
           return $this.video.prop('volume');
@@ -282,11 +289,15 @@ Player.provide('video-display',
           return $this.video.prop('paused');
       });
       Player.getter('duration', function(){
-          return $this.video.prop('duration') + $this.startTime;
+          return $this.video.prop('duration');
       });
       Player.getter('bufferTime', function(){
-          var b = $this.video.prop('buffered');
-          return(b && b.length ? b.end(0)||0 : 0);
+          if ($this.displayDevice=='html5') {
+            var b = $this.video.prop('buffered');
+            return(b && b.length ? b.end(0)||0 : 0);
+          } else {
+            return $this.video.prop('bufferTime')||0;
+          }
       });
       Player.getter('isLive', function(){
           return($this.video.prop('isLive')||/.m3u8/.test(Player.get('src'))||/\/http$/.test(Player.get('src'))||false);

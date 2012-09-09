@@ -70,7 +70,7 @@ package com.visual {
     // Property: Source
     private var _source:String = "";
     public function set source(s:String):void {
-      s = "/large.jpg";
+      //s = "/large.jpg";
       if(_source==s) return;
       _source = s;
 

@@ -24,6 +24,7 @@ package com.visual {
     private var image:VisualImage = new VisualImage();
     private var connection:NetConnection = new NetConnection();
     private var stream:NetStream;
+    private var pseudoStreamingOffset:Number = 0;
     // A few helpers for live stream subscriptions
     private var fcSubscribeCount:int = 0;
     private var fcSubscribeMaxRetries:int = 3;
@@ -57,7 +58,7 @@ package com.visual {
       if(inited) return;
 
       this.stage.addEventListener(Event.RESIZE, matchVideoSize);
-      setInterval(updateProgress, 250);
+      setInterval(updateProgress, 200);
 
       inited = true;
     }
@@ -101,6 +102,7 @@ package com.visual {
       /////s = "rtmp://live.visualplatform.net/live/mp4:5200003-efeb7014d4283e9d066534d285b34c55.mp4";
       if(_source==s) return;
       trace('Loading video: ' + s);
+      this.pseudoStreamingOffset = 0;
       _source=s;
       reset();
     }
@@ -112,7 +114,6 @@ package com.visual {
     private var _poster:String = null;
     public function set poster(p:String):void {
       if(_poster==p) return;
-      trace('Loading poster: ' + p);
       this.addChild(image);
       image.source = p;
       _poster=p;
@@ -148,16 +149,22 @@ package com.visual {
       if(!this.connection||!this.stream) return;
       if(ct<0||ct>duration) return;
       if(isLive) return;
-      this.stream.seek(ct);
+      if(ct<this.pseudoStreamingOffset || ct>this.bufferTime) {
+        this.pseudoStreamingOffset = ct;
+        trace('pseudoStreamingOffset = ' + this.pseudoStreamingOffset);
+        reset();
+      } else {
+        this.stream.seek(ct-this.pseudoStreamingOffset);
+      }
     }
     public function get currentTime():Number {
-      return(this.stream ? this.stream.time : 0);
+      return(this.stream ? this.pseudoStreamingOffset+this.stream.time : 0);
     }
 
     // Property: Duration
     private var _duration:Number = 0; 
     public function get duration():Number {
-      return _duration;
+      return this.pseudoStreamingOffset+_duration;
     }
 
     // Property: Buffer time
@@ -167,7 +174,7 @@ package com.visual {
       if(this.duration<=0 || bytesLoaded<=0 || bytesTotal<=0) {
         return 0;
       } else {
-        return (bytesLoaded/bytesTotal)*duration;
+        return this.pseudoStreamingOffset+((bytesLoaded/bytesTotal)*duration);
       }
     }
     
@@ -212,12 +219,13 @@ package com.visual {
       if(this.isRTMP) {
         return(splitRTMPSource()[1]);
       } else {
-        return(_source);
+        if(this.pseudoStreamingOffset==0) {
+          return _source;
+        } else {
+          return _source + (_source.match(new RegExp("\?")) ? '&' : '?') + 'start=' + this.pseudoStreamingOffset
+        }
       }
     }
-		
-
-		
 
 
     // THE HEAVY LIFTING
@@ -294,8 +302,8 @@ package com.visual {
       }
       this.video.attachNetStream(this.stream);
       this.state = VideoStatus.BUFFERING;
+      trace('streamName = ' + this.streamName);
       this.stream.play(this.streamName);
-      ///////pause();
       matchVideoSize();
     }
     private function subscribe():void {

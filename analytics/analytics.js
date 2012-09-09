@@ -44,7 +44,7 @@ Player.provide('analytics',
                   return;
           }
           _lastTimeUpdate = new Date();
-          Player.get('api').analytics.report.play(_context({time_start:Player.get('startTime'), time_end:Player.get('currentTime'), time_total:Player.get('duration')},video));
+          Player.get('api').analytics.report.play(_context({time_start:Player.get('seekedTime'), time_end:Player.get('currentTime'), time_total:Player.get('duration')},video));
       });
      
       return $this;

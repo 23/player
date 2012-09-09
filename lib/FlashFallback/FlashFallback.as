@@ -31,6 +31,19 @@ package {
             return video.source;
           });
         ExternalInterface.addCallback("setPoster", function(poster:String):void {
+
+            // This is specific for 23 Video where flash is not allowed to access the root
+            // folder on the server; but it is allowed to read in thumbnails and videos
+            // from a specific list of subfolders. To do so, we will need to read the 
+            // specific policy files for each folder though.
+            var res:Array = poster.match(new RegExp('^https?://[^/]+/[0-9]+\/'));
+            if(res.length>0) {
+              var crossdomainPolicyURL:String = res[0] + 'crossdomain.xml';
+              trace('Loading policy file, ' + crossdomainPolicyURL);
+              Security.loadPolicyFile(crossdomainPolicyURL);
+            }
+            // (end)
+
             video.poster = poster;
           });
         ExternalInterface.addCallback("getPoster", function():String{
@@ -76,6 +89,7 @@ package {
             return video.isLive;
           });
         trace('Loaded ExternalInterface');
+        video.callback('flashloaded');
       } else {
         trace('Error loading FlashFallback: No ExternalInterface');
       }
