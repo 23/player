@@ -88,7 +88,7 @@ Player.provide('video-display',
         };
         // ie won't work with this, classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"
         // http://code.google.com/p/swfobject/source/browse/trunk/swfobject/src/swfobject.js
-        $this.canvas.html('<object type="application/x-shockwave-flash" id="FlashFallback" name="FlashFallback" data="lib/FlashFallback/FlashFallbackDebug.swf" width="100%" height="100%" style="visibility: visible; "><param name="allowscriptaccess" value="always"><param name="allowfullscreen" value="true"><param name="wmode" value="direct"><param name="bgcolor" value="#000000"></object>');
+        $this.canvas.html('<object type="application/x-shockwave-flash" id="FlashFallback" name="FlashFallback" data="lib/FlashFallback/FlashFallbackDebug.swf" width="100%" height="100%" style="visibility: visible; "><param name="allowscriptaccess" value="always"><param name="allowfullscreen" value="true"><param name="wmode" value="direct"><param name="bgcolor" value="#000000"><embed src="lib/FlashFallback/FlashFallbackDebug.swf" type="application/x-shockwave-flash" allowscriptaccess="always" bgcolor="#000000" allowfullscreen="true" wmode="direct" width="100%" height="100%"></embed></object>');
         var o = $this.canvas.select('object'); 
 
         // Emulate enough of the jQuery <video> object for our purposes
