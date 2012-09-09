@@ -16,6 +16,7 @@
   - player:video:loadedmetadata
   - player:video:ended
   - player:video:volumechange   
+  - player:video:displaydevice
   
   Answers properties:
   - playing [get/set]
@@ -39,99 +40,110 @@
 Player.provide('video-display', 
   {
     className:'video-display',
-    displayDevice:'flash'
+    displayDevice:'html5'
   }, 
   function(Player,$,opts){
       var $this = this;
       $.extend($this, opts);
       $this.seekedTime = 0;
 
+      // This one is needed to display fallback information
+      Player.getter('displayDevice', function(){
+          return $this.displayDevice;
+      });
+
       // Create a container with the correct aspect ratio and a video element
       $this.canvas = $(document.createElement('div')).addClass('video-canvas')
       $this.container.append($this.canvas);
-
-      if ($this.displayDevice=='html5') {
-        // HTML5 Display
-        $this.video = $(document.createElement('video'))
-          .attr({'x-webkit-airplay':'allow', tabindex:0})    
-          .bind('loadeddata progress timeupdate seeked canplay play playing pause loadedmetadata ended volumechange', function(e){
-              Player.fire('player:video:'+e.type, $this.video, e);
-            });
-        $this.canvas.append($this.video);
-
-        // Handle size of the video canvas
-        var _resize = function(){
-          var v = Player.get('video');
-          if(!v||!v.aspectRatio) return;
-          
-          var conw = $this.container.width();
-          var conh = $this.container.height();
-          var conar = conw/conh;
-          if(v.apectRatio<conar) {
-            $this.canvas.width(conw);
-            var h = conw/v.aspectRatio;
-            $this.canvas.height(h);
-            $this.canvas.css({top:((conh-h)/2)+'px', left:0});
-          } else {
-            $this.canvas.height(conh);
-            var w = conh*v.aspectRatio;
-            $this.canvas.width(w);
-            $this.canvas.css({top:0, left:((conw-w)/2)+'px'});
+      
+      $this.loadDisplayDevice = function(displayDevice){
+        $this.displayDevice = displayDevice;
+        if ($this.displayDevice=='html5') {
+          // HTML5 Display
+          $this.video = $(document.createElement('video'))
+            .attr({'x-webkit-airplay':'allow', tabindex:0})    
+            .bind('loadeddata progress timeupdate seeked canplay play playing pause loadedmetadata ended volumechange', function(e){
+                Player.fire('player:video:'+e.type, $this.video, e);
+              });
+          if(!$this.video[0].canPlayType) {
+            return false; // no html5 video
           }
-        }
-        $this.container.resize(_resize);
-        $(window).resize(_resize);
-      } else {
-        // Flash Display
-        window.FlashFallbackCallback = function(e){
-          ev = {type:e};
-          Player.fire('player:video:'+e, $this.video, ev);
-        };
-        // ie won't work with this, classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"
-        // http://code.google.com/p/swfobject/source/browse/trunk/swfobject/src/swfobject.js
-        $this.canvas.html('<object type="application/x-shockwave-flash" id="FlashFallback" name="FlashFallback" data="lib/FlashFallback/FlashFallbackDebug.swf" width="100%" height="100%" style="visibility: visible; "><param name="allowscriptaccess" value="always"><param name="allowfullscreen" value="true"><param name="wmode" value="direct"><param name="bgcolor" value="#000000"><embed src="lib/FlashFallback/FlashFallbackDebug.swf" type="application/x-shockwave-flash" allowscriptaccess="always" bgcolor="#000000" allowfullscreen="true" wmode="direct" width="100%" height="100%"></embed></object>');
-        var o = $this.canvas.select('object'); 
+          $this.canvas.append($this.video);
+          
+          // Handle size of the video canvas
+          $this.container.resize(_html5Resize);
+          $(window).resize(_html5Resize);
+        } else {
+          // Check Flash support
+          var b = document.getElementsByTagName("body")[0];
+          var o = document.createElement('object');
+          o.setAttribute("type", "application/x-shockwave-flash");
+          var t = b.appendChild(o);
+          if(!t||!t.GetVariable) {
+            return false; // no flash support
+          }
 
-        // Emulate enough of the jQuery <video> object for our purposes
-        $this.video = {
-          queue:[],
-          0: {
-            canPlayType: function(t){return t=='video/mp4; codecs="avc1.42E01E"';},
-            play:function(){$this.video.call('setPlaying', true);},
-            pause:function(){$this.video.call('setPlaying', false);}
-          },
-          prop:function(key,value){
-            if(key=='src') key='source';
-            key = key.substring(0,1).toUpperCase() + key.substring(1);
-            return (typeof(value)!='undefined' ? $this.video.call('set' + key, value): $this.video.call('get' + key));
-          },
-          call:function(method,arg1,arg2){
-            if($this.video.element) {
-              if(typeof(arg2)!='undefined') {
-                return $this.video.element[method](arg1,arg2);
-              } else if(typeof(arg1)!='undefined') { 
-                return $this.video.element[method](arg1);
-              } else {
-                return $this.video.element[method]();
-              }
-            } else {
-              $this.video.element = document['FlashFallback']||window['FlashFallback'];
+          // Flash Display
+          window.FlashFallbackCallback = function(e){
+            ev = {type:e};
+            Player.fire('player:video:'+e, $this.video, ev);
+          };
+          // ie won't work with this, classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"
+          // http://code.google.com/p/swfobject/source/browse/trunk/swfobject/src/swfobject.js
+          $this.canvas.html('<object type="application/x-shockwave-flash" id="FlashFallback" name="FlashFallback" data="lib/FlashFallback/FlashFallbackDebug.swf" width="100%" height="100%" style="visibility: visible; "><param name="allowscriptaccess" value="always"><param name="allowfullscreen" value="true"><param name="wmode" value="opaque"><param name="bgcolor" value="#000000"><embed id="FlashFallback" name="FlashFallback" src="lib/FlashFallback/FlashFallbackDebug.swf" type="application/x-shockwave-flash" allowscriptaccess="always" bgcolor="#000000" allowfullscreen="true" wmode="opaque" width="100%" height="100%"></embed></object>');
+          var o = $this.canvas.select('object'); 
+                    
+          // Emulate enough of the jQuery <video> object for our purposes
+          $this.video = {
+            queue:[],
+            0: {
+              canPlayType: function(t){return t=='video/mp4; codecs="avc1.42E01E"';},
+              play:function(){$this.video.call('setPlaying', true);},
+              pause:function(){$this.video.call('setPlaying', false);}
+            },
+            prop:function(key,value){
+              if(key=='src') key='source';
+              key = key.substring(0,1).toUpperCase() + key.substring(1);
+              return (typeof(value)!='undefined' ? $this.video.call('set' + key, value): $this.video.call('get' + key));
+            },
+            call:function(method,arg1,arg2){
               if($this.video.element) {
-                // Run queue
-                $.each($this.video.queue, function(i,q){
-                    $this.video.call(q[0],q[1],q[2]);
-                  });
-                $this.video.queue = [];
-                // Run the calling method
-                $this.video.call(method,arg1,arg2);
+                if(typeof(arg2)!='undefined') {
+                  return $this.video.element[method](arg1,arg2);
+                } else if(typeof(arg1)!='undefined') { 
+                  return $this.video.element[method](arg1);
+                } else {
+                  return $this.video.element[method]();
+                }
               } else {
-                // Enqueue
-                $this.video.queue.push([method,arg1,arg2]);
+                $this.video.element = document['FlashFallback']||window['FlashFallback'];
+                if($this.video.element) {
+                  // Run queue
+                  $.each($this.video.queue, function(i,q){
+                      $this.video.call(q[0],q[1],q[2]);
+                    });
+                  $this.video.queue = [];
+                  // Run the calling method
+                  $this.video.call(method,arg1,arg2);
+                } else {
+                  // Enqueue
+                  $this.video.queue.push([method,arg1,arg2]);
+                }
               }
-            }
-          },
-          element:undefined
-        };
+            },
+            element:undefined
+          };
+        }
+        Player.fire('player:video:displaydevice');
+        return true;
+      }
+
+      // Load the display device, or fall back
+      if(!$this.loadDisplayDevice($this.displayDevice)) {
+        if(!$this.loadDisplayDevice($this.displayDevice=='html5' ? 'flash' : 'html5')) {
+          $this.displayDevice = 'none';
+          return;
+        }
       }
 
       // Toogle playback on click
@@ -182,7 +194,7 @@ Player.provide('video-display',
         var s = Player.get('settings');
         
         // Resize to fit
-        if(_resize) _resize();
+        if($this.displayDevice=='html5') _html5Resize();
         
         // Handle formats or qualities
         $this.video.prop('poster', Player.get('url') + v.large_download);
@@ -224,6 +236,28 @@ Player.provide('video-display',
       }
       Player.bind('player:video:loaded', _videoLoaded);
 
+      // Utility method to size the HTML5 video element
+      var _html5Resize = function(){
+        var v = Player.get('video');
+        if(!v||!v.aspectRatio) return;
+        
+        var conw = $this.container.width();
+        var conh = $this.container.height();
+        if(conw==0 || conh==0) return;
+        var conar = conw/conh;
+        if(v.apectRatio<conar) {
+          $this.canvas.width(conw);
+          var h = conw/v.aspectRatio;
+          $this.canvas.height(h);
+          $this.canvas.css({top:((conh-h)/2)+'px', left:0});
+        } else {
+          $this.canvas.height(conh);
+          var w = conh*v.aspectRatio;
+          $this.canvas.width(w);
+          $this.canvas.css({top:0, left:((conw-w)/2)+'px'});
+        }
+      }
+ 
       /* SETTERS */
       Player.setter('playing', function(playing){
           if(playing) 
@@ -304,9 +338,6 @@ Player.provide('video-display',
       });
       Player.getter('src', function(){
           return $this.video.prop('src');
-      });
-      Player.getter('displayDevice', function(){
-          return $this.displayDevice;
       });
       Player.getter('videoElement', function(){
           return $this.video;
