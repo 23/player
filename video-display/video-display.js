@@ -320,6 +320,7 @@ Player.provide('video-display',
 Liquid.Template.registerFilter({
     formatTime: function(time) {
       if (isNaN(time)||time<0) return("");
+      time = Math.round(time);
       return(Math.floor(time/60).toString() +':'+ (time%60<10?'0':'') + Math.round(time%60).toString());
     }
   });

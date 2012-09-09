@@ -150,9 +150,10 @@ package com.visual {
       if(ct<0||ct>duration) return;
       if(isLive) return;
       if(ct<this.pseudoStreamingOffset || ct>this.bufferTime) {
+        _duration = duration - ct; // Guesstimate the duration of the new clip before changing the offset
         this.pseudoStreamingOffset = ct;
-        trace('pseudoStreamingOffset = ' + this.pseudoStreamingOffset);
-        reset();
+        trace('Pseudo streaming from ' + this.pseudoStreamingOffset);
+        attachStreamToVideo();
       } else {
         this.stream.seek(ct-this.pseudoStreamingOffset);
       }
@@ -302,7 +303,6 @@ package com.visual {
       }
       this.video.attachNetStream(this.stream);
       this.state = VideoStatus.BUFFERING;
-      trace('streamName = ' + this.streamName);
       this.stream.play(this.streamName);
       matchVideoSize();
     }
