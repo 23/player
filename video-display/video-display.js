@@ -55,7 +55,25 @@ Player.provide('video-display',
       // Create a container with the correct aspect ratio and a video element
       $this.canvas = $(document.createElement('div')).addClass('video-canvas')
       $this.container.append($this.canvas);
+
+      /* PROPERTIES */
+      $this.qualities = {};
+      $this.quality = "";
+      $this.rawSource = "";
+
+      // When the module has been loaded in to the DOM, load the display device
+      $this.onAppend = function(){
+        if(!$this.loadDisplayDevice($this.displayDevice)) {
+          if(!$this.loadDisplayDevice($this.displayDevice=='html5' ? 'flash' : 'html5')) {
+            $this.displayDevice = 'none';
+            return;
+          }
+        }
+        $this.loadShortcuts();
+      }
+
       
+      /* EVENT HANDLERS */
       $this.loadDisplayDevice = function(displayDevice){
         $this.displayDevice = displayDevice;
         if ($this.displayDevice=='html5') {
@@ -74,13 +92,8 @@ Player.provide('video-display',
           $this.container.resize(_html5Resize);
           $(window).resize(_html5Resize);
         } else {
-          // Check Flash support
-          var b = document.getElementsByTagName("body")[0];
-          var o = document.createElement('object');
-          o.setAttribute("type", "application/x-shockwave-flash");
-          var t = b.appendChild(o);
-          if(!t||!t.GetVariable) {
-            return false; // no flash support
+          if(!swfobject.hasFlashPlayerVersion('12.0.0')) {
+            return false;  // no flash support
           }
 
           // Flash Display
@@ -88,10 +101,13 @@ Player.provide('video-display',
             ev = {type:e};
             Player.fire('player:video:'+e, $this.video, ev);
           };
-          // ie won't work with this, classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"
-          // http://code.google.com/p/swfobject/source/browse/trunk/swfobject/src/swfobject.js
-          $this.canvas.html('<object type="application/x-shockwave-flash" id="FlashFallback" name="FlashFallback" data="lib/FlashFallback/FlashFallbackDebug.swf" width="100%" height="100%" style="visibility: visible; "><param name="allowscriptaccess" value="always"><param name="allowfullscreen" value="true"><param name="wmode" value="opaque"><param name="bgcolor" value="#000000"><embed id="FlashFallback" name="FlashFallback" src="lib/FlashFallback/FlashFallbackDebug.swf" type="application/x-shockwave-flash" allowscriptaccess="always" bgcolor="#000000" allowfullscreen="true" wmode="opaque" width="100%" height="100%"></embed></object>');
-          var o = $this.canvas.select('object'); 
+
+          // Start the Flash application up using swfobject
+          // (if we should want to eliminate the swfobject dependency, that's doable: 
+          //  make a simple <object> include with innerHTML after the containing object has been 
+          //  placed in DOM. Only caveat is that classid must be set in IE, and not in other browsers.)
+          $this.canvas.append($(document.createElement('div')).attr({'id':'FlashFallback'}));
+          swfobject.embedSWF('lib/FlashFallback/FlashFallbackDebug.swf', 'FlashFallback', '100%', '100%', '10.0.0', '', {}, {allowscriptaccess:'always', allowfullscreen:'true', wmode:'opaque', bgcolor:'#000000'}, {id:'FlashFallback', name:'FlashFallback'}); 
                     
           // Emulate enough of the jQuery <video> object for our purposes
           $this.video = {
@@ -138,56 +154,45 @@ Player.provide('video-display',
         return true;
       }
 
-      // Load the display device, or fall back
-      if(!$this.loadDisplayDevice($this.displayDevice)) {
-        if(!$this.loadDisplayDevice($this.displayDevice=='html5' ? 'flash' : 'html5')) {
-          $this.displayDevice = 'none';
-          return;
-        }
+      var _togglePlayback = function(){Player.set('playing', !Player.get('playing'))}
+      $this.loadShortcuts = function(){
+        // Toogle playback on click
+        $this.container.click(_togglePlayback);
+        // Handle keyboard events
+        $(window).keypress(function(e){
+            if(!e.ctrlKey && !e.altKey && !e.metaKey) {
+              // Toogle playbac k on space/enter press
+              if(e.charCode==32 || e.keyCode==13) _togglePlayback();
+              // Mute on 0 press
+              if(e.charCode==48) Player.set('volume', 0);
+              // Full volume on 1 press
+              if(e.charCode==49) Player.set('volume', 1);
+            }
+          });
+        $(window).keydown(function(e){
+            if(!e.ctrlKey && !e.altKey && !e.metaKey) {
+              // Increase volume on +/up
+              if(e.charCode==43 || e.keyCode==38) Player.set('volume', Player.get('volume')+0.2);
+              // Decrease volume on -/down
+              if(e.charCode==45 || e.keyCode==40) Player.set('volume', Player.get('volume')-0.2);
+              // Scrub on right arrow            
+              if(e.keyCode==39) Player.set('currentTime', Player.get('currentTime')+30);
+              // Scrub on left arrow
+              if(e.keyCode==37) Player.set('currentTime', Player.get('currentTime')-30);
+            }
+          });
       }
 
-      // Toogle playback on click
-      var _togglePlayback = function(){Player.set('playing', !Player.get('playing'))}
-      $this.container.click(_togglePlayback);
-      // Handle keyboard events
-      $(window).keypress(function(e){
-          if(!e.ctrlKey && !e.altKey && !e.metaKey) {
-            // Toogle playbac k on space/enter press
-            if(e.charCode==32 || e.keyCode==13) _togglePlayback();
-            // Mute on 0 press
-            if(e.charCode==48) Player.set('volume', 0);
-            // Full volume on 1 press
-            if(e.charCode==49) Player.set('volume', 1);
-          }
-      });
-      $(window).keydown(function(e){
-          if(!e.ctrlKey && !e.altKey && !e.metaKey) {
-            // Increase volume on +/up
-            if(e.charCode==43 || e.keyCode==38) Player.set('volume', Player.get('volume')+0.2);
-            // Decrease volume on -/down
-            if(e.charCode==45 || e.keyCode==40) Player.set('volume', Player.get('volume')-0.2);
-            // Scrub on right arrow            
-            if(e.keyCode==39) Player.set('currentTime', Player.get('currentTime')+30);
-            // Scrub on left arrow
-            if(e.keyCode==37) Player.set('currentTime', Player.get('currentTime')-30);
-          }
-      });
-
-      /* PROPERTIES */
-      $this.qualities = {};
-      $this.quality = "";
-      $this.rawSource = "";
-
-      /* EVENT HANDLERS */
-      var _videoLoaded = function(e,video){
+      $this.loadContent = function(e,video){
         // Check that Flash is loaded, otherwise run again when it is
         if($this.displayDevice=='flash') {
           var _f = (document['FlashFallback']||window['FlashFallback']);
           if(!_f || !_f.getPaused) {
-            Player.bind('player:video:flashloaded', _videoLoaded);
+            Player.bind('player:video:flashloaded', $this.loadContent);
             return;
           }
         }
+        if($this.displayDevice=='none') return;
           
         // Load up the new video
         var v = Player.get('video');
@@ -234,29 +239,9 @@ Player.provide('video-display',
         // We're ready now
         Player.fire('player:video:ready', $this.video, e);
       }
-      Player.bind('player:video:loaded', _videoLoaded);
+      Player.bind('player:video:loaded', $this.loadContent);
 
-      // Utility method to size the HTML5 video element
-      var _html5Resize = function(){
-        var v = Player.get('video');
-        if(!v||!v.aspectRatio) return;
-        
-        var conw = $this.container.width();
-        var conh = $this.container.height();
-        if(conw==0 || conh==0) return;
-        var conar = conw/conh;
-        if(v.apectRatio<conar) {
-          $this.canvas.width(conw);
-          var h = conw/v.aspectRatio;
-          $this.canvas.height(h);
-          $this.canvas.css({top:((conh-h)/2)+'px', left:0});
-        } else {
-          $this.canvas.height(conh);
-          var w = conh*v.aspectRatio;
-          $this.canvas.width(w);
-          $this.canvas.css({top:0, left:((conw-w)/2)+'px'});
-        }
-      }
+
  
       /* SETTERS */
       Player.setter('playing', function(playing){
@@ -342,6 +327,28 @@ Player.provide('video-display',
       Player.getter('videoElement', function(){
           return $this.video;
       });
+
+      // Utility method to size the HTML5 video element
+      var _html5Resize = function(){
+        var v = Player.get('video');
+        if(!v||!v.aspectRatio) return;
+        
+        var conw = $this.container.width();
+        var conh = $this.container.height();
+        if(conw==0 || conh==0) return;
+        var conar = conw/conh;
+        if(v.apectRatio<conar) {
+          $this.canvas.width(conw);
+          var h = conw/v.aspectRatio;
+          $this.canvas.height(h);
+          $this.canvas.css({top:((conh-h)/2)+'px', left:0});
+        } else {
+          $this.canvas.height(conh);
+          var w = conh*v.aspectRatio;
+          $this.canvas.width(w);
+          $this.canvas.css({top:0, left:((conw-w)/2)+'px'});
+        }
+      }
       
       return $this;
   }

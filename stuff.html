@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- External dependencies: Lean on jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+  </head>
+  <body>
+    <div id="x"></div>
+    
+    <script>
+      var y = document.createElement('y');
+      y.innerHTML = '<OBJECT style="VISIBILITY: visible" id=FlashFallback name=FlashFallback classid=clsid:D27CDB6E-AE6D-11cf-96B8-444553540000 width="100%" height="90%"><PARAM NAME="_cx" VALUE="33178"><PARAM NAME="_cy" VALUE="13837"><PARAM NAME="FlashVars" VALUE=""><PARAM NAME="Movie" VALUE="lib/FlashFallback/FlashFallbackDebug.swf"><PARAM NAME="Src" VALUE="lib/FlashFallback/FlashFallbackDebug.swf"><PARAM NAME="WMode" VALUE="Direct"><PARAM NAME="Play" VALUE="0"><PARAM NAME="Loop" VALUE="-1"><PARAM NAME="Quality" VALUE="High"><PARAM NAME="SAlign" VALUE="LT"><PARAM NAME="Menu" VALUE="-1"><PARAM NAME="Base" VALUE=""><PARAM NAME="AllowScriptAccess" VALUE="always"><PARAM NAME="Scale" VALUE="NoScale"><PARAM NAME="DeviceFont" VALUE="0"><PARAM NAME="EmbedMovie" VALUE="0"><PARAM NAME="BGColor" VALUE="000000"><PARAM NAME="SWRemote" VALUE=""><PARAM NAME="MovieData" VALUE=""><PARAM NAME="SeamlessTabbing" VALUE="1"><PARAM NAME="Profile" VALUE="0"><PARAM NAME="ProfileAddress" VALUE=""><PARAM NAME="ProfilePort" VALUE="0"><PARAM NAME="AllowNetworking" VALUE="all"><PARAM NAME="AllowFullScreen" VALUE="true"><PARAM NAME="AllowFullScreenInteractive" VALUE=""><PARAM NAME="IsDependent" VALUE="0"></OBJECT>';
+      document.getElementById('x').appendChild(y);
+      window.FlashFallbackCallback = function(e){
+        console.debug(e);
+      };
+    </script>
+       
+  </body>
+</html>
