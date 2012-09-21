@@ -17,6 +17,8 @@
   - player:video:ended
   - player:video:volumechange   
   - player:video:displaydevice
+  - player:video:flashloaded
+  - player:video:html5loaded
   
   Answers properties:
   - playing [get/set]
@@ -71,7 +73,7 @@ Player.provide('video-display',
         }
         $this.loadShortcuts();
       }
-
+      
       
       /* EVENT HANDLERS */
       $this.loadDisplayDevice = function(displayDevice){
@@ -87,10 +89,11 @@ Player.provide('video-display',
             return false; // no html5 video
           }
           $this.canvas.append($this.video);
-          
           // Handle size of the video canvas
           $this.container.resize(_html5Resize);
           $(window).resize(_html5Resize);
+
+          Player.fire('player:video:html5loaded');
         } else {
           if(!swfobject.hasFlashPlayerVersion('12.0.0')) {
             return false;  // no flash support
@@ -101,7 +104,7 @@ Player.provide('video-display',
             ev = {type:e};
             Player.fire('player:video:'+e, $this.video, ev);
           };
-
+          
           // Start the Flash application up using swfobject
           // (if we should want to eliminate the swfobject dependency, that's doable: 
           //  make a simple <object> include with innerHTML after the containing object has been 
@@ -182,7 +185,7 @@ Player.provide('video-display',
             }
           });
       }
-
+      
       $this.loadContent = function(e,video){
         // Check that Flash is loaded, otherwise run again when it is
         if($this.displayDevice=='flash') {
@@ -191,6 +194,10 @@ Player.provide('video-display',
             Player.bind('player:video:flashloaded', $this.loadContent);
             return;
           }
+        }
+        if($this.displayDevice=='html5'&&(!$this.video||!$this.video.prop)) {
+          Player.bind('player:video:html5loaded', $this.loadContent);
+          return;
         }
         if($this.displayDevice=='none') return;
           
@@ -240,7 +247,6 @@ Player.provide('video-display',
         Player.fire('player:video:ready', $this.video, e);
       }
       Player.bind('player:video:loaded', $this.loadContent);
-
 
  
       /* SETTERS */

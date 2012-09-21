@@ -7,6 +7,8 @@
   <!-- Video display -->
   {% player video-display %}
 
+  <div class="tray-subtitles">{% player subtitles %}</div>
+
   <!-- Control bar or tray -->
   <div id="info">{% player info %}</div>
   <div id="tray">
@@ -21,6 +23,7 @@
       {% if 0 %}<div class="tray-button">{% player share-button %}</div>{% endif %}
       <div class="tray-button">{% player volume-button %}</div>
       <div class="tray-button">{% player fullscreen-button %}</div>
+      <div class="tray-button">{% player subtitle-button %}</div>
       {% if 0 %}<div class="tray-button">{% player quality-button with "quality":"hd" %}</div>{% endif %}
       <div class="tray-button">{% player social-button with "service":"facebook" %}</div>
       <div class="tray-button">{% player social-button with "service":"twitter" %}</div>

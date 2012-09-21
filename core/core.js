@@ -201,6 +201,7 @@ Player.provide('core',
       });
       Player.setter('settings', function(s){
           $this.settings = s;
+          Player.fire('player:settings', $this.settings)
       });
 
       /* GETTERS */
@@ -216,6 +217,7 @@ Player.provide('core',
       Player.getter('video_title', function(){return $this.video.title||'';});
       Player.getter('video_content', function(){return $this.video.content||'';});
       Player.getter('video_photo_id', function(){return $this.video.photo_id||'';});
+      Player.getter('video_type', function(){return $this.video.type||'';});
       Player.getter('video_tree_id', function(){return $this.video.tree_id||'';});
       Player.getter('video_token', function(){return $this.video.token||'';});
       Player.getter('video_one', function(){return $this.video.one||'';});

@@ -60,6 +60,7 @@ Player.provide('fullscreen-button',
     Player.setter('fullscreen', function(fs){
         if(!Player.get('supportsFullscreen')) return;
         if(fs) {
+          Player.set('analyticsEvent', 'fullscreen');
           var de = document.documentElement;
           if(de.requestFullScreen) {
             de.requestFullScreen();

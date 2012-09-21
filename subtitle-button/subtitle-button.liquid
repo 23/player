@@ -1,0 +1,11 @@
+{% if hasSubtitles %}
+<a href="#sub">
+  Subs
+</a>
+<ul>
+  {% for l in localesArray %} 
+    <li><a href="#sub-{{l.locale}}" {% if l.locale == subtitleLocale %}class="selected"{% endif %}>{{l.language}}</a></li>
+  {% endfor %}
+  <li><a href="#sub-none" {% if subtitleLocale == empty %}class="selected"{% endif %}>None</a></li>
+</ul>
+{% endif %}
