@@ -10,5 +10,9 @@
 {% if error != empty %}
   <div class="error-display">
     <p>{{error}}</p>
-  </div
+  </div>
+{% endif %}
+
+{% if displayDevice != 'none' and error == empty and loading == true %}
+  <div class="loading-indicator"></div>
 {% endif %}

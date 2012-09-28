@@ -1,0 +1,51 @@
+/* 
+ MODULE: STATUS DISPLAY
+ Display loading indication and errors, including information when video is not supported.
+ 
+ Answers properties:
+ - error [get/set]
+ - loading [get/set]
+
+ Listens for:
+ - player:video:displaydevice
+*/
+
+Player.provide('status-display', 
+  {}, 
+  function(Player,$,opts){
+    var $this = this;
+    $.extend($this, opts);
+    $this.render();
+
+    /* Loading */
+    Player.bind('player:video:timeupdate player:video:progress', function(e){
+        if($this.loading) Player.set('loading', false);
+      });
+    $this.loading = true;
+    Player.setter('loading', function(loading){
+        console.debug('loading', loading);
+        $this.loading = loading;
+        $this.render();
+      });
+    Player.getter('loading', function(){
+        return $this.loading;
+      });
+
+    /* Error handling */
+    Player.bind('player:video:displaydevice', function(e){
+        $this.render();
+      });
+    $this.errorMessage = "";
+    Player.setter('error', function(errorMessage){
+        Player.set('loading', false);
+        $this.errorMessage = errorMessage;
+        $this.render();
+      });
+    Player.getter('error', function(){
+        return $this.errorMessage;
+      });
+
+    return $this;
+  }
+          
+);

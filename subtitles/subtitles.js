@@ -75,6 +75,8 @@ Player.provide('subtitles',
       // Listens to events and rerenders accordingly
       var _onByDefault = false;
       Player.bind('player:settings', function(e,s){
+          $this.container.removeClass('design-bars').removeClass('design-outline');
+          $this.container.addClass('design-' + s.subtitlesDesign||'bars');
           _onByDefault = s.subtitlesOnByDefault||false;
         });
       Player.bind('player:video:progress player:video:timeupdate player:video:seeked', function(e,o){

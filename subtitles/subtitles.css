@@ -1,15 +1,17 @@
 .subtitles-container {
     position:absolute; 
     width:100%;
-    bottom:10%;
+    bottom:12%;
     text-align:center;
-    font-size:17px;
-    line-height:29px;
+    font-size:20px;
+    line-height:32px;
     text-align:center;
 }
 .subtitles-container span {
-    background-color:black;
     padding:3px 5px;
     margin:0 auto;
-    text-shadow: black 1px 1px 3px;
+    text-shadow: -1px -1px 0 #333, 1px -1px 0 #333, -1px 1px 0 #333, 1px 1px 0 #333;  
+}
+.design-bars .subtitles-container span {
+    background-color:black;
 }
