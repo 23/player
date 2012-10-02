@@ -70,7 +70,7 @@ Player.provide('subtitles',
           Player.fire('player:subtitlechange');
         });
       Player.setter('subtitleText', function(st){
-          if(typeof(st)!='object') st = [st];
+          if(typeof(st)!='object') st = (st=='' ? [] : [st]);
           if($this.subtitleText!=st){
             $this.subtitleText = st;
             $this.render();
