@@ -16,12 +16,6 @@ Player.provide('play-button',
     $.extend($this, opts);
     $this.render();
     
-    $this.container.click(function(e){
-        e.stopPropagation();
-        Player.set('playing', !Player.get('playing'));
-        return false;
-      });
-
     Player.bind('player:video:playing player:video:seeked player:video:pause player:video:ended', function(e){
         $this.render();
       });

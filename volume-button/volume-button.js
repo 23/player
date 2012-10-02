@@ -13,14 +13,15 @@ Player.provide('volume-button',
     $.extend($this, opts);
     $this.render();
     
-    $this.container.click(function(e){
-        e.stopPropagation();
-        Player.set('volume', (Player.get('volume')>0 ? 0 : 1));
-        return false;
-      });
-
     Player.bind('player:video:volumechange', function(e){
         $this.render();
+      });
+
+    /* GETTERS */
+    Player.getter('volumeMuted', function(){return (Player.get('volume')==0);});
+    /* SETTERS */
+    Player.setter('volumeMuted', function(vm){
+        Player.set('volume', (vm ? 0 : 1));
       });
       
     return $this;

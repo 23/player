@@ -65,9 +65,8 @@ Player.provide('video-display',
 
       // When the module has been loaded in to the DOM, load the display device
       $this.onAppend = function(){
-        $this.video = new Eingebaut($this.canvas, $this.displayDevice, function(e){
+        $this.video = new Eingebaut($this.canvas, $this.displayDevice, '', function(e){
             if(e=='loaded'||e=='ready') e = 'player'+e;
-            console.debug('player:video:' + e);
             Player.fire('player:video:' + e);
           });
         $this.video.load();
@@ -109,6 +108,7 @@ Player.provide('video-display',
         // If the display device isn't ready yet, wait for it
         if(!$this.video || !$this.video.ready) {
           Player.bind('player:video:playerready', $this.loadContent);
+          return;
         }
         // If no display device is supported, give up
         if($this.displayDevice=='none') return;

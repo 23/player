@@ -144,7 +144,7 @@ Player.provide('core',
       $this.settings = opts;
       $this.domain = $this.settings.domain
       $this.url = 'http://' + $this.domain;
-      $this.api = Visualplatform($this.domain);
+      $this.api = new Visualplatform($this.domain);
       $this.video = null;
       $this.streams = [];
       $this.clips = [];

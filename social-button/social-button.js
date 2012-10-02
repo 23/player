@@ -13,17 +13,10 @@ Player.provide('social-button',
     $.extend($this, opts);
     $this.render();
 
-    $this.container.click(function(e){
-        e.stopPropagation();
-        location.href = Player.get($this.service + 'Link');
-        return false;
-      });
-
     Player.bind('player:sharing', function(e){
         $this.render();
       });
 
-      
     return $this;
   }
 );

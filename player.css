@@ -1,3 +1,9 @@
+/* RESET */
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td{margin:0;padding:0;}table{border-collapse:collapse;border-spacing:0;}fieldset,img{border:0;}address,caption,cite,code,dfn,em,strong,th,var{font-style:normal;font-weight:normal;}ol,ul {list-style:none;}caption,th {text-align:left;}h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:normal;}q:before,q:after{content:'';}abbr,acronym {border:0;}
+
+* focus, video, object, player, embed {outline:none}
+* {-webkit-user-select:none; -moz-user-select:none; -ms-user-select:none; -o-user-select:none; user-select:none;}
+
 a img {border:0;}
 body {
     margin:0; 
@@ -6,15 +12,15 @@ body {
     font:11px/14px Helvetica; 
     overflow:hidden;
 }
+h1 {
+    font-size:30px;
+    line-height:40px;
+}
 #tray {
     position:absolute;
     bottom:10px;
     left:10px;
     right:10px;
-}
-.tray-button {
-    float:left;
-    margin-right:10px;
 }
 .tray-right {
     position:absolute;
@@ -26,7 +32,13 @@ body {
     left:55px;
     top:-5px;
 }
-.tray-button a {
+
+.tray-button {
+    float:left;
+    margin-right:10px;
+    position:relative;
+}
+.tray-button div>a {
     display:block;
     height:28px;
     width:50px;
@@ -37,6 +49,15 @@ body {
     text-decoration:none;
     text-align:center;
 }
+.tray-button ul {
+    position:absolute;
+    bottom:30px; 
+    right:0;
+    background-color:yellow;
+}
+.tray-button ul li {
+}
+
 .big-button {
     position:absolute;
     left:50%;

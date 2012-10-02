@@ -1,6 +1,8 @@
+{% if hasSubtitles and enableSubtitles %}
 <div class="subtitles-container">
   {% for line in subtitleText %} 
     <span>{{line}}</span>
     <br/>
   {% endfor %} 
 </div>
+{% endif %}

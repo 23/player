@@ -17,19 +17,10 @@ Player.provide('fullscreen-button',
     $.extend($this, opts);
     $this.render();
 
-    // Toogle fullscreen on click
-    $this.container.click(function(e){
-        e.stopPropagation();
-        Player.set('fullscreen', !Player.get('fullscreen'));
-        Player.set('playing', true);
-        return false;
-      });
-
     // Toogle fullscreen on alt+enter
     $(window).keydown(function(e){
         if((e.altKey||e.metaKey) && (e.charCode==32 || e.keyCode==13)) {
           Player.set('fullscreen', !Player.get('fullscreen'));
-          Player.set('playing', true);
         }
       });
 
@@ -78,6 +69,7 @@ Player.provide('fullscreen-button',
             document.webkitCancelFullScreen();
           }
         }
+        Player.set('playing', true);
       });
       
     return $this;

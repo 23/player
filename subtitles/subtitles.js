@@ -28,6 +28,7 @@ Player.provide('subtitles',
 
       // Properties
       var _reset = function(){
+        $this.enableSubtitles = true;
         $this.hasSubtitles = false;
         $this.locales = {};
         $this.subtitleLocale = '';
@@ -38,6 +39,7 @@ Player.provide('subtitles',
       _reset();
 
       /* GETTERS */
+      Player.getter('enableSubtitles', function(){return $this.enableSubtitles;});
       Player.getter('hasSubtitles', function(){return $this.hasSubtitles;});
       Player.getter('subtitleText', function(){return $this.subtitleText;});
       Player.getter('subtitles', function(){return $this.subtitles;});
@@ -51,12 +53,21 @@ Player.provide('subtitles',
         });
       Player.getter('subtitleLocale', function(){return $this.subtitleLocale;});
       /* SETTERS */
+      Player.setter('subtitleLocale', function(es){
+          $this.enableSubtitles = es;
+          $this.render();
+        });
       Player.setter('subtitleLocale', function(sl){
           if($this.locales[sl]) {
               _loadSubtitleLocale(sl);
               $this.subtitleLocale = sl;
-              Player.fire('player:subtitlechange');
-          }       
+              $this.enableSubtitles = true;
+          } else {
+              $this.subtitleLocale = '';
+              $this.enableSubtitles = false;
+              $this.render();
+          }
+          Player.fire('player:subtitlechange');
         });
       Player.setter('subtitleText', function(st){
           if(typeof(st)!='object') st = [st];
