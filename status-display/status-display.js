@@ -18,12 +18,11 @@ Player.provide('status-display',
     $this.render();
 
     /* Loading */
-    Player.bind('player:video:timeupdate player:video:progress', function(e){
+    Player.bind('player:video:progress player:video:timeupdate player:video:flashloaded', function(e){
         if($this.loading) Player.set('loading', false);
       });
     $this.loading = true;
     Player.setter('loading', function(loading){
-        console.debug('loading', loading);
         $this.loading = loading;
         $this.render();
       });

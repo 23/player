@@ -19,6 +19,8 @@
   - player:video:displaydevice
   - player:video:playerloaded
   - player:video:playerready
+  - player:video:sourcechange
+  - player:video:qualitychange
   
   Answers properties:
   - playing [get/set]
@@ -42,7 +44,8 @@
 Player.provide('video-display', 
   {
     className:'video-display',
-    displayDevice:'html5'
+    displayDevice:'html5',
+    quality:'standard'
   }, 
   function(Player,$,opts){
       var $this = this;
@@ -60,13 +63,17 @@ Player.provide('video-display',
 
       /* PROPERTIES */
       $this.qualities = {};
-      $this.quality = "";
       $this.rawSource = "";
 
       // When the module has been loaded in to the DOM, load the display device
       $this.onAppend = function(){
         $this.video = new Eingebaut($this.canvas, $this.displayDevice, '', function(e){
+            // Don't send event during switching, it only confused up the UI
+            if($this.video.switching && (e=='play'||e=='playing'||e=='pause')) return;
+            console.debug(e);
+            // Modify event names slightly
             if(e=='loaded'||e=='ready') e = 'player'+e;
+            // Fire the player event
             Player.fire('player:video:' + e);
           });
         $this.video.load();
@@ -138,6 +145,7 @@ Player.provide('video-display',
           if (typeof(v.video_webm_720p_download)!='undefined' && v.video_webm_720p_download.length>0) 
             $this.qualities['hd'] = {format:'video_webm_720p', codec:'webm', source:Player.get('url') + v.video_webm_720p_download}; 
         }
+        Player.fire('player:video:qualitychange');
         if($this.qualities[$this.quality]) {
           Player.set('quality', $this.quality);
         }else{
@@ -166,11 +174,11 @@ Player.provide('video-display',
           // Update the global value
           $this.quality = quality;
           // Switch the source and jump to current spot
-          var currentTime = Player.get('currentTime');
           var playing = Player.get('playing');
           $this.rawSource = $this.qualities[$this.quality].source;
-          $this.video.setSource($this.rawSource);
-          Player.set('currentTime', currentTime);
+          $this.video.setSource($this.rawSource, Player.get('currentTime'));
+          Player.fire('player:video:sourcechange');
+          Player.fire('player:video:qualitychange');
           Player.set('playing', playing);
       });
 
@@ -196,6 +204,14 @@ Player.provide('video-display',
       });
       Player.getter('qualities', function(){
           return $this.qualities;
+      });
+      Player.getter('qualitiesArray', function(){
+          var ret = [];
+          $.each($this.qualities, function(i,o){
+              o.quality = i;
+              ret.push(o);
+            });
+          return ret;
       });
 
       Player.getter('playing', function(){

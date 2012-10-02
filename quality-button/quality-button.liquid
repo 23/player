@@ -1,0 +1,8 @@
+<a href="#">
+  Quality
+</a>
+<ul>
+  {% for q in qualitiesArray %} 
+  <li {% if q.quality == quality %}class="selected"{% endif %}><a href="$set:quality:{{q.quality}}">{{q.quality}}</a></li>
+  {% endfor %}
+</ul>

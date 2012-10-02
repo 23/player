@@ -5,7 +5,7 @@
 
 <div id="player">
   <!-- Video display -->
-  {% player video-display %}
+  {% player video-display with "displayDevice":"html5","quality":"hd" %}
 
   <div class="tray-subtitles">{% player subtitles %}</div>
 
@@ -24,7 +24,7 @@
       <div class="tray-button">{% player volume-button %}</div>
       <div class="tray-button">{% player fullscreen-button %}</div>
       <div class="tray-button">{% player subtitle-button %}</div>
-      {% if 0 %}<div class="tray-button">{% player quality-button with "quality":"hd" %}</div>{% endif %}
+      <div class="tray-button">{% player quality-button %}</div>
       <div class="tray-button">{% player social-button with "service":"facebook" %}</div>
       <div class="tray-button">{% player social-button with "service":"twitter" %}</div>
       <div class="tray-button">{% player social-button with "service":"tumblr" %}</div>

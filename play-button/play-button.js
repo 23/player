@@ -16,7 +16,7 @@ Player.provide('play-button',
     $.extend($this, opts);
     $this.render();
     
-    Player.bind('player:video:playing player:video:seeked player:video:pause player:video:ended', function(e){
+    Player.bind('player:video:play player:video:seeked player:video:pause player:video:ended', function(e){
         $this.render();
       });
       

@@ -57,6 +57,9 @@ h1 {
 }
 .tray-button ul li {
 }
+.tray-button ul li.selected a {
+    color:red;
+}
 
 .big-button {
     position:absolute;

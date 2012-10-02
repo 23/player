@@ -4,8 +4,8 @@
 </a>
 <ul>
   {% for l in localesArray %} 
-  <li><a href="$set:subtitleLocale:{{l.locale}}" {% if l.locale == subtitleLocale %}class="selected"{% endif %}>{{l.language}}</a></li>
+  <li {% if l.locale == subtitleLocale %}class="selected"{% endif %}><a href="$set:subtitleLocale:{{l.locale}}">{{l.language}}</a></li>
   {% endfor %}
-  <li><a href="$set:subtitleLocale:" {% if subtitleLocale == empty %}class="selected"{% endif %}>None</a></li>
+  <li {% if subtitleLocale == empty %}class="selected"{% endif %}><a href="$set:subtitleLocale:">None</a></li>
 </ul>
 {% endif %}
