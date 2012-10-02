@@ -1,0 +1,9 @@
+<div class="sections">
+  {% for section in sections %} 
+    {% if section.start_time > 0  %} 
+      <div class="section" style="left:{{section.positionPct}};" click="$set:playing:true; $set:currentTime:{{section.start_time}}" title="{{section.title|escape}}">
+        <div class="section-title">{{section.title|escape}}</div>
+      </div>
+    {% endif %} 
+  {% endfor %} 
+</div>

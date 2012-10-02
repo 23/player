@@ -7,6 +7,8 @@
   - player:video:timeupdate
   - player:video:seeked
   - player:video:ended
+  - player:video:loaded
+  - player:settings
 
    Fires:
    - player:subtitlechange

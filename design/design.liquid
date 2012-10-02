@@ -16,7 +16,10 @@
       <div class="tray-button">{% player play-button %}</div>
     </div>
     
-    <div class="tray-scrubber">{% player scrubber %}</div>
+    <div class="tray-scrubber">
+      {% player scrubber %}
+      {% player sections %}
+    </div>
 
     <div class="tray-right">
       {% if 0 %}<div class="tray-button">{% player playlist-button %}</div>{% endif %}
