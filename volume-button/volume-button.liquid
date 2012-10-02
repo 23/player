@@ -1,7 +1,7 @@
-<a href="$toggle:volumeMuted">
-  {% if volume > 0 %}
-  Mute
-  {% else %}
+<div class="button" click="$toggle:volumeMuted">
+  {% if volumeMuted %}
   Sound
+  {% else %}
+  Mute
   {% endif %}
-</a>
+</div>

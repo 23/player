@@ -1,11 +1,11 @@
 {% if hasSubtitles %}
-<a href="#">
+<div class="button">
   Subs
-</a>
-<ul>
-  {% for l in localesArray %} 
-  <li {% if l.locale == subtitleLocale %}class="selected"{% endif %}><a href="$set:subtitleLocale:{{l.locale}}">{{l.language}}</a></li>
-  {% endfor %}
-  <li {% if subtitleLocale == empty %}class="selected"{% endif %}><a href="$set:subtitleLocale:">None</a></li>
-</ul>
+  <ul>
+    {% for l in localesArray %} 
+    <li {% if l.locale == subtitleLocale %}class="selected"{% endif %} click="$set:subtitleLocale:{{l.locale}}">{{l.language}}</li>
+    {% endfor %}
+    <li {% if subtitleLocale == empty %}class="selected"{% endif %} click="$set:subtitleLocale:">None</li>
+  </ul>
+</div>
 {% endif %}

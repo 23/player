@@ -1,9 +1,9 @@
 {% if supportsFullscreen %}
-  <a href="$toggle:fullscreen">
+  <div class="button" click="$toggle:fullscreen">
     {% if fullscreen == true %}
     !FS
     {% else %}
     FS
     {% endif %}
-  </a>
+  </div>
 {% endif %}

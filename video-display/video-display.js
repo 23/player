@@ -69,8 +69,7 @@ Player.provide('video-display',
       $this.onAppend = function(){
         $this.video = new Eingebaut($this.canvas, $this.displayDevice, '', function(e){
             // Don't send event during switching, it only confused up the UI
-            if($this.video.switching && (e=='play'||e=='playing'||e=='pause')) return;
-            console.debug(e);
+            if($this.video.switching && (e=='playing'||e=='pause')) return;
             // Modify event names slightly
             if(e=='loaded'||e=='ready') e = 'player'+e;
             // Fire the player event
@@ -131,19 +130,19 @@ Player.provide('video-display',
         if($this.displayDevice!='html5' || $this.video.canPlayType('video/mp4; codecs="avc1.42E01E"')) {
           // H.264
           if (typeof(v.video_mobile_high_download)!='undefined' && v.video_mobile_high_download.length>0) 
-            $this.qualities['low'] = {format:'video_mobile_high', codec:'h264', source:Player.get('url') + v.video_mobile_high_download};
+            $this.qualities['low'] = {format:'video_mobile_high', displayName:'Low', displayQuality:'180p', codec:'h264', source:Player.get('url') + v.video_mobile_high_download};
           if (typeof(v.video_medium_download)!='undefined' && v.video_medium_download.length>0) 
-            $this.qualities['standard'] = {format:'video_medium', codec:'h264', source:Player.get('url') + v.video_medium_download}; 
+            $this.qualities['standard'] = {format:'video_medium', displayName:'Standard', displayQuality:'360p', codec:'h264', source:Player.get('url') + v.video_medium_download}; 
           if (typeof(v.video_hd_download)!='undefined' && v.video_hd_download.length>0) 
-            $this.qualities['hd'] = {format:'video_hd', codec:'h264', source:Player.get('url') + v.video_hd_download}; 
+            $this.qualities['hd'] = {format:'video_hd', codec:'h264', displayName:'HD', displayQuality:'720p', source:Player.get('url') + v.video_hd_download}; 
           if (typeof(v.video_1080p_download)!='undefined' && v.video_1080p_download.length>0 && v.video_1080p_size>0) 
-            $this.qualities['fullhd'] = {format:'video_1080p', codec:'h264', source:Player.get('url') + v.video_1080p_download};
+            $this.qualities['fullhd'] = {format:'video_1080p', codec:'h264', displayName:'Full HD', displayQuality:'1080p', source:Player.get('url') + v.video_1080p_download};
         } else {
           // WebM
           if (typeof(v.video_webm_360p_download)!='undefined' && v.video_webm_360p_download.length>0) 
-            $this.qualities['standard'] = {format:'video_webm_720p', codec:'webm', source:Player.get('url') + v.video_webm_720p_download}; 
+            $this.qualities['standard'] = {format:'video_webm_720p', codec:'webm', displayName:'Standard', displayQuality:'360p', source:Player.get('url') + v.video_webm_720p_download}; 
           if (typeof(v.video_webm_720p_download)!='undefined' && v.video_webm_720p_download.length>0) 
-            $this.qualities['hd'] = {format:'video_webm_720p', codec:'webm', source:Player.get('url') + v.video_webm_720p_download}; 
+            $this.qualities['hd'] = {format:'video_webm_720p', codec:'webm', displayName:'HD', displayQuality:'720p', source:Player.get('url') + v.video_webm_720p_download}; 
         }
         Player.fire('player:video:qualitychange');
         if($this.qualities[$this.quality]) {

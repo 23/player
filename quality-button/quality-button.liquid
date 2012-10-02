@@ -1,8 +1,11 @@
-<a href="#">
+<div class="button">
   Quality
-</a>
-<ul>
-  {% for q in qualitiesArray %} 
-  <li {% if q.quality == quality %}class="selected"{% endif %}><a href="$set:quality:{{q.quality}}">{{q.quality}}</a></li>
-  {% endfor %}
-</ul>
+
+  <ul>
+    {% for q in qualitiesArray %} 
+    <li {% if q.quality == quality %}class="selected"{% endif %} click="$set:quality:{{q.quality}}; $set:playing:true">
+      {{q.displayName}} ({{q.displayQuality}})
+    </li>
+    {% endfor %}
+  </ul>
+</div>

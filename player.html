@@ -13,6 +13,16 @@
     <!-- External dependencies: For the player -->
     <script src="https://raw.github.com/23/visualplatform.js/master/visualplatform.js"></script>
 
+    <!-- Module style -->
+    <link rel="stylesheet" type="text/css" href="status-display/status-display.css" />
+    <link rel="stylesheet" type="text/css" href="video-display/video-display.css" />
+    <link rel="stylesheet" type="text/css" href="big-play-button/big-play-button.css" />
+    <link rel="stylesheet" type="text/css" href="logo/logo.css" />
+    <link rel="stylesheet" type="text/css" href="scrubber/scrubber.css" />
+    <link rel="stylesheet" type="text/css" href="subtitles/subtitles.css" />
+    <link rel="stylesheet" type="text/css" href="info/info.css" />
+    <link rel="stylesheet" type="text/css" href="design/design.css" />
+
     <!-- Bootstrap Glue instance and load modules -->
     <script>var Player = new Glue({alias:'player'});</script>
     <script src="core/core.js"></script>
@@ -31,19 +41,11 @@
     <script src="subtitle-button/subtitle-button.js"></script>
     <script src="quality-button/quality-button.js"></script>
     <script src="info/info.js"></script>
-
-    <!-- Module style -->
-    <link rel="stylesheet" type="text/css" href="player.css" />
-    <link rel="stylesheet" type="text/css" href="status-display/status-display.css" />
-    <link rel="stylesheet" type="text/css" href="video-display/video-display.css" />
-    <link rel="stylesheet" type="text/css" href="logo/logo.css" />
-    <link rel="stylesheet" type="text/css" href="scrubber/scrubber.css" />
-    <link rel="stylesheet" type="text/css" href="subtitles/subtitles.css" />
-    <link rel="stylesheet" type="text/css" href="info/info.css" />
+    <script src="design/design.js"></script>
   </head>
   <body>
     <script>
-      Player.load('player.liquid', 'body');
+      Player.use('design', {});
     </script>
   </body>
 </html>
