@@ -146,4 +146,8 @@ h1 span {
     border:2px solid white;
     width:100%;
     margin:0 3px;
+    cursor:pointer;
+}
+.share-recommendation img:hover {
+    border-color:#63b358
 }
