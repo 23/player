@@ -107,7 +107,7 @@ Player.provide('sharing',
           Player.fire('player:sharing', {});
         });
       Player.setter('shareTo', function(service){
-          location.href = Player.get(service + 'Link');
+          window.open(Player.get(service + 'Link'));
         });
 
       return $this;
