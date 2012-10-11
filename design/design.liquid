@@ -1,5 +1,7 @@
+<!-- switching, fullscreen button -->
+
 {% player status-display %}
-{% player core with "domain":"videos.23video.com", "player_id":6458116 %}
+{% player core with "domain":"videos.23video.com" %}
 {% player analytics %}
 {% player sharing %}
 
@@ -8,33 +10,19 @@
   {% player video-display with "displayDevice":"html5","quality":"hd" %}
 
   <div class="tray-subtitles">{% player subtitles %}</div>
-
-  <!-- Control bar or tray -->
   <div id="info">{% player info %}</div>
-  <div id="tray">
-    <div class="tray-left">
-      <div class="tray-button">{% player play-button %}</div>
-    </div>
-    
-    <div class="tray-scrubber">
-      {% player scrubber %}
-      {% player sections %}
-    </div>
-
-    <div class="tray-right">
-      {% if 0 %}<div class="tray-button">{% player playlist-button %}</div>{% endif %}
-      {% if 0 %}<div class="tray-button">{% player share-button %}</div>{% endif %}
-      <div class="tray-button">{% player volume-button %}</div>
-      <div class="tray-button">{% player fullscreen-button %}</div>
-      <div class="tray-button">{% player subtitle-button %}</div>
-      <div class="tray-button">{% player quality-button %}</div>
-      <div class="tray-button">{% player social-button with "service":"facebook" %}</div>
-      <div class="tray-button">{% player social-button with "service":"twitter" %}</div>
-      <div class="tray-button">{% player social-button with "service":"tumblr" %}</div>
-    </div>
-  </div>
 
   <div class="big-button tray-button">{% player big-play-button %}</div>
-  {% player logo %}
+
+  {% player paused %}
+  
+  <div id="top">
+    {% player scrubber %}
+    <div id="buttons">
+      {% player play-button %}
+      {% player fullscreen-button %}
+      {% player quality-button %}
+    </div>
+  </div>
 </div>
 

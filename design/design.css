@@ -11,73 +11,135 @@ body {
     color:white; 
     font:11px/14px Helvetica; 
     overflow:hidden;
+    font-family:'Antenna';
 }
-h1 {
-    font-size:30px;
-    line-height:40px;
+.player-design {background-color:black;}
+#info {
+    position:absolute;
+    bottom:50px;
+    left:0;
+}
+h1 span {
+    font-size:24px;
+    line-height:43px;
+    background-color:#419539;
+    height:43px;
+    padding:2px 10px 0 10px;
+    display:inline-block;
+    margin-top:16px;
 }
 
-/* TRAY */
-#tray { /* tray position */
+#top {display:none;}
+#buttons {
     position:absolute;
-    bottom:10px;
-    left:10px;
-    right:10px;
+    left:3px; 
+    top:14px;
 }
-.tray-right { /* right-hand side */
-    position:absolute;
-    right:0;
-}    
-.tray-scrubber { /* scrubber position */
-    position:absolute;
-    width:100%;
-    left:55px;
-    top:-5px;
-}
-.tray-button { /* buttons positioning  */
+#buttons .player-play-button, #buttons .player-fullscreen-button, #buttons .player-quality-button {
     float:left;
-    margin-right:10px;
 }
-
-/* BUTTONS */
-div.button { /* standard button design */
-    height:28px;
-    width:50px;
-    border-radius:3px;
-    background-color:#34783d; 
-    color:white;
-    line-height:30px;
-    text-align:center;
-    position:relative;
+#buttons div {
+    width:22px;
+    height:15px;
+}
+.pause-button {
+    background:url('assets/pause.png') center center no-repeat;
+}
+.fullscreen-button {
+    background:url('assets/fullscreen.png') center center no-repeat;
+}
+.quality-button {
+    font-size:10px; 
+    font-weight:bold; 
+    padding-left:4px; 
+    line-height:18px;
     cursor:pointer;
 }
-div.button.big { /* big version of same button */
-    height:48px;
-    width:70px;
-    line-height:50px;
-    font-size:20px;
+
+.player-big-play-button .button {
+    width:90px;
+    height:90px;
+    background:url('assets/play.png') center center no-repeat;
+    cursor:pointer;
 }
-div.button ul { /* button menus */
-    display:none;
+.player-big-play-button .button:hover {
+    background-image:url('assets/play-hover.png');
+}
+
+
+#paused {
+    background-color:rgba(0,0,0,.4);
     position:absolute;
-    bottom:32px; 
-    right:0;
-    background-color:#34783d; 
-    line-height:25px;
-    padding:2px 10px;
-    text-align:left;
+    width:100%;
+    height:100%;
 }
-div.activebutton ul { /* active button menus */
-    display:block;
+.share-buttons {
+    position:absolute;
+    top:40%;
+    left:0;
+    width:100%;
+    text-align:center;
 }
-div.button ul li { /* menu items */
-    white-space:nowrap;
+.share-button {
+    cursor:pointer;
+    width:90px;
+    height:90px;
+    margin:0 4px;
+    display:inline-block;
 }
-div.button ul li.hover { /* menu item hover */
-    opacity:.5;
+.share-button-play {
+    background-image:url('assets/play.png');
 }
-div.button ul li.selected { /* menu item selected */
-    text-decoration:underline;
+.share-button-replay {
+    background-image:url('assets/replay.png');
+}
+.share-button-facebook {
+    background-image:url('assets/facebook.png');
+}
+.share-button-twitter {
+    background-image:url('assets/twitter.png');
+}
+.share-button-play:hover {
+    background-image:url('assets/play-hover.png');
+}
+.share-button-replay:hover {
+    background-image:url('assets/replay-hover.png');
+}
+.share-button-facebook:hover {
+    background-image:url('assets/facebook-hover.png');
+}
+.share-button-twitter:hover {
+    background-image:url('assets/twitter-hover.png');
 }
 
 
+.share-recommendations {
+}
+.share-recommendation p {
+    height:40px; 
+    overflow:hidden;
+}
+.share-recommendation {
+    position:absolute;
+    width:15%;
+    bottom:5%;
+    cursor:pointer;
+}
+.share-recommendation-1 {
+    left:8%;
+}
+.share-recommendation-2 {
+    left:31%;
+}
+.share-recommendation-3 {
+    left:54%;
+}
+.share-recommendation-4 {
+    left:77%;
+}
+.share-recommendation img {
+    border-radius:2px;
+    border:2px solid white;
+    width:100%;
+    margin:0 3px;
+}

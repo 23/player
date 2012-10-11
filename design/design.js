@@ -12,28 +12,24 @@ Player.provide('design',
     $this.render();
 
 
-
-    // This is the heavy lifting for the design
-    // (and what you will want to change in order to 
-    //  modify the behaviour of the design.)
-
-    // BUTTON MENUS
-    // Handle button clicks
-    Player.bind('glue:render', function(e, container){
-        $(container).find('div.button:has(ul)').each(function(i,div){
-            $(div).click(function(){
-                $(div).toggleClass('activebutton');
-              });
-          });
+    // Show and hide top
+    Player.bind('player:video:play player:video:seeked player:video:pause player:video:ended  player:video:qualitychange', function(e){
+        if(Player.get('playing')) {
+          $('#top').show();
+        } else {
+          $('#top').hide();
+        }
       });
-    // Destroy menus when applicable
-    $('body').click(function(e){
-        $('.activebutton').each(function(i,el){
-            el = $(el);
-            if(!el.is(e.target)) el.removeClass('activebutton');
-          });
+
+
+    $(window).mouseleave(function(){
+        $('#top').hide();
       });
-    
+    $(window).mouseenter(function(){
+          if(Player.get('playing')){
+            $('#top').show();
+          }
+      });
 
 
     // Return a reference

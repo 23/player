@@ -1,0 +1,24 @@
+{% if currentTime > 0 and playing == false %}
+  <div id="paused">
+  <div class="share-buttons">
+    {% if ended %}
+      <div class="share-button share-button-replay" click="$set:currentTime:0;$set:playing:true" />
+    {% else %}
+      <div class="share-button share-button-play" click="$set:playing:true" />
+    {% endif %}
+    <div class="share-button share-button-twitter" click="$set:shareTo:twitter" />
+    <div class="share-button share-button-facebook" click="$set:shareTo:facebook" />
+  </div>
+  </div>
+
+  <div class="share-recommendations">
+    {% for clip in clips %}
+      {% if forloop.index > 1 %}
+      <div class="share-recommendation share-recommendation-{{forloop.index0}}" click="$set:video_photo_id:{{clip.photo_id}};$set:playing:true">
+        <img src="{{url}}{{clip.medium_download}}" />
+        <p>{{clip.title}}</p>
+      </div>
+      {% endif %}
+    {% endfor %}
+   </div>
+{% endif %}

@@ -1,11 +1,7 @@
-<div class="button">
-  Quality
-
-  <ul>
-    {% for q in qualitiesArray %} 
-    <li {% if q.quality == quality %}class="selected"{% endif %} click="$set:quality:{{q.quality}}; $set:playing:true">
-      {{q.displayName}} ({{q.displayQuality}})
-    </li>
-    {% endfor %}
-  </ul>
-</div>
+{% for q in qualitiesArray %} 
+{% if q.quality == quality %}
+  <div class="button quality-button" click="$set:shiftQuality:true">
+    {{q.displayName}}
+  </div>
+{% endif %}
+{% endfor %}

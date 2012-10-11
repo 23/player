@@ -25,7 +25,7 @@
   - streams [get]
   - video_title [get]
   - video_content [get]
-  - video_photo_id [get]
+  - video_photo_id [get/set]
   - video_tree_id [get]
   - video_token [get]
   - video_one [get]
@@ -166,7 +166,7 @@ Player.provide('core',
       $this.loadClips = function(callback){
           $this.clips = [];
           $this.api.photo.list(
-              $.extend(Player.parameters, {include_related_p:1}),
+              $.extend(Player.parameters, {size:5, include_related_p:1}),
               function(data){
                   $.each(data.photos, function(i,photo){
                       $this.clips.push(new PlayerVideo(Player,$,'clip',photo));
@@ -203,7 +203,14 @@ Player.provide('core',
           $this.settings = s;
           Player.fire('player:settings', $this.settings)
       });
-
+      Player.setter('video_photo_id', function(vpi){
+          $.each($this.clips, function(i,c){
+              if(c.photo_id==vpi) {
+                c.switchTo();
+                return;
+              }
+            });
+        });
       /* GETTERS */
       Player.getter('domain', function(){return $this.domain;});
       Player.getter('url', function(){return $this.url;});

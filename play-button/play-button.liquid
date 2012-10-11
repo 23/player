@@ -1,7 +1,3 @@
-<div class="button" click="$toggle:playing">
-  {% if playing %}
-  Pause
-  {% else %}
-  Play
-  {% endif %}
-</div>
+{% if playing %}
+  <div class="pause-button" click="$toggle:playing"></div>
+{% endif %}
