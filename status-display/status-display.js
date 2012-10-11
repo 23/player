@@ -44,6 +44,11 @@ Player.provide('status-display',
         return $this.errorMessage;
       });
 
+    /* Buffering */
+    Player.bind('player:video:seeking player:video:seeked', function(e){
+        $this.render();
+      });
+
     return $this;
   }
           

@@ -9,6 +9,7 @@
   - player:video:progress
   - player:video:timeupdate
   - player:video:seeked
+  - player:video:seeking
   - player:video:canplay
   - player:video:play
   - player:video:playing
@@ -214,7 +215,9 @@ Player.provide('video-display',
       });
 
       Player.getter('playing', function(){
-          return $this.video.getPlaying();
+          try {
+            return $this.video.getPlaying();
+          }catch(e){return false;}
       });
       Player.getter('currentTime', function(){
           return $this.video.getCurrentTime();
