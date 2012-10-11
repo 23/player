@@ -30,6 +30,7 @@ Player.provide('subtitles',
 
       // Properties
       var _reset = function(){
+        Player.set('subtitles', '');
         $this.enableSubtitles = true;
         $this.hasSubtitles = false;
         $this.locales = {};
@@ -38,7 +39,6 @@ Player.provide('subtitles',
         $this.subtitleText = '';
         $this.defaultLocale = '';
       }
-      _reset();
 
       /* GETTERS */
       Player.getter('enableSubtitles', function(){return $this.enableSubtitles;});
@@ -158,6 +158,7 @@ Player.provide('subtitles',
         }
       }
 
+      _reset();
       return $this;
   }
 );
