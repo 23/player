@@ -29,7 +29,10 @@ h1 span {
     margin-top:16px;
 }
 
-#top {display:none;}
+#top {
+    display:none;
+    text-shadow: #666 1px 1px 1px;
+}
 #buttons {
     position:absolute;
     left:3px; 
@@ -54,6 +57,7 @@ h1 span {
     padding-left:7px; 
     line-height:16px;
     cursor:pointer;
+    white-space:nobreak;
 }
 
 .player-big-play-button .button {
