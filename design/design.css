@@ -11,7 +11,7 @@ body {
     color:white; 
     font:11px/14px Helvetica; 
     overflow:hidden;
-    font-family:'Antenna';
+    font-family:'Antenna Light', Helvetica, sans-serif;
 }
 .player-design {background-color:black;}
 #info {
@@ -51,8 +51,8 @@ h1 span {
 .quality-button {
     font-size:10px; 
     font-weight:bold; 
-    padding-left:4px; 
-    line-height:18px;
+    padding-left:7px; 
+    line-height:16px;
     cursor:pointer;
 }
 
@@ -75,7 +75,7 @@ h1 span {
 }
 .share-buttons {
     position:absolute;
-    top:40%;
+    bottom:45%;
     left:0;
     width:100%;
     text-align:center;
@@ -116,7 +116,7 @@ h1 span {
 .share-recommendations {
 }
 .share-recommendation p {
-    height:40px; 
+    height:28px; 
     overflow:hidden;
 }
 .share-recommendation {
