@@ -57,7 +57,7 @@ h1 span {
     padding-left:7px; 
     line-height:16px;
     cursor:pointer;
-    white-space:nobreak;
+    white-space:nowrap;
 }
 
 .player-big-play-button .button {
