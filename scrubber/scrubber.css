@@ -8,6 +8,9 @@
     background-color:rgba(0,0,0,0.5);
     cursor:pointer;
 }
+.scrubber-container:hover {
+    height:13px;
+}
 .scrubber-buffer, .scrubber-play {
     position:absolute; 
     top:0;

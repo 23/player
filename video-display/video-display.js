@@ -89,17 +89,17 @@ Player.provide('video-display',
         // Toogle playback on click
         $this.container.click(_togglePlayback);
         // Handle keyboard events
-        $(window).keypress(function(e){
+        $(document).keypress(function(e){
             if(!e.ctrlKey && !e.altKey && !e.metaKey) {
-              // Toogle playbac k on space/enter press
-              if(e.charCode==32 || e.keyCode==13) _togglePlayback();
+              // Toogle playback on space/enter press
+              if(e.charCode==32 || e.keyCode==13 || e.keyCode==32) _togglePlayback();
               // Mute on 0 press
-              if(e.charCode==48) Player.set('volume', 0);
+              if(e.charCode==48 || e.keyCode==48) Player.set('volume', 0);
               // Full volume on 1 press
-              if(e.charCode==49) Player.set('volume', 1);
+              if(e.charCode==49 || e.keyCode==49) Player.set('volume', 1);
             }
           });
-        $(window).keydown(function(e){
+        $(document).keydown(function(e){
             if(!e.ctrlKey && !e.altKey && !e.metaKey) {
               // Increase volume on +/up
               if(e.charCode==43 || e.keyCode==38) Player.set('volume', Player.get('volume')+0.2);
