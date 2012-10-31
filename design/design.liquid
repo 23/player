@@ -1,10 +1,3 @@
-<!--
-drop shadow on icons
-facebook/twitter buttons aren't working for some reason
-video switching fucks up entirely
-after click replay the video ... the title stays on
--->
-
 {% player status-display %}
 {% player core with "domain":"videos.23video.com" %}
 {% player analytics %}
@@ -12,7 +5,7 @@ after click replay the video ... the title stays on
 
 <div id="player">
   <!-- Video display -->
-  {% player video-display with "displayDevice":"flash","quality":"hd" %}
+  {% player video-display with "displayDevice":"html5","quality":"hd" %}
 
   <div class="tray-subtitles">{% player subtitles %}</div>
   <div id="info">{% player info %}</div>

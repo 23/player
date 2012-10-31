@@ -6,6 +6,7 @@
     height:6px;
     background-color:black;
     background-color:rgba(0,0,0,0.5);
+    cursor:pointer;
 }
 .scrubber-buffer, .scrubber-play {
     position:absolute; 

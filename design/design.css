@@ -39,11 +39,12 @@ h1 span {
     top:14px;
 }
 #buttons .player-play-button, #buttons .player-fullscreen-button, #buttons .player-quality-button {
+    cursor:pointer;
     float:left;
 }
 #buttons div {
     width:22px;
-    height:15px;
+    height:18px;
 }
 .pause-button {
     background:url('assets/pause.png') center center no-repeat;
@@ -55,7 +56,7 @@ h1 span {
     font-size:10px; 
     font-weight:bold; 
     padding-left:7px; 
-    line-height:16px;
+    line-height:18px;
     cursor:pointer;
     white-space:nowrap;
 }
