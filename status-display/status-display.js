@@ -8,6 +8,14 @@
 
  Listens for:
  - player:video:displaydevice
+ - player:video:progress 
+ - player:video:timeupdate 
+ - player:video:flashloaded
+ - player:video:seeking 
+ - player:video:seeked 
+ - player:video:stalled 
+ - player:video:play 
+ - player:video:playing
 */
 
 Player.provide('status-display', 
@@ -42,6 +50,11 @@ Player.provide('status-display',
       });
     Player.getter('error', function(){
         return $this.errorMessage;
+      });
+
+    /* Buffering */
+    Player.bind('player:video:seeking player:video:seeked player:video:stalled player:video:play player:video:playing', function(e){
+        $this.render();
       });
 
     return $this;

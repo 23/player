@@ -9,6 +9,8 @@
   - player:video:progress
   - player:video:timeupdate
   - player:video:seeked
+  - player:video:seeking
+  - player:video:stalled
   - player:video:canplay
   - player:video:play
   - player:video:playing
@@ -31,6 +33,7 @@
   - qualities [get]
   - ended [get]
   - seeking [get]
+  - stalled [get]
   - paused [get/set]
   - duration [get]
   - bufferTime [get]
@@ -227,6 +230,9 @@ Player.provide('video-display',
       });
       Player.getter('seeking', function(){
           return $this.video.getSeeking();
+      });
+      Player.getter('stalled', function(){
+          return $this.video.getStalled();
       });
       Player.getter('paused', function(){
           return $this.video.getPaused();

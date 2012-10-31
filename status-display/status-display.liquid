@@ -16,3 +16,7 @@
 {% if displayDevice != 'none' and error == empty and loading == true %}
   <div class="loading-indicator"></div>
 {% endif %}
+
+{% if seeking or stalled %}
+  <div class="seeking-indicator"></div>
+{% endif %}
