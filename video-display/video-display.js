@@ -92,23 +92,49 @@ Player.provide('video-display',
         $(document).keypress(function(e){
             if(!e.ctrlKey && !e.altKey && !e.metaKey) {
               // Toogle playback on space/enter press
-              if(e.charCode==32 || e.keyCode==13 || e.keyCode==32) _togglePlayback();
+              if(e.charCode==32 || e.keyCode==13 || e.keyCode==32) {
+                _togglePlayback();
+                matched = true;
+              }
               // Mute on 0 press
-              if(e.charCode==48 || e.keyCode==48) Player.set('volume', 0);
+              if(e.charCode==48 || e.keyCode==48) {
+                Player.set('volume', 0);
+                matched = true;
+              }
               // Full volume on 1 press
-              if(e.charCode==49 || e.keyCode==49) Player.set('volume', 1);
+              if(e.charCode==49 || e.keyCode==49) {
+                Player.set('volume', 1);
+                matched = true;
+              }
+
+              if (matched) event.preventDefault()
             }
           });
         $(document).keydown(function(e){
             if(!e.ctrlKey && !e.altKey && !e.metaKey) {
+              var matched = false;
               // Increase volume on +/up
-              if(e.charCode==43 || e.keyCode==38) Player.set('volume', Player.get('volume')+0.2);
+              if(e.charCode==43 || e.keyCode==38) {
+                Player.set('volume', Player.get('volume')+0.2);
+                matched = true;
+              }
               // Decrease volume on -/down
-              if(e.charCode==45 || e.keyCode==40) Player.set('volume', Player.get('volume')-0.2);
+              if(e.charCode==45 || e.keyCode==40) {
+                Player.set('volume', Player.get('volume')-0.2);
+                matched = true;
+              }
               // Scrub on right arrow            
-              if(e.keyCode==39) Player.set('currentTime', Player.get('currentTime')+30);
+              if(e.keyCode==39) {
+                Player.set('currentTime', Player.get('currentTime')+30);
+                matched = true;
+              }
               // Scrub on left arrow
-              if(e.keyCode==37) Player.set('currentTime', Player.get('currentTime')-30);
+              if(e.keyCode==37) {
+                Player.set('currentTime', Player.get('currentTime')-30);
+                matched = true;
+              }
+
+              if(matched) event.preventDefault()
             }
           });
       }

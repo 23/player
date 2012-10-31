@@ -141,7 +141,7 @@ Player.provide('core',
       $.extend($this, opts);
 
       // PROPERTIES
-      $this.settings = opts;
+      $this.settings = $.extend(opts, Player.parameters);
       $this.domain = $this.settings.domain
       $this.url = 'http://' + $this.domain;
       $this.api = new Visualplatform($this.domain);
@@ -166,7 +166,7 @@ Player.provide('core',
       $this.loadClips = function(callback){
           $this.clips = [];
           $this.api.photo.list(
-              $.extend(Player.parameters, {size:5, include_related_p:1}),
+              $.extend(Player.parameters, {player_id:$this.settings.player_id, size:5, include_related_p:1}),
               function(data){
                   $.each(data.photos, function(i,photo){
                       $this.clips.push(new PlayerVideo(Player,$,'clip',photo));
@@ -180,7 +180,7 @@ Player.provide('core',
       $this.loadStreams = function(callback){
           $this.streams = [];
           $this.api.liveevent.stream.list(
-              $.extend(Player.parameters, {include_related_p:1}),
+              $.extend(Player.parameters, {player_id:$this.settings.player_id, include_related_p:1}),
               function(data){
                   $.each(data.streams, function(i,stream){
                       $this.streams.push(new PlayerVideo(Player,$,'stream',stream));
