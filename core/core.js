@@ -142,6 +142,12 @@ Player.provide('core',
 
       // PROPERTIES
       $this.settings = $.extend(opts, Player.parameters);
+      $.each($this.settings, function(i,v){
+          if(v=='0') $this.settings[i]=0;
+          if(v=='f'||v=='false') $this.settings[i]=false;
+          if(v=='1') $this.settings[i]=1;
+          if(v=='t'||v=='true') $this.settings[i]=true;
+        });
       $this.domain = $this.settings.domain
       $this.url = 'http://' + $this.domain;
       $this.api = new Visualplatform($this.domain);
