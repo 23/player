@@ -18,10 +18,12 @@
 .scrubber-buffer {
     background-color:white;
     opacity:.5;
+    filter: alpha(opacity=50);
 }
 .scrubber-play {
     background-color:#165D0F;
     opacity:.75;
+    filter: alpha(opacity=75);
 }
 .scrubber-time {
     position:absolute; 
