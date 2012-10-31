@@ -10,6 +10,7 @@
   - player:video:timeupdate
   - player:video:seeked
   - player:video:seeking
+  - player:video:stalled
   - player:video:canplay
   - player:video:play
   - player:video:playing
@@ -32,6 +33,7 @@
   - qualities [get]
   - ended [get]
   - seeking [get]
+  - stalled [get]
   - paused [get/set]
   - duration [get]
   - bufferTime [get]
@@ -68,12 +70,15 @@ Player.provide('video-display',
 
       // When the module has been loaded in to the DOM, load the display device
       $this.onAppend = function(){
-        $this.video = new Eingebaut($this.canvas, $this.displayDevice, '/7147457.swf', function(e){
+        $this.video = new Eingebaut($this.canvas, $this.displayDevice, '/eingebaut/lib/FlashFallback/EingebautDebug.swf', function(e){
             // Don't send event during switching, it only confused up the UI
             if($this.video.switching && (e=='playing'||e=='pause')) return;
             // Modify event names slightly
             if(e=='loaded'||e=='ready') e = 'player'+e;
             // Fire the player event
+            if(e!='progress' && e!='timeupdate' && e!='progress') {
+              console.debug(e);
+            }
             Player.fire('player:video:' + e);
           });
         $this.video.load();
@@ -230,6 +235,9 @@ Player.provide('video-display',
       });
       Player.getter('seeking', function(){
           return $this.video.getSeeking();
+      });
+      Player.getter('stalled', function(){
+          return $this.video.getStalled();
       });
       Player.getter('paused', function(){
           return $this.video.getPaused();

@@ -45,7 +45,7 @@ Player.provide('status-display',
       });
 
     /* Buffering */
-    Player.bind('player:video:seeking player:video:seeked', function(e){
+    Player.bind('player:video:seeking player:video:seeked player:video:stalled player:video:play player:video:playing', function(e){
         $this.render();
       });
 
