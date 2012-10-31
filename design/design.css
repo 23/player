@@ -47,10 +47,10 @@ h1 span {
     height:18px;
 }
 .pause-button {
-    background:url('assets/pause.png') center center no-repeat;
+    background:url('pause.png') center center no-repeat;
 }
 .fullscreen-button {
-    background:url('assets/fullscreen.png') center center no-repeat;
+    background:url('fullscreen.png') center center no-repeat;
 }
 .quality-button {
     font-size:10px; 
@@ -64,16 +64,16 @@ h1 span {
 .player-big-play-button .button {
     width:90px;
     height:90px;
-    background:url('assets/play.png') center center no-repeat;
+    background:url('play.png') center center no-repeat;
     cursor:pointer;
 }
 .player-big-play-button .button:hover {
-    background-image:url('assets/play-hover.png');
+    background-image:url('play-hover.png');
 }
 
 
 #paused {
-    background:url('assets/shades.png') repeat;
+    background:url('shades.png') repeat;
     position:absolute;
     width:100%;
     height:100%;
@@ -93,28 +93,28 @@ h1 span {
     display:inline-block;
 }
 .share-button-play {
-    background-image:url('assets/play.png');
+    background-image:url('play.png');
 }
 .share-button-replay {
-    background-image:url('assets/replay.png');
+    background-image:url('replay.png');
 }
 .share-button-facebook {
-    background-image:url('assets/facebook.png');
+    background-image:url('facebook.png');
 }
 .share-button-twitter {
-    background-image:url('assets/twitter.png');
+    background-image:url('twitter.png');
 }
 .share-button-play:hover {
-    background-image:url('assets/play-hover.png');
+    background-image:url('play-hover.png');
 }
 .share-button-replay:hover {
-    background-image:url('assets/replay-hover.png');
+    background-image:url('replay-hover.png');
 }
 .share-button-facebook:hover {
-    background-image:url('assets/facebook-hover.png');
+    background-image:url('facebook-hover.png');
 }
 .share-button-twitter:hover {
-    background-image:url('assets/twitter-hover.png');
+    background-image:url('twitter-hover.png');
 }
 
 
