@@ -76,9 +76,6 @@ Player.provide('video-display',
             // Modify event names slightly
             if(e=='loaded'||e=='ready') e = 'player'+e;
             // Fire the player event
-            if(e!='progress' && e!='timeupdate' && e!='progress') {
-              console.debug(e);
-            }
             Player.fire('player:video:' + e);
           });
         $this.video.load();
@@ -116,6 +113,7 @@ Player.provide('video-display',
           });
       }
       
+      $this._currentTime = false;
       $this.loadContent = function(){
         // If the display device isn't ready yet, wait for it
         if(!$this.video || !$this.video.ready) {
@@ -151,6 +149,7 @@ Player.provide('video-display',
             $this.qualities['hd'] = {format:'video_webm_720p', codec:'webm', displayName:'HD', displayQuality:'720p', source:Player.get('url') + v.video_webm_720p_download}; 
         }
         Player.fire('player:video:qualitychange');
+        $this._currentTime = 0;
         if($this.qualities[$this.quality]) {
           Player.set('quality', $this.quality);
         }else{
@@ -181,7 +180,8 @@ Player.provide('video-display',
           // Switch the source and jump to current spot
           var playing = Player.get('playing');
           $this.rawSource = $this.qualities[$this.quality].source;
-          $this.video.setSource($this.rawSource, Player.get('currentTime'));
+          $this.video.setSource($this.rawSource, ($this._currentTime === false ? Player.get('currentTime') : $this._currentTime));
+          $this._currentTime = false;
           Player.fire('player:video:sourcechange');
           Player.fire('player:video:qualitychange');
           Player.set('playing', playing);
