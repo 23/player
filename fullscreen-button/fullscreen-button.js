@@ -15,7 +15,6 @@ Player.provide('fullscreen-button',
   function(Player,$,opts){
     var $this = this;
     $.extend($this, opts);
-    $this.render();
 
     // Toogle fullscreen on alt+enter
     $(window).keydown(function(e){
@@ -30,7 +29,8 @@ Player.provide('fullscreen-button',
       });
 
     // Update UI when full screen changes
-    Player.bind('player:fullscreenchange', function(e){
+    Player.bind('player:fullscreenchange player:loaded', function(e){
+        $this.container.toggle(Player.get('supportsFullscreen'));
         $this.render();
       });
 

@@ -89,30 +89,57 @@ Player.provide('video-display',
         // Toogle playback on click
         $this.container.click(_togglePlayback);
         // Handle keyboard events
-        $(window).keypress(function(e){
+        $(document).keypress(function(e){
             if(!e.ctrlKey && !e.altKey && !e.metaKey) {
-              // Toogle playbac k on space/enter press
-              if(e.charCode==32 || e.keyCode==13) _togglePlayback();
+              // Toogle playback on space/enter press
+              if(e.charCode==32 || e.keyCode==13 || e.keyCode==32) {
+                _togglePlayback();
+                matched = true;
+              }
               // Mute on 0 press
-              if(e.charCode==48) Player.set('volume', 0);
+              if(e.charCode==48 || e.keyCode==48) {
+                Player.set('volume', 0);
+                matched = true;
+              }
               // Full volume on 1 press
-              if(e.charCode==49) Player.set('volume', 1);
+              if(e.charCode==49 || e.keyCode==49) {
+                Player.set('volume', 1);
+                matched = true;
+              }
+              
+              if (matched) event.preventDefault();
             }
           });
-        $(window).keydown(function(e){
+        $(document).keydown(function(e){
             if(!e.ctrlKey && !e.altKey && !e.metaKey) {
+              var matched = false;
               // Increase volume on +/up
-              if(e.charCode==43 || e.keyCode==38) Player.set('volume', Player.get('volume')+0.2);
+              if(e.charCode==43 || e.keyCode==38) {
+                Player.set('volume', Player.get('volume')+0.2);
+                matched = true;
+              }
               // Decrease volume on -/down
-              if(e.charCode==45 || e.keyCode==40) Player.set('volume', Player.get('volume')-0.2);
+              if(e.charCode==45 || e.keyCode==40) {
+                Player.set('volume', Player.get('volume')-0.2);
+                matched = true;
+              }
               // Scrub on right arrow            
-              if(e.keyCode==39) Player.set('currentTime', Player.get('currentTime')+30);
+              if(e.keyCode==39) {
+                Player.set('currentTime', Player.get('currentTime')+30);
+                matched = true;
+              }
               // Scrub on left arrow
-              if(e.keyCode==37) Player.set('currentTime', Player.get('currentTime')-30);
+              if(e.keyCode==37) {
+                Player.set('currentTime', Player.get('currentTime')-30);
+                matched = true;
+              }
+              
+              if(matched) event.preventDefault();
             }
           });
       }
       
+      $this._currentTime = false;
       $this.loadContent = function(){
         // If the display device isn't ready yet, wait for it
         if(!$this.video || !$this.video.ready) {
@@ -148,6 +175,7 @@ Player.provide('video-display',
             $this.qualities['hd'] = {format:'video_webm_720p', codec:'webm', displayName:'HD', displayQuality:'720p', source:Player.get('url') + v.video_webm_720p_download}; 
         }
         Player.fire('player:video:qualitychange');
+        $this._currentTime = 0;
         if($this.qualities[$this.quality]) {
           Player.set('quality', $this.quality);
         }else{
@@ -178,7 +206,7 @@ Player.provide('video-display',
           // Switch the source and jump to current spot
           var playing = Player.get('playing');
           $this.rawSource = $this.qualities[$this.quality].source;
-          $this.video.setSource($this.rawSource, Player.get('currentTime'));
+          $this.video.setSource($this.rawSource, ($this._currentTime === false ? Player.get('currentTime') : $this._currentTime));
           Player.fire('player:video:sourcechange');
           Player.fire('player:video:qualitychange');
           Player.set('playing', playing);
