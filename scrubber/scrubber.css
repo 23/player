@@ -28,6 +28,14 @@
     opacity:.75;
     filter: alpha(opacity=75);
 }
+.scrubber-thumbnail {
+    position:absolute;
+    top:25px;
+}
+.scrubber-thumbnail img {
+    border-radius:2px;
+    border:2px solid white;
+}
 .scrubber-time {
     position:absolute; 
     top:12px;

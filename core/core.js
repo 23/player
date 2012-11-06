@@ -28,6 +28,7 @@
   - video_photo_id [get/set]
   - video_tree_id [get]
   - video_token [get]
+  - video_base_url [get]
   - video_one [get]
 
 */
@@ -234,6 +235,7 @@ Player.provide('core',
       Player.getter('video_type', function(){return $this.video.type||'';});
       Player.getter('video_tree_id', function(){return $this.video.tree_id||'';});
       Player.getter('video_token', function(){return $this.video.token||'';});
+      Player.getter('video_base_url', function(){return $this.url + '/' + $this.video.tree_id + '/' + $this.video.photo_id + '/' + $this.video.token + '/';});
       Player.getter('video_one', function(){return $this.video.one||'';});
 
       // Load the player
