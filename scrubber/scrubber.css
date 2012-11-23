@@ -31,10 +31,9 @@
 .scrubber-thumbnail {
     position:absolute;
     top:25px;
-}
-.scrubber-thumbnail img {
     border-radius:2px;
     border:2px solid white;
+    background-repeat: 'no-repeat';
 }
 .scrubber-time {
     position:absolute; 

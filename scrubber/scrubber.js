@@ -16,7 +16,6 @@ Player.provide('scrubber',
       $.extend($this, opts);
 
       // Build the template
-      $this.thumbnailImage = '';
       $this.render(function(){
           // Find the relavant elements in the template
           $this.scrubberContainer = $($this.container).find('.scrubber-container');
@@ -24,7 +23,6 @@ Player.provide('scrubber',
           $this.playContainer = $($this.container).find('.scrubber-play');
           $this.timeContainer = $($this.container).find('.scrubber-time');
           $this.thumbnailContainer = $($this.container).find('.scrubber-thumbnail');
-          $this.thumbnailImageContainer = $($this.container).find('.scrubber-thumbnail img');
 
           // Handle clicks on the time line
           $this.scrubberContainer.click(function(e){
@@ -39,23 +37,29 @@ Player.provide('scrubber',
 
           // Show thumbs
           $this.scrubberContainer.mousemove(function(e){
-              var o = e.offsetX-100;
-              o = Math.max(10, Math.min($this.scrubberContainer.width()-210, o));
-              $this.thumbnailContainer.css({left:o+'px'});
-
-              var duration = Player.get('duration');
-              if(!isNaN(duration)&&duration>0) {
-                var t = Player.get('video_base_url') + '200x:' + Math.round(5*((e.offsetX / $this.scrubberContainer.width() * duration)/5)) + '/thumbnail.jpg';
-                if (t!=$this.thumbnailImage) {
-                  $this.thumbnailImage = t;
-                  $this.thumbnailImageContainer.hide();
-                  $this.thumbnailImageContainer.load(function(){
-                      $this.thumbnailImageContainer.show();
-                    });
-                  $this.thumbnailImageContainer.attr('src', $this.thumbnailImage);
-                }
+              if (!Player.get('video_has_frames')) {
+                  $this.thumbnailContainer.hide();
+                  return;
               }
-            });
+
+              // The left offset is decided by the width of the frame, while having the padding on the left/right edge of the player in mind
+              var offset = e.offsetX-(Player.get('video_frames_width')/2.0);
+              offset = Math.max(10, Math.min($this.scrubberContainer.width()-(Player.get('video_frames_width')+10), offset));
+              // The frame is calculated by the position on the scrubber container and the number of total frames.
+              var frameNumber = Math.round( (e.offsetX/$this.scrubberContainer.width()) * Player.get('video_num_frames') );
+              var frameOffset = frameNumber * Player.get('video_frames_height');
+              // Position and show the thumbnail container
+              $this.thumbnailContainer.css({
+                  left:offset+'px',
+                  width:Player.get('video_frames_width')+'px', 
+                  height:Player.get('video_frames_height')+'px',
+                  backgroundImage:'url(' + Player.get('video_frames_src') + ')',
+                  backgroundPosition: '0 -'+frameOffset+'px'
+              }).show();
+          });
+          $this.scrubberContainer.mouseleave(function(e){
+              $this.thumbnailContainer.hide();
+          });
         });
 
       Player.bind('player:video:progress player:video:timeupdate player:video:seeked player:video:ended', function(e,o){

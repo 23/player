@@ -237,6 +237,14 @@ Player.provide('core',
       Player.getter('video_token', function(){return $this.video.token||'';});
       Player.getter('video_base_url', function(){return $this.url + '/' + $this.video.tree_id + '/' + $this.video.photo_id + '/' + $this.video.token + '/';});
       Player.getter('video_one', function(){return $this.video.one||'';});
+      Player.getter('video_aspect_ratio', function(){return ($this.video.video_medium_width||1) / ($this.video.video_medium_height||1);});
+
+      // Information about frames for the current video
+      Player.getter('video_has_frames', function(){try {return ($this.video.video_frames_size>0);} catch(e) {return false;}});
+      Player.getter('video_frames_width', function(){return 180;});
+      Player.getter('video_frames_height', function(){return 180/Player.get('video_aspect_ratio');});
+      Player.getter('video_frames_src', function(){return (Player.get('video_has_frames') ? Player.get('video_base_url') + Player.get('video_frames_width') + 'xfr' : '');});
+      Player.getter('video_num_frames', function(){var d = Player.get('video_duration'); return Math.floor(d/Math.ceil(d/200))});
 
       // Load the player
       $this.bootstrap = function(){
