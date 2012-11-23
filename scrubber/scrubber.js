@@ -62,6 +62,12 @@ Player.provide('scrubber',
           });
         });
 
+      Player.bind('player:video:loaded', function(){
+          if (!Player.get('video_has_frames')) {
+              $this.thumbnailContainer.css({backgroundImage:'url(' + Player.get('video_frames_src') + ')',});
+          }
+      });
+
       Player.bind('player:video:progress player:video:timeupdate player:video:seeked player:video:ended', function(e,o){
           var duration = Player.get('duration');
           if(isNaN(duration)||duration<=0) return;
