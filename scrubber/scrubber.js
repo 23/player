@@ -7,6 +7,7 @@
   - player:video:timeupdate
   - player:video:seeked
   - player:video:ended
+  - player:video:loaded
 */
 
 Player.provide('scrubber', 
