@@ -29,3 +29,10 @@
     top:20px;
     left:10px;
 }
+.scrubber-thumbnail {
+    position:absolute;
+    bottom:25px;
+    border-radius:2px;
+    border:2px solid white;
+    background-repeat: 'no-repeat';
+}

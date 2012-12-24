@@ -154,7 +154,7 @@ Player.provide('video-display',
         var s = Player.get('settings');
         
         // Handle formats or qualities
-        $this.video.setPoster(Player.get('url') + v.large_download);
+        $this.video.setPoster(Player.get('url') + v.large_download) + '/thumbnail.jpg';
         $this.qualities = {};
         $this.rawSource = "";
         if($this.displayDevice!='html5' || $this.video.canPlayType('video/mp4; codecs="avc1.42E01E"')) {

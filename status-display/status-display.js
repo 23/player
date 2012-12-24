@@ -52,7 +52,7 @@ Player.provide('status-display',
         return $this.errorMessage;
       });
 
-    /* Buffering */
+    /* Seeking or stalled */
     Player.bind('player:video:seeking player:video:seeked player:video:stalled player:video:play player:video:playing', function(e){
         $this.render();
       });
