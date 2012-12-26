@@ -48,7 +48,7 @@ Player.provide('video-display',
   {
     className:'video-display',
     displayDevice:'html5',
-    quality:'standard'
+    quality: ''
   }, 
   function(Player,$,opts){
       var $this = this;
@@ -152,6 +152,10 @@ Player.provide('video-display',
         // Load up the new video
         var v = Player.get('video');
         var s = Player.get('settings');
+
+        // 
+        $this.quality = $this.quality || s.defaultQuality || 'standard';
+        if($this.quality=='high') $this.quality = 'hd';
         
         // Handle formats or qualities
         $this.video.setPoster(Player.get('url') + v.large_download) + '/thumbnail.jpg';
@@ -179,7 +183,7 @@ Player.provide('video-display',
         if($this.qualities[$this.quality]) {
           Player.set('quality', $this.quality);
         }else{
-          Player.set('quality', ($this.qualities['hd'] && s.playHD ? 'hd' : 'standard'));
+          Player.set('quality', 'standard');
         }
         
         if(s.autoPlay||s.loop) {
