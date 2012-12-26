@@ -1,5 +1,5 @@
 /* 
-  MODULE: VAST 
+  MODULE: PLAYFLOW 
   A wrapper for Google's IMA HTML5 SDK, with a flavour 
   for using Eingebaut for video playback rather than a 
   straight <video> element.
@@ -20,7 +20,7 @@
   reason the underlying libraries are only loaded when 
   needed. 
 
-  To add VAST content to the player:
+  To add PLAYFLOW content to the player:
 
     Player.set('vastURL', '...');
 
@@ -32,21 +32,21 @@
   specific tracking events back.
 
   Listen for:
-  - player:vast:video:start
-  - player:vast:video:complete
-  - player:vast:video:click
-  - player:vast:video:close
-  - player:vast:overlay:start
-  - player:vast:overlay:complete
-  - player:vast:overlay:click
+  - player:playflow:video:start
+  - player:playflow:video:complete
+  - player:playflow:video:click
+  - player:playflow:video:close
+  - player:playflow:overlay:start
+  - player:playflow:overlay:complete
+  - player:playflow:overlay:click
 
   Answers properties:
   - vastURL [set]
-  - vastCloseIdentity [set]
-  - vastActive [set]
+  - closeIdentity [set]
+  - playflowActive [set]
   - identityCountdown [get]
   - identityAllowClose [get]
-  - vastAdPosition [get]
+  - playflowAdPosition [get]
 
   ****
 
@@ -57,7 +57,7 @@
     This should also use the same ads for all videos.
   - PlayFlow as VAST
   - Show postroll text as overlay.
-  - return `vastAdPosition` correctly
+  - return `playflowAdPosition` correctly
 
   GENERAL TODO:
   - Support and test general overlays.
@@ -65,7 +65,7 @@
   - Handle multiple simutaneous ad managers
 */
 
-Player.provide('vast', 
+Player.provide('playflow', 
   {
     active:false,
     urls:[],
@@ -125,12 +125,12 @@ Player.provide('vast',
 
           // Listen and respond to events which require you to pause/resume content
           $this.currentAdsManager.addEventListener(google.ima.AdEvent.Type.CONTENT_PAUSE_REQUESTED, function(){
-              // Pause the real video and show the vast container
+              // Pause the real video and show the playflow container
               Player.set('playing', false);
               $this.container.show();
               $('#player').hide();
               // Notify about the ad being displayed
-              Player.fire('player:vast:'+$this.currentAdsManager.getType()+':start');
+              Player.fire('player:playflow:'+$this.currentAdsManager.getType()+':start');
           });
           $this.currentAdsManager.addEventListener(google.ima.AdEvent.Type.CONTENT_RESUME_REQUESTED, function(){
               // Start the real video again along with the relevant interface stuff
@@ -138,16 +138,16 @@ Player.provide('vast',
               $('#player').show();
               Player.set('playing', true);
               // Notify about the ad being displayed
-              Player.fire('player:vast:'+$this.currentAdsManager.getType()+':complete');
+              Player.fire('player:playflow:'+$this.currentAdsManager.getType()+':complete');
           });
           $this.currentAdsManager.addEventListener(google.ima.AdEvent.Type.CLICK, function(){
-              Player.fire('player:vast:'+$this.currentAdsManager.getType()+':click');
+              Player.fire('player:playflow:'+$this.currentAdsManager.getType()+':click');
               $this.destroyAd(false);
           });
           $this.currentAdsManager.addEventListener(google.ima.AdEvent.Type.COMPLETE, function(){$this.destroyAd(true);});
 
           // Set a visual element on which clicks should be tracked for video ads
-          $this.currentAdsManager.setClickTrackingElement($this.container.find('.vast-click-container')[0]);
+          $this.currentAdsManager.setClickTrackingElement($this.container.find('.playflow-click-container')[0]);
           $this.playable = true;
       }
       $this.onAdError = function(error){
@@ -173,7 +173,7 @@ Player.provide('vast',
           if($this.active&&$this.playable) {
               Player.set('playing', false);
               $this.playable = false;
-              $this.currentAdsManager.play($this.container.find('.vast-video')[0]);
+              $this.currentAdsManager.play($this.container.find('.playflow-video')[0]);
           }
       });
 
@@ -183,15 +183,15 @@ Player.provide('vast',
           $this.urls.push({url:url, loaded:false});
           $this.syncUrls();
       });
-      Player.setter('vastCloseIdentity', function(){
+      Player.setter('loseIdentity', function(){
           if(Player.get('identityAllowClose')) {
-              Player.fire('player:vast:video:close');
+              Player.fire('player:playflow:video:close');
               $this.destroyAd();
           }
       });
 
       // Expose properties
-      Player.getter('vastActive', function(){
+      Player.getter('playflowActive', function(){
           return $this.active;
       });
       Player.getter('identityCountdown', function(){
@@ -200,7 +200,7 @@ Player.provide('vast',
       Player.getter('identityAllowClose', function(){
           return $this.identityAllowClose;
       });
-      Player.getter('vastAdPosition', function(){
+      Player.getter('playflowAdPosition', function(){
           return 'preroll';
       });
 

@@ -9,9 +9,9 @@
   - player:video:pause: Log playhead to 23 Analytics
   - player:video:end: Log playhead to 23 Analytics
   - player:video:timeupdate: Log playhead to 23 Analytics continuously
-  - player:vast:video:click
-  - player:vast:video:close
-  - player:vast:overlay:click
+  - player:playflow:video:click
+  - player:playflow:video:close
+  - player:playflow:overlay:click
 
   Answers properties:
   - analyticsEvent [set]
@@ -59,11 +59,11 @@ Player.provide('analytics',
       Player.bind('player:overlay:click', function(e){
           Player.set('analyticsEvent', {event:'callToActionClick'});
         });
-      Player.bind('player:vast:video:click', function(e){
-          Player.set('analyticsEvent', {event: Player.get('vastAdPosition')=='preroll' ? 'preRollClick' : 'postRollClick'});
+      Player.bind('player:playflow:video:click', function(e){
+          Player.set('analyticsEvent', {event: Player.get('playflowAdPosition')=='preroll' ? 'preRollClick' : 'postRollClick'});
         });
-      Player.bind('player:vast:video:close', function(e){
-          Player.set('analyticsEvent', {event: Player.get('vastAdPosition')=='preroll' ? 'preRollClose' : 'postRollClose'});
+      Player.bind('player:playflow:video:close', function(e){
+          Player.set('analyticsEvent', {event: Player.get('playflowAdPosition')=='preroll' ? 'preRollClose' : 'postRollClose'});
         });
 
       // General method to report events

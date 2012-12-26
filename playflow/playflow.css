@@ -1,14 +1,14 @@
-.player-vast, .vast-video, .vast-click-container {
+.player-playflow, .playflow-video, .playflow-click-container {
     position:absolute; 
     top:0;
     left:0;
     width:100%;
     height:100%;
 }
-.player-vast {
+.player-playflow {
     display:none;
     background-color:black;
 }
-.vast-click-container {
+.playflow-click-container {
     cursor:pointer;
 }
