@@ -15,7 +15,14 @@
 */
 
 Player.provide('logo', 
-  {},
+  {
+    logoSource:'',
+    showLogo:true,
+    logoPosition: 'top right',
+    logoAlpha: .9,
+    logoWidth: 80,
+    logoHeight: 40
+  },
   function(Player,$,opts){
       var $this = this;
       $.extend($this, opts);
@@ -23,22 +30,17 @@ Player.provide('logo',
       // Bind to events
       Player.bind('player:settings', function(e,settings){
           // Load in settings from API if they haven't been overwritten by liquid "with ..."
-          $(['logoSource', 'showLogo', 'logoPosition', 'logoAlpha', 'logoWidth', 'logoHeight']).each(function(ignore,i){
-              if(typeof($this[i])=='undefined'&&typeof(settings[i])!='undefined') $this[i]=settings[i];
-            });
-
-          if(!/\/\//.test($this.logoSource)) $this.logoSource = Player.get('url')+$this.logoSource;
+          PlayerUtilities.mergeSettings($this, ['logoSource', 'showLogo', 'logoPosition', 'logoAlpha', 'logoWidth', 'logoHeight']);
+          if(!$this.logoSource.length) $this.showLogo = false;
+          if($this.logoSource.length>0 && !/\/\//.test($this.logoSource)) $this.logoSource = Player.get('url')+$this.logoSource;
           $this.render();
         });
       Player.bind('player:sharing', function(){
           $this.render();
         });
-    
 
       /* GETTERS */
-      Player.getter('showLogo', function(){
-          return (typeof($this.showLogo)=='undefined'||($this.showLogo&&$this.showLogo!='0'));
-        });
+      Player.getter('showLogo', function(){return $this.showLogo||false;});
       Player.getter('logoSource', function(){return $this.logoSource||'';});
       Player.getter('logoPosition', function(){return $this.logoPosition||'';});
       Player.getter('logoAlpha', function(){return $this.logoAlpha||'';});
