@@ -52,13 +52,6 @@ var PlayerVideo = function(Player,$,type,data){
         width:0,
         height:0,
         aspectRatio:1,
-        beforeDownloadType:'',
-        beforeDownloadUrl:'',
-        beforeLink:'',
-        afterDownloadType:'',
-        afterDownloadUrl:'',
-        afterLink:'',
-        afterText:'',
         length:0
     }
     $.extend($v, defaults, data);
@@ -100,41 +93,23 @@ Player.provide('core',
     start: 0,
     player_id: 0,
 
-    backgroundColor: 'black',
-    trayBackgroundColor: 'black',
-    trayTextColor: 'white',
-    trayFont: 'Helvetica, Arial, sans-serif',
-    trayTitleFontSize: 15,
-    trayTitleFontWeight: 'bold',
-    trayContentFontSize: 11,
-    trayContentFontWeight: 'normal',
-    trayAlpha: 0.8,
     showTray: true,
+    showDescriptions: true,
+    showBigPlay: true,
+    showShare: true,
     showBrowse: true,
     browseMode: false,
-
-    verticalPadding: 0,
-    horizontalPadding: 0,
     trayTimeout: 0,
     infoTimeout: 5000,
-    recommendationHeadline: 'Also have a look at...',
-    identityCountdown: false,
-    identityAllowClose: true,
-    identityCountdownTextSingular: "This advertisement will end in % second",
-    identityCountdownTextPlural: "This advertisement will end in % seconds",
     recommendationMethod: 'channel-popular',
     lowBandwidthThresholdKbps: 0,
-    maintainIdentityAspectRatio: true,
     enableSubtitles: true,
     subtitlesOnByDefault: false,
     subtitlesDesign: 'bars',
     playlistClickMode:'link',
-    enableLiveStreams: true,
-    playflowInstreamVideo: '',
-    playflowInstreamOverlay: '',
     autoPlay: false,
     loop: false,
-    playHD: false
+    socialSharing: true
   }, 
   function(Player,$,opts){
       var $this = this;
@@ -256,3 +231,15 @@ Player.provide('core',
       return $this;
   }
 );
+
+// Global utility methods
+var PlayerUtilities = {
+  mergeSettings: function(obj,settings){
+    var s = Player.get('settings');
+    $.each(settings, function(i,setting){
+        if (typeof(s[setting])!='undefined' && s[setting].length>0) {
+          obj[setting] = s[setting];
+        }
+      });
+  }
+}
