@@ -9,6 +9,12 @@
   - player:video:pause: Log playhead to 23 Analytics
   - player:video:end: Log playhead to 23 Analytics
   - player:video:timeupdate: Log playhead to 23 Analytics continuously
+  - player:vast:video:click
+  - player:vast:video:close
+  - player:vast:overlay:click
+
+  Answers properties:
+  - analyticsEvent [set]
 */
 
 Player.provide('analytics', 
@@ -31,11 +37,12 @@ Player.provide('analytics',
         return o;
       }
       
-      // Bind to events
+      // Bind to events for player load
       Player.bind('player:video:loaded', function(e){
           Player.set('analyticsEvent', {event:'load'});
       });
 
+      // Bind to events for playback progress
       var _lastTimeUpdate = 0;
       var _reportTime = 
       Player.bind('player:video:play player:video:pause player:video:end player:video:timeupdate', function(e){
@@ -48,6 +55,18 @@ Player.provide('analytics',
           Player.get('api').analytics.report.play(_context({timeStart:Player.get('seekedTime'), timeEnd:Player.get('currentTime'), timeTotal:Player.get('duration')}));
       });
 
+      // Bind to events for PlayFlow/VAST
+      Player.bind('player:overlay:click', function(e){
+          Player.set('analyticsEvent', {event:'callToActionClick'});
+        });
+      Player.bind('player:vast:video:click', function(e){
+          Player.set('analyticsEvent', {event: Player.get('vastAdPosition')=='preroll' ? 'preRollClick' : 'postRollClick'});
+        });
+      Player.bind('player:vast:video:close', function(e){
+          Player.set('analyticsEvent', {event: Player.get('vastAdPosition')=='preroll' ? 'preRollClose' : 'postRollClose'});
+        });
+
+      // General method to report events
       Player.setter('analyticsEvent', function(e){
           if(typeof(e.event)=='undefined') {
             e = {event:e};

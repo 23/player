@@ -5,9 +5,11 @@
   straight <video> element.
 
   We use Google's library to increase the likelyhood of
-  general support by advertising servers. Also, it means
-  that we won't need to worry about event tracking and 
-  analytics. Google must do advertising well ;-)
+  general support by advertising servers. The library 
+  also support a few ad technologies other than VAST.
+  Also, it means that we won't need to worry about 
+  event tracking and analytics. Google really ought to
+  do advertising well ;-)
 
   This module is used both to handle VAST 2.0 in players
   and to display any PlayFlow from 23 Video itself as the 
@@ -22,12 +24,29 @@
 
     Player.set('vastURL', '...');
 
-  Other modules must listen to events to show and hide 
-  interface elements:
+  Due to the performance implications of loading the module, 
+  the code is design to be pretty stand-alone. The module 
+  will show and hide content, pause and play it and so forth
+  without requiring much other code. The only exception is 
+  that `analytics` listens for events and reports 23 Video-
+  specific tracking events back.
+
+  Listen for:
   - player:vast:video:start
   - player:vast:video:complete
+  - player:vast:video:click
+  - player:vast:video:close
   - player:vast:overlay:start
   - player:vast:overlay:complete
+  - player:vast:overlay:click
+
+  Answers properties:
+  - vastURL [set]
+  - vastCloseIdentity [set]
+  - vastActive [set]
+  - identityCountdown [get]
+  - identityAllowClose [get]
+  - vastAdPosition [get]
 
   ****
 
@@ -38,6 +57,7 @@
     This should also use the same ads for all videos.
   - PlayFlow as VAST
   - Show postroll text as overlay.
+  - return `vastAdPosition` correctly
 
   GENERAL TODO:
   - Support and test general overlays.
@@ -120,7 +140,10 @@ Player.provide('vast',
               // Notify about the ad being displayed
               Player.fire('player:vast:'+$this.currentAdsManager.getType()+':complete');
           });
-          $this.currentAdsManager.addEventListener(google.ima.AdEvent.Type.CLICK, function(){$this.destroyAd(false);});
+          $this.currentAdsManager.addEventListener(google.ima.AdEvent.Type.CLICK, function(){
+              Player.fire('player:vast:'+$this.currentAdsManager.getType()+':click');
+              $this.destroyAd(false);
+          });
           $this.currentAdsManager.addEventListener(google.ima.AdEvent.Type.COMPLETE, function(){$this.destroyAd(true);});
 
           // Set a visual element on which clicks should be tracked for video ads
@@ -159,10 +182,13 @@ Player.provide('vast',
           $this.active = true;
           $this.urls.push({url:url, loaded:false});
           $this.syncUrls();
-        });
+      });
       Player.setter('vastCloseIdentity', function(){
-          if(Player.get('identityAllowClose')) $this.destroyAd();
-        });
+          if(Player.get('identityAllowClose')) {
+              Player.fire('player:vast:video:close');
+              $this.destroyAd();
+          }
+      });
 
       // Expose properties
       Player.getter('vastActive', function(){
@@ -174,8 +200,11 @@ Player.provide('vast',
       Player.getter('identityAllowClose', function(){
           return $this.identityAllowClose;
       });
+      Player.getter('vastAdPosition', function(){
+          return 'preroll';
+      });
 
-     
+      
       return $this;
   }
 );
