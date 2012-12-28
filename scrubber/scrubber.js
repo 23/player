@@ -37,7 +37,8 @@ Player.provide('scrubber',
               if(isNaN(duration)||duration<=0) {
                   Player.set('playing', true);
               } else {
-                  Player.set('currentTime', e.offsetX / $this.scrubberContainer.width() * duration);
+                  var offsetX = e.pageX - $(e.target).offsetParent().offset().left;
+                  Player.set('currentTime', offsetX / $this.scrubberContainer.width() * duration);
                   Player.set('playing', true);
               }
           });
@@ -48,7 +49,9 @@ Player.provide('scrubber',
                   $this.thumbnailContainer.hide();
                   return;
               }
-              var playhead = e.offsetX/$this.scrubberContainer.width() * Player.get('duration');
+              
+              var offsetX = e.pageX - $(e.target).offsetParent().offset().left;
+              var playhead = offsetX/$this.scrubberContainer.width() * Player.get('duration');
               $this.showFrame(playhead);
           });
           $this.scrubberContainer.mouseleave(function(e){
