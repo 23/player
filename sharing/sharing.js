@@ -12,6 +12,8 @@
 
    Fires:
    - player:sharing: Whenever the sharing options are updated
+   - player:sharing:shareengaged: Fires when sharing options are engaged (used by analytics)
+   - player:sharing:embedengaged: Fires when embed is engaged (used by analytics)
    
    Answers properties:
    - socialSharing [get]: Is social sharing even supported by the video site? And is is enabled in settings?
