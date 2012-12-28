@@ -14,8 +14,8 @@
    - player:sharing: Whenever the sharing options are updated
    
    Answers properties:
-   - socialSharing [get] (is social sharing even supported by the video site? this will overwrite showShare.)
-   - showShare [get/set]
+   - socialSharing [get]: Is social sharing even supported by the video site? And is is enabled in settings?
+   - showShare [get/set]: Show and hide the share pane.
    - rssLink [get]
    - podcastLink [get]
    - embedCode [get]
@@ -31,7 +31,10 @@
 */
 
 Player.provide('sharing', 
-  {},
+  {
+    socialSharing: true,
+    showShare: false
+  },
   function(Player,$,opts){
       var $this = this;
       $.extend($this, opts);
@@ -44,21 +47,23 @@ Player.provide('sharing',
 
       // Bind to events
       Player.bind('player:settings', function(e,settings){
-          $(['socialSharing', 'showShare', 'rssLink', 'podcastLink', 'embedCode']).each(function(ignore,i){
-              if(typeof($this[i])=='undefined'&&typeof(settings[i])!='undefined') $this[i]=settings[i];
-            });
-          $this.socialSharing = ($this.socialSharing||false ? true : false);
-          $this.showShare = ($this.showShare||true ? true : false);;
+          PlayerUtilities.mergeSettings($this, ['socialSharing', 'showShare', 'rssLink', 'podcastLink', 'embedCode']);
+          $this.socialSharing = ($this.socialSharing ? true : false);
+          $this.showShare = ($this.showShare ? true : false);
           $this.rssLink = absolutize($this.rssLink||Player.get('url') + '/rss');
           $this.podcastLink = absolutize($this.podcastLink||Player.get('url') + '/podcast');
           $this.embedCode = $this.embedCode||'';
-
           Player.fire('player:sharing', {});
         });
       $this.videoLink = '';
       Player.bind('player:video:loaded', function(){
           $this.videoLink = absolutize(Player.get('video_one'));
           Player.fire('player:sharing', {});
+        });
+
+      // Render on sharing update
+      Player.bind('player:sharing', function(){
+          $this.render();
         });
 
       /* GETTERS */
@@ -103,10 +108,13 @@ Player.provide('sharing',
      
       /* SETTERS */
       Player.setter('showShare', function(ss){
+          if(!Player.get('socialSharing')) return;
           $this.showShare = ss;
+          if(ss) Player.fire('player:sharing:shareengaged', {});
           Player.fire('player:sharing', {});
         });
       Player.setter('shareTo', function(service){
+          Player.fire('player:sharing:shareengaged', {});
           window.open(Player.get(service + 'Link'));
         });
 

@@ -96,7 +96,6 @@ Player.provide('core',
     showTray: true,
     showDescriptions: true,
     showBigPlay: true,
-    showShare: true,
     showBrowse: true,
     browseMode: false,
     trayTimeout: 0,
@@ -109,7 +108,6 @@ Player.provide('core',
     playlistClickMode:'link',
     autoPlay: false,
     loop: false,
-    socialSharing: true
   }, 
   function(Player,$,opts){
       var $this = this;
@@ -136,7 +134,15 @@ Player.provide('core',
           $this.api.player.settings(
               {player_id:$this.settings.player_id, params:Player.parametersString},
               function(data){
+                  // Merge in settings API, then from player parameter
                   $.extend($this.settings, data.settings);
+                  $this.settings = $.extend(opts, Player.parameters);
+                  // Normalize numbers and bools
+                  $.each($this.settings, function(i,v){
+                      if(v=='f'||v=='false') $this.settings[i]=false;
+                      if(v=='t'||v=='true') $this.settings[i]=true;
+                      if(!isNaN(v)) $this.settings[i]=new Number(v)+0;
+                    });
                   Player.fire('player:settings', $this.settings)
                   callback();
               },
@@ -237,7 +243,7 @@ var PlayerUtilities = {
   mergeSettings: function(obj,settings){
     var s = Player.get('settings');
     $.each(settings, function(i,setting){
-        if (typeof(s[setting])!='undefined' && s[setting].length>0) {
+        if (typeof(s[setting])!='undefined' && s[setting].length!=='') {
           obj[setting] = s[setting];
         }
       });

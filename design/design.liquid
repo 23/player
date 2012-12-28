@@ -1,7 +1,6 @@
 {% player status-display %}
 {% player core with "domain":"reference.dev.visualtube.net", "player_id":0 %}
 {% player analytics %}
-{% player sharing %}
 
 {% player playflow %}
 
@@ -34,6 +33,8 @@
       <div class="tray-button">{% player social-button with "service":"twitter" %}</div>
       <div class="tray-button">{% player social-button with "service":"tumblr" %}</div>
     </div>
+
+    {% player sharing %}
   </div>
 
   <div class="big-button tray-button">{% player big-play-button %}</div>

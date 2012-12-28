@@ -65,6 +65,13 @@ Player.provide('analytics',
       Player.bind('player:playflow:video:close', function(e){
           Player.set('analyticsEvent', {event: Player.get('playflowAdPosition')=='preroll' ? 'preRollClose' : 'postRollClose'});
         });
+      // Bind to events for sharing
+      Player.bind('player:sharing:embedengaged', function(e){
+          Player.set('analyticsEvent', {event:'embedEngaged'});
+        });
+      Player.bind('player:sharing:shareengaged', function(e){
+          Player.set('analyticsEvent', {event:'shareEngaged'});
+        });
 
       // General method to report events
       Player.setter('analyticsEvent', function(e){

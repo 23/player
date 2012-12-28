@@ -1,0 +1,27 @@
+#tray .player-sharing {
+    position:absolute;
+    bottom:40px;
+    left:0;
+    right:30px;
+}
+table.share-embed {
+    width:100%;
+}
+table.share-embed {
+    width:100%;
+}
+table.share-embed td {
+    padding-right:10px;
+    white-space:nowrap;
+}
+table.share-embed td.embed-code  {
+    width:100%;
+    padding-right:0;
+}
+table.share-embed input {
+    width:100%;
+    line-height:20px;
+    font-size:12px;
+    height:20px;
+    padding:3px;
+}

@@ -79,5 +79,16 @@ div.button ul li.hover { /* menu item hover */
 div.button ul li.selected { /* menu item selected */
     text-decoration:underline;
 }
+a.button { /* standard button design as a straight link */
+    display:inline-block; 
+    *display:inline; 
+    *zoom:1; 
+    border-radius:3px;
+    background-color:#34783d; 
+    color:white;
+    line-height:30px;
+    padding:0 8px;
+    text-decoration:none;
+}
 
 

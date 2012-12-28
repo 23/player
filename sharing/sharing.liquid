@@ -1,0 +1,13 @@
+{% if showShare %}
+<table class="share-embed">
+  <tr>
+    <td><a href="{{siteLink}}" class="button" target="_new">See on page</a></td>
+    <td><a href="{{facebookLink}}" class="button" target="_new">Share on Facebook</a></td>
+    <td><a href="{{twitterLink}}" class="button" target="_new">Share on Twitter</a></td>
+    <td><a href="{{googleLink}}" class="button" target="_new">Share on Google+</a></td>
+    <td class="embed-code">
+      <input type="text" value="{{embedCode|escape}}" onfocus="$(this).select();" click="$fire:player:sharing:embedengaged"/>
+    </td>
+  </tr>
+</table>
+{% endif %}
