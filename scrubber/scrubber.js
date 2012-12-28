@@ -84,7 +84,7 @@ Player.provide('scrubber',
                       $this.scrubberTime = null;
                   }
               });
-              $this.handleContainer.click(function(e){
+              $this.handleContainer.on('click, mousemove', function(e){
                   // Clicks on the handle shouldn't bubble to clicks on the scrubber
                   e.stopPropagation(); 
               });
