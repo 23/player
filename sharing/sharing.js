@@ -3,9 +3,6 @@
    Core module to handle sharing options, include enable sharing, 
    links to social services, embeds, and backlinks.
 
-   This core module is designed without UI, since multiple buttons,
-   panes etc may want to use the links and codes.
-   
    Listens for:
    - player:settings: The app was loaded, time to show the logo
    - player:video:loaded: A new video was loaded.
