@@ -24,6 +24,14 @@
     background-color:green;
     opacity:.8;
 }
+.scrubber-handle {
+    height:12px;
+    width:8px;
+    background-color:green;
+    position:absolute;
+    top:-3px;
+    border:1px solid white;
+}
 .scrubber-time {
     position:absolute; 
     top:20px;
