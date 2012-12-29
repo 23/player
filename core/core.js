@@ -16,6 +16,7 @@
   - player:settings
 
   Answers properties:
+  - player_id [get]
   - domain [get/set]
   - video [get/set]
   - settings [get/set]
@@ -97,20 +98,16 @@ Player.provide('core',
     showTray: true,
     showDescriptions: true,
     showBigPlay: true,
-    showBrowse: true,
-    browseMode: false,
     trayTimeout: 0,
     infoTimeout: 5000,
-    recommendationMethod: 'channel-popular',
     lowBandwidthThresholdKbps: 0,
     enableSubtitles: true,
     subtitlesOnByDefault: false,
     subtitlesDesign: 'bars',
-    playlistClickMode:'link',
     autoPlay: false,
     loop: false,
-      
-    numRecommendations:10
+
+    maxRecommendations:10
   }, 
   function(Player,$,opts){
       var $this = this;
@@ -169,7 +166,7 @@ Player.provide('core',
           $this.clips = [];
           methods.push({
               method:'/api/photo/list',
-              data:$.extend({size:$this.numRecommendations}, Player.parameters, {player_id:$this.settings.player_id}),
+              data:$.extend({size:$this.maxRecommendations}, Player.parameters, {player_id:$this.settings.player_id}),
               callback: function(data){
                   $.each(data.photos, function(i,photo){
                       $this.clips.push(new PlayerVideo(Player,$,'clip',photo));
@@ -181,25 +178,6 @@ Player.provide('core',
           $this.api.concatenate(methods, callback, Player.fail)
       }
 
-      $this.loadRecommendations = function(callback){
-          // If we're looking at a single video, load some recommendations as well
-          if($this.clips.length==1) {              
-              var opts = (/-new$/.test($this.recommendationMethod) ? {orderby:'uploaded', order:'desc'} : {orderby:'rank', order:'desc'});
-              if(/^channel-/.test($this.recommendationMethod)) opts['album_id'] = $this.clips[0].album_id;
-              $this.api.photo.list(
-                  $.extend({size:$this.numRecommendations-1, player_id:$this.settings.player_id}, opts),
-                  function(data){
-                      $.each(data.photos, function(i,photo){
-                          $this.clips.push(new PlayerVideo(Player,$,'clip',photo));
-                      });
-                      callback();
-                  },
-                  Player.fail
-              );
-          } else {
-              callback();
-          }
-      }
 
       /* SETTERS */
       Player.setter('domain', function(d){
@@ -215,6 +193,7 @@ Player.provide('core',
       });
 
       /* GETTERS */
+      Player.getter('player_id', function(){return $this.settings.player_id;});
       Player.getter('domain', function(){return $this.domain;});
       Player.getter('url', function(){return $this.url;});
       Player.getter('api', function(){return $this.api;});
@@ -247,11 +226,9 @@ Player.provide('core',
       $this.bootstrap = function(){
           Player.fire('player:init');
           $this.load(function(){
-              $this.loadRecommendations(function(){
-                  $this.loaded = true;
-                  Player.fire('player:loaded');
-                  if($this.clips.length>0) $this.clips[0].switchTo();
-              });
+              $this.loaded = true;
+              Player.fire('player:loaded');
+              if($this.clips.length>0) $this.clips[0].switchTo();
           });
       }
       $this.bootstrap();
