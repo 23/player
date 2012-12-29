@@ -25,6 +25,7 @@ Player.provide('analytics',
       var $this = this;
       $.extend($this, opts);
       delete $this.container;
+
       
       // Each report should include extra data as context
       var _context = function(o){
@@ -34,6 +35,7 @@ Player.provide('analytics',
         o.user_player_type = Player.get('displayDevice');
         o.user_player_resolution = screen.width+'x'+screen.height;
         o.user_player_version = Player.version;
+        o.referer = document.referrer;
         return o;
       }
       
@@ -81,6 +83,10 @@ Player.provide('analytics',
           Player.get('api').analytics.report.event(_context({event:e.event}));
         });
 
+
+      // Method to set a cookie
+      $this.setCookie = function(name, value, daysToExpire) {var expire = ''; if (daysToExpire != undefined) {var d = new Date();d.setTime(d.getTime() + (86400000 * parseFloat(daysToExpire)));expire = '; expires=' + d.toGMTString();} var path = '; path=/'; if (value.length) value=escape(value); else value='""'; return (document.cookie = escape(name) + '=' + value + expire + path);}
+      try {$this.setCookie('_visual_swf_referer', document.referrer);}catch(e){}
      
       return $this;
   }
