@@ -3,7 +3,10 @@
 */
 
 Player.provide('design', 
-  {}, 
+  {
+    showTray: true,
+    trayTimeout: 0
+  }, 
   function(Player,$,opts){
     // This is required to add the template to the page
     var $this = this;
@@ -33,7 +36,24 @@ Player.provide('design',
             if(!el.is(e.target)) el.removeClass('activebutton');
           });
       });
-    
+    // Handle settings
+    $this.trayTimeoutId = null;
+    Player.bind('player:settings', function(e){
+        PlayerUtilities.mergeSettings($this, ['showTray', 'trayTimeout']);
+        
+        // Honour `showTray`
+        $('#tray').toggle($this.showTray);
+        // Honour `trayTimeout`
+        if($this.showTray&&$this.trayTimeout>0) {
+          var triggerTrayTimeout = function(){
+            window.clearTimeout($this.trayTimeoutId);
+            $('#tray').show();
+            $this.trayTimeoutId = window.setTimeout(function(){$('#tray').hide()}, $this.trayTimeout);
+          }
+          $(window).mousemove(triggerTrayTimeout);
+          triggerTrayTimeout();
+        }
+      });
 
 
     // Return a reference

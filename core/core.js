@@ -92,10 +92,7 @@ var PlayerVideo = function(Player,$,type,data){
 Player.provide('core', 
   {
     domain:'reinvent.23video.com',
-    player_id: 0,
-
-    showTray: true,
-    trayTimeout: 0
+    player_id: 0
   }, 
   function(Player,$,opts){
       var $this = this;
