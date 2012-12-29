@@ -13,7 +13,9 @@
 */
 
 Player.provide('big-play-button', 
-  {}, 
+  {
+    showBigPlay: true
+  }, 
   function(Player,$,opts){
     var $this = this;
     $.extend($this, opts);
@@ -21,7 +23,7 @@ Player.provide('big-play-button',
 
     // Get relevant settings
     Player.bind('player:settings', function(e,settings){
-        if(typeof(settings.showBigPlay)!='undefined') $this.showBigPlay = settings.showBigPlay;
+        PlayerUtilities.mergeSettings($this, ['showBigPlay']);
       });
 
     // Update element on play, pause and more
@@ -31,7 +33,7 @@ Player.provide('big-play-button',
 
     /* GETTERS */
     Player.getter('showBigPlay', function(){
-        return (typeof($this.showBigPlay)=='undefined'||($this.showBigPlay&&$this.showBigPlay!='0'));
+        return $this.showBigPlay;
       });
     /* SETTERS */
     Player.setter('showBigPlay', function(sbp){

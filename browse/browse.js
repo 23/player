@@ -16,7 +16,6 @@
    - showBrowse [get/set]
    - browseMode [get/set]
    - recommendationMethod [get]
-   - maxRecommendations [get]
    - hasRecommendations [get]
    - playlistClickMode [get/set]
    - browse_video_id [set]
@@ -86,7 +85,7 @@ Player.provide('browse',
               var opts = (/-new$/.test(Player.get('recommendationMethod')) ? {orderby:'uploaded', order:'desc'} : {orderby:'rank', order:'desc'});
               if(/^channel-/.test(Player.get('recommendationMethod'))) opts['album_id'] = Player.get('video_album_id');
               Player.get('api').photo.list(
-                  $.extend({size:Player.get('maxRecommendations')-1, player_id:Player.get('player_id')}, opts),
+                  $.extend({size:10, player_id:Player.get('player_id')}, opts),
                   function(data){
                       $this.loadedRecommendations = true;
                       $.each(data.photos, function(i,photo){
@@ -138,7 +137,6 @@ Player.provide('browse',
       Player.getter('browseMode', function(){return $this.browseMode});
       Player.getter('recommendationMethod', function(){return $this.recommendationMethod});
       Player.getter('hasRecommendations', function(){return Player.get('clips').length>1});
-      Player.getter('maxRecommendations', function(){return Player.get('settings').maxRecommendations});
       Player.getter('playlistClickMode', function(){return $this.playlistClickMode});
       Player.getter('browseThumbnailWidth', function(){return $this.browseThumbnailWidth});
       Player.getter('browseThumbnailHeight', function(){return $this.browseThumbnailHeight});

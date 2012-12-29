@@ -47,8 +47,6 @@ Player.provide('sharing',
       // Bind to events
       Player.bind('player:settings', function(e,settings){
           PlayerUtilities.mergeSettings($this, ['socialSharing', 'showShare', 'rssLink', 'podcastLink', 'embedCode']);
-          $this.socialSharing = ($this.socialSharing ? true : false);
-          $this.showShare = ($this.showShare ? true : false);
           $this.rssLink = absolutize($this.rssLink||Player.get('url') + '/rss');
           $this.podcastLink = absolutize($this.podcastLink||Player.get('url') + '/podcast');
           $this.embedCode = $this.embedCode||'';

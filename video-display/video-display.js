@@ -39,6 +39,8 @@
   - bufferTime [get]
   - isLive [get]
   - displayDevice [get]
+  - verticalPadding [get]
+  - horizontalPadding [get]
 
   Liquid filters:
   - formatTime: Formats number of seconds as a nice readable timestamp
@@ -48,7 +50,10 @@ Player.provide('video-display',
   {
     className:'video-display',
     displayDevice:'html5',
-    quality: ''
+    quality: '',
+    autoPlay: false,
+    verticalPadding:0,
+    horizontalPadding:0
   }, 
   function(Player,$,opts){
       var $this = this;
@@ -138,6 +143,12 @@ Player.provide('video-display',
             }
           });
       }
+
+      // Merge in player settings
+      Player.bind('player:settings', function(e,s){
+          PlayerUtilities.mergeSettings($this, ['autoPlay', 'verticalPadding', 'horizontalPadding']);
+          $this.container.css({left:$this.horizontalPadding+'px', bottom:$this.verticalPadding+'px'});
+      });
       
       $this._currentTime = false;
       $this.loadContent = function(){
@@ -186,7 +197,7 @@ Player.provide('video-display',
           Player.set('quality', 'standard');
         }
         
-        if(s.autoPlay||s.loop) {
+        if($this.autoPlay) {
           // Might want to autoPlay it
           Player.set('playing', true);
         } else {
@@ -285,6 +296,13 @@ Player.provide('video-display',
       Player.getter('videoElement', function(){
           return $this.video;
       });
+      Player.getter('horizontalPadding', function(){
+          return $this.horizontalPadding;
+      });
+      Player.getter('verticalPadding', function(){
+          return $this.verticalPadding;
+      });
+
       
       return $this;
   }

@@ -92,22 +92,10 @@ var PlayerVideo = function(Player,$,type,data){
 Player.provide('core', 
   {
     domain:'reinvent.23video.com',
-    start: 0,
     player_id: 0,
 
     showTray: true,
-    showDescriptions: true,
-    showBigPlay: true,
-    trayTimeout: 0,
-    infoTimeout: 5000,
-    lowBandwidthThresholdKbps: 0,
-    enableSubtitles: true,
-    subtitlesOnByDefault: false,
-    subtitlesDesign: 'bars',
-    autoPlay: false,
-    loop: false,
-
-    maxRecommendations:10
+    trayTimeout: 0
   }, 
   function(Player,$,opts){
       var $this = this;
@@ -166,7 +154,7 @@ Player.provide('core',
           $this.clips = [];
           methods.push({
               method:'/api/photo/list',
-              data:$.extend({size:$this.maxRecommendations}, Player.parameters, {player_id:$this.settings.player_id}),
+              data:$.extend({size:10}, Player.parameters, {player_id:$this.settings.player_id}),
               callback: function(data){
                   $.each(data.photos, function(i,photo){
                       $this.clips.push(new PlayerVideo(Player,$,'clip',photo));

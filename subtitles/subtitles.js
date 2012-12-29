@@ -23,7 +23,11 @@
 */
 
 Player.provide('subtitles', 
-  {},
+  {
+    enableSubtitles: true,
+    subtitlesOnByDefault: false,
+    subtitlesDesign: 'bars'
+  },
   function(Player,$,opts){
       var $this = this;
       $.extend($this, opts);
@@ -31,8 +35,6 @@ Player.provide('subtitles',
       // Properties
       var _reset = function(){
         Player.set('subtitles', '');
-        $this.enableSubtitles = true;
-        $this.hasSubtitles = false;
         $this.locales = {};
         $this.subtitleLocale = '';
         $this.subtitles = [];
@@ -55,9 +57,10 @@ Player.provide('subtitles',
         });
       Player.getter('subtitleLocale', function(){return $this.subtitleLocale;});
       /* SETTERS */
-      Player.setter('subtitleLocale', function(es){
+      Player.setter('enableSubtitles', function(es){
           $this.enableSubtitles = es;
           $this.render();
+          Player.fire('player:subtitlechange');
         });
       Player.setter('subtitleLocale', function(sl){
           if($this.locales[sl]) {
@@ -88,9 +91,11 @@ Player.provide('subtitles',
       // Listens to events and rerenders accordingly
       var _onByDefault = false;
       Player.bind('player:settings', function(e,s){
+          PlayerUtilities.mergeSettings($this, ['enableSubtitles', 'subtitlesOnByDefault', 'subtitlesDesign']);
           $this.container.removeClass('design-bars').removeClass('design-outline');
-          $this.container.addClass('design-' + s.subtitlesDesign||'bars');
+          $this.container.addClass('design-' + $this.subtitlesDesign||'bars');
           _onByDefault = s.subtitlesOnByDefault||false;
+          Player.fire('player:subtitlechange');
         });
       Player.bind('player:video:progress player:video:timeupdate player:video:seeked', function(e,o){
           $this.possiblyRender();
