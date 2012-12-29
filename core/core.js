@@ -28,6 +28,7 @@
   - video_photo_id [get]
   - video_tree_id [get]
   - video_token [get]
+  - video_album_id [get]
   - video_one [get]
 
 */
@@ -108,6 +109,8 @@ Player.provide('core',
     playlistClickMode:'link',
     autoPlay: false,
     loop: false,
+      
+    numRecommendations:10
   }, 
   function(Player,$,opts){
       var $this = this;
@@ -150,18 +153,6 @@ Player.provide('core',
               }
           });
 
-          // Load on-demand clips
-          $this.clips = [];
-          methods.push({
-              method:'/api/photo/list',
-              data:$.extend(Player.parameters, {player_id:$this.settings.player_id}),
-              callback: function(data){
-                  $.each(data.photos, function(i,photo){
-                      $this.clips.push(new PlayerVideo(Player,$,'clip',photo));
-                  });
-              }
-          });
-
           // Load live streams
           $this.streams = [];
           methods.push({
@@ -174,8 +165,40 @@ Player.provide('core',
               }
           });
 
+          // Load on-demand clips
+          $this.clips = [];
+          methods.push({
+              method:'/api/photo/list',
+              data:$.extend({size:$this.numRecommendations}, Player.parameters, {player_id:$this.settings.player_id}),
+              callback: function(data){
+                  $.each(data.photos, function(i,photo){
+                      $this.clips.push(new PlayerVideo(Player,$,'clip',photo));
+                  });
+              }
+          });
+
           // Call the API
           $this.api.concatenate(methods, callback, Player.fail)
+      }
+
+      $this.loadRecommendations = function(callback){
+          // If we're looking at a single video, load some recommendations as well
+          if($this.clips.length==1) {              
+              var opts = (/-new$/.test($this.recommendationMethod) ? {orderby:'uploaded', order:'desc'} : {orderby:'rank', order:'desc'});
+              if(/^channel-/.test($this.recommendationMethod)) opts['album_id'] = $this.clips[0].album_id;
+              $this.api.photo.list(
+                  $.extend({size:$this.numRecommendations-1, player_id:$this.settings.player_id}, opts),
+                  function(data){
+                      $.each(data.photos, function(i,photo){
+                          $this.clips.push(new PlayerVideo(Player,$,'clip',photo));
+                      });
+                      callback();
+                  },
+                  Player.fail
+              );
+          } else {
+              callback();
+          }
       }
 
       /* SETTERS */
@@ -208,6 +231,7 @@ Player.provide('core',
       Player.getter('video_type', function(){return $this.video.type||'';});
       Player.getter('video_tree_id', function(){return $this.video.tree_id||'';});
       Player.getter('video_token', function(){return $this.video.token||'';});
+      Player.getter('video_album_id', function(){return $this.video.album_id||'';});
       Player.getter('video_one', function(){return $this.video.one||'';});
       Player.getter('video_base_url', function(){return $this.url + '/' + $this.video.tree_id + '/' + $this.video.photo_id + '/' + $this.video.token + '/';});
       Player.getter('video_aspect_ratio', function(){return ($this.video.video_medium_width||1) / ($this.video.video_medium_height||1);});
@@ -223,9 +247,11 @@ Player.provide('core',
       $this.bootstrap = function(){
           Player.fire('player:init');
           $this.load(function(){
-              $this.loaded = true;
-              Player.fire('player:loaded');
-              if($this.clips.length>0) $this.clips[0].switchTo();
+              $this.loadRecommendations(function(){
+                  $this.loaded = true;
+                  Player.fire('player:loaded');
+                  if($this.clips.length>0) $this.clips[0].switchTo();
+              });
           });
       }
       $this.bootstrap();
