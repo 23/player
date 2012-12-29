@@ -129,11 +129,14 @@ Player.provide('core',
       $this.clips = [];
 
       // METHODS FOR BOOSTRAPPING
-      // Load settings for the player from 23 Video
-      $this.loadSettings = function(callback){
-          $this.api.player.settings(
-              {player_id:$this.settings.player_id, params:Player.parametersString},
-              function(data){
+      $this.load = function(callback){
+          var methods = [];
+
+          // Load settings for the player from 23 Video
+          methods.push({
+              method:'/api/player/settings',
+              data:{player_id:$this.settings.player_id, params:Player.parametersString},
+              callback: function(data){
                   // Merge in settings API, then from player parameter
                   $.extend($this.settings, data.settings);
                   $this.settings = $.extend(opts, Player.parameters);
@@ -142,40 +145,37 @@ Player.provide('core',
                       if(v=='f'||v=='false') $this.settings[i]=false;
                       if(v=='t'||v=='true') $this.settings[i]=true;
                       if(!isNaN(v)) $this.settings[i]=new Number(v)+0;
-                    });
+                  });
                   Player.fire('player:settings', $this.settings)
-                  callback();
-              },
-              Player.fail
-          );
-      }
-      // Load on-demand clips
-      $this.loadClips = function(callback){
+              }
+          });
+
+          // Load on-demand clips
           $this.clips = [];
-          $this.api.photo.list(
-              $.extend(Player.parameters, {player_id:$this.settings.player_id, include_related_p:1}),
-              function(data){
+          methods.push({
+              method:'/api/photo/list',
+              data:$.extend(Player.parameters, {player_id:$this.settings.player_id}),
+              callback: function(data){
                   $.each(data.photos, function(i,photo){
                       $this.clips.push(new PlayerVideo(Player,$,'clip',photo));
                   });
-                  callback();
-              },
-              Player.fail
-          );
-      }
-      // Load live streams
-      $this.loadStreams = function(callback){
+              }
+          });
+
+          // Load live streams
           $this.streams = [];
-          $this.api.liveevent.stream.list(
-              $.extend(Player.parameters, {player_id:$this.settings.player_id, include_related_p:1}),
-              function(data){
+          methods.push({
+              method:'/api/liveevent/stream/list',
+              data:$.extend(Player.parameters, {player_id:$this.settings.player_id}),
+              callback: function(data){
                   $.each(data.streams, function(i,stream){
                       $this.streams.push(new PlayerVideo(Player,$,'stream',stream));
                   });
-                  callback();
-              },
-              Player.fail
-          );
+              }
+          });
+
+          // Call the API
+          $this.api.concatenate(methods, callback, Player.fail)
       }
 
       /* SETTERS */
@@ -222,14 +222,10 @@ Player.provide('core',
       // Load the player
       $this.bootstrap = function(){
           Player.fire('player:init');
-          $this.loadSettings(function(){
-              $this.loadClips(function(){
-                  $this.loadStreams(function(){
-                      $this.loaded = true;
-                      Player.fire('player:loaded');
-                      if($this.clips.length>0) $this.clips[0].switchTo();
-                  });
-              });
+          $this.load(function(){
+              $this.loaded = true;
+              Player.fire('player:loaded');
+              if($this.clips.length>0) $this.clips[0].switchTo();
           });
       }
       $this.bootstrap();
