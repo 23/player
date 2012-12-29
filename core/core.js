@@ -191,6 +191,14 @@ Player.provide('core',
           $this.settings = s;
           Player.fire('player:settings', $this.settings)
       });
+      Player.setter('video_photo_id', function(vpi){
+          $.each($this.clips, function(i,c){
+              if(c.photo_id==vpi) {
+                c.switchTo();
+                return;
+              }
+            });
+        });
 
       /* GETTERS */
       Player.getter('player_id', function(){return $this.settings.player_id;});

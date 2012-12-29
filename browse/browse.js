@@ -32,8 +32,10 @@ Player.provide('browse',
 
       $this.loadedRecommendations = false;
       $this.loadRecommendations = function(){
+          if ($this.loadedRecommendations || !Player.get('showBrowse')) return; 
+
           // If we're looking at a single video, load some recommendations as well
-          if(!$this.loadedRecommendations && Player.get('clips').length==1 && Player.get('showBrowse')) {
+          if(Player.get('clips').length==1) {
               var opts = (/-new$/.test(Player.get('recommendationMethod')) ? {orderby:'uploaded', order:'desc'} : {orderby:'rank', order:'desc'});
               if(/^channel-/.test(Player.get('recommendationMethod'))) opts['album_id'] = Player.get('video_album_id');
               Player.get('api').photo.list(
@@ -48,15 +50,27 @@ Player.provide('browse',
                   },
                   Player.fail
               );
+          } else {
+              Player.fire('player:browse:loaded');
+              Player.fire('player:browse:updated');
           }
       }
 
 
       // Bind to events
+      $this.firstLoad = true;
       Player.bind('player:video:loaded', function(){
-          PlayerUtilities.mergeSettings($this, ['showBrowse', 'browseMode', 'recommendationMethod', 'playlistClickMode']);
-          $this.loadRecommendations();
+          if($this.firstLoad) {
+              PlayerUtilities.mergeSettings($this, ['showBrowse', 'browseMode', 'recommendationMethod', 'playlistClickMode']);
+              $this.loadRecommendations();
+              $this.firstLoad = false;
+          } else {
+              Player.set('browseMode', false);
+          }
         });
+      Player.bind('player:video:playing', function(){
+          Player.set('browseMode', false);
+      });
 
       // Render on browse update
       Player.bind('player:browse:updated', function(){

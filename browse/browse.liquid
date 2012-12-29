@@ -1,3 +1,12 @@
 {% if browseMode and hasRecommendations %}
-   BROWSING
+  <div class="share-recommendations">
+    {% for clip in clips %}
+      {% if forloop.index > 1 %}
+      <div class="share-recommendation share-recommendation-{{forloop.index0}}" click="$set:video_photo_id:{{clip.photo_id}};$set:playing:true">
+        <img src="{{url}}{{clip.medium_download}}" />
+        <p>{{clip.title}}</p>
+      </div>
+      {% endif %}
+    {% endfor %}
+   </div>
 {% endif %}
