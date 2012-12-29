@@ -5,6 +5,8 @@
    Listens for:
    - player:video:loaded: The main video was loaded, possible load recommendations
    - player:settings: Update settings
+   - player:loaded
+   - player:video:playing
 
    Fires:
    - player:browse:updated
@@ -17,6 +19,7 @@
    - maxRecommendations [get]
    - hasRecommendations [get]
    - playlistClickMode [get/set]
+   - browse_video_id [set]
 */
 
 Player.provide('browse', 
@@ -24,12 +27,56 @@ Player.provide('browse',
     showBrowse: true,
     browseMode: false,
     recommendationMethod: 'channel-popular',
-    playlistClickMode:'link'
+    playlistClickMode:'inline',
+    browseThumbnailWidth:120,
+    browseThumbnailHeight:68
   },
   function(Player,$,opts){
       var $this = this;
       $.extend($this, opts);
 
+      // Render the browse interface and enable a simple carousel
+      $this.build = function(){
+          // Find the relavant elements in the template
+          $this.browseLeft = $($this.container).find('.browse-left');
+          $this.browseRight = $($this.container).find('.browse-right');
+          $this.browseContainer = $($this.container).find('.browse-container');
+          $this.browseItems = $($this.container).find('.browse-recommendations');
+
+          if($this.browseLeft && $this.browseRight && $this.browseContainer && $this.browseItems) {
+              $this.browseLeft.click(function(){$this.scroll(-1);});
+              $this.browseRight.click(function(){$this.scroll(+1);});
+              $this.handleScrollThumbs();
+          }
+      }
+      $this.handleScrollThumbs = function(){
+          try {
+              var itemsWidth = $this.browseItems.width();
+              if(itemsWidth==0) {
+                  window.setTimeout($this.handleScrollThumbs, 800);
+                  return;
+              }
+              var itemsLeft = $this.browseItems.position()['left'];
+              var containerWidth = $this.browseContainer.width();
+              $this.browseLeft.toggle( itemsLeft < 0);
+              $this.browseRight.toggle( itemsLeft > (itemsWidth-containerWidth)*-1 );
+          }catch(e){}
+      }
+      $this.scroll = function(direction){
+          try {
+              var itemsWidth = $this.browseItems.width();
+              var itemsLeft = $this.browseItems.position()['left'];
+              var containerWidth = $this.browseContainer.width();
+              var newLeft = itemsLeft + ((direction*containerWidth)*-1); // scroll by a full screen
+              newLeft = Math.min(0, Math.max(newLeft, (itemsWidth-containerWidth)*-1)); // then enforce min and max
+              $this.browseItems.animate({left:newLeft+'px'}, function(){
+                  $this.handleScrollThumbs();
+              });
+          }catch(e){}
+      }
+      $(window).bind('load resize', $this.handleScrollThumbs);
+
+      // Load recommendations through the API
       $this.loadedRecommendations = false;
       $this.loadRecommendations = function(){
           if ($this.loadedRecommendations || !Player.get('showBrowse')) return; 
@@ -72,9 +119,18 @@ Player.provide('browse',
           Player.set('browseMode', false);
       });
 
+      // Build a specific thumbnail for the browse pane
+      Player.bind('player:loaded player:browse:loaded', function(){
+          var c = Player.get('clips');
+          $.each(c, function(i){
+              c[i].browseThumbnailUrl = '/' + c[i].tree_id + '/' + c[i].photo_id + '/' + c[i].token + '/' + $this.browseThumbnailWidth + 'x' + $this.browseThumbnailHeight + 'cr/thumbnail.jpg';
+          });
+          Player.fire('player:browse:updated');
+        });
+
       // Render on browse update
       Player.bind('player:browse:updated', function(){
-          $this.render();
+          $this.render($this.build);
         });
 
       /* GETTERS */
@@ -84,7 +140,9 @@ Player.provide('browse',
       Player.getter('hasRecommendations', function(){return Player.get('clips').length>1});
       Player.getter('maxRecommendations', function(){return Player.get('settings').maxRecommendations});
       Player.getter('playlistClickMode', function(){return $this.playlistClickMode});
-     
+      Player.getter('browseThumbnailWidth', function(){return $this.browseThumbnailWidth});
+      Player.getter('browseThumbnailHeight', function(){return $this.browseThumbnailHeight});
+
       /* SETTERS */
       Player.setter('showBrowse', function(sb){
           $this.showBrowse = sb;
@@ -93,6 +151,14 @@ Player.provide('browse',
       Player.setter('browseMode', function(bm){
           $this.browseMode = bm;
           Player.fire('player:browse:updated');
+        });
+      Player.setter('browse_photo_id', function(id){
+          if(Player.get('playlistClickMode')=='link') {
+              Player.set('open_photo_id', id);
+          } else {
+              Player.set('video_photo_id', id);
+              Player.set('playing', true);
+          }
         });
 
       return $this;

@@ -26,12 +26,12 @@
   - streams [get]
   - video_title [get]
   - video_content [get]
-  - video_photo_id [get]
+  - video_photo_id [get/set]
   - video_tree_id [get]
   - video_token [get]
   - video_album_id [get]
   - video_one [get]
-
+  - open_photo_id [set]
 */
 
 // PlayerVideo is an object type for both on-demand clips and live streams.
@@ -195,6 +195,14 @@ Player.provide('core',
           $.each($this.clips, function(i,c){
               if(c.photo_id==vpi) {
                 c.switchTo();
+                return;
+              }
+            });
+        });
+      Player.setter('open_photo_id', function(opi){
+          $.each($this.clips, function(i,c){
+              if(c.photo_id==opi) {
+                window.open(Player.get('url') + c.one);
                 return;
               }
             });
