@@ -1,0 +1,37 @@
+{
+    "name":"player",
+    "object":"Player",
+    "bootstrapModule":"design",
+
+    "glueLocation": "../glue/",
+    "dependencies": [
+        "http://videos.23video.com/resources/um/script/swfobject/swfobject.js",
+        "../eingebaut/eingebaut.js",
+        "../visualplatform.js/visualplatform.js"
+    ],
+
+    "modules": [
+        "core",
+        "status-display",
+        "analytics",
+        "sharing",
+        "social-button",
+        "video-display",
+        "logo", 
+        "scrubber",
+        "subtitles",
+        "sections",
+        "big-play-button",
+        "play-button",
+        "volume-button",
+        "share-button",
+        "browse-button",
+        "browse",
+        "fullscreen-button",
+        "subtitle-button",
+        "quality-button",
+        "info",
+        "playflow",
+        "design"
+    ]
+}
