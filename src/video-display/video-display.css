@@ -4,6 +4,7 @@
     left:0;
     bottom:0; 
     right:0;
+    background-color:black; /* this is needed for fullscreen to have a black background in webkit fullscreen */
 }
 .video-display .video-canvas {
     position:absolute; 
