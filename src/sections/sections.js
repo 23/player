@@ -23,7 +23,7 @@ Player.provide('sections',
       // Load some list of available sections
       // Uses the /api/photo/section/list API endpoint
       Player.bind('player:video:loaded', function(e,v){
-          $this.sections = [];
+          Player.set('sections', []);
           if(typeof(v.sections_p)!='undefined' && v.sections_p) {
             Player.get('api').photo.section.list(
                 {photo_id:Player.get('video_photo_id'), token:Player.get('video_token')},
