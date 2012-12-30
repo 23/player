@@ -91,7 +91,7 @@ var PlayerVideo = function(Player,$,type,data){
 
 Player.provide('core', 
   {
-    domain:'reinvent.23video.com',
+    domain:'',
     player_id: 0
   }, 
   function(Player,$,opts){
@@ -106,7 +106,15 @@ Player.provide('core',
           if(v=='1') $this.settings[i]=1;
           if(v=='t'||v=='true') $this.settings[i]=true;
         });
-      $this.domain = $this.settings.domain
+
+      // Build domain
+      if($this.domain=='') $this.domain = document.domain;
+      if(document.domain=='localhost') $this.domain = 'reference.dev.visualtube.net';
+      // Build player_id if we're loadin for examaple 1234.ithml
+      if($this.player_id==0) {
+          var p=location.pathname.match(/\/([0-9]+)\.i?html$/);
+          if(p) $this.player_id = p[1];
+      }
       $this.url = 'http://' + $this.domain;
       $this.api = new Visualplatform($this.domain);
       $this.video = null;
