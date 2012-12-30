@@ -25,12 +25,21 @@ Player.provide('scrubber',
       $this.render(function(){
           // Find the relavant elements in the template
           $this.scrubber = $($this.container).find('.scrubber');
+          $this.scrubberContainer = $($this.container).find('.scrubber-container');
           $this.bufferContainer = $($this.container).find('.scrubber-buffer');
           $this.playContainer = $($this.container).find('.scrubber-play');
           $this.handleContainer = $($this.container).find('.scrubber-handle');
           $this.timeContainer = $($this.container).find('.scrubber-time');
           $this.thumbnailContainer = $($this.container).find('.scrubber-thumbnail');
-          
+
+          // Giver a class to indicate that the mouse of over the scrubber
+          $this.scrubberContainer.mouseenter(function(){
+              $this.scrubberContainer.addClass('hover').addClass('scrubber-container-hover');
+          });
+          $this.scrubberContainer.mouseleave(function(){
+              $this.scrubberContainer.removeClass('hover').removeClass('scrubber-container-hover');
+          });
+
           // Handle clicks on the time line
           $this.scrubber.click(function(e){
               var duration = Player.get('duration');
@@ -104,6 +113,7 @@ Player.provide('scrubber',
 
           // Update time labels
           $this.render(function(){}, 'scrubber/scrubber-time.liquid', $this.timeContainer);
+          $this.render(function(){}, 'scrubber/scrubber-handle.liquid', $this.handleContainer);
 
           // Update buffer and play progress
           try {
@@ -152,7 +162,7 @@ Player.provide('scrubber',
       // PROPERTIES
       // scrubberTime
       Player.getter('scrubberTime', function(){
-          return $this.scrubberTime;
+          return $this.scrubberTime||'';
       });
 
 

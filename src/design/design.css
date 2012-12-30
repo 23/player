@@ -170,11 +170,19 @@ table.tray-navigation {
     background-color:#eee;
 }
 .scrubber-handle {
+    display:none;
     position:absolute;
-    top:0;
-    width:6px;
-    height:100%;
+    top:-5px;
     background-color:#eee;
+    border-radius:3px;
+    font-size:9px;
+    line-height:9px;
+    color:#333;
+    padding:4px 4px 2px 4px;
+    z-index:10;
+}
+.scrubber-container-hover .scrubber-handle {
+    display:block;
 }
 .scrubber-time {
     display:none;

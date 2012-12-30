@@ -1,0 +1,5 @@
+{% if scrubberTime != empty %}
+  {{scrubberTime|formatTime}}
+{% else %}
+  {{currentTime|formatTime}}
+{% endif %}
