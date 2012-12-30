@@ -1,9 +1,10 @@
-/* RESET */
-body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td{margin:0;padding:0;}table{border-collapse:collapse;border-spacing:0;}fieldset,img{border:0;}address,caption,cite,code,dfn,em,strong,th,var{font-style:normal;font-weight:normal;}ol,ul {list-style:none;}caption,th {text-align:left;}h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:normal;}q:before,q:after{content:'';}abbr,acronym {border:0;}
+/* ========================= BROWSER RESET ======================== */
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td{margin:0;padding:0;}table{border-collapse:collapse;border-spacing:0;}fieldset,img{border:0;}address,caption,cite,code,dfn,em,strong,th,var{font-style:normal;font-weight:normal;}ol,ul {list-style:none;}caption,th {text-align:left;}h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:normal;}q:before,q:after{content:'';}abbr,acronym {border:0;}* focus, video, object, player, embed {outline:none}* {-webkit-user-select:none; -moz-user-select:none; -ms-user-select:none; -o-user-select:none; user-select:none;}iframe{border:0}
 
-* focus, video, object, player, embed {outline:none}
-* {-webkit-user-select:none; -moz-user-select:none; -ms-user-select:none; -o-user-select:none; user-select:none;}
 
+
+
+/* ========================= GENERAL TAGS ======================== */
 a img {border:0;}
 body {
     margin:0; 
@@ -17,29 +18,12 @@ h1 {
     line-height:40px;
 }
 
-/* TRAY */
-#tray { /* tray position */
-    position:absolute;
-    bottom:10px;
-    left:10px;
-    right:10px;
-}
-.tray-right { /* right-hand side */
-    position:absolute;
-    right:0;
-}    
-.tray-scrubber { /* scrubber position */
-    position:absolute;
-    width:100%;
-    left:55px;
-    top:-5px;
-}
-.tray-button { /* buttons positioning  */
-    float:left;
-    margin-right:10px;
-}
 
-/* BUTTONS */
+
+
+/* ========================= GENERIC CLASSES ======================== */
+
+/* === buttons === */
 div.button { /* standard button design */
     height:28px;
     width:50px;
@@ -90,11 +74,42 @@ a.button { /* standard button design as a straight link */
     padding:0 8px;
     text-decoration:none;
 }
+/* === /buttons === */
 
 
 
 
-/* SHARING */
+/* ========================= OVERALL GRID ======================== */
+
+/* === tray === */
+#tray { /* tray position */
+    position:absolute;
+    bottom:10px;
+    left:10px;
+    right:10px;
+}
+.tray-right { /* right-hand side */
+    position:absolute;
+    right:0;
+}    
+.tray-scrubber { /* scrubber position */
+    position:absolute;
+    width:100%;
+    left:55px;
+    top:-5px;
+}
+.tray-button { /* buttons positioning  */
+    float:left;
+    margin-right:10px;
+}
+/* === /tray === */
+
+
+
+
+/* ========================= INDIVIDUAL MODULES ======================== */
+
+/* === Module: Sharing === */
 #tray .player-sharing {
     position:absolute;
     bottom:40px;
@@ -122,8 +137,10 @@ table.share-embed input {
     height:20px;
     padding:3px;
 }
+/* === /Sharing === */
 
-/* SCRUBBER */
+
+/* === Module: Scrubber === */
 .scrubber-container {
     position:absolute; 
     top:10px;
@@ -171,8 +188,9 @@ table.share-embed input {
     background-repeat: 'no-repeat';
     display:none;
 }
+/* === /Sharing === */
 
-/* SECTIONS */
+/* === Module: Sections === */
 .sections {
     position:absolute; 
     top:10px;
@@ -193,8 +211,9 @@ table.share-embed input {
 .section-title {
     display:none;
 }
+/* === /Sections === */
 
-/* INFO & DESCRIPTION */
+/* === Module: Info === */
 .info-pane {
     position:absolute;
     top:2px;
@@ -203,9 +222,9 @@ table.share-embed input {
 .info-description {
     display:none;
 }
+/* === /Info === */
 
-/* BROWSE/RECOMMENDATIONS INTERFACE */
-
+/* === Module: Browse === */
 /* Place the browse pane within the player */
 .player-browse {
     position:absolute;
@@ -263,3 +282,4 @@ table.browse-recommendations div {
     height:32px;
     overflow:hidden;
 }
+/* === /Browse === */
