@@ -92,3 +92,174 @@ a.button { /* standard button design as a straight link */
 }
 
 
+
+
+/* SHARING */
+#tray .player-sharing {
+    position:absolute;
+    bottom:40px;
+    left:0;
+    right:30px;
+}
+table.share-embed {
+    width:100%;
+}
+table.share-embed {
+    width:100%;
+}
+table.share-embed td {
+    padding-right:10px;
+    white-space:nowrap;
+}
+table.share-embed td.embed-code  {
+    width:100%;
+    padding-right:0;
+}
+table.share-embed input {
+    width:100%;
+    line-height:20px;
+    font-size:12px;
+    height:20px;
+    padding:3px;
+}
+
+/* SCRUBBER */
+.scrubber-container {
+    position:absolute; 
+    top:10px;
+    left:10px;
+    width:50%;
+    background-color:#ddd;
+    height:8px;
+    border-radius:4px;
+    box-shadow:1px 1px black 0.8;
+}
+.scrubber-buffer, .scrubber-play {
+    border-radius:4px;
+    position:absolute; 
+    top:0;
+    left:0;
+    height:100%;
+    width:0;
+}
+.scrubber-buffer {
+    background-color:#333;
+    opacity:.1;
+}
+.scrubber-play {
+    background-color:green;
+    opacity:.8;
+}
+.scrubber-handle {
+    height:12px;
+    width:8px;
+    background-color:green;
+    position:absolute;
+    top:-3px;
+    border:1px solid white;
+}
+.scrubber-time {
+    position:absolute; 
+    top:20px;
+    left:10px;
+}
+.scrubber-thumbnail {
+    position:absolute;
+    bottom:25px;
+    border-radius:2px;
+    border:2px solid white;
+    background-repeat: 'no-repeat';
+    display:none;
+}
+
+/* SECTIONS */
+.sections {
+    position:absolute; 
+    top:10px;
+    left:10px;
+    width:50%;
+}
+.section {
+    position:absolute; 
+    top:0;
+    width:8px;
+    height:8px; 
+    margin:-1px 0 0 -5px;
+    border:1px solid black;
+    background-color:white;
+    border-radius:5px;
+    cursor:pointer;
+}
+.section-title {
+    display:none;
+}
+
+/* INFO & DESCRIPTION */
+.info-pane {
+    position:absolute;
+    top:2px;
+    left:10px;
+}
+.info-description {
+    display:none;
+}
+
+/* BROWSE/RECOMMENDATIONS INTERFACE */
+
+/* Place the browse pane within the player */
+.player-browse {
+    position:absolute;
+    bottom:40px;
+    left:0;
+    right:0;
+}
+.player-browse #browse {
+    padding:10px 0;
+    background-color:green;
+}
+
+/* Place left and right browsing with a carousel in the middle */
+.browse-container, .browse-left, .browse-right {
+    height:105px;
+    overflow:hidden;
+}
+.browse-left, .browse-right {
+    position:absolute;
+    top:0;
+    width:30px;
+    cursor:pointer;
+}
+.browse-left {
+    left:0;
+}
+.browse-right {
+    right:0;
+}
+.browse-container {
+    position:relative;
+    margin:0 30px;
+}
+
+/* Thumbnails in a fully standard table, 
+   makes sure we don't need to handle breaking
+   or explicitly set the width */
+table.browse-recommendations {
+    position:absolute;
+    top:0px;
+    left:0px;
+}
+table.browse-recommendations td {
+    width:120px;
+    height:105px;
+    cursor:pointer;
+    padding:0 10px;
+}
+table.browse-recommendations img {
+    width:120px;
+    height:67px;
+}
+table.browse-recommendations div {
+    line-height:16px;
+    height:32px;
+    overflow:hidden;
+}
