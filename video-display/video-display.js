@@ -52,6 +52,7 @@ Player.provide('video-display',
     displayDevice:'html5',
     quality: '',
     autoPlay: false,
+    start:0,
     verticalPadding:0,
     horizontalPadding:0
   }, 
@@ -146,7 +147,7 @@ Player.provide('video-display',
 
       // Merge in player settings
       Player.bind('player:settings', function(e,s){
-          PlayerUtilities.mergeSettings($this, ['autoPlay', 'verticalPadding', 'horizontalPadding']);
+          PlayerUtilities.mergeSettings($this, ['autoPlay', 'start', 'verticalPadding', 'horizontalPadding']);
           $this.container.css({left:$this.horizontalPadding+'px', bottom:$this.verticalPadding+'px'});
       });
       
@@ -190,7 +191,7 @@ Player.provide('video-display',
             $this.qualities['hd'] = {format:'video_webm_720p', codec:'webm', displayName:'HD', displayQuality:'720p', source:Player.get('url') + v.video_webm_720p_download}; 
         }
         Player.fire('player:video:qualitychange');
-        $this._currentTime = 0;
+        $this._currentTime = $this.start;
         if($this.qualities[$this.quality]) {
           Player.set('quality', $this.quality);
         }else{
