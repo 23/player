@@ -14,7 +14,7 @@
 Player.provide('info', 
   {
     showDescriptions: true,
-    infoTimeout: 0
+    infoTimeout: 5000
   },
   function(Player,$,opts){
       var $this = this;
@@ -30,7 +30,7 @@ Player.provide('info',
           $this.render();
           
           if($this.infoTimeout>0) {
-            setTimeout(function(){$this.container.hide(500)}, $this.infoTimeout);
+            setTimeout(function(){$this.container.hide()}, $this.infoTimeout);
           }
         });
 

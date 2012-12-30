@@ -24,7 +24,7 @@ Player.provide('scrubber',
       $this.scrubberTime = null;
       $this.render(function(){
           // Find the relavant elements in the template
-          $this.scrubberContainer = $($this.container).find('.scrubber-container');
+          $this.scrubber = $($this.container).find('.scrubber');
           $this.bufferContainer = $($this.container).find('.scrubber-buffer');
           $this.playContainer = $($this.container).find('.scrubber-play');
           $this.handleContainer = $($this.container).find('.scrubber-handle');
@@ -32,29 +32,29 @@ Player.provide('scrubber',
           $this.thumbnailContainer = $($this.container).find('.scrubber-thumbnail');
           
           // Handle clicks on the time line
-          $this.scrubberContainer.click(function(e){
+          $this.scrubber.click(function(e){
               var duration = Player.get('duration');
               if(isNaN(duration)||duration<=0) {
                   Player.set('playing', true);
               } else {
                   var offsetX = e.pageX - $(e.target).offsetParent().offset().left;
-                  Player.set('currentTime', offsetX / $this.scrubberContainer.width() * duration);
+                  Player.set('currentTime', offsetX / $this.scrubber.width() * duration);
                   Player.set('playing', true);
               }
           });
 
           // Show thumbs
-          $this.scrubberContainer.mousemove(function(e){
+          $this.scrubber.mousemove(function(e){
               if (!Player.get('video_has_frames')) {
                   $this.thumbnailContainer.hide();
                   return;
               }
               
               var offsetX = e.pageX - $(e.target).offsetParent().offset().left;
-              var playhead = offsetX/$this.scrubberContainer.width() * Player.get('duration');
+              var playhead = offsetX/$this.scrubber.width() * Player.get('duration');
               $this.showFrame(playhead);
           });
-          $this.scrubberContainer.mouseleave(function(e){
+          $this.scrubber.mouseleave(function(e){
               if($this.scrubberTime==null) {
                   $this.thumbnailContainer.hide();
               }
@@ -69,8 +69,8 @@ Player.provide('scrubber',
               $(window).mousemove(function(e){
                   if($this.scrubberTime!==null) {
                       // Update $this.scrubberTime based on the dragging
-                      var scrubberLeft = $this.scrubberContainer.offset()['left'];
-                      var scrubberWidth = $this.scrubberContainer.width();
+                      var scrubberLeft = $this.scrubber.offset()['left'];
+                      var scrubberWidth = $this.scrubber.width();
                       var x = Math.max(0, Math.min(e.clientX-scrubberLeft, scrubberWidth)); 
                       $this.scrubberTime = x/scrubberWidth * Player.get('duration');
                       // Set the frame
@@ -113,7 +113,7 @@ Player.provide('scrubber',
               $this.playContainer.css({width:(100.0*Player.get('currentTime')/duration)+'%'});
           }catch(e){}
           try {
-              $this.handleContainer.css({left: (($this.scrubberTime||Player.get('currentTime'))/duration * $this.scrubberContainer.width()) - ($this.handleContainer.width()/2) +'px'});
+              $this.handleContainer.css({left: (($this.scrubberTime||Player.get('currentTime'))/duration * $this.scrubber.width()) - ($this.handleContainer.width()/2) +'px'});
           }catch(e){}
       }
       $this.showFrame = function(playhead) {
@@ -123,7 +123,7 @@ Player.provide('scrubber',
           var frameOffset = frameNumber * Player.get('video_frames_height');
           // Calculate position of the thumbnail display
           var thumbnailWidth = $this.thumbnailContainer.width();
-          var scrubberWidth = $this.scrubberContainer.width();
+          var scrubberWidth = $this.scrubber.width();
           var positionOffset = (relativePlayhead*scrubberWidth) - (thumbnailWidth/2);
           var positionOffset = Math.max(0, Math.min(positionOffset, scrubberWidth-thumbnailWidth));
           // Position and show the thumbnail container

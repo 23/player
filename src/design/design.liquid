@@ -8,32 +8,31 @@
   <!-- Video display -->
   {% player video-display with "displayDevice":"html5" %}
 
-  <div class="tray-subtitles">{% player subtitles %}</div>
 
   <!-- Control bar or tray -->
-  <div id="info">{% player info %}</div>
   <div id="tray">
-    <div class="tray-left">
-      <div class="tray-button">{% player play-button %}</div>
-    </div>
+    <div class="tray-subtitles">{% player subtitles %}</div>
+    {% player info %}
+
+    <table class="tray-navigation"><tr>
+      <td class="tray-left">
+        <div class="tray-button">{% player play-button %}</div>
+      </td>
     
-    <div class="tray-scrubber">
-      {% player scrubber %}
-      {% player sections %}
-    </div>
+      <td class="tray-scrubber">
+        {% player scrubber %}
+        {% player sections %}
+      </td>
 
-    <div class="tray-right">
-      <div class="tray-button">{% player browse-button %}</div>
-      <div class="tray-button">{% player share-button %}</div>
-      <div class="tray-button">{% player volume-button %}</div>
-      <div class="tray-button">{% player fullscreen-button %}</div>
-      <div class="tray-button">{% player subtitle-button %}</div>
-      <div class="tray-button">{% player quality-button %}</div>
-      <div class="tray-button">{% player social-button with "service":"facebook" %}</div>
-      <div class="tray-button">{% player social-button with "service":"twitter" %}</div>
-      <div class="tray-button">{% player social-button with "service":"tumblr" %}</div>
-    </div>
-
+      <td class="tray-right">
+        <div class="tray-button">{% player browse-button %}</div>
+        <div class="tray-button">{% player share-button %}</div>
+        <div class="tray-button">{% player quality-button %}</div>
+        <div class="tray-button">{% player subtitle-button %}</div>
+        <div class="tray-button">{% player volume-button %}</div>
+        <div class="tray-button">{% player fullscreen-button %}</div>
+      </td>
+    </tr></table>
     {% player sharing %}
     {% player browse %}
   </div>

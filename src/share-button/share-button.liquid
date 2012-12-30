@@ -1,5 +1,5 @@
 {% if socialSharing %}
-<div class="button" click="$toggle:showShare">
+<div class="button share-button {% if showShare %}share-button-off{% else %}share-button-on{% endif %}" click="$toggle:showShare">
   Share
 </div>
 {% endif %}

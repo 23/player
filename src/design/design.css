@@ -14,8 +14,13 @@ body {
     overflow:hidden;
 }
 h1 {
-    font-size:30px;
-    line-height:40px;
+    font-size:15px;
+    line-height:27px;
+    font-weight:bold;
+}
+p {
+    font-size:13px;
+    line-height:18px;
 }
 
 
@@ -25,53 +30,73 @@ h1 {
 
 /* === buttons === */
 div.button { /* standard button design */
-    height:28px;
-    width:50px;
-    border-radius:3px;
-    background-color:#34783d; 
-    color:white;
-    line-height:30px;
-    text-align:center;
     position:relative;
+    height:30px;
+    width:30px;
+    border-radius:2px;
+    background-color:black; 
+    background-position:center center;
+    background-repeat:no-repeat;
+    background-size:30px 30px;
+    opacity:.8;
     cursor:pointer;
+    font-size:0;
+}
+div.button:hover {
+    opacity:1;
 }
 div.button.big { /* big version of same button */
-    height:48px;
-    width:70px;
-    line-height:50px;
-    font-size:20px;
+    height:60px;
+    width:60px;
+    border-radius:3px;
+    background-size:60px 60px;
 }
 div.button ul { /* button menus */
     display:none;
+    opacity:0;
     position:absolute;
     bottom:32px; 
     right:0;
-    background-color:#34783d; 
+    background-color:black; 
     line-height:25px;
     padding:2px 10px;
     text-align:left;
 }
+div.button:hover ul {
+}
 div.activebutton ul { /* active button menus */
     display:block;
+    font-size:11px;
+    line-height:22px;
+    opacity:.8;
 }
 div.button ul li { /* menu items */
     white-space:nowrap;
+    background:url('not-selected-icon.png') -10px -5px no-repeat;
+    background-size:30px 30px;
+    padding-left:14px;
 }
 div.button ul li.hover { /* menu item hover */
-    opacity:.5;
 }
 div.button ul li.selected { /* menu item selected */
-    text-decoration:underline;
+    background-image:url('selected-icon.png');
 }
 a.button { /* standard button design as a straight link */
     display:inline-block; 
     *display:inline; 
     *zoom:1; 
     border-radius:3px;
-    background-color:#34783d; 
-    color:white;
-    line-height:30px;
-    padding:0 8px;
+    border:1px solid #333;
+    height:30px;
+    width:30px;
+    border-radius:2px;
+    background-color:black; 
+    background-position:center center;
+    background-repeat:no-repeat;
+    background-size:30px 30px;
+    opacity:.8;
+    cursor:pointer;
+    font-size:0;
     text-decoration:none;
 }
 /* === /buttons === */
@@ -84,23 +109,29 @@ a.button { /* standard button design as a straight link */
 /* === tray === */
 #tray { /* tray position */
     position:absolute;
-    bottom:10px;
-    left:10px;
-    right:10px;
+    bottom:0;
+    left:0;
+    width:100%;
+}
+table.tray-navigation {
+    margin:2px 0 2px 2px;
+}
+.tray-navigation td {
+    height:30px;
+    white-space:nowrap;
 }
 .tray-right { /* right-hand side */
-    position:absolute;
-    right:0;
+}    
+.tray-left { /* left-hand side */
 }    
 .tray-scrubber { /* scrubber position */
-    position:absolute;
+    position:relative;
     width:100%;
-    left:55px;
-    top:-5px;
+    padding-right:2px;
 }
 .tray-button { /* buttons positioning  */
     float:left;
-    margin-right:10px;
+    margin-right:2px;
 }
 /* === /tray === */
 
@@ -109,50 +140,23 @@ a.button { /* standard button design as a straight link */
 
 /* ========================= INDIVIDUAL MODULES ======================== */
 
-/* === Module: Sharing === */
-#tray .player-sharing {
-    position:absolute;
-    bottom:40px;
-    left:0;
-    right:30px;
-}
-table.share-embed {
-    width:100%;
-}
-table.share-embed {
-    width:100%;
-}
-table.share-embed td {
-    padding-right:10px;
-    white-space:nowrap;
-}
-table.share-embed td.embed-code  {
-    width:100%;
-    padding-right:0;
-}
-table.share-embed input {
-    width:100%;
-    line-height:20px;
-    font-size:12px;
-    height:20px;
-    padding:3px;
-}
-/* === /Sharing === */
-
-
 /* === Module: Scrubber === */
 .scrubber-container {
+    height:30px;
+    background-color:black;
+    background-color:rgba(0,0,0,.8);
+    border-radius:2px;
+}
+.scrubber {
     position:absolute; 
-    top:10px;
+    top:12px;
     left:10px;
-    width:50%;
-    background-color:#ddd;
-    height:8px;
-    border-radius:4px;
-    box-shadow:1px 1px black 0.8;
+    right:10px;
+    height:6px;
+    background-color:#888;
+    cursor:pointer;
 }
 .scrubber-buffer, .scrubber-play {
-    border-radius:4px;
     position:absolute; 
     top:0;
     left:0;
@@ -160,25 +164,21 @@ table.share-embed input {
     width:0;
 }
 .scrubber-buffer {
-    background-color:#333;
-    opacity:.1;
+    background-color:#3e3e3e;
 }
 .scrubber-play {
-    background-color:green;
-    opacity:.8;
+    background-color:#eee;
 }
 .scrubber-handle {
-    height:12px;
-    width:8px;
-    background-color:green;
     position:absolute;
-    top:-3px;
-    border:1px solid white;
+    top:0;
+    width:6px;
+    height:100%;
+    background-color:#eee;
 }
 .scrubber-time {
+    display:none;
     position:absolute; 
-    top:20px;
-    left:10px;
 }
 .scrubber-thumbnail {
     position:absolute;
@@ -195,16 +195,16 @@ table.share-embed input {
     position:absolute; 
     top:10px;
     left:10px;
-    width:50%;
+    right:10px;
 }
 .section {
     position:absolute; 
     top:0;
     width:8px;
     height:8px; 
-    margin:-1px 0 0 -5px;
+    margin:0px 0 0 -4px;
     border:1px solid black;
-    background-color:white;
+    background-color:#ccc;
     border-radius:5px;
     cursor:pointer;
 }
@@ -215,28 +215,57 @@ table.share-embed input {
 
 /* === Module: Info === */
 .info-pane {
-    position:absolute;
-    top:2px;
-    left:10px;
+    margin:0 2px;
+    background-color:black;
+    background-color:rgba(0,0,0,.8);
+    border-radius:3px;
+    padding:5px 10px 8px 10px;
 }
 .info-description {
-    display:none;
 }
 /* === /Info === */
 
+/* === Module: Sharing === */
+.sharing-container {
+    padding:10px 2px;
+    background-color:black;
+    background-color:rgba(0,0,0,.8);
+}
+table.share-embed {
+    width:100%;
+}
+table.share-embed {
+    width:100%;
+}
+table.share-embed td {
+    padding-right:5px;
+    white-space:nowrap;
+}
+table.share-embed td.embed-code  {
+    width:100%;
+    padding-right:0;
+}
+table.share-embed input {
+    width:90%;
+    max-width:400px;
+    line-height:20px;
+    font-size:11px;
+    height:20px;
+    padding:3px;
+    background-color:#ccc;
+    opacity:.8;
+}
+/* === /Sharing === */
+
 /* === Module: Browse === */
 /* Place the browse pane within the player */
-.player-browse {
-    position:absolute;
-    bottom:40px;
-    left:0;
-    right:0;
-}
+.player-browse {}
 .player-browse #browse {
-    padding:10px 0;
-    background-color:green;
+    position:relative;
+    padding:10px 2px;
+    background-color:black;
+    background-color:rgba(0,0,0,.8);
 }
-
 /* Place left and right browsing with a carousel in the middle */
 .browse-container, .browse-left, .browse-right {
     height:105px;
@@ -247,18 +276,23 @@ table.share-embed input {
     top:0;
     width:30px;
     cursor:pointer;
+    background-position:center center;
+    background-repeat:no-repeat;
+    background-size:20px 20px;
+    opacity:.7;
 }
 .browse-left {
     left:0;
+    background-image:url('prev-icon.png');
 }
 .browse-right {
     right:0;
+    background-image:url('next-icon.png');
 }
 .browse-container {
     position:relative;
     margin:0 30px;
 }
-
 /* Thumbnails in a fully standard table, 
    makes sure we don't need to handle breaking
    or explicitly set the width */
@@ -283,3 +317,26 @@ table.browse-recommendations div {
     overflow:hidden;
 }
 /* === /Browse === */
+
+/* === Module: Subtitles === */
+.subtitles-container {
+    margin-bottom:10px;
+}
+/* === Module: /Subtitles === */
+
+
+
+.play-button {background-image:url('play-icon.png');}
+.pause-button {background-image:url('pause-icon.png');}
+.facebook-button {background-image:url('facebook-icon.png');}
+.twitter-button {background-image:url('twitter-icon.png');}
+.google-button {background-image:url('google-icon.png');}
+.site-button {background-image:url('site-icon.png');}
+.browse-button-on {background-image:url('browse-on-icon.png');}
+.browse-button-off {background-image:url('browse-off-icon.png');}
+.share-button {background-image:url('share-icon.png');}
+.volume-button-on {background-image:url('volume-on-icon.png');}
+.volume-button-off {background-image:url('volume-off-icon.png');}
+.fullscreen-button {background-image:url('fullscreen-icon.png');}
+.quality-button {background-image:url('quality-icon.png');}
+.subtitle-button {background-image:url('subtitle-icon.png');}
