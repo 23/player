@@ -1,4 +1,5 @@
 {
+    "glueVersion":"1",
     "name":"player",
     "object":"Player",
     "bootstrapModule":"design",
