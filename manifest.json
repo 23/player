@@ -11,6 +11,7 @@
     ],
 
     "modules": [
+        "design",
         "core",
         "status-display",
         "analytics",
@@ -31,7 +32,6 @@
         "subtitle-button",
         "quality-button",
         "info",
-        "playflow",
-        "design"
+        "playflow"
     ]
 }
