@@ -108,8 +108,8 @@ Player.provide('core',
         });
 
       // Build domain
-      if($this.domain=='') $this.domain = document.domain;
-      if(document.domain=='localhost') $this.domain = 'reference.dev.visualtube.net';
+      if($this.domain=='') $this.domain = $this.settings.domain||document.domain;
+      if($this.domain=='localhost') $this.domain = 'reference.dev.visualtube.net';
       // Build player_id if we're loadin for examaple 1234.ithml
       if($this.player_id==0) {
           var p=location.pathname.match(/\/([0-9]+)\.i?html$/);
