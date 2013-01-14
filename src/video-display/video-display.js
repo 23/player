@@ -289,7 +289,7 @@ Player.provide('video-display',
           return $this.video.getPaused();
       });
       Player.getter('duration', function(){
-          return $this.video.getDuration();
+          return $this.video.getDuration()||Player.get('video_duration');
       });
       Player.getter('bufferTime', function(){
           return $this.video.getBufferTime();
