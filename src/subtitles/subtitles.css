@@ -15,3 +15,19 @@
 .design-bars .subtitles-container span {
     background-color:black;
 }
+
+.design-subtitles-middle .subtitles-container {
+    font-size:28px;
+    line-height:45px;
+}
+.design-subtitles-middle .subtitles-container span {
+    padding:5px 8px;
+}
+
+.design-subtitles-large .subtitles-container {
+    font-size:34px;
+    line-height:54px;
+}
+.design-subtitles-large .subtitles-container span {
+    padding:6px 10px;
+}
