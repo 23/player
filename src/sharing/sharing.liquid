@@ -7,7 +7,7 @@
       <td><a href="{{twitterLink}}" class="button twitter-button" target="_new">Share on Twitter</a></td>
       <td><a href="{{googleLink}}" class="button google-button" target="_new">Share on Google+</a></td>
       <td class="embed-code">
-        <input type="text" value="{{embedCode|escape}}" onfocus="$(this).select();" click="$fire:player:sharing:embedengaged"/>
+        <input type="text" value="{{embedCode|escape}}" onclick="$(this).select();" click="$fire:player:sharing:embedengaged"/>
       </td>
     </tr>
   </table>

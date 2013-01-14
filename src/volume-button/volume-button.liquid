@@ -1,3 +1,4 @@
+{% if supportsVolumeChange %}
 <div class="button volume-button {% if volumeMuted %}volume-button-on{% else %}volume-button-off{% endif %}" click="$toggle:volumeMuted">
   {% if volumeMuted %}
   Sound
@@ -5,3 +6,4 @@
   Mute
   {% endif %}
 </div>
+{% endif %}
