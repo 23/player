@@ -29,6 +29,7 @@
   - currentTime [get/set]
   - seekedTime [get]
   - volume [get/set]
+  - supportsVolumeChange [get]
   - quality [get/set]
   - qualities [get]
   - ended [get]
@@ -76,7 +77,7 @@ Player.provide('video-display',
 
       // When the module has been loaded in to the DOM, load the display device
       $this.onAppend = function(){
-        $this.video = new Eingebaut($this.canvas, $this.displayDevice, '', function(e){
+        $this.video = new Eingebaut($this.canvas, $this.displayDevice, '/files/Eingebaut.swf', function(e){
             // Don't send event during switching, it only confused up the UI
             if($this.video.switching && (e=='playing'||e=='pause')) return;
             // Modify event names slightly
@@ -269,7 +270,12 @@ Player.provide('video-display',
       });
       Player.getter('volume', function(){
           return $this.video.getVolume();
-      });
+      });      
+      Player.getter('supportsVolumeChange', function(){
+          try {
+              return $this.video.supportsVolumeChange();
+          }catch(e) {return true;}
+      });      
       Player.getter('ended', function(){
           return $this.video.getEnded();
       });
