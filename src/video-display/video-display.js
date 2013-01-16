@@ -236,7 +236,6 @@ Player.provide('video-display',
           $this.video.setPaused(paused);
       });
       Player.setter('currentTime', function(currentTime){
-          console.debug('currentTime', currentTime);
           $this.video.setCurrentTime(currentTime);
       });
       Player.setter('volume', function(volume){
