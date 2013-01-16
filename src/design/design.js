@@ -45,8 +45,8 @@ Player.provide('design',
           PlayerUtilities.mergeSettings($this, ['showTray', 'trayTimeout']);
           
           // Honour `showTray`
-          $('#tray').toggle($this.showTray);
-          // Honour `trayTimeout`
+          $('#tray').toggle($this.showTray ? true : false);
+          // Honour `trayTimeout`          
           if($this.showTray&&$this.trayTimeout>0) {
               var triggerTrayTimeout = function(){
                   window.clearTimeout($this.trayTimeoutId);
