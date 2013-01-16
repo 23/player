@@ -212,15 +212,15 @@ Player.provide('core',
       Player.getter('settings', function(){return $this.settings;});
 
       // Information about the current video
-      Player.getter('video_title', function(){return $this.video.title||'';});
-      Player.getter('video_content', function(){return $this.video.content||'';});
-      Player.getter('video_photo_id', function(){return $this.video.photo_id||'';});
-      Player.getter('video_duration', function(){return $this.video.video_length||0;});
-      Player.getter('video_type', function(){return $this.video.type||'';});
-      Player.getter('video_tree_id', function(){return $this.video.tree_id||'';});
-      Player.getter('video_token', function(){return $this.video.token||'';});
-      Player.getter('video_album_id', function(){return $this.video.album_id||'';});
-      Player.getter('video_one', function(){return $this.video.one||'';});
+      Player.getter('video_title', function(){return ($this.video ? $this.video.title||'' : '');});
+      Player.getter('video_content', function(){return ($this.video ? $this.video.content||'' : '');});
+      Player.getter('video_photo_id', function(){return ($this.video ? $this.video.photo_id||'' : '');});
+      Player.getter('video_duration', function(){return ($this.video ? $this.video.video_length||'' : '');});
+      Player.getter('video_type', function(){return ($this.video ? $this.video.type||'' : '');});
+      Player.getter('video_tree_id', function(){return ($this.video ? $this.video.tree_id||'' : '');});
+      Player.getter('video_token', function(){return ($this.video ? $this.video.token||'' : '');});
+      Player.getter('video_album_id', function(){return ($this.video ? $this.video.album_id||'' : '');});
+      Player.getter('video_one', function(){return ($this.video ? $this.video.one||'' : '');});
       Player.getter('video_base_url', function(){return $this.url + '/' + $this.video.tree_id + '/' + $this.video.photo_id + '/' + $this.video.token + '/';});
       Player.getter('video_aspect_ratio', function(){return ($this.video.video_medium_width||1) / ($this.video.video_medium_height||1);});
       
