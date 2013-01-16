@@ -29,47 +29,33 @@ Player.provide('fullscreen-button',
       });
 
     // Update UI when full screen changes
-    Player.bind('player:fullscreenchange player:loaded', function(e){
+    Player.bind('player:fullscreenchange player:loaded player:video:ready', function(e){
         $this.container.toggle(Player.get('supportsFullscreen'));
         $this.render();
       });
 
     /* GETTERS */
     Player.getter('supportsFullscreen', function(){
-        var de = document.documentElement;
-        return ((
-                 (de.requestFullScreen||de.mozRequestFullScreen||de.webkitRequestFullScreen)
-                 &&
-                 (document.fullScreenEnabled||document.mozFullScreenEnabled||document.webkitFullscreenEnabled)
-                 ) ? true : false);
+        var ve = Player.get('videoElement');
+        return (ve ? ve.hasFullscreen() : false);
       });
     Player.getter('fullscreen', function(){
-        return Player.get('supportsFullscreen') && (document.mozFullScreen||document.webkitIsFullScreen);
+        var ve = Player.get('videoElement');
+        return (ve ? ve.isFullscreen() : false);
       });
-
     /* SETTERS */
     Player.setter('fullscreen', function(fs){
         if(!Player.get('supportsFullscreen')) return;
-        if(fs) {
-          Player.set('analyticsEvent', 'fullscreen');
-          var de = document.documentElement;
-          if(de.requestFullScreen) {
-            de.requestFullScreen();
-          } else if(de.mozRequestFullScreen) {
-            de.mozRequestFullScreen();
-          } else if(de.webkitRequestFullScreen) {
-            de.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
-          }
-        } else {
-          if(document.cancelFullScreen) {
-            document.cancelFullScreen();
-          } else if(document.mozCancelFullScreen) {
-            document.mozCancelFullScreen();
-          } else if(document.webkitCancelFullScreen) {
-            document.webkitCancelFullScreen();
-          }
+        var ve = Player.get('videoElement');
+        if(ve) {
+            Player.set('playing', true);
+            if(fs) {
+                Player.set('analyticsEvent', 'fullscreen');
+                ve.enterFullscreen();
+            } else {
+                ve.leaveFullscreen();
+            }
         }
-        Player.set('playing', true);
       });
       
     return $this;
