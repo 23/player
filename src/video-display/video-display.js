@@ -224,6 +224,7 @@ Player.provide('video-display',
           var playing = Player.get('playing');
           $this.rawSource = $this.qualities[$this.quality].source;
           $this.video.setSource($this.rawSource, ($this._currentTime === false ? Player.get('currentTime') : $this._currentTime));
+          $this._currentTime = false;
           Player.fire('player:video:sourcechange');
           Player.fire('player:video:qualitychange');
           Player.set('playing', playing);
