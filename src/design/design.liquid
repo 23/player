@@ -15,23 +15,21 @@
     {% player info %}
 
     <table class="tray-navigation"><tr>
-      <td class="tray-left">
-        <div class="tray-button">{% player play-button %}</div>
-      </td>
+      <td class="tray-left tray-button">{% player play-button %}</td>
     
       <td class="tray-scrubber">
-        {% player scrubber %}
-        {% player sections %}
+        <div class="tray-scrubber-sub">
+          {% player scrubber %}
+          {% player sections %}
+        </div>
       </td>
 
-      <td class="tray-right">
-        <div class="tray-button">{% player browse-button %}</div>
-        <div class="tray-button">{% player share-button %}</div>
-        <div class="tray-button">{% player quality-button %}</div>
-        <div class="tray-button">{% player subtitle-button %}</div>
-        <div class="tray-button">{% player volume-button %}</div>
-        <div class="tray-button">{% player fullscreen-button %}</div>
-      </td>
+      <td class="tray-right tray-button">{% player browse-button %}</td>
+      <td class="tray-right tray-button">{% player share-button %}</td>
+      <td class="tray-right tray-button">{% player quality-button %}</td>
+      <td class="tray-right tray-button">{% player subtitle-button %}</td>
+      <td class="tray-right tray-button">{% player volume-button %}</td>
+      <td class="tray-right tray-button">{% player fullscreen-button %}</td>
     </tr></table>
     {% player sharing %}
     {% player browse %}

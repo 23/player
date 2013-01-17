@@ -129,9 +129,11 @@ table.tray-navigation {
     width:100%;
     padding-right:2px;
 }
+.tray-scrubber-sub {
+    position:relative;
+}
 .tray-button { /* buttons positioning  */
-    float:left;
-    margin-right:2px;
+    border-right: 2px solid transparent;
 }
 /* === /tray === */
 
@@ -142,6 +144,7 @@ table.tray-navigation {
 
 /* === Module: Scrubber === */
 .scrubber-container {
+    position:relative;
     height:30px;
     background-color:black;
     background-color:rgba(0,0,0,.8);
