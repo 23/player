@@ -98,6 +98,7 @@ Player.provide('video-display',
         // Handle keyboard events
         $(document).keypress(function(e){
             if(!e.ctrlKey && !e.altKey && !e.metaKey) {
+              var matched = false;
               // Toogle playback on space/enter press
               if(e.charCode==32 || e.keyCode==13 || e.keyCode==32) {
                 _togglePlayback();

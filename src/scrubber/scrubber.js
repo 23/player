@@ -75,7 +75,7 @@ Player.provide('scrubber',
                   // Enable dragging and different positioning of the scruber
                   $this.scrubberTime = Player.get('currentTime'); 
               });
-              $(window).mousemove(function(e){
+              $(document).mousemove(function(e){
                   if($this.scrubberTime!==null) {
                       // Update $this.scrubberTime based on the dragging
                       var scrubberLeft = $this.scrubber.offset()['left'];
@@ -88,7 +88,7 @@ Player.provide('scrubber',
                       $this.updateScrubber();
                   }
               });
-              $(window).mouseup(function(){
+              $(document).mouseup(function(){
                   if($this.scrubberTime!==null) {
                       // Jump to the selected time and clear the dragging
                       Player.set('currentTime', $this.scrubberTime);
@@ -151,7 +151,7 @@ Player.provide('scrubber',
       // Set the frames background on load
       Player.bind('player:video:loaded', function(){
           if (!Player.get('video_has_frames')) {
-              $this.thumbnailContainer.css({backgroundImage:'url(' + Player.get('video_frames_src') + ')',});
+              $this.thumbnailContainer.css({backgroundImage:'url(' + Player.get('video_frames_src') + ')'});
           }
       });
       // Update scrubber on progress and on window resize

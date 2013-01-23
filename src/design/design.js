@@ -24,8 +24,9 @@ Player.provide('design',
       // Handle button clicks
       Player.bind('glue:render', function(e, container){
           $(container).find('div.button:has(ul)').each(function(i,div){
-              $(div).click(function(){
+              $(div).click(function(e){
                   $(div).toggleClass('activebutton');
+                  e.stopPropagation();
               });
           });
       });
@@ -53,7 +54,7 @@ Player.provide('design',
                   $('#tray').show();
                   $this.trayTimeoutId = window.setTimeout(function(){$('#tray').hide()}, $this.trayTimeout);
               }
-              $(window).mousemove(triggerTrayTimeout);
+              $(document).mousemove(triggerTrayTimeout);
               triggerTrayTimeout();
           }
       });
