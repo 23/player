@@ -187,7 +187,7 @@ Player.provide('video-display',
         } else {
           // WebM
           if (typeof(v.video_webm_360p_download)!='undefined' && v.video_webm_360p_download.length>0) 
-            $this.qualities['standard'] = {format:'video_webm_720p', codec:'webm', displayName:'Standard', displayQuality:'360p', source:Player.get('url') + v.video_webm_720p_download}; 
+            $this.qualities['standard'] = {format:'video_webm_720p', codec:'webm', displayName:'Standard', displayQuality:'360p', source:Player.get('url') + v.video_webm_360p_download}; 
           if (typeof(v.video_webm_720p_download)!='undefined' && v.video_webm_720p_download.length>0) 
             $this.qualities['hd'] = {format:'video_webm_720p', codec:'webm', displayName:'HD', displayQuality:'720p', source:Player.get('url') + v.video_webm_720p_download}; 
         }
