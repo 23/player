@@ -54,7 +54,7 @@ Player.provide('info',
       Player.setter('showDescriptions', function(sd){
           if(sd) {
               Player.set('browseMode', false);
-              Player.set('showShare', false);
+              Player.set('showSharing', false);
           }
           $this.showDescriptions = sd;
           $this.infoTimeout = 0; // disable fade-out when showDescription is explicitly set

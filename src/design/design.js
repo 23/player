@@ -52,7 +52,11 @@ Player.provide('design',
               var triggerTrayTimeout = function(){
                   window.clearTimeout($this.trayTimeoutId);
                   $('#tray').show();
-                  $this.trayTimeoutId = window.setTimeout(function(){$('#tray').hide()}, $this.trayTimeout);
+                  $this.trayTimeoutId = window.setTimeout(function(){
+                      if(!Player.get('showSharing')&&!Player.get('browseMode')) {
+                          $('#tray').hide();
+                      }
+                  }, $this.trayTimeout);
               }
               $(document).mousemove(triggerTrayTimeout);
               triggerTrayTimeout();

@@ -109,6 +109,7 @@ Player.provide('browse',
           if($this.firstLoad) {
               PlayerUtilities.mergeSettings($this, ['showBrowse', 'browseMode', 'recommendationMethod', 'playlistClickMode']);
               $this.loadRecommendations();
+              Player.fire('player:browse:updated');
               $this.firstLoad = false;
           } else {
               Player.set('browseMode', false);
@@ -148,7 +149,7 @@ Player.provide('browse',
         });
       Player.setter('browseMode', function(bm){
           if(bm) {
-              Player.set('showShare', false);
+              Player.set('showSharing', false);
               Player.set('showDescriptions', false);
           }
           $this.browseMode = bm;

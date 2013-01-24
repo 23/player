@@ -14,7 +14,7 @@
    
    Answers properties:
    - socialSharing [get]: Is social sharing even supported by the video site? And is is enabled in settings?
-   - showShare [get/set]: Show and hide the share pane.
+   - showSharing [get/set]: Show and hide the share pane.
    - rssLink [get]
    - podcastLink [get]
    - embedCode [get]
@@ -32,7 +32,7 @@
 Player.provide('sharing', 
   {
     socialSharing: true,
-    showShare: false
+    showSharing: false
   },
   function(Player,$,opts){
       var $this = this;
@@ -46,7 +46,7 @@ Player.provide('sharing',
 
       // Bind to events
       Player.bind('player:settings', function(e,settings){
-          PlayerUtilities.mergeSettings($this, ['socialSharing', 'showShare', 'rssLink', 'podcastLink', 'embedCode']);
+          PlayerUtilities.mergeSettings($this, ['socialSharing', 'showSharing', 'rssLink', 'podcastLink', 'embedCode']);
           $this.rssLink = absolutize($this.rssLink||Player.get('url') + '/rss');
           $this.podcastLink = absolutize($this.podcastLink||Player.get('url') + '/podcast');
           $this.embedCode = $this.embedCode||'';
@@ -67,9 +67,9 @@ Player.provide('sharing',
       Player.getter('socialSharing', function(){
           return (typeof($this.socialSharing)!='undefined'&&$this.socialSharing&&$this.socialSharing!='0');
         });
-      Player.getter('showShare', function(){
+      Player.getter('showSharing', function(){
           if(!Player.get('socialSharing')) return(false);
-          return (typeof($this.showShare)=='undefined'||($this.showShare&&$this.showShare!='0'));
+          return (typeof($this.showSharing)=='undefined'||($this.showSharing&&$this.showSharing!='0'));
         });
       Player.getter('rssLink', function(){
           if(!Player.get('socialSharing')) return('');
@@ -104,9 +104,9 @@ Player.provide('sharing',
       Player.getter('mailLink', function(){return socialLink('mail');});
      
       /* SETTERS */
-      Player.setter('showShare', function(ss){
+      Player.setter('showSharing', function(ss){
           if(!Player.get('socialSharing')) return;
-          $this.showShare = ss;
+          $this.showSharing = ss;
           if(ss) {
               Player.set('browseMode', false);
               Player.set('showDescriptions', false);
