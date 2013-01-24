@@ -3,7 +3,7 @@
  Show an info button
  
  Listens for:
- - player:video:infotoggle
+ - player:infoengaged
 */
 
 Player.provide('info-button', 
@@ -13,7 +13,7 @@ Player.provide('info-button',
     $.extend($this, opts);
     $this.render();
     
-    Player.bind('player:video:infotoggle', function(e){
+    Player.bind('player:infoengaged', function(e){
         $this.render();
       });
       

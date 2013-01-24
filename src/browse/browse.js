@@ -147,6 +147,10 @@ Player.provide('browse',
           $this.loadRecommendations();
         });
       Player.setter('browseMode', function(bm){
+          if(bm) {
+              Player.set('showShare', false);
+              Player.set('showDescriptions', false);
+          }
           $this.browseMode = bm;
           Player.fire('player:browse:updated');
         });

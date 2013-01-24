@@ -7,7 +7,7 @@
    - player:video:loaded: New title and description to show
 
    Listens for:
-   - player:video:infotoggle: Info pane was toggles somehow
+   - player:infoengaged: Info pane was toggles somehow
    
    Answers properties:
    - showDescriptions [get/set]
@@ -29,7 +29,7 @@ Player.provide('info',
         });
 
       // Bind to events
-      Player.bind('player:video:infotoggle', function(e,video){
+      Player.bind('player:infoengaged', function(e,video){
           $this.render();
       });
       Player.bind('player:video:play', function(e,video){
@@ -39,7 +39,7 @@ Player.provide('info',
           if($this.infoTimeout>0) {
             setTimeout(function(){Player.set('showDescriptions', false);}, $this.infoTimeout);
           }
-          Player.fire('player:video:infotoggle');
+          Player.fire('player:infoengaged');
         });
 
       /* GETTERS */
@@ -52,9 +52,13 @@ Player.provide('info',
      
       /* SETTERS */
       Player.setter('showDescriptions', function(sd){
+          if(sd) {
+              Player.set('browseMode', false);
+              Player.set('showShare', false);
+          }
           $this.showDescriptions = sd;
           $this.infoTimeout = 0; // disable fade-out when showDescription is explicitly set
-          Player.fire('player:video:infotoggle');
+          Player.fire('player:infoengaged');
         });
 
       return $this;

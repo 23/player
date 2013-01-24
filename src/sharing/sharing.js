@@ -107,6 +107,10 @@ Player.provide('sharing',
       Player.setter('showShare', function(ss){
           if(!Player.get('socialSharing')) return;
           $this.showShare = ss;
+          if(ss) {
+              Player.set('browseMode', false);
+              Player.set('showDescriptions', false);
+          }
           Player.set('showDescriptions', false);
           if(ss) Player.fire('player:sharing:shareengaged', {});
           Player.fire('player:sharing', {});

@@ -54,6 +54,9 @@ div.button { /* standard button design */
     cursor:pointer;
     font-size:0;
 }
+div.highlight-button {
+    opacity:1 !important;
+}
 div.button:hover {
     opacity:1;
 }
@@ -181,7 +184,7 @@ a.button { /* standard button design as a straight link */
     position:absolute;
     top:-5px;
     background-color:#eee;
-    border-radius:2px;
+    border-radius:1px;
     font-size:9px;
     line-height:9px;
     color:#333;
