@@ -5,16 +5,19 @@
    Listens for:
    - player:settings: The app was loaded, time to show the info pane
    - player:video:loaded: New title and description to show
+
+   Listens for:
+   - player:video:infotoggle: Info pane was toggles somehow
    
    Answers properties:
    - showDescriptions [get/set]
-   - infoTimeout [get/set]
+   - infoTimeout [get]
 */
 
 Player.provide('info', 
   {
     showDescriptions: true,
-    infoTimeout: 5000
+    infoTimeout: 10000
   },
   function(Player,$,opts){
       var $this = this;
@@ -26,12 +29,17 @@ Player.provide('info',
         });
 
       // Bind to events
-      Player.bind('player:settings player:video:loaded player:video:play player:video:playing player:video:pause player:video:ended', function(e,video){
+      Player.bind('player:video:infotoggle', function(e,video){
           $this.render();
-          
+      });
+      Player.bind('player:video:play', function(e,video){
+          Player.set('showDescriptions', false);
+      });
+      Player.bind('player:settings player:video:loaded', function(e,video){
           if($this.infoTimeout>0) {
-            setTimeout(function(){$this.container.hide()}, $this.infoTimeout);
+            setTimeout(function(){Player.set('showDescriptions', false);}, $this.infoTimeout);
           }
+          Player.fire('player:video:infotoggle');
         });
 
       /* GETTERS */
@@ -45,12 +53,8 @@ Player.provide('info',
       /* SETTERS */
       Player.setter('showDescriptions', function(sd){
           $this.showDescriptions = sd;
-          if(sd) Player.set('infoTimeout', 0); // disable fade-out when showDescription is explicitly set
-          $this.render();
-        });
-      Player.setter('infoTimeout', function(it){
-          $this.infoTimeout = it;
-          $this.render();
+          $this.infoTimeout = 0; // disable fade-out when showDescription is explicitly set
+          Player.fire('player:video:infotoggle');
         });
 
       return $this;

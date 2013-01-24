@@ -107,12 +107,18 @@ Player.provide('sharing',
       Player.setter('showShare', function(ss){
           if(!Player.get('socialSharing')) return;
           $this.showShare = ss;
+          Player.set('showDescriptions', false);
           if(ss) Player.fire('player:sharing:shareengaged', {});
           Player.fire('player:sharing', {});
         });
       Player.setter('shareTo', function(service){
           Player.fire('player:sharing:shareengaged', {});
-          window.open(Player.get(service + 'Link'));
+          if(service=='site') {
+              Player.set('playing', false);
+              window.open(Player.get('siteLink')+Player.get('video_one'));
+          } else {
+              window.open(Player.get(service + 'Link'));
+          }
         });
 
       return $this;

@@ -1,15 +1,16 @@
 {% if showShare %}
-<div class="sharing-container">
-  <table class="share-embed">
-    <tr>
-      <td><a href="{{siteLink}}{{video_one}}" class="button site-button" click="$set:playing:false" target="_new">See on page</a></td>
-      <td><a href="{{facebookLink}}" class="button facebook-button" target="_new">Share on Facebook</a></td>
-      <td><a href="{{twitterLink}}" class="button twitter-button" target="_new">Share on Twitter</a></td>
-      <td><a href="{{googleLink}}" class="button google-button" target="_new">Share on Google+</a></td>
-      <td class="embed-code">
-        <input type="text" value="{{embedCode|escape}}" onclick="$(this).select();" click="$fire:player:sharing:embedengaged"/>
-      </td>
-    </tr>
-  </table>
-</div>
+  <div class="sharing-container">
+    <div class="share-embed">
+      <div class="share-embed-label">Embed</div>
+      <input type="text" value="{{embedCode|escape}}" onclick="$(this).select();" click="$fire:player:sharing:embedengaged"/>
+    </div>
+    
+    <div class="share-buttons">
+      <button click="$set:shareTo:site" class="site-button">See on site</button>
+      <button click="$set:shareTo:facebook" class="facebook-button">Share on Facebook</button>
+      <button click="$set:shareTo:twitter" class="twitter-button">Tweet this video</button>
+      <button click="$set:shareTo:google" class="google-button">+1 on Google</button>
+      <button click="$set:shareTo:mail" class="mail-button">Mail video</button>
+    </div>
+  </div>
 {% endif %}

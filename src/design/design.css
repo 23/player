@@ -14,15 +14,28 @@ body {
     overflow:hidden;
 }
 h1 {
-    font-size:15px;
+    font-size:14px;
     line-height:27px;
     font-weight:bold;
+    letter-spacing:.3px;
 }
 p {
-    font-size:13px;
+    font-size:12px;
     line-height:18px;
+    letter-spacing:.3px;
 }
-
+button {
+    background-color:#3B3B3C;
+    color:white;
+    font-size:11px;
+    padding:0 5px 0 30px;
+    border:none;
+    background-repeat:no-repeat;
+    background-position:left center;
+    cursor:pointer;
+    height:30px; 
+    line-height:32px;
+}
 
 
 
@@ -37,8 +50,7 @@ div.button { /* standard button design */
     background-color:black; 
     background-position:center center;
     background-repeat:no-repeat;
-    background-size:30px 30px;
-    opacity:.8;
+    opacity:.7;
     cursor:pointer;
     font-size:0;
 }
@@ -49,7 +61,6 @@ div.button.big { /* big version of same button */
     height:60px;
     width:60px;
     border-radius:3px;
-    background-size:60px 60px;
 }
 div.button ul { /* button menus */
     display:none;
@@ -68,12 +79,11 @@ div.activebutton ul { /* active button menus */
     display:block;
     font-size:11px;
     line-height:22px;
-    opacity:.8;
+    opacity:.7;
 }
 div.button ul li { /* menu items */
     white-space:nowrap;
     background:url('not-selected-icon.png') -10px -5px no-repeat;
-    background-size:30px 30px;
     padding-left:14px;
 }
 div.button ul li.hover { /* menu item hover */
@@ -85,7 +95,6 @@ a.button { /* standard button design as a straight link */
     display:inline-block; 
     *display:inline; 
     *zoom:1; 
-    border-radius:3px;
     border:1px solid #333;
     height:30px;
     width:30px;
@@ -93,8 +102,7 @@ a.button { /* standard button design as a straight link */
     background-color:black; 
     background-position:center center;
     background-repeat:no-repeat;
-    background-size:30px 30px;
-    opacity:.8;
+    opacity:.7;
     cursor:pointer;
     font-size:0;
     text-decoration:none;
@@ -113,27 +121,23 @@ a.button { /* standard button design as a straight link */
     left:0;
     width:100%;
 }
-table.tray-navigation {
-    margin:2px 0 2px 2px;
-}
-.tray-navigation td {
-    height:30px;
-    white-space:nowrap;
-}
-.tray-right { /* right-hand side */
-}    
-.tray-left { /* left-hand side */
-}    
-.tray-scrubber { /* scrubber position */
+.tray-navigation {
     position:relative;
-    width:100%;
-    padding-right:2px;
+    margin:3px 5px 5px 5px;
+}
+.tray-left .tray-button { /* buttons left of scrubber */
+    float:left;
+    margin-right:3px;
+}
+.tray-right .tray-button { /* buttons right of scrubber */
+    float:right;
+    margin-left:3px;
+}
+.tray-scrubber {  /* scrubber position */
+    margin:0 180px 0 33px; /* this will be updated using JS to fix the with of .tray-left and .tray-right */
 }
 .tray-scrubber-sub {
     position:relative;
-}
-.tray-button { /* buttons positioning  */
-    border-right: 2px solid transparent;
 }
 /* === /tray === */
 
@@ -177,7 +181,7 @@ table.tray-navigation {
     position:absolute;
     top:-5px;
     background-color:#eee;
-    border-radius:3px;
+    border-radius:2px;
     font-size:9px;
     line-height:9px;
     color:#333;
@@ -226,10 +230,10 @@ table.tray-navigation {
 
 /* === Module: Info === */
 .info-pane {
-    margin:0 2px;
+    margin:0 5px;
     background-color:black;
     background-color:rgba(0,0,0,.8);
-    border-radius:3px;
+    border-radius:2px;
     padding:5px 10px 8px 10px;
 }
 .info-description {
@@ -238,33 +242,36 @@ table.tray-navigation {
 
 /* === Module: Sharing === */
 .sharing-container {
-    padding:10px 2px;
     background-color:black;
     background-color:rgba(0,0,0,.8);
+    margin:3px 5px 0 5px;
+    border-radius:2px;
+    padding:10px;
 }
-table.share-embed {
-    width:100%;
+.share-embed {
+    padding-bottom:10px;
 }
-table.share-embed {
-    width:100%;
-}
-table.share-embed td {
-    padding-right:5px;
-    white-space:nowrap;
-}
-table.share-embed td.embed-code  {
-    width:100%;
-    padding-right:0;
-}
-table.share-embed input {
-    width:90%;
-    max-width:400px;
+.share-embed input {
+    width:80%;
+    max-width:471px;
     line-height:20px;
     font-size:11px;
     height:20px;
     padding:3px;
-    background-color:#ccc;
-    opacity:.8;
+    border:none;
+    background-color:white;
+}
+.share-embed-label {
+    float:left;
+    font-size:14px; 
+    padding:0 23px 0 32px; 
+    font-weight:bold;
+    line-height:26px;
+    background:url('embed-icon.png') left center no-repeat;
+}
+.share-buttons {
+    height:30px;
+    overflow:hidden;
 }
 /* === /Sharing === */
 
@@ -275,7 +282,7 @@ table.share-embed input {
     position:relative;
     padding:10px 2px;
     background-color:black;
-    background-color:rgba(0,0,0,.8);
+    background-color:rgba(0,0,0,.6);
 }
 /* Place left and right browsing with a carousel in the middle */
 .browse-container, .browse-left, .browse-right {
@@ -289,8 +296,7 @@ table.share-embed input {
     cursor:pointer;
     background-position:center center;
     background-repeat:no-repeat;
-    background-size:20px 20px;
-    opacity:.7;
+    opacity:.8;
 }
 .browse-left {
     left:0;
@@ -333,6 +339,7 @@ table.browse-recommendations div {
 
 
 .play-button {background-image:url('play-icon.png');}
+.big-play-button {background-image:url('big-play-icon.png');}
 .pause-button {background-image:url('pause-icon.png');}
 .facebook-button {background-image:url('facebook-icon.png');}
 .twitter-button {background-image:url('twitter-icon.png');}
@@ -341,8 +348,10 @@ table.browse-recommendations div {
 .browse-button-on {background-image:url('browse-on-icon.png');}
 .browse-button-off {background-image:url('browse-off-icon.png');}
 .share-button {background-image:url('share-icon.png');}
+.info-button {background-image:url('info-icon.png');}
 .volume-button-on {background-image:url('volume-on-icon.png');}
 .volume-button-off {background-image:url('volume-off-icon.png');}
 .fullscreen-button {background-image:url('fullscreen-icon.png');}
+.mail-button {background-image:url('mail-icon.png');}
 .quality-button {background-image:url('quality-icon.png');}
 .subtitle-button {background-image:url('subtitle-icon.png');}

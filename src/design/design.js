@@ -58,7 +58,18 @@ Player.provide('design',
               triggerTrayTimeout();
           }
       });
-      
+
+
+      // RESIZE HANDLING
+      var _resize = function(){
+          var l = $('.tray-left div.tray-button').length * 33;
+          var r = $('.tray-right div.tray-button').length * 33;
+          $('.tray-scrubber').css({marginLeft:l+'px', marginRight:r+'px'});
+      }
+      $(window).load(_resize);
+      $(window).resize(_resize);
+      Player.bind('glue:render', _resize);
+
       
       // Return a reference
       return $this;

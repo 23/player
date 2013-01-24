@@ -53,7 +53,7 @@ Player.provide('status-display',
       });
 
     /* Seeking or stalled */
-    Player.bind('player:video:seeking player:video:seeked player:video:stalled player:video:play player:video:playing', function(e){
+    Player.bind('player:video:seeking player:video:seeked player:video:stalled player:video:play player:video:pause player:video:playing', function(e){
         $this.render();
       });
 

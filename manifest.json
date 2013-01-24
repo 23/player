@@ -32,6 +32,7 @@
         "fullscreen-button",
         "subtitle-button",
         "quality-button",
+        "info-button",
         "info",
         "playflow"
     ]
