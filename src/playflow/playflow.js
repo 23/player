@@ -72,7 +72,7 @@ Player.provide('playflow',
     identityCountdown: false,
     identityAllowClose: true,
     identityCountdownTextSingular: "This advertisement will end in % second",
-    identityCountdownTextPlural: "This advertisement will end in % seconds",
+    identityCountdownTextPlural: "This advertisement will end in % seconds"
   }, 
   function(Player,$,opts){
       var $this = this;

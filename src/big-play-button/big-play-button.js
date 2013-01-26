@@ -27,7 +27,7 @@ Player.provide('big-play-button',
       });
 
     // Update element on play, pause and more
-    Player.bind('player:video:play player:video:seeked player:video:pause player:video:ended', function(e){
+    Player.bind('player:video:loaded player:video:play player:video:seeked player:video:pause player:video:ended', function(e){
         $this.render();
       });
 

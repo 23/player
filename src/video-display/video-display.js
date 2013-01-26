@@ -77,8 +77,9 @@ Player.provide('video-display',
 
       // When the module has been loaded in to the DOM, load the display device
       $this.onAppend = function(){
-        $this.video = new Eingebaut($this.canvas, $this.displayDevice, '/files/Eingebaut.swf', function(e){
-            // Don't send event during switching, it only confused up the UI
+        $this.video = new Eingebaut($this.canvas, $this.displayDevice, '/eingebaut/lib/FlashFallback/EingebautDebug.swf', function(e){
+            console.debug('Eingebaut', e);
+            // Don't send event during switching, it only confuses the UI
             if($this.video.switching && (e=='playing'||e=='pause')) return;
             // Modify event names slightly
             if(e=='loaded'||e=='ready') e = 'player'+e;
@@ -232,16 +233,16 @@ Player.provide('video-display',
       });
 
       Player.setter('playing', function(playing){
-          $this.video.setPlaying(playing);
+          if($this.video) $this.video.setPlaying(playing);
       });
       Player.setter('paused', function(paused){
-          $this.video.setPaused(paused);
+          if($this.video) $this.video.setPaused(paused);
       });
       Player.setter('currentTime', function(currentTime){
-          $this.video.setCurrentTime(currentTime);
+          if($this.video) $this.video.setCurrentTime(currentTime);
       });
-      Player.setter('volume', function(volume){
-          $this.video.setVolume(volume);
+      Player.setter('volume', function(volume){          
+          if($this.video) $this.video.setVolume(volume);
       });
 
       /* GETTERS */
@@ -264,13 +265,13 @@ Player.provide('video-display',
       });
 
       Player.getter('playing', function(){
-          return $this.video.getPlaying();
+          return ($this.video ? $this.video.getPlaying() : false);
       });
       Player.getter('currentTime', function(){
           return ($this.video ? $this.video.getCurrentTime() : 0);
       });
       Player.getter('volume', function(){
-          return $this.video.getVolume();
+          return ($this.video ? $this.video.getVolume() : 1);
       });      
       Player.getter('supportsVolumeChange', function(){
           try {
@@ -278,28 +279,28 @@ Player.provide('video-display',
           }catch(e) {return true;}
       });      
       Player.getter('ended', function(){
-          return $this.video.getEnded();
+          return ($this.video ? $this.video.getEnded() : false);
       });
       Player.getter('seeking', function(){
-          return $this.video.getSeeking();
+          return ($this.video ? $this.video.getSeeking() : false);
       });
       Player.getter('stalled', function(){
-          return $this.video.getStalled();
+          return ($this.video ? $this.video.getStalled() : false);
       });
       Player.getter('paused', function(){
-          return $this.video.getPaused();
+          return ($this.video ? $this.video.getPaused() : true);
       });
       Player.getter('duration', function(){
-          return $this.video.getDuration()||Player.get('video_duration');
+          return ($this.video ? $this.video.getDuration()||Player.get('video_duration') : Player.get('video_duration'));
       });
       Player.getter('bufferTime', function(){
-          return $this.video.getBufferTime();
+          return ($this.video ? $this.video.getBufferTime() : 0);
       });
       Player.getter('isLive', function(){
-          return $this.video.getIsLive();
+          return ($this.video ? $this.video.getIsLive() : false);
       });
       Player.getter('src', function(){
-          return $this.video.getSource();
+          return ($this.video ? $this.video.getSource() : '');
       });
       Player.getter('videoElement', function(){
           return $this.video;

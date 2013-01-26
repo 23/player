@@ -5,8 +5,9 @@
 
 <div id="player">
   <!-- Video display -->
-  {% player video-display with "displayDevice":"html5" %}
+  {% player video-display with "displayDevice":"flash" %}
 
+  <div class="big-button tray-button">{% player big-play-button %}</div>
 
   {% player subtitles %}
 
@@ -40,7 +41,6 @@
     {% player browse %}
   </div>
 
-  <div class="big-button tray-button">{% player big-play-button %}</div>
   {% player logo %}
 </div>
 

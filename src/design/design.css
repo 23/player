@@ -35,6 +35,7 @@ button {
     cursor:pointer;
     height:30px; 
     line-height:32px;
+    margin-right:10px;
 }
 
 
@@ -153,8 +154,8 @@ a.button { /* standard button design as a straight link */
 .scrubber-container {
     position:relative;
     height:30px;
-    background-color:black;
-    background-color:rgba(0,0,0,.8);
+    background:rgb(0,0,0); /*fallback for browser with no RGBa support */
+    background:rgba(0,0,0,.8);
     border-radius:2px;
 }
 .scrubber {
@@ -234,8 +235,8 @@ a.button { /* standard button design as a straight link */
 /* === Module: Info === */
 .info-pane {
     margin:0 5px;
-    background-color:black;
-    background-color:rgba(0,0,0,.8);
+    background:rgb(0,0,0); /*fallback for browser with no RGBa support */
+    background:rgba(0,0,0,.8);
     border-radius:2px;
     padding:5px 10px 8px 10px;
 }
@@ -245,8 +246,8 @@ a.button { /* standard button design as a straight link */
 
 /* === Module: Sharing === */
 .sharing-container {
-    background-color:black;
-    background-color:rgba(0,0,0,.8);
+    background:rgb(0,0,0); /*fallback for browser with no RGBa support */
+    background:rgba(0,0,0,.8);
     margin:3px 5px 0 5px;
     border-radius:2px;
     padding:10px;
@@ -263,6 +264,7 @@ a.button { /* standard button design as a straight link */
     padding:3px;
     border:none;
     background-color:white;
+    box-shadow: inset 0 0 6px #666;
 }
 .share-embed-label {
     float:left;
@@ -284,8 +286,8 @@ a.button { /* standard button design as a straight link */
 .player-browse #browse {
     position:relative;
     padding:10px 2px;
-    background-color:black;
-    background-color:rgba(0,0,0,.6);
+    background:rgb(0,0,0); /*fallback for browser with no RGBa support */
+    background:rgba(0,0,0,.6);
 }
 /* Place left and right browsing with a carousel in the middle */
 .browse-container, .browse-left, .browse-right {

@@ -1,9 +1,9 @@
 {% if supportsFullscreen %}
   <div class="tray-button button fullscreen-button {% if fullscreen %}fullscreen-button-off{% else %}fullscreen-button-on{% endif %}" click="$toggle:fullscreen">
     {% if fullscreen == true %}
-    !FS
+    <!--Not full screen-->
     {% else %}
-    FS
+    <!--Full screen-->
     {% endif %}
   </div>
 {% endif %}

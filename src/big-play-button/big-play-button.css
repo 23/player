@@ -1,10 +1,19 @@
-.big-button {
-    position:absolute !important;
-    left:50%;
-    top:50%;
+.big-play-container {
+    position:absolute; 
+    top:0; 
+    left:0; 
+    width:100%; 
+    height:100%;
 }
-.big-button div.button {
-    display:block;
-    margin-top:-50%;
-    margin-left:-50%;
+.big-play-container table {
+    width:100%;
+    height:100%;
+}
+.big-play-container table td {
+    width:100%;
+    height:100%;
+    vertical-align:middle;
+}
+.big-play-container table td div {
+    margin:0 auto;
 }

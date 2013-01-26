@@ -1,6 +1,6 @@
 {% if hasSubtitles %}
 <div class="tray-button button subtitle-button">
-  Subs
+  <!--Subs-->
   <ul>
     {% for l in localesArray %} 
     <li {% if l.locale == subtitleLocale %}class="selected"{% endif %} click="$set:subtitleLocale:{{l.locale}}">{{l.language}}</li>
