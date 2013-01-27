@@ -130,16 +130,18 @@ Player.provide('core',
               method:'/api/player/settings',
               data:{player_id:$this.settings.player_id, params:Player.parametersString},
               callback: function(data){
-                  // Merge in settings API, then from player parameter
-                  $.extend($this.settings, data.settings);
-                  $this.settings = $.extend(opts, Player.parameters);
-                  // Normalize numbers and bools
-                  $.each($this.settings, function(i,v){
-                      if(v=='f'||v=='false') $this.settings[i]=false;
-                      if(v=='t'||v=='true') $this.settings[i]=true;
-                      if(!isNaN(v)) $this.settings[i]=new Number(v)+0;
-                  });
-                  Player.fire('player:settings', $this.settings)
+                  if(data.status=='ok') {
+                      // Merge in settings API, then from player parameter
+                      $.extend($this.settings, data.settings);
+                      $this.settings = $.extend(opts, Player.parameters);
+                      // Normalize numbers and bools
+                      $.each($this.settings, function(i,v){
+                          if(v=='f'||v=='false') $this.settings[i]=false;
+                          if(v=='t'||v=='true') $this.settings[i]=true;
+                          if(!isNaN(v)) $this.settings[i]=new Number(v)+0;
+                      });
+                      Player.fire('player:settings', $this.settings)
+                  }
               }
           });
 
@@ -149,9 +151,11 @@ Player.provide('core',
               method:'/api/liveevent/stream/list',
               data:$.extend(Player.parameters, {player_id:$this.settings.player_id}),
               callback: function(data){
-                  $.each(data.streams, function(i,stream){
-                      $this.streams.push(new PlayerVideo(Player,$,'stream',stream));
-                  });
+                  if(data.status=='ok') {
+                      $.each(data.streams, function(i,stream){
+                          $this.streams.push(new PlayerVideo(Player,$,'stream',stream));
+                      });
+                  }
               }
           });
 
@@ -161,9 +165,11 @@ Player.provide('core',
               method:'/api/photo/list',
               data:$.extend({size:10}, Player.parameters, {player_id:$this.settings.player_id}),
               callback: function(data){
-                  $.each(data.photos, function(i,photo){
-                      $this.clips.push(new PlayerVideo(Player,$,'clip',photo));
-                  });
+                  if(data.status=='ok') {
+                      $.each(data.photos, function(i,photo){
+                          $this.clips.push(new PlayerVideo(Player,$,'clip',photo));
+                      });
+                  }
               }
           });
 
@@ -237,7 +243,11 @@ Player.provide('core',
           $this.load(function(){
               $this.loaded = true;
               Player.fire('player:loaded');
-              if($this.clips.length>0) $this.clips[0].switchTo();
+              if($this.clips.length>0) {
+                  $this.clips[0].switchTo();
+              } else {
+                  Player.set('error', "No video to play. Make sure you're logged in and that the player is configured correctly.");
+              }
           });
       }
       $this.bootstrap();
