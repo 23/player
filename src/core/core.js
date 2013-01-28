@@ -174,7 +174,7 @@ Player.provide('core',
           });
 
           // Call the API
-          $this.api.concatenate(methods, callback, Player.fail)
+          $this.api.concatenate(methods, callback, function(){});
       }
 
 
