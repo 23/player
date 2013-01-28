@@ -5,3 +5,5 @@ dist
 dist/*
 embed.html
 test.html
+
+src/Eingebaut.swf
