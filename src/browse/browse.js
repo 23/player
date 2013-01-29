@@ -118,6 +118,9 @@ Player.provide('browse',
       Player.bind('player:video:playing', function(){
           Player.set('browseMode', false);
       });
+      Player.bind('player:video:ended', function(){
+          Player.set('browseMode', true);
+      });
 
       // Build a specific thumbnail for the browse pane
       Player.bind('player:loaded player:browse:loaded', function(){
