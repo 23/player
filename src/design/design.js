@@ -5,7 +5,17 @@
 Player.provide('design', 
   {
     showTray: true,
-    trayTimeout: 0
+    trayTimeout: 0,
+    verticalPadding:0,
+    horizontalPadding:0,
+    trayAlpha:0.8,
+    trayBackgroundColor:'#000000',
+    trayTextColor:'#ffffff',
+    trayFont:'Helvetica',
+    trayTitleFontSize:14,
+    trayTitleFontWeight:'bold',
+    trayContentFontSize:12,
+    trayContentFontWeight:'normal'
   }, 
   function(Player,$,opts){
       // This is required to add the template to the page
@@ -25,8 +35,15 @@ Player.provide('design',
       Player.bind('glue:render', function(e, container){
           $(container).find('div.button:has(ul)').each(function(i,div){
               $(div).click(function(e){
-                  $(div).toggleClass('activebutton');
-                  e.stopPropagation();
+                  if($(div).hasClass('activebutton')) {
+                      $(div).removeClass('activebutton')
+                  } else {
+                      $('.activebutton').each(function(i,el){
+                          $(el).removeClass('activebutton');
+                      });
+                      $(div).addClass('activebutton');
+                      e.stopPropagation();
+                  }
               });
           });
       });
@@ -43,8 +60,22 @@ Player.provide('design',
       // Handle settings
       $this.trayTimeoutId = null;
       Player.bind('player:settings', function(e){
-          PlayerUtilities.mergeSettings($this, ['showTray', 'trayTimeout']);
-          
+          PlayerUtilities.mergeSettings($this, ['showTray', 'trayTimeout', 'verticalPadding', 'horizontalPadding', 'trayAlpha','trayBackgroundColor','trayTextColor','trayFont','trayTitleFontSize','trayTitleFontWeight','trayContentFontSize','trayContentFontWeight']);
+
+          // Allow for background color transparency
+          var colorTest = $this.trayBackgroundColor.match(/^\#(..)(..)(..)$/);
+          if(colorTest && colorTest.length==4) {
+              var r = parseInt(colorTest[1], 16);
+              var g = parseInt(colorTest[2], 16);
+              var b = parseInt(colorTest[3], 16);
+              $this.trayBackgroundColorRGB = 'rgb('+r+','+g+','+b+')';
+              $this.trayBackgroundColorRGBA = 'rgba('+r+','+g+','+b+','+$this.trayAlpha+')';
+          } else {
+              $this.trayBackgroundColorRGB = $this.trayBackgroundColor;
+              $this.trayBackgroundColorRGBA = $this.trayBackgroundColor;
+          }
+          $this.applyDesignPreferences();
+
           // Honour `showTray`
           $('#tray').toggle($this.showTray ? true : false);
           // Honour `trayTimeout`          
@@ -63,6 +94,24 @@ Player.provide('design',
           }
       });
 
+      $this.applyDesignPreferences = function(){
+          // Tray title font, size, weight
+          $('h1').css({fontFamily:$this.trayFont, fontSize:$this.trayTitleFontSize+'px', fontWeight:$this.trayTitleFontWeight});
+          // Tray content font, size, weight
+          $('p').css({fontFamily:$this.trayFont, fontSize:$this.trayContentFontSize+'px', fontWeight:$this.trayContentFontWeight});
+          // Text color
+          $('body,button').css({color:$this.trayTextColor});
+          // Background color and opacity
+          $('div.button, a.button').css({backgroundColor:$this.trayBackgroundColor, opacity:$this.trayAlpha});
+          $('.scrubber-container, .info-pane, .sharing-container, .player-browse #browse, div.button ul').css({backgroundColor:$this.trayBackgroundColorRGBA});
+          if(!/^rgba/.test($('.scrubber-container').css('backgroundColor'))) {
+              // (fall back to background color + opacity if RGBa is not supported
+              $('.scrubber-container, .info-pane, .sharing-container, .player-browse #browse, div.button ul').css({backgroundColor:$this.trayBackgroundColor, opacity:$this.trayAlpha});
+          }
+          // Vertical and horisontal padding
+          $('video-display').css({bottom:$this.verticalPadding+'px', left:$this.horizontalPadding+'px'})
+      }
+
 
       // RESIZE HANDLING
       var _resize = function(){
@@ -72,7 +121,10 @@ Player.provide('design',
       }
       $(window).load(_resize);
       $(window).resize(_resize);
-      Player.bind('glue:render', _resize);
+      Player.bind('glue:render', function(){
+          _resize();
+          $this.applyDesignPreferences();
+      });
       
       // Return a reference
       return $this;

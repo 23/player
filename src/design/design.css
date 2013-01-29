@@ -9,24 +9,25 @@ a img {border:0;}
 body {
     margin:0; 
     background-color:black; 
-    color:white; 
-    font:11px/14px Helvetica; 
+    color:white;  /*updated in js via player settings */
+    font:11px/14px Helvetica;  /*updated in js via player settings */
     overflow:hidden;
 }
 h1 {
-    font-size:14px;
-    line-height:27px;
-    font-weight:bold;
+    font-size:14px; /*updated in js via player settings */
+    line-height:2em;
+    font-weight:bold; /*updated in js via player settings */
     letter-spacing:.3px;
 }
 p {
-    font-size:12px;
-    line-height:18px;
+    font-size:12px; /*updated in js via player settings */
+    font-weight:normal; /*updated in js via player settings */
+    line-height:1.5em;
     letter-spacing:.3px;
 }
 button {
     background-color:#3B3B3C;
-    color:white;
+    color:white; /*updated in js via player settings */
     font-size:11px;
     padding:0 5px 0 30px;
     border:none;
@@ -48,10 +49,10 @@ div.button { /* standard button design */
     height:30px;
     width:30px;
     border-radius:2px;
-    background-color:black; 
+    background-color:black;  /*updated in js via player settings */
     background-position:center center;
     background-repeat:no-repeat;
-    opacity:.7;
+    opacity:.8;
     cursor:pointer;
     font-size:0;
 }
@@ -72,7 +73,8 @@ div.button ul { /* button menus */
     position:absolute;
     bottom:32px; 
     right:0;
-    background-color:black; 
+    background:rgb(0,0,0); /*fallback for browser with no RGBa support */
+    background:rgba(0,0,0,.8); /*updated in js via player settings */
     line-height:25px;
     padding:2px 10px;
     text-align:left;
@@ -83,7 +85,7 @@ div.activebutton ul { /* active button menus */
     display:block;
     font-size:11px;
     line-height:22px;
-    opacity:.7;
+    opacity:1;
 }
 div.button ul li { /* menu items */
     white-space:nowrap;
@@ -103,10 +105,10 @@ a.button { /* standard button design as a straight link */
     height:30px;
     width:30px;
     border-radius:2px;
-    background-color:black; 
+    background-color:black;  /*updated in js via player settings */
     background-position:center center;
     background-repeat:no-repeat;
-    opacity:.7;
+    opacity:.8;
     cursor:pointer;
     font-size:0;
     text-decoration:none;
@@ -155,7 +157,7 @@ a.button { /* standard button design as a straight link */
     position:relative;
     height:30px;
     background:rgb(0,0,0); /*fallback for browser with no RGBa support */
-    background:rgba(0,0,0,.8);
+    background:rgba(0,0,0,.8); /*updated in js via player settings */
     border-radius:2px;
 }
 .scrubber {
@@ -204,7 +206,7 @@ a.button { /* standard button design as a straight link */
 }
 .scrubber-thumbnail {
     position:absolute;
-    bottom:25px;
+    bottom:37px;
     border-radius:2px;
     border:2px solid white;
     background-repeat: 'no-repeat';
@@ -239,7 +241,7 @@ a.button { /* standard button design as a straight link */
 .info-pane {
     margin:0 5px;
     background:rgb(0,0,0); /*fallback for browser with no RGBa support */
-    background:rgba(0,0,0,.8);
+    background:rgba(0,0,0,.8); /*updated in js via player settings */
     border-radius:2px;
     padding:5px 10px 8px 10px;
 }
@@ -250,7 +252,7 @@ a.button { /* standard button design as a straight link */
 /* === Module: Sharing === */
 .sharing-container {
     background:rgb(0,0,0); /*fallback for browser with no RGBa support */
-    background:rgba(0,0,0,.8);
+    background:rgba(0,0,0,.8); /*updated in js via player settings */
     margin:3px 5px 0 5px;
     border-radius:2px;
     padding:10px;
@@ -285,12 +287,11 @@ a.button { /* standard button design as a straight link */
 
 /* === Module: Browse === */
 /* Place the browse pane within the player */
-.player-browse {}
 .player-browse #browse {
     position:relative;
     padding:10px 2px;
     background:rgb(0,0,0); /*fallback for browser with no RGBa support */
-    background:rgba(0,0,0,.6);
+    background:rgba(0,0,0,.8); /*updated in js via player settings */
 }
 /* Place left and right browsing with a carousel in the middle */
 .browse-container, .browse-left, .browse-right {
@@ -343,9 +344,7 @@ table.browse-recommendations div {
 }
 /* === /Browse === */
 
-
-
-
+/* Button graphics */
 .play-button {background-image:url('play-icon.png');}
 .big-play-button {background-image:url('big-play-icon.png');}
 .pause-button {background-image:url('pause-icon.png');}
@@ -363,3 +362,32 @@ table.browse-recommendations div {
 .mail-button {background-image:url('mail-icon.png');}
 .quality-button {background-image:url('quality-icon.png');}
 .subtitle-button {background-image:url('subtitle-icon.png');}
+
+/* All graphics in retina version */
+@media 
+(-webkit-min-device-pixel-ratio: 2), 
+(min-resolution: 192dpi) { 
+    .play-button {background-image:url('play-icon@2x.png'); background-size:30px;}
+    .big-play-button {background-image:url('big-play-icon@2x.png'); background-size:60px;}
+    .pause-button {background-image:url('pause-icon@2x.png'); background-size:30px;}
+    .facebook-button {background-image:url('facebook-icon@2x.png'); background-size:30px;}
+    .twitter-button {background-image:url('twitter-icon@2x.png'); background-size:30px;}
+    .google-button {background-image:url('google-icon@2x.png'); background-size:30px;}
+    .site-button {background-image:url('site-icon@2x.png'); background-size:30px;}
+    .browse-button-on {background-image:url('browse-on-icon@2x.png'); background-size:30px;}
+    .browse-button-off {background-image:url('browse-off-icon@2x.png'); background-size:30px;}
+    .share-button {background-image:url('share-icon@2x.png'); background-size:30px;}
+    .info-button {background-image:url('info-icon@2x.png'); background-size:30px;}
+    .volume-button-on {background-image:url('volume-on-icon@2x.png'); background-size:30px;}
+    .volume-button-off {background-image:url('volume-off-icon@2x.png'); background-size:30px;}
+    .fullscreen-button {background-image:url('fullscreen-icon@2x.png'); background-size:30px;}
+    .mail-button {background-image:url('mail-icon@2x.png'); background-size:30px;}
+    .quality-button {background-image:url('quality-icon@2x.png'); background-size:30px;}
+    .subtitle-button {background-image:url('subtitle-icon@2x.png'); background-size:30px;}
+
+    div.button ul li {background-image:url('not-selected-icon@2x.png'); background-size:30px;}
+    div.button ul li.selected {background-image:url('selected-icon@2x.png'); background-size:30px;}
+    .share-embed-label {background-image:url('embed-icon@2x.png'); background-size:30px;}
+    .browse-left {background-image:url('prev-icon@2x.png'); background-size:30px;}
+    .browse-right {background-image:url('next-icon@2x.png'); background-size:30px;}
+}

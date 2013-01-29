@@ -26,7 +26,7 @@ Player.provide('status-display',
     $this.render();
 
     /* Loading */
-    Player.bind('player:video:progress player:video:timeupdate player:video:flashloaded', function(e){
+    Player.bind('player:video:ready', function(e){
         if($this.loading) Player.set('loading', false);
       });
     $this.loading = true;
@@ -53,7 +53,7 @@ Player.provide('status-display',
       });
 
     /* Seeking or stalled */
-    Player.bind('player:video:seeking player:video:seeked player:video:stalled player:video:play player:video:pause player:video:playing', function(e){
+    Player.bind('player:video:progress player:video:timeupdate player:video:flashloaded player:video:seeking player:video:seeked player:video:stalled player:video:play player:video:pause player:video:playing', function(e){
         $this.render();
       });
 
