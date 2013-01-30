@@ -209,8 +209,12 @@ a.button { /* standard button design as a straight link */
     bottom:37px;
     border-radius:2px;
     border:2px solid white;
-    background-repeat: 'no-repeat';
     display:none;
+}
+.scrubber-thumbnail-sub {
+    background-repeat: 'no-repeat';
+    width:100%;
+    height:100%;
 }
 /* === /Sharing === */
 

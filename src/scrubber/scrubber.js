@@ -31,6 +31,7 @@ Player.provide('scrubber',
           $this.handleContainer = $($this.container).find('.scrubber-handle');
           $this.timeContainer = $($this.container).find('.scrubber-time');
           $this.thumbnailContainer = $($this.container).find('.scrubber-thumbnail');
+          $this.thumbnailContainerSub = $($this.container).find('.scrubber-thumbnail-sub');
 
           // Giver a class to indicate that the mouse of over the scrubber
           $this.scrubberContainer.mouseenter(function(){
@@ -126,6 +127,7 @@ Player.provide('scrubber',
               $this.handleContainer.css({left: (($this.scrubberTime||Player.get('currentTime'))/duration * $this.scrubber.width()) - ($this.handleContainer.width()/2) +'px'});
           }catch(e){}
       }
+      $this.loadedFrameBackground = false;
       $this.showFrame = function(playhead) {
           // The frame is calculated by the playhead position and the number of total frames.
           var relativePlayhead = playhead/Player.get('duration');
@@ -137,22 +139,29 @@ Player.provide('scrubber',
           var positionOffset = (relativePlayhead*scrubberWidth) - (thumbnailWidth/2);
           var positionOffset = Math.max(0, Math.min(positionOffset, scrubberWidth-thumbnailWidth));
           // Position and show the thumbnail container
+          if(!$this.loadedFrameBackground) {
+              $this.thumbnailContainer.css({
+                  width:Player.get('video_frames_width')+'px', 
+                  height:Player.get('video_frames_height')+'px'
+              });
+              $this.thumbnailContainerSub.css({
+                  backgroundImage:'url(' + Player.get('video_frames_src') + ')'
+              });
+              $this.loadedFrameBackground = true;
+          }
           $this.thumbnailContainer.css({
-              left:positionOffset+'px',
-              width:Player.get('video_frames_width')+'px', 
-              height:Player.get('video_frames_height')+'px',
-              backgroundImage:'url(' + Player.get('video_frames_src') + ')',
-              backgroundPosition: '0 -'+frameOffset+'px'
+              left:positionOffset+'px'
           }).show();
+          $this.thumbnailContainerSub.css({
+              backgroundPosition: '0 -'+frameOffset+'px'
+          });
       }
 
 
       // EVENTS
       // Set the frames background on load
       Player.bind('player:video:loaded', function(){
-          if (!Player.get('video_has_frames')) {
-              $this.thumbnailContainer.css({backgroundImage:'url(' + Player.get('video_frames_src') + ')'});
-          }
+          $this.loadedFrameBackground = false;
       });
       // Update scrubber on progress and on window resize
       Player.bind('player:video:progress player:video:timeupdate player:video:seeked player:video:ended', $this.updateScrubber);
