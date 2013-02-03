@@ -39,7 +39,7 @@ Player.provide('status-display',
       });
 
     /* Error handling */
-    Player.bind('player:video:displaydevice', function(e){
+    Player.bind('player:video:loaded', function(e){
         $this.render();
       });
     $this.errorMessage = "";
