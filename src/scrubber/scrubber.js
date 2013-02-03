@@ -132,7 +132,7 @@ Player.provide('scrubber',
           // The frame is calculated by the playhead position and the number of total frames.
           var relativePlayhead = playhead/Player.get('duration');
           var frameNumber = Math.round(relativePlayhead*Player.get('video_num_frames'));
-          var frameOffset = frameNumber * Player.get('video_frames_height');
+          var frameOffset = Math.ceil(frameNumber * Player.get('video_frames_height'))+1;
           // Calculate position of the thumbnail display
           var thumbnailWidth = $this.thumbnailContainer.width();
           var scrubberWidth = $this.scrubber.width();
@@ -142,7 +142,7 @@ Player.provide('scrubber',
           if(!$this.loadedFrameBackground) {
               $this.thumbnailContainer.css({
                   width:Player.get('video_frames_width')+'px', 
-                  height:Player.get('video_frames_height')+'px'
+                  height:(Player.get('video_frames_height')-2)+'px'
               });
               $this.thumbnailContainerSub.css({
                   backgroundImage:'url(' + Player.get('video_frames_src') + ')'
