@@ -98,6 +98,8 @@ Player.provide('core',
       var $this = this;
       $.extend($this, opts);
 
+      $this.protocol = (/^https/.test(location.href) ? 'https' : 'http');
+
       // PROPERTIES
       $this.settings = $.extend(opts, Player.parameters);
       $.each($this.settings, function(i,v){
@@ -115,8 +117,9 @@ Player.provide('core',
           var p=location.pathname.match(/\/([0-9]+)\.i?html$/);
           if(p) $this.player_id = p[1];
       }
-      $this.url = 'http://' + $this.domain;
+      $this.url = $this.protocol + '://' + $this.domain;
       $this.api = new Visualplatform($this.domain);
+      $this.api.protocol = $this.protocol;
       $this.video = null;
       $this.streams = [];
       $this.clips = [];
@@ -181,7 +184,7 @@ Player.provide('core',
       /* SETTERS */
       Player.setter('domain', function(d){
           $this.domain = d;
-          $this.url = 'http://' + $this.domain;
+          $this.url = $this.protocal + '://' + $this.domain;
       });
       Player.setter('video', function(v){
           $this.video = v;
@@ -211,6 +214,7 @@ Player.provide('core',
       Player.getter('player_id', function(){return $this.settings.player_id;});
       Player.getter('domain', function(){return $this.domain;});
       Player.getter('url', function(){return $this.url;});
+      Player.getter('protocol', function(){return $this.protocol;});
       Player.getter('api', function(){return $this.api;});
       Player.getter('video', function(){return $this.video;});
       Player.getter('clips', function(){return $this.clips;});
