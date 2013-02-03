@@ -115,7 +115,9 @@ Player.provide('design',
 
       // RESIZE HANDLING
       var _resize = function(){
-          var playerSize = Player.get('playerSize');
+          try {
+              var playerSize = Player.get('playerSize');
+          }catch(e){playerSize = 'medium';}
           var hiddenElements = (playerSize=='small' ? 4 : 0);
           var l = $('.tray-left div.tray-button').length * 33;
           var r = ($('.tray-right div.tray-button').length-hiddenElements) * 33;
