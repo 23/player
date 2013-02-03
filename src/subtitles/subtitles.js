@@ -163,14 +163,6 @@ Player.provide('subtitles',
         }
       }
 
-      $this.handleSize = function(){
-          $this.container.removeClass('design-subtitles-large design-subtitles-middle design-subtitles-small');
-          var w = $(window).width();
-          $this.container.addClass( (w<900 ? 'design-subtitles-small' : (w<1500 ? 'design-subtitles-middle' : 'design-subtitles-large')));
-      }
-      $this.handleSize();
-      $(window).resize($this.handleSize);
-
       _reset();
       return $this;
   }

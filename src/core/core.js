@@ -241,6 +241,24 @@ Player.provide('core',
       Player.getter('video_frames_src', function(){return (Player.get('video_has_frames') ? Player.get('video_base_url') + Player.get('video_frames_width') + 'xfr' : '');});
       Player.getter('video_num_frames', function(){var d = Player.get('video_duration'); return Math.floor(d/Math.ceil(d/200))});
 
+      // Different sizes of players (this is used by non-design modules such as subtitles, thus placed here.)
+      $this.playerSize = 'medium';
+      $this.handleSize = function(){
+          var b = $('body')
+          var w = $(window).width();
+          if(w<300) $this.playerSize = 'tiny';
+          else if(w<450) $this.playerSize = 'small';
+          else if(w<700) $this.playerSize = 'medium';
+          else if(w<900) $this.playerSize = 'large';
+          else $this.playerSize = 'full';
+          b.removeClass('size-tiny size-small size-medium size-large size-full');
+          b.addClass('size-'+$this.playerSize);
+      }
+      $this.handleSize();
+      $(window).resize($this.handleSize);
+      Player.getter('playerSize', function(){return $this.playerSize;});
+
+
       // Load the player
       $this.bootstrap = function(){
           Player.fire('player:init');

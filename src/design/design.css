@@ -249,8 +249,6 @@ a.button { /* standard button design as a straight link */
     border-radius:2px;
     padding:5px 10px 8px 10px;
 }
-.info-description {
-}
 /* === /Info === */
 
 /* === Module: Sharing === */
@@ -366,6 +364,31 @@ table.browse-recommendations div {
 .mail-button {background-image:url('mail-icon.png');}
 .quality-button {background-image:url('quality-icon.png');}
 .subtitle-button {background-image:url('subtitle-icon.png');}
+
+/* Hide a number of elements in very small players */
+.size-tiny .info-button, 
+.size-tiny .share-button,
+.size-tiny .browse-button-on,
+.size-tiny .browse-button-off,
+.size-tiny .quality-button,
+.size-tiny .subtitle-button,
+.size-tiny .tray-scrubber,
+.size-tiny .info-pane,
+.size-tiny .sharing-container,
+.size-tiny .player-browse #browse {
+    display:none !important;
+}
+
+/* Hide some elements in slightly small players */
+.size-small .info-description,
+.size-small .subtitle-button,
+.size-small .info-button, 
+.size-small .browse-button-on,
+.size-small .browse-button-off,
+.size-small .sharing-container 
+.size-small .player-browse #browse {
+    display:none;
+}
 
 /* All graphics in retina version */
 @media 

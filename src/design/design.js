@@ -115,8 +115,10 @@ Player.provide('design',
 
       // RESIZE HANDLING
       var _resize = function(){
+          var playerSize = Player.get('playerSize');
+          var hiddenElements = (playerSize=='small' ? 4 : 0);
           var l = $('.tray-left div.tray-button').length * 33;
-          var r = $('.tray-right div.tray-button').length * 33;
+          var r = ($('.tray-right div.tray-button').length-hiddenElements) * 33;
           if(l>0) $('.tray-scrubber').css({marginLeft:l+'px', marginRight:r+'px'});
       }
       $(window).load(_resize);

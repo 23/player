@@ -8,3 +8,6 @@
     max-width:80px;
     max-height:80px;
 }
+.size-tiny .logo {
+    display:none;
+}
