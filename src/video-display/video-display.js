@@ -76,7 +76,7 @@ Player.provide('video-display',
 
       // When the module has been loaded in to the DOM, load the display device
       $this.onAppend = function(){
-        $this.video = new Eingebaut($this.canvas, $this.displayDevice, '/resources/um/players/demonic/Eingebaut.swf', function(e){
+        $this.video = new Eingebaut($this.canvas, $this.displayDevice, '/files/Eingebaut.swf', function(e){
             if(e=='loaded'&&$this.video.displayDevice=='none') {
                 Player.set('error', 'This player requires a modern web browser or a recent version of Adobe Flash.');
             }
