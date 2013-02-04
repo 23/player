@@ -79,6 +79,9 @@ div.button ul { /* button menus */
     padding:2px 10px;
     text-align:left;
 }
+div.activebutton {
+    filter: alpha(enabled=false) !important; /* IE alpha overflow hidden bug, http://labs.thesedays.com/blog/2011/06/02/ie-alpha-overflow-hidden-bug/ */
+}
 div.activebutton ul { /* active button menus */
     display:block;
     font-size:11px;
@@ -157,6 +160,7 @@ a.button { /* standard button design as a straight link */
     background:rgb(0,0,0); /*fallback for browser with no RGBa support */
     background:rgba(0,0,0,.8); /*updated in js via player settings */
     border-radius:2px;
+    filter: alpha(enabled=false) !important; /* IE alpha overflow hidden bug, http://labs.thesedays.com/blog/2011/06/02/ie-alpha-overflow-hidden-bug/ */
 }
 .scrubber {
     position:absolute; 
