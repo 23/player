@@ -115,12 +115,8 @@ Player.provide('design',
 
       // RESIZE HANDLING
       var _resize = function(){
-          try {
-              var playerSize = Player.get('playerSize');
-          }catch(e){playerSize = 'medium';}
-          var hiddenElements = (playerSize=='small' ? 4 : 0);
-          var l = $('.tray-left div.tray-button').length * 33;
-          var r = ($('.tray-right div.tray-button').length-hiddenElements) * 33;
+          var l = $('.tray-left div.tray-button:visible').length * 33;
+          var r = $('.tray-right div.tray-button:visible').length * 33;
           if(l>0) $('.tray-scrubber').css({marginLeft:l+'px', marginRight:r+'px'});
       }
       $(window).load(_resize);
