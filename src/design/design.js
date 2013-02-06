@@ -15,7 +15,8 @@ Player.provide('design',
     trayTitleFontSize:14,
     trayTitleFontWeight:'bold',
     trayContentFontSize:12,
-    trayContentFontWeight:'normal'
+    trayContentFontWeight:'normal',
+    scrubberColor:'#eeeeee'
   }, 
   function(Player,$,opts){
       // This is required to add the template to the page
@@ -60,7 +61,7 @@ Player.provide('design',
       // Handle settings
       $this.trayTimeoutId = null;
       Player.bind('player:settings', function(e){
-          PlayerUtilities.mergeSettings($this, ['showTray', 'trayTimeout', 'verticalPadding', 'horizontalPadding', 'trayAlpha','trayBackgroundColor','trayTextColor','trayFont','trayTitleFontSize','trayTitleFontWeight','trayContentFontSize','trayContentFontWeight']);
+          PlayerUtilities.mergeSettings($this, ['showTray', 'trayTimeout', 'verticalPadding', 'horizontalPadding', 'trayAlpha','trayBackgroundColor','trayTextColor','trayFont','trayTitleFontSize','trayTitleFontWeight','trayContentFontSize','trayContentFontWeight', 'scrubberColor']);
 
           // Allow for background color transparency
           var colorTest = $this.trayBackgroundColor.match(/^\#(..)(..)(..)$/);
@@ -103,11 +104,13 @@ Player.provide('design',
           $('body,button').css({color:$this.trayTextColor});
           // Background color and opacity
           $('div.button, a.button').css({backgroundColor:$this.trayBackgroundColor, opacity:$this.trayAlpha});
+          $('.scrubber-play').css({backgroundColor:$this.scrubberColor});
           $('.scrubber-container, .info-pane, .sharing-container, .player-browse #browse, div.button ul').css({backgroundColor:$this.trayBackgroundColorRGBA});
           if(!/^rgba/.test($('.scrubber-container').css('backgroundColor'))) {
               // (fall back to background color + opacity if RGBa is not supported
               $('.scrubber-container, .info-pane, .sharing-container, .player-browse #browse, div.button ul').css({backgroundColor:$this.trayBackgroundColor, opacity:$this.trayAlpha});
           }
+          $('div.button, a.button').css({backgroundColor:$this.trayBackgroundColor, opacity:$this.trayAlpha});
           // Vertical and horisontal padding
           $('video-display').css({bottom:$this.verticalPadding+'px', left:$this.horizontalPadding+'px'})
       }

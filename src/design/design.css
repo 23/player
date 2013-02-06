@@ -186,7 +186,7 @@ a.button { /* standard button design as a straight link */
     background-color:#666;
 }
 .scrubber-play {
-    background-color:#eee;
+    background-color:#eee; /*updated in js via player settings */
 }
 .scrubber-handle {
     display:none;
