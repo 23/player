@@ -13,32 +13,35 @@
 
   <!-- Control bar or tray -->
   <div id="tray">
-    {% player info %}
     {% player sharing %}
+    {% player browse %}
 
     <div class="tray-navigation">
       <ul class="tray-left">
         {% player play-button %}
       </ul>
 
-      <div class="tray-right">
-        {% player fullscreen-button %}
-        {% player volume-button %}
-        {% player subtitle-button %}
-        {% player quality-button %}
-        {% player share-button %}
-        {% player info-button %}
-        {% player browse-button %}
-      </div>
+      <div class="tray-right-container">
 
-      <div class="tray-scrubber">
-        <div class="tray-scrubber-sub">
-          {% player scrubber %}
-          {% player sections %}
+        {% player info %}
+
+        <div class="tray-right">
+          {% player fullscreen-button %}
+          {% player volume-button %}
+          {% player subtitle-button %}
+          {% player quality-button %}
+          {% player share-button %}
+          {% player browse-button %}
+        </div>
+
+        <div class="tray-scrubber">
+          <div class="tray-scrubber-sub">
+            {% player scrubber %}
+            {% player sections %}
+          </div>
         </div>
       </div>
     </div>
-    {% player browse %}
   </div>
 
   {% player logo %}

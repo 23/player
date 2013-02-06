@@ -49,13 +49,20 @@ div.button { /* standard button design */
     height:30px;
     width:30px;
     border-radius:2px;
-    background-color:black;  /*updated in js via player settings */
+    /*background-color:black;  /*updated in js via player settings */
     background-position:center center;
     background-repeat:no-repeat;
-    opacity:.8;
+    /*opacity:.8;*/
     cursor:pointer;
     font-size:0;
 }
+
+.tray-left div.button {
+    height: 63px;
+    width: 67px;
+    background-color:black;
+}
+
 div.highlight-button {
     opacity:1 !important;
 }
@@ -136,12 +143,22 @@ a.button { /* standard button design as a straight link */
     float:left;
     margin-right:3px;
 }
+.tray-right{
+    margin: 3px 3px 0 0 ;
+    float: right;
+}
 .tray-right .tray-button { /* buttons right of scrubber */
     float:right;
     margin-left:3px;
 }
+.tray-right-container {
+    background:rgb(0,0,0); /*fallback for browser with no RGBa support */
+    background:rgba(0,0,0,.8); /*updated in js via player settings */
+    margin: 0 0 0 70px;
+}
 .tray-scrubber {  /* scrubber position */
-    margin:0 200px 0 33px; /* this will be updated using JS to fix the with of .tray-left and .tray-right */
+    margin: 0; /* this will be updated using JS to fix the with of .tray-left and .tray-right */
+    clear: right;
 }
 .tray-scrubber-sub {
     position:relative;
@@ -154,11 +171,10 @@ a.button { /* standard button design as a straight link */
 /* ========================= INDIVIDUAL MODULES ======================== */
 
 /* === Module: Scrubber === */
+
 .scrubber-container {
     position:relative;
     height:30px;
-    background:rgb(0,0,0); /*fallback for browser with no RGBa support */
-    background:rgba(0,0,0,.8); /*updated in js via player settings */
     border-radius:2px;
     filter: alpha(enabled=false) !important; /* IE alpha overflow hidden bug, http://labs.thesedays.com/blog/2011/06/02/ie-alpha-overflow-hidden-bug/ */
 }
@@ -166,7 +182,7 @@ a.button { /* standard button design as a straight link */
     position:absolute; 
     top:0px;
     left:10px;
-    right:10px;
+    right:50px;
     height:30px;
     cursor:pointer;
 }
@@ -202,11 +218,12 @@ a.button { /* standard button design as a straight link */
     z-index:10;
 }
 .scrubber-container-hover .scrubber-handle {
-    display:block;
+    /*display:block;*/
 }
 .scrubber-time {
-    display:none;
     position:absolute; 
+    top: 8px;
+    right: 10px;
 }
 .scrubber-thumbnail {
     position:absolute;
@@ -241,12 +258,35 @@ a.button { /* standard button design as a straight link */
     border-radius:5px;
     cursor:pointer;
 }
-.section-title {
-    display:none;
+.section .section-title {
+    display: none;
+    position: absolute;
+    bottom: 20px;
+    padding: 10px;
+    background-color: white;
+    color: black;
+    font-size: 12px;
+    white-space: nowrap;
+    text-transform: uppercase;
+    font-weight: bold;
+    border-radius: 2px;
 }
+
+.section:hover .section-title {
+    display:block;
+}
+
 /* === /Sections === */
 
 /* === Module: Info === */
+.player-info {
+    float: left;
+    margin: 5px 0 0 12px; /*updated in js*/
+    text-transform: uppercase;
+}
+.player-info h1 {
+    font-size: 18px;
+}
 .info-pane {
     margin:0 5px;
     background:rgb(0,0,0); /*fallback for browser with no RGBa support */
@@ -299,6 +339,7 @@ a.button { /* standard button design as a straight link */
     padding:10px 2px;
     background:rgb(0,0,0); /*fallback for browser with no RGBa support */
     background:rgba(0,0,0,.8); /*updated in js via player settings */
+    margin: 3px 5px 0 5px;
 }
 /* Place left and right browsing with a carousel in the middle */
 .browse-container, .browse-left, .browse-right {

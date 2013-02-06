@@ -153,7 +153,6 @@ Player.provide('browse',
       Player.setter('browseMode', function(bm){
           if(bm) {
               Player.set('showSharing', false);
-              Player.set('showDescriptions', false);
           }
           $this.browseMode = bm;
           Player.fire('player:browse:updated');

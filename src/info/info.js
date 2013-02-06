@@ -32,12 +32,9 @@ Player.provide('info',
       Player.bind('player:infoengaged', function(e,video){
           $this.render();
       });
-      Player.bind('player:video:play', function(e,video){
-          Player.set('showDescriptions', false);
-      });
       Player.bind('player:settings player:video:loaded', function(e,video){
           if($this.infoTimeout>0) {
-            setTimeout(function(){Player.set('showDescriptions', false);}, $this.infoTimeout);
+            //setTimeout(function(){Player.set('showDescriptions', false);}, $this.infoTimeout);
           }
           Player.fire('player:infoengaged');
         });
