@@ -131,7 +131,7 @@ Player.provide('core',
           // Load settings for the player from 23 Video
           methods.push({
               method:'/api/player/settings',
-              data:{player_id:$this.settings.player_id, params:Player.parametersString},
+              data:{player_id:$this.settings.player_id, parameters:Player.parametersString},
               callback: function(data){
                   if(data.status=='ok') {
                       // Merge in settings API, then from player parameter
