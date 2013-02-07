@@ -47,7 +47,7 @@ button {
 div.button { /* standard button design */
     position:relative;
     height:30px;
-    width:30px;
+    width:24px;
     border-radius:2px;
     /*background-color:black;  /*updated in js via player settings */
     background-position:center center;
@@ -145,7 +145,7 @@ a.button { /* standard button design as a straight link */
     margin-right:3px;
 }
 .tray-right{
-    margin: 3px 3px 0 0 ;
+    margin: 3px 7px 0 0 ;
     float: right;
 }
 .tray-right .tray-button { /* buttons right of scrubber */
@@ -187,7 +187,7 @@ a.button { /* standard button design as a straight link */
     position:absolute; 
     top:0px;
     left:10px;
-    right:50px;
+    right:54px;
     height:30px;
     cursor:pointer;
 }

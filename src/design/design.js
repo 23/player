@@ -119,16 +119,17 @@ Player.provide('design',
 
       // RESIZE HANDLING
       var _resize = function(){
-          var r = $('.tray-right div.tray-button:visible').length * 33;
+          var r = $('.tray-right div.tray-button:visible').length * 27;
           var rc = $('.tray-right-container').width();
           if(r>0) {
             //$('.player-info').css({marginRight:r+'px'});
             $('.tray-right').css({width: r});
           }
-          $('.player-info').css({width: (rc-r-30)});
+          $('.player-info:visible').css({width: (rc-r-30)});
       }
       $(window).load(_resize);
       $(window).resize(_resize);
+      $(document).mousemove(_resize);
       Player.bind('glue:render', function(){
           _resize();
           $this.applyDesignPreferences();
