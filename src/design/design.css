@@ -78,7 +78,7 @@ div.button ul { /* button menus */
     display:none;
     opacity:0;
     position:absolute;
-    bottom:32px; 
+    bottom:36px; 
     right:0;
     background:rgb(0,0,0); /*fallback for browser with no RGBa support */
     background:rgba(0,0,0,.8); /*updated in js via player settings */
@@ -89,6 +89,7 @@ div.button ul { /* button menus */
 div.activebutton {
     filter: alpha(enabled=false) !important; /* IE alpha overflow hidden bug, http://labs.thesedays.com/blog/2011/06/02/ie-alpha-overflow-hidden-bug/ */
 }
+div.activebutton {opacity: 1;}
 div.activebutton ul { /* active button menus */
     display:block;
     font-size:11px;
@@ -150,6 +151,10 @@ a.button { /* standard button design as a straight link */
 .tray-right .tray-button { /* buttons right of scrubber */
     float:right;
     margin-left:3px;
+    opacity: 0.8;
+}
+.tray-right .activebutton { /* buttons right of scrubber */
+    opacity: 1;
 }
 .tray-right-container {
     background:rgb(0,0,0); /*fallback for browser with no RGBa support */
@@ -255,7 +260,6 @@ a.button { /* standard button design as a straight link */
     margin:0px 0 0 -4px;
     border:1px solid black;
     background-color:#ccc;
-    border-radius:5px;
     cursor:pointer;
 }
 .section .section-title {
@@ -283,6 +287,9 @@ a.button { /* standard button design as a straight link */
     float: left;
     margin: 5px 0 0 12px; /*updated in js*/
     text-transform: uppercase;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 50%; /*updated in js*/
 }
 .player-info h1 {
     font-size: 18px;
@@ -421,7 +428,9 @@ table.browse-recommendations div {
 .size-tiny .tray-scrubber,
 .size-tiny .info-pane,
 .size-tiny .sharing-container,
-.size-tiny .player-browse #browse {
+.size-tiny .player-browse #browse,
+.size-tiny .tray-right-container,
+.size-tiny .big-play-button {
     display:none !important;
 }
 
