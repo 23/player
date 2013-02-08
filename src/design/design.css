@@ -15,7 +15,7 @@ body {
 }
 h1 {
     font-size:14px; /*updated in js via player settings */
-    line-height:2em;
+    line-height:26px;
     font-weight:bold; /*updated in js via player settings */
     letter-spacing:.3px;
 }
@@ -46,20 +46,17 @@ button {
 /* === buttons === */
 div.button { /* standard button design */
     position:relative;
-    height:30px;
-    width:24px;
-    border-radius:2px;
-    /*background-color:black;  /*updated in js via player settings */
+    height:22px;
+    width:23px;
     background-position:center center;
     background-repeat:no-repeat;
-    /*opacity:.8;*/
     cursor:pointer;
     font-size:0;
 }
 
 .tray-left div.button {
-    height: 63px;
-    width: 67px;
+    height: 50px;
+    width: 60px;
     background-color:black;
 }
 
@@ -72,13 +69,12 @@ div.button:hover {
 div.button.big { /* big version of same button */
     height:60px;
     width:60px;
-    border-radius:3px;
 }
 div.button ul { /* button menus */
     display:none;
     opacity:0;
     position:absolute;
-    bottom:36px; 
+    bottom:30px; 
     right:0;
     background:rgb(0,0,0); /*fallback for browser with no RGBa support */
     background:rgba(0,0,0,.8); /*updated in js via player settings */
@@ -113,7 +109,6 @@ a.button { /* standard button design as a straight link */
     border:1px solid #333;
     height:30px;
     width:30px;
-    border-radius:2px;
     background-color:black;  /*updated in js via player settings */
     background-position:center center;
     background-repeat:no-repeat;
@@ -140,18 +135,20 @@ a.button { /* standard button design as a straight link */
     position:relative;
     margin:3px 5px 5px 5px;
 }
-.tray-left .tray-button { /* buttons left of scrubber */
+.tray-left {
     float:left;
-    margin-right:3px;
+}
+.tray-left, .tray-right-container {
+    height:50px;
 }
 .tray-right{
-    margin: 3px 7px 0 0 ;
+    margin: 7px 5px 0 0 ;
     float: right;
 }
 .tray-right .tray-button { /* buttons right of scrubber */
     float:right;
     margin-left:3px;
-    opacity: 0.8;
+    opacity: 0.5;
 }
 .tray-right .activebutton { /* buttons right of scrubber */
     opacity: 1;
@@ -159,7 +156,8 @@ a.button { /* standard button design as a straight link */
 .tray-right-container {
     background:rgb(0,0,0); /*fallback for browser with no RGBa support */
     background:rgba(0,0,0,.8); /*updated in js via player settings */
-    margin: 0 0 0 70px;
+    margin: 0 0 0 63px;
+    
 }
 .tray-scrubber {  /* scrubber position */
     margin: 0; /* this will be updated using JS to fix the with of .tray-left and .tray-right */
@@ -180,20 +178,19 @@ a.button { /* standard button design as a straight link */
 .scrubber-container {
     position:relative;
     height:30px;
-    border-radius:2px;
     filter: alpha(enabled=false) !important; /* IE alpha overflow hidden bug, http://labs.thesedays.com/blog/2011/06/02/ie-alpha-overflow-hidden-bug/ */
 }
 .scrubber {
     position:absolute; 
     top:0px;
     left:10px;
-    right:54px;
-    height:30px;
+    right:50px;
+    height:20px;
     cursor:pointer;
 }
 .scrubber-track, .scrubber-buffer, .scrubber-play {
     position:absolute; 
-    top:12px;
+    top:6px;
     left:0;
     height:6px;
     width:0;
@@ -215,7 +212,6 @@ a.button { /* standard button design as a straight link */
     position:absolute;
     top:7px;
     background-color:#eee;
-    border-radius:1px;
     font-size:9px;
     line-height:9px;
     color:#333;
@@ -227,14 +223,15 @@ a.button { /* standard button design as a straight link */
 }
 .scrubber-time {
     position:absolute; 
-    top: 8px;
-    right: 10px;
+    top: 3px;
+    right: 8px;
+    opacity:.5;
 }
 .scrubber-thumbnail {
     position:absolute;
-    bottom:37px;
-    border-radius:2px;
-    border:2px solid white;
+    bottom:61px;
+    border:1px solid #999;
+    background-color:#999;
     display:none;
 }
 .scrubber-thumbnail-sub {
@@ -247,7 +244,7 @@ a.button { /* standard button design as a straight link */
 /* === Module: Sections === */
 .sections {
     position:absolute; 
-    top:10px;
+    top:4px;
     left:10px;
     right:10px;
     height:0; /* for ie7's sake, otherwise this element covers the scrubber  */
@@ -265,15 +262,16 @@ a.button { /* standard button design as a straight link */
 .section .section-title {
     display: none;
     position: absolute;
-    bottom: 20px;
-    padding: 10px;
-    background-color: white;
-    color: black;
-    font-size: 12px;
+    bottom: 14px;
+    padding: 5px 5px 4px 5px;
+    background-color: #f6f6f6;
+    color: #666;
+    font-size: 11px;
     white-space: nowrap;
     text-transform: uppercase;
     font-weight: bold;
-    border-radius: 2px;
+    border-radius: 1px;
+    border:0;
 }
 
 .section:hover .section-title {
@@ -285,20 +283,19 @@ a.button { /* standard button design as a straight link */
 /* === Module: Info === */
 .player-info {
     float: left;
-    margin: 5px 0 0 12px; /*updated in js*/
+    margin: 5px 0 0 10px;
     text-transform: uppercase;
-    white-space: nowrap;
     overflow: hidden;
-    width: 50%; /*updated in js*/
+    width: 0; /*updated in js*/
+    height:26px;
 }
 .player-info h1 {
-    font-size: 18px;
+    height:60px;
 }
 .info-pane {
     margin:0 5px;
     background:rgb(0,0,0); /*fallback for browser with no RGBa support */
     background:rgba(0,0,0,.8); /*updated in js via player settings */
-    border-radius:2px;
     padding:5px 10px 8px 10px;
 }
 /* === /Info === */
@@ -308,7 +305,6 @@ a.button { /* standard button design as a straight link */
     background:rgb(0,0,0); /*fallback for browser with no RGBa support */
     background:rgba(0,0,0,.8); /*updated in js via player settings */
     margin:3px 5px 0 5px;
-    border-radius:2px;
     padding:10px;
 }
 .share-embed {
@@ -400,7 +396,7 @@ table.browse-recommendations div {
 /* === /Browse === */
 
 /* Button graphics */
-.play-button {background-image:url('play-icon.png');}
+.play-button {background-image:url('big-play-icon.png');}
 .big-play-button {background-image:url('big-play-icon.png');}
 .pause-button {background-image:url('pause-icon.png');}
 .facebook-button {background-image:url('facebook-icon.png');}
@@ -449,7 +445,7 @@ table.browse-recommendations div {
 @media 
 (-webkit-min-device-pixel-ratio: 2), 
 (min-resolution: 192dpi) { 
-    .play-button {background-image:url('play-icon@2x.png'); background-size:30px;}
+    .play-button {background-image:url('big-play-icon@2x.png'); background-size:60px;}
     .big-play-button {background-image:url('big-play-icon@2x.png'); background-size:60px;}
     .pause-button {background-image:url('pause-icon@2x.png'); background-size:30px;}
     .facebook-button {background-image:url('facebook-icon@2x.png'); background-size:30px;}

@@ -12,7 +12,7 @@ Player.provide('design',
     trayBackgroundColor:'#000000',
     trayTextColor:'#ffffff',
     trayFont:'Helvetica',
-    trayTitleFontSize:16,
+    trayTitleFontSize:14,
     trayTitleFontWeight:'bold',
     trayContentFontSize:12,
     trayContentFontWeight:'normal',
@@ -119,10 +119,9 @@ Player.provide('design',
 
       // RESIZE HANDLING
       var _resize = function(){
-          var r = $('.tray-right div.tray-button:visible').length * 27;
+          var r = $('.tray-right div.tray-button:visible').length * 28;
           var rc = $('.tray-right-container').width();
           if(r>0) {
-            //$('.player-info').css({marginRight:r+'px'});
             $('.tray-right').css({width: r});
           }
           $('.player-info:visible').css({width: (rc-r-30)});
