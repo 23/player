@@ -61,6 +61,9 @@ Player.provide('video-display',
       $.extend($this, opts);
       $this.seekedTime = 0;
 
+      // Allow `displayDevice` to be set in embed code
+      if(typeof(Player.parameters.displayDevice)!='undefined') $this.displayDevice = Player.parameters.displayDevice;
+
       // This one is needed to display fallback information
       Player.getter('displayDevice', function(){
           return $this.displayDevice;
