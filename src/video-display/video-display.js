@@ -74,21 +74,27 @@ Player.provide('video-display',
       $this.qualities = {};
       $this.rawSource = "";
 
-      // When the module has been loaded in to the DOM, load the display device
-      $this.onAppend = function(){
-        $this.video = new Eingebaut($this.canvas, $this.displayDevice, '', function(e){
-            if(e=='loaded'&&$this.video.displayDevice=='none') {
-                Player.set('error', 'This player requires a modern web browser or a recent version of Adobe Flash.');
-            }
-            // Don't send event during switching, it only confuses the UI
-            if($this.video.switching && (e=='playing'||e=='pause')) return;
-            // Modify event names slightly
-            if(e=='loaded'||e=='ready') e = 'player'+e;
-            // Fire the player event
-            Player.fire('player:video:' + e);
-          });
+      // Logic to load the display device with Eingebaut
+      $this.loadEingebaut = function(){
+          $this.canvas.html('');
+          $this.video = new Eingebaut($this.canvas, $this.displayDevice, '', function(e){
+              if(e=='loaded'&&$this.video.displayDevice=='none') {
+                  Player.set('error', 'This player requires a modern web browser or a recent version of Adobe Flash.');
+              }
+              // Don't send event during switching, it only confuses the UI
+              if($this.video.switching && (e=='playing'||e=='pause')) return;
+              // Modify event names slightly
+              if(e=='loaded'||e=='ready') e = 'player'+e;
+              // Fire the player event
+              Player.fire('player:video:' + e);
+            });
         $this.video.load();
         $this.displayDevice = $this.video.displayDevice;
+      };
+
+      // When the module has been loaded in to the DOM, load the display device    
+      $this.onAppend = function(){
+        $this.loadEingebaut();
         $this.loadShortcuts();
       }
       
@@ -210,8 +216,13 @@ Player.provide('video-display',
             // Flash has been loaded, so we can throw an HDS stream at the display and have it work.
             $this.qualities['standard'] = {format:'hds', codec:'unknown', displayName:'Automatic', displayQuality:'unknown', source:v.hds_stream};
           } else {
-            // TODO: Switch to a Flash dispay device for playing the stream
-            alert('switch to Flash here');
+            // Switch to a Flash dispay device for playing the stream
+            Player.set('loading', true);
+            $this.displayDevice = 'flash';
+            $this.loadEingebaut();
+            if($this.displayDevice!='flash') {
+                Player.set('error', "Live streaming requires a browser with support for HTTP Live Streaming or with Adobe Flash installed.");
+            }
           }
         } else {
           Player.fail('Unknown video type loaded');
