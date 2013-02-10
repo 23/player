@@ -60,6 +60,12 @@ var PlayerVideo = function(Player,$,type,data){
     $v.aspectRatio = 1.0*$v.video_medium_width/$v.video_medium_height;
     $v.id = ($v.type=='clip' ? $v.photo_id : $v.livestream_id);
 
+    // Someone smartly gave different variable names to streams
+    if($v.type=='stream') {
+      $v.title = $v.name
+      $v.content = $v.description_html;
+    }
+
     // Init data model for extra information about the clip 
     // from modules, for example as sections array.
     // (all data needed even when the clip isn't active)
@@ -265,8 +271,15 @@ Player.provide('core',
           $this.load(function(){
               $this.loaded = true;
               Player.fire('player:loaded');
-              if($this.clips.length>0) {
-                  $this.clips[0].switchTo();
+
+              var loadStreamsByDefault = 
+                (typeof(Player.parameters.liveevent_stream_id)!='undefined'||typeof(Player.parameters.liveevent_id)!='undefined')
+                ||
+                (typeof(Player.parameters.photo_id)=='undefined'&&typeof(Player.parameters.album_id)=='undefined'&&typeof(Player.parameters.tag)=='undefined');
+              if(loadStreamsByDefault&&$this.streams.length>0) {
+                  $this.streams[0].switchTo(); // live stream is possible
+              } else if($this.clips.length>0) {
+                  $this.clips[0].switchTo(); // otherwise show the clip
               } else {
                   Player.set('error', "No video to play. Make sure you're logged in and that the player is configured correctly.");
               }
