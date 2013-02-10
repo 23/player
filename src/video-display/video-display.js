@@ -78,8 +78,14 @@ Player.provide('video-display',
       $this.loadEingebaut = function(){
           $this.canvas.html('');
           $this.video = new Eingebaut($this.canvas, $this.displayDevice, '', function(e){
+              // Error if no display device is available
               if(e=='loaded'&&$this.video.displayDevice=='none') {
                   Player.set('error', 'This player requires a modern web browser or a recent version of Adobe Flash.');
+              }
+              // If this loads after the content (i.e. if we're switching display device, fire an event that we're ready)
+              if(e=='loaded') {
+                var _v = Player.get('video');
+                if(_v) Player.fire('player:video:loaded', _v);
               }
               // Don't send event during switching, it only confuses the UI
               if($this.video.switching && (e=='playing'||e=='pause')) return;

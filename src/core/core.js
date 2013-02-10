@@ -210,7 +210,25 @@ Player.provide('core',
       Player.setter('open_photo_id', function(opi){
           $.each($this.clips, function(i,c){
               if(c.photo_id==opi) {
+                Player.set('playing', false);
                 window.open(Player.get('url') + c.one);
+                return;
+              }
+            });
+        });
+      Player.setter('video_liveevent_stream_id', function(vlsi){
+          $.each($this.streams, function(i,s){
+              if(s.liveevent_stream_id==vlsi) {
+                s.switchTo();
+                return;
+              }
+            });
+        });
+      Player.setter('open_liveevent_stream_id', function(olsi){
+          $.each($this.streams, function(i,s){
+              if(s.liveevent_stream_id==olsi) {
+                Player.set('playing', false);
+                window.open(Player.get('url') + s.link);
                 return;
               }
             });
@@ -231,13 +249,24 @@ Player.provide('core',
       Player.getter('video_title', function(){return ($this.video ? $this.video.title||'' : '');});
       Player.getter('video_content', function(){return ($this.video ? $this.video.content||'' : '');});
       Player.getter('video_photo_id', function(){return ($this.video ? $this.video.photo_id||'' : '');});
+      Player.getter('video_liveevent_stream_id', function(){return ($this.video ? $this.video.liveevent_stream_id||'' : '');});
       Player.getter('video_duration', function(){return ($this.video ? $this.video.video_length||'' : '');});
       Player.getter('video_type', function(){return ($this.video ? $this.video.type||'' : '');});
       Player.getter('video_tree_id', function(){return ($this.video ? $this.video.tree_id||'' : '');});
       Player.getter('video_token', function(){return ($this.video ? $this.video.token||'' : '');});
       Player.getter('video_album_id', function(){return ($this.video ? $this.video.album_id||'' : '');});
-      Player.getter('video_one', function(){return ($this.video ? $this.video.one||'' : '');});
-      Player.getter('video_base_url', function(){return $this.url + '/' + $this.video.tree_id + '/' + $this.video.photo_id + '/' + $this.video.token + '/';});
+      Player.getter('video_one', function(){
+        if(!$this.video) return '';
+        return ($this.video.type=='clip' ? $this.video.one||'' : $this.video.link||'');
+      });
+      Player.getter('video_base_url', function(){
+        if(!$this.video) return $this.url;
+        if($this.video.type=='clip') {
+          return $this.url + '/' + $this.video.tree_id + '/' + $this.video.photo_id + '/' + $this.video.token + '/';
+        } else {
+          return $this.url + '/' + $this.video.link;
+        }
+      });
       Player.getter('video_aspect_ratio', function(){return ($this.video.video_medium_width||1) / ($this.video.video_medium_height||1);});
       
       // Information about frames for the current video

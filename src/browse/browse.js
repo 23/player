@@ -128,6 +128,10 @@ Player.provide('browse',
           $.each(c, function(i){
               c[i].browseThumbnailUrl = '/' + c[i].tree_id + '/' + c[i].photo_id + '/' + c[i].token + '/' + $this.browseThumbnailWidth + 'x' + $this.browseThumbnailHeight + 'cr/thumbnail.jpg';
           });
+          var s = Player.get('streams');
+          $.each(s, function(i){
+              s[i].browseThumbnailUrl = '/' + s[i].thumbnail_tree_id + '/' + s[i].thumbnail_photo_id + '/' + s[i].thumbnail_token + '/' + $this.browseThumbnailWidth + 'x' + $this.browseThumbnailHeight + 'cr/thumbnail.jpg';
+          });
           Player.fire('player:browse:updated');
         });
 
@@ -140,7 +144,7 @@ Player.provide('browse',
       Player.getter('showBrowse', function(){return $this.showBrowse});
       Player.getter('browseMode', function(){return $this.browseMode});
       Player.getter('recommendationMethod', function(){return $this.recommendationMethod});
-      Player.getter('hasRecommendations', function(){return Player.get('clips').length>1});
+      Player.getter('hasRecommendations', function(){return (Player.get('clips').length+Player.get('streams').length>1)});
       Player.getter('playlistClickMode', function(){return $this.playlistClickMode});
       Player.getter('browseThumbnailWidth', function(){return $this.browseThumbnailWidth});
       Player.getter('browseThumbnailHeight', function(){return $this.browseThumbnailHeight});
@@ -163,6 +167,14 @@ Player.provide('browse',
               Player.set('open_photo_id', id);
           } else {
               Player.set('video_photo_id', id);
+              Player.set('playing', true);
+          }
+        });
+      Player.setter('browse_liveevent_stream_id', function(id){
+          if(Player.get('playlistClickMode')=='link') {
+              Player.set('open_liveevent_stream_id', id);
+          } else {
+              Player.set('video_liveevent_stream_id', id);
               Player.set('playing', true);
           }
         });
