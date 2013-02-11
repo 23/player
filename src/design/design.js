@@ -16,7 +16,8 @@ Player.provide('design',
     trayTitleFontWeight:'bold',
     trayContentFontSize:12,
     trayContentFontWeight:'normal',
-    scrubberColor:'#89D5CE'
+    scrubberColor:'#89D5CE',
+    browseBackgroundColor: '#333333'
   }, 
   function(Player,$,opts){
       // This is required to add the template to the page
@@ -105,10 +106,10 @@ Player.provide('design',
           // Background color and opacity
           //$('div.button, a.button').css({backgroundColor:$this.trayBackgroundColor, opacity:$this.trayAlpha});
           $('.scrubber-play').css({backgroundColor:$this.scrubberColor});
-          $('.scrubber-container, .sharing-container, .player-browse #browse, div.button ul').css({backgroundColor:$this.trayBackgroundColorRGBA});
+          $('.scrubber-container, .sharing-container, div.button ul').css({backgroundColor:$this.trayBackgroundColorRGBA});
           if(!/^rgba/.test($('.scrubber-container').css('backgroundColor'))) {
               // (fall back to background color + opacity if RGBa is not supported
-              $('.scrubber-container, .sharing-container, .player-browse #browse, div.button ul').css({backgroundColor:$this.trayBackgroundColor, opacity:$this.trayAlpha});
+              $('.scrubber-container, .sharing-container, div.button ul').css({backgroundColor:$this.trayBackgroundColor, opacity:$this.trayAlpha});
           }
           //$('div.button, a.button').css({backgroundColor:$this.trayBackgroundColor, opacity:$this.trayAlpha});
           // Vertical and horisontal padding
