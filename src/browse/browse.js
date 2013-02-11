@@ -27,8 +27,8 @@ Player.provide('browse',
     browseMode: false,
     recommendationMethod: 'channel-popular',
     playlistClickMode:'inline',
-    browseThumbnailWidth:120,
-    browseThumbnailHeight:68
+    browseThumbnailWidth:180,
+    browseThumbnailHeight:101
   },
   function(Player,$,opts){
       var $this = this;
@@ -50,28 +50,28 @@ Player.provide('browse',
       }
       $this.handleScrollThumbs = function(){
           try {
-              var itemsWidth = $this.browseItems.width();
-              if(itemsWidth==0) {
+              var itemsHeight = $this.browseItems.height();
+              if(itemsHeight==0) {
                   window.setTimeout($this.handleScrollThumbs, 800);
                   return;
               }
-              var itemsLeft = $this.browseItems.position()['left'];
-              var containerWidth = $this.browseContainer.width();
-              $this.browseLeft.toggle( itemsLeft < 0);
-              $this.browseRight.toggle( itemsLeft > (itemsWidth-containerWidth)*-1 );
-          }catch(e){}
+              var itemsTop = $this.browseItems.position()['top'];
+              var containerHeight = $this.browseContainer.height();
+              $this.browseLeft.toggle( itemsTop < 0);
+              $this.browseRight.toggle( itemsTop > (itemsHeight-containerHeight)*-1 );
+          }catch(e){console.log(e);}
       }
       $this.scroll = function(direction){
           try {
-              var itemsWidth = $this.browseItems.width();
-              var itemsLeft = $this.browseItems.position()['left'];
-              var containerWidth = $this.browseContainer.width();
-              var newLeft = itemsLeft + ((direction*containerWidth)*-1); // scroll by a full screen
-              newLeft = Math.min(0, Math.max(newLeft, (itemsWidth-containerWidth)*-1)); // then enforce min and max
-              $this.browseItems.animate({left:newLeft+'px'}, function(){
+              var itemsHeight = $this.browseItems.height();
+              var itemsTop = $this.browseItems.position()['top'];
+              var containerHeight = $this.browseContainer.height();
+              var newTop = itemsTop + ((direction*containerHeight)*-1); // scroll by a full screen
+              newTop = Math.min(0, Math.max(newTop, (itemsHeight-containerHeight)*-1)); // then enforce min and max
+              $this.browseItems.animate({top:newTop+'px'}, function(){
                   $this.handleScrollThumbs();
               });
-          }catch(e){}
+          }catch(e){console.log(e);}
       }
       $(window).bind('load resize', $this.handleScrollThumbs);
 

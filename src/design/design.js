@@ -16,7 +16,7 @@ Player.provide('design',
     trayTitleFontWeight:'bold',
     trayContentFontSize:12,
     trayContentFontWeight:'normal',
-    scrubberColor:'#eeeeee'
+    scrubberColor:'#89D5CE'
   }, 
   function(Player,$,opts){
       // This is required to add the template to the page

@@ -328,35 +328,41 @@ a.button { /* standard button design as a straight link */
 /* === Module: Browse === */
 /* Place the browse pane within the player */
 .player-browse #browse {
-    position:relative;
-    padding:10px 2px;
+    position:absolute;
+    top: 0;
+    right: 0;
+    bottom: 36px;
+    width: 240px;
+    padding:30px 0px;
     background:rgb(0,0,0); /*fallback for browser with no RGBa support */
     background:rgba(0,0,0,.8); /*updated in js via player settings */
 }
 /* Place left and right browsing with a carousel in the middle */
 .browse-container, .browse-left, .browse-right {
-    height:105px;
     overflow:hidden;
 }
 .browse-left, .browse-right {
     position:absolute;
-    top:0;
-    width:30px;
+    width:240px;
+    height: 30px;
     cursor:pointer;
     background-position:center center;
     background-repeat:no-repeat;
     opacity:.8;
 }
 .browse-left {
-    left:0;
+    top:0;
     background-image:url('prev-icon.png');
 }
 .browse-right {
-    right:0;
+    bottom:0;
     background-image:url('next-icon.png');
 }
 .browse-container {
-    position:relative;
+    position:absolute;
+    top: 30px;
+    bottom: 30px;
+    width: 180px;
     margin:0 30px;
 }
 /* Thumbnails in a fully standard table, 
@@ -368,14 +374,13 @@ table.browse-recommendations {
     left:0px;
 }
 table.browse-recommendations td {
-    width:120px;
-    height:105px;
+    width:180px;
+    height:110px;
     cursor:pointer;
-    padding:0 10px;
 }
 table.browse-recommendations img {
-    width:120px;
-    height:67px;
+    width:180px;
+    height:101px;
 }
 table.browse-recommendations div {
     line-height:16px;
