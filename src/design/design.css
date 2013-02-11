@@ -2,6 +2,30 @@
 body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td{margin:0;padding:0;}table{border-collapse:collapse;border-spacing:0;}fieldset,img{border:0;}address,caption,cite,code,dfn,em,strong,th,var{font-style:normal;font-weight:normal;}ol,ul {list-style:none;}caption,th {text-align:left;}h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:normal;}q:before,q:after{content:'';}abbr,acronym {border:0;}* focus, video, object, player, embed {outline:none} *{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;-o-user-select:none;user-select:none;}iframe{border:0} input,textarea{-webkit-user-select:text;-moz-user-select:text;-ms-user-select:text;-o-user-select:text;user-select:text;}iframe{border:0}
 
 
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Open Sans'), local('OpenSans'), url(http://themes.googleusercontent.com/static/fonts/opensans/v6/cJZKeOuBrn4kERxqtaUH3bO3LdcAZYWl9Si6vvxL-qU.woff) format('woff');
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Open Sans Bold'), local('OpenSans-Bold'), url(http://themes.googleusercontent.com/static/fonts/opensans/v6/k3k702ZOKiLJc3WVjuplzKRDOzjiPcYnFooOUGCOsRk.woff) format('woff');
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: italic;
+  font-weight: 400;
+  src: local('Open Sans Italic'), local('OpenSans-Italic'), url(http://themes.googleusercontent.com/static/fonts/opensans/v6/xjAJXh38I15wypJXxuGMBrrIa-7acMAeDBVuclsi6Gc.woff) format('woff');
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: italic;
+  font-weight: 700;
+  src: local('Open Sans Bold Italic'), local('OpenSans-BoldItalic'), url(http://themes.googleusercontent.com/static/fonts/opensans/v6/PRmiXeptR36kaC0GEAetxhbnBKKEOwRKgsHDreGcocg.woff) format('woff');
+}
 
 
 /* ========================= GENERAL TAGS ======================== */
@@ -10,7 +34,7 @@ body {
     margin:0; 
     background-color:black; 
     color:white;  /*updated in js via player settings */
-    font:11px/14px Helvetica;  /*updated in js via player settings */
+    font:11px/14px 'Open Sans', sans-serif;  /*updated in js via player settings */
     overflow:hidden;
 }
 h1 {
@@ -26,7 +50,7 @@ p {
     letter-spacing:.3px;
 }
 button {
-    background-color:#3B3B3C;
+    /*background-color:#3B3B3C;*/
     color:white; /*updated in js via player settings */
     font-size:11px;
     padding:0 5px 0 30px;
@@ -48,8 +72,7 @@ div.button { /* standard button design */
     position:relative;
     height:30px;
     width:30px;
-    border-radius:2px;
-    background-color:black;  /*updated in js via player settings */
+    /*background-color:black;  /*updated in js via player settings */
     background-position:center center;
     background-repeat:no-repeat;
     opacity:.8;
@@ -65,7 +88,6 @@ div.button:hover {
 div.button.big { /* big version of same button */
     height:60px;
     width:60px;
-    border-radius:3px;
 }
 div.button ul { /* button menus */
     display:none;
@@ -129,8 +151,8 @@ a.button { /* standard button design as a straight link */
     width:100%;
 }
 .tray-navigation {
-    position:relative;
-    margin:3px 5px 5px 5px;
+    position:relative;;
+    background-color: rgba(220,220,220, 0.8)
 }
 .tray-left .tray-button { /* buttons left of scrubber */
     float:left;
@@ -141,7 +163,8 @@ a.button { /* standard button design as a straight link */
     margin-left:3px;
 }
 .tray-scrubber {  /* scrubber position */
-    margin:0 200px 0 33px; /* this will be updated using JS to fix the with of .tray-left and .tray-right */
+    clear:both;
+    margin: 0;
 }
 .tray-scrubber-sub {
     position:relative;
@@ -156,23 +179,18 @@ a.button { /* standard button design as a straight link */
 /* === Module: Scrubber === */
 .scrubber-container {
     position:relative;
-    height:30px;
+    height:6px;
     background:rgb(0,0,0); /*fallback for browser with no RGBa support */
     background:rgba(0,0,0,.8); /*updated in js via player settings */
-    border-radius:2px;
     filter: alpha(enabled=false) !important; /* IE alpha overflow hidden bug, http://labs.thesedays.com/blog/2011/06/02/ie-alpha-overflow-hidden-bug/ */
 }
 .scrubber {
-    position:absolute; 
-    top:0px;
-    left:10px;
-    right:10px;
-    height:30px;
+    position:relative;
     cursor:pointer;
 }
 .scrubber-track, .scrubber-buffer, .scrubber-play {
     position:absolute; 
-    top:12px;
+    top:0;
     left:0;
     height:6px;
     width:0;
@@ -247,22 +265,35 @@ a.button { /* standard button design as a straight link */
 /* === /Sections === */
 
 /* === Module: Info === */
+.player-info {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
+
 .info-pane {
     margin:0 5px;
-    background:rgb(0,0,0); /*fallback for browser with no RGBa support */
-    background:rgba(0,0,0,.8); /*updated in js via player settings */
+    /*background:rgb(0,0,0); /*fallback for browser with no RGBa support */
+    /*background:rgba(0,0,0,.8); /*updated in js via player settings */
     border-radius:2px;
     padding:5px 10px 8px 10px;
 }
+.info-pane h1 {
+    text-shadow: 1px 1px 5px #999;
+    font-size: 28px;
+    font-weight: normal;
+}
+
 /* === /Info === */
 
 /* === Module: Sharing === */
 .sharing-container {
-    background:rgb(0,0,0); /*fallback for browser with no RGBa support */
-    background:rgba(0,0,0,.8); /*updated in js via player settings */
-    margin:3px 5px 0 5px;
-    border-radius:2px;
-    padding:10px;
+    /*background:rgb(0,0,0); /*fallback for browser with no RGBa support */
+    /*background:rgba(0,0,0,.8); /*updated in js via player settings */
+    width: 30px;
+    position: absolute;
+    right: 0;
+    bottom: 36px;
 }
 .share-embed {
     padding-bottom:10px;
@@ -287,8 +318,10 @@ a.button { /* standard button design as a straight link */
     background:url('embed-icon.png') left center no-repeat;
 }
 .share-buttons {
-    height:30px;
     overflow:hidden;
+}
+.share-buttons button {
+    background-color: transparent;
 }
 /* === /Sharing === */
 

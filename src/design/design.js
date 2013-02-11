@@ -9,10 +9,10 @@ Player.provide('design',
     verticalPadding:0,
     horizontalPadding:0,
     trayAlpha:0.8,
-    trayBackgroundColor:'#000000',
+    trayBackgroundColor:'#DCDCDC',
     trayTextColor:'#ffffff',
-    trayFont:'Helvetica',
-    trayTitleFontSize:14,
+    trayFont:'Open Sans',
+    trayTitleFontSize:28,
     trayTitleFontWeight:'bold',
     trayContentFontSize:12,
     trayContentFontWeight:'normal',
@@ -97,20 +97,20 @@ Player.provide('design',
 
       $this.applyDesignPreferences = function(){
           // Tray title font, size, weight
-          $('h1').css({fontFamily:$this.trayFont, fontSize:$this.trayTitleFontSize+'px', fontWeight:$this.trayTitleFontWeight});
+          //$('h1').css({fontFamily:$this.trayFont, fontSize:$this.trayTitleFontSize+'px', fontWeight:$this.trayTitleFontWeight});
           // Tray content font, size, weight
-          $('p').css({fontFamily:$this.trayFont, fontSize:$this.trayContentFontSize+'px', fontWeight:$this.trayContentFontWeight});
+          //$('p').css({fontFamily:$this.trayFont, fontSize:$this.trayContentFontSize+'px', fontWeight:$this.trayContentFontWeight});
           // Text color
-          $('body,button').css({color:$this.trayTextColor});
+          $('body').css({color:$this.trayTextColor});
           // Background color and opacity
-          $('div.button, a.button').css({backgroundColor:$this.trayBackgroundColor, opacity:$this.trayAlpha});
+          //$('div.button, a.button').css({backgroundColor:$this.trayBackgroundColor, opacity:$this.trayAlpha});
           $('.scrubber-play').css({backgroundColor:$this.scrubberColor});
-          $('.scrubber-container, .info-pane, .sharing-container, .player-browse #browse, div.button ul').css({backgroundColor:$this.trayBackgroundColorRGBA});
+          $('.scrubber-container, .sharing-container, .player-browse #browse, div.button ul').css({backgroundColor:$this.trayBackgroundColorRGBA});
           if(!/^rgba/.test($('.scrubber-container').css('backgroundColor'))) {
               // (fall back to background color + opacity if RGBa is not supported
-              $('.scrubber-container, .info-pane, .sharing-container, .player-browse #browse, div.button ul').css({backgroundColor:$this.trayBackgroundColor, opacity:$this.trayAlpha});
+              $('.scrubber-container, .sharing-container, .player-browse #browse, div.button ul').css({backgroundColor:$this.trayBackgroundColor, opacity:$this.trayAlpha});
           }
-          $('div.button, a.button').css({backgroundColor:$this.trayBackgroundColor, opacity:$this.trayAlpha});
+          //$('div.button, a.button').css({backgroundColor:$this.trayBackgroundColor, opacity:$this.trayAlpha});
           // Vertical and horisontal padding
           $('video-display').css({bottom:$this.verticalPadding+'px', left:$this.horizontalPadding+'px'})
       }
@@ -120,7 +120,7 @@ Player.provide('design',
       var _resize = function(){
           var l = $('.tray-left div.tray-button:visible').length * 33;
           var r = $('.tray-right div.tray-button:visible').length * 33;
-          if(l>0) $('.tray-scrubber').css({marginLeft:l+'px', marginRight:r+'px'});
+          
       }
       $(window).load(_resize);
       $(window).resize(_resize);

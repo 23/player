@@ -33,7 +33,7 @@ Player.provide('info',
           $this.render();
       });
       Player.bind('player:video:play', function(e,video){
-          Player.set('showDescriptions', false);
+          //Player.set('showDescriptions', false);
       });
       Player.bind('player:settings player:video:loaded', function(e,video){
           if($this.infoTimeout>0) {

@@ -7,13 +7,15 @@
   <!-- Video display -->
   {% player video-display with "displayDevice":"html5" %}
 
-  <div class="big-button tray-button">{% player big-play-button %}</div>
+  {% player info %}
+
+  {% player browse %}
 
   {% player subtitles %}
 
   <!-- Control bar or tray -->
   <div id="tray">
-    {% player info %}
+  
     {% player sharing %}
 
     <div class="tray-navigation">
@@ -22,11 +24,11 @@
       </ul>
 
       <div class="tray-right">
+        {% player share-button %}
         {% player fullscreen-button %}
         {% player volume-button %}
         {% player subtitle-button %}
         {% player quality-button %}
-        {% player share-button %}
         {% player info-button %}
         {% player browse-button %}
       </div>
@@ -38,7 +40,7 @@
         </div>
       </div>
     </div>
-    {% player browse %}
+
   </div>
 
   {% player logo %}
