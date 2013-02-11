@@ -1,4 +1,4 @@
-<div class="tray-button button {% if playing %}pause-button{% else %}play-button{% endif %}" click="$toggle:playing">
+<div class="tray-button button {% if playing %}{% if isLive %}stop-button{% else %}pause-button{% endif %}{% else %}play-button{% endif %}" click="$toggle:playing">
   {% if playing %}
   <!--Pause-->
   {% else %}

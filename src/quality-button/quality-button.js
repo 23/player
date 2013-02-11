@@ -16,6 +16,9 @@ Player.provide('quality-button',
     Player.bind('player:video:qualitychange', function(e){
         $this.render();
       });
+
+    // Only show the button with more than a single element
+    Player.getter('hasQualitySwitching', function(){return Player.get('qualitiesArray').length>1;});
       
     return $this;
   }
