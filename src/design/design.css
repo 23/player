@@ -399,6 +399,7 @@ table.browse-recommendations div {
 .play-button {background-image:url('big-play-icon.png');}
 .big-play-button {background-image:url('big-play-icon.png');}
 .pause-button {background-image:url('pause-icon.png');}
+.stop-button {background-image:url('stop-icon.png');}
 .facebook-button {background-image:url('facebook-icon.png');}
 .twitter-button {background-image:url('twitter-icon.png');}
 .google-button {background-image:url('google-icon.png');}
@@ -448,6 +449,7 @@ table.browse-recommendations div {
     .play-button {background-image:url('big-play-icon@2x.png'); background-size:60px;}
     .big-play-button {background-image:url('big-play-icon@2x.png'); background-size:60px;}
     .pause-button {background-image:url('pause-icon@2x.png'); background-size:30px;}
+    .stop-button {background-image:url('stop-icon@2x.png'); background-size:30px;}
     .facebook-button {background-image:url('facebook-icon@2x.png'); background-size:30px;}
     .twitter-button {background-image:url('twitter-icon@2x.png'); background-size:30px;}
     .google-button {background-image:url('google-icon@2x.png'); background-size:30px;}

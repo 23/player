@@ -4,6 +4,14 @@
   <div class="browse-right"></div>
   <div class="browse-container">
     <table class="browse-recommendations"><tr>
+      {% for stream in streams %}
+        {% if stream.liveevent_stream_id != video_liveevent_stream_id %}
+          <td class="browse-recommendation browse-recommendation-{{forloop.index0}}" click="$set:browse_liveevent_stream_id:{{stream.liveevent_stream_id}}">
+            <img src="{{url}}{{stream.browseThumbnailUrl}}" />
+            <div>Live: {{stream.name}}</div>
+          </td>
+        {% endif %}
+      {% endfor %}
       {% for clip in clips %}
         {% if clip.photo_id != video_photo_id %}
           <td class="browse-recommendation browse-recommendation-{{forloop.index0}}" click="$set:browse_photo_id:{{clip.photo_id}}">

@@ -61,6 +61,9 @@ Player.provide('video-display',
       $.extend($this, opts);
       $this.seekedTime = 0;
 
+      // Allow `displayDevice` to be set in embed code
+      if(typeof(Player.parameters.displayDevice)!='undefined') $this.displayDevice = Player.parameters.displayDevice;
+
       // This one is needed to display fallback information
       Player.getter('displayDevice', function(){
           return $this.displayDevice;
@@ -74,21 +77,33 @@ Player.provide('video-display',
       $this.qualities = {};
       $this.rawSource = "";
 
-      // When the module has been loaded in to the DOM, load the display device
-      $this.onAppend = function(){
-        $this.video = new Eingebaut($this.canvas, $this.displayDevice, '/files/Eingebaut.swf', function(e){
-            if(e=='loaded'&&$this.video.displayDevice=='none') {
-                Player.set('error', 'This player requires a modern web browser or a recent version of Adobe Flash.');
-            }
-            // Don't send event during switching, it only confuses the UI
-            if($this.video.switching && (e=='playing'||e=='pause')) return;
-            // Modify event names slightly
-            if(e=='loaded'||e=='ready') e = 'player'+e;
-            // Fire the player event
-            Player.fire('player:video:' + e);
-          });
+      // Logic to load the display device with Eingebaut
+      $this.loadEingebaut = function(){
+          $this.canvas.html('');
+          $this.video = new Eingebaut($this.canvas, $this.displayDevice, '', function(e){
+              // Error if no display device is available
+              if(e=='loaded'&&$this.video.displayDevice=='none') {
+                  Player.set('error', 'This player requires a modern web browser or a recent version of Adobe Flash.');
+              }
+              // If this loads after the content (i.e. if we're switching display device, fire an event that we're ready)
+              if(e=='loaded') {
+                var _v = Player.get('video');
+                if(_v) Player.fire('player:video:loaded', _v);
+              }
+              // Don't send event during switching, it only confuses the UI
+              if($this.video.switching && (e=='playing'||e=='pause')) return;
+              // Modify event names slightly
+              if(e=='loaded'||e=='ready') e = 'player'+e;
+              // Fire the player event
+              Player.fire('player:video:' + e);
+            });
         $this.video.load();
         $this.displayDevice = $this.video.displayDevice;
+      };
+
+      // When the module has been loaded in to the DOM, load the display device    
+      $this.onAppend = function(){
+        $this.loadEingebaut();
         $this.loadShortcuts();
       }
       
@@ -169,31 +184,59 @@ Player.provide('video-display',
         var v = Player.get('video');
         var s = Player.get('settings');
 
-        // 
-        $this.quality = $this.quality || s.defaultQuality || 'standard';
-        if($this.quality=='high') $this.quality = 'hd';
-        
-        // Handle formats or qualities
-        $this.video.setPoster(Player.get('url') + v.large_download) + '/thumbnail.jpg';
+        // Set poster
+        $this.video.setPoster(Player.get('url') + v.large_download + '/thumbnail.jpg');
+
+        // Reset qualities
         $this.qualities = {};
         $this.rawSource = "";
-        if($this.displayDevice!='html5' || $this.video.canPlayType('video/mp4; codecs="avc1.42E01E"')) {
-          // H.264
-          if (typeof(v.video_1080p_download)!='undefined' && v.video_1080p_download.length>0 && v.video_1080p_size>0) 
-            $this.qualities['fullhd'] = {format:'video_1080p', codec:'h264', displayName:'Full HD', displayQuality:'1080p', source:Player.get('url') + v.video_1080p_download};
-          if (typeof(v.video_hd_download)!='undefined' && v.video_hd_download.length>0) 
-            $this.qualities['hd'] = {format:'video_hd', codec:'h264', displayName:'HD', displayQuality:'720p', source:Player.get('url') + v.video_hd_download}; 
-          if (typeof(v.video_medium_download)!='undefined' && v.video_medium_download.length>0) 
-            $this.qualities['standard'] = {format:'video_medium', displayName:'Standard', displayQuality:'360p', codec:'h264', source:Player.get('url') + v.video_medium_download}; 
-          if (typeof(v.video_mobile_high_download)!='undefined' && v.video_mobile_high_download.length>0) 
-            $this.qualities['low'] = {format:'video_mobile_high', displayName:'Low', displayQuality:'180p', codec:'h264', source:Player.get('url') + v.video_mobile_high_download};
+
+        if (v.type=='clip') {
+          // ON DEMAND VIDEO
+          // Handle quality defaults
+          $this.quality = $this.quality || s.defaultQuality || 'standard';
+          if($this.quality=='high') $this.quality = 'hd';
+          
+          // Handle formats or qualities
+          if($this.displayDevice!='html5' || $this.video.canPlayType('video/mp4; codecs="avc1.42E01E"')) {
+            // H.264
+            if (typeof(v.video_1080p_download)!='undefined' && v.video_1080p_download.length>0 && v.video_1080p_size>0) 
+              $this.qualities['fullhd'] = {format:'video_1080p', codec:'h264', displayName:'Full HD', displayQuality:'1080p', source:Player.get('url') + v.video_1080p_download};
+            if (typeof(v.video_hd_download)!='undefined' && v.video_hd_download.length>0) 
+              $this.qualities['hd'] = {format:'video_hd', codec:'h264', displayName:'HD', displayQuality:'720p', source:Player.get('url') + v.video_hd_download}; 
+            if (typeof(v.video_medium_download)!='undefined' && v.video_medium_download.length>0) 
+              $this.qualities['standard'] = {format:'video_medium', displayName:'Standard', displayQuality:'360p', codec:'h264', source:Player.get('url') + v.video_medium_download}; 
+            if (typeof(v.video_mobile_high_download)!='undefined' && v.video_mobile_high_download.length>0) 
+              $this.qualities['low'] = {format:'video_mobile_high', displayName:'Low', displayQuality:'180p', codec:'h264', source:Player.get('url') + v.video_mobile_high_download};
+          } else {
+            // WebM
+            if (typeof(v.video_webm_720p_download)!='undefined' && v.video_webm_720p_download.length>0) 
+              $this.qualities['hd'] = {format:'video_webm_720p', codec:'webm', displayName:'HD', displayQuality:'720p', source:Player.get('url') + v.video_webm_720p_download}; 
+            if (typeof(v.video_webm_360p_download)!='undefined' && v.video_webm_360p_download.length>0) 
+              $this.qualities['standard'] = {format:'video_webm_720p', codec:'webm', displayName:'Standard', displayQuality:'360p', source:Player.get('url') + v.video_webm_360p_download}; 
+          }
+        } else if (v.type=='stream') {
+          // LIVE VIDEO
+          $this.start = 0; // Reset the start parameter for live video
+          if($this.displayDevice=='html5' && $this.video.canPlayType('application/vnd.apple.mpegurl')) {
+            // The current Eingebaut display is html5 and Apple HLS is supported. This feels like the future.
+            $this.qualities['standard'] = {format:'hls', codec:'unknown', displayName:'Automatic', displayQuality:'unknown', source:v.http_stream};
+          } else if($this.displayDevice=='flash') {
+            // Flash has been loaded, so we can throw an HDS stream at the display and have it work.
+            $this.qualities['standard'] = {format:'hds', codec:'unknown', displayName:'Automatic', displayQuality:'unknown', source:v.hds_stream};
+          } else {
+            // Switch to a Flash dispay device for playing the stream
+            Player.set('loading', true);
+            $this.displayDevice = 'flash';
+            $this.loadEingebaut();
+            if($this.displayDevice!='flash') {
+                Player.set('error', "Live streaming requires a browser with support for HTTP Live Streaming or with Adobe Flash installed.");
+            }
+          }
         } else {
-          // WebM
-          if (typeof(v.video_webm_720p_download)!='undefined' && v.video_webm_720p_download.length>0) 
-            $this.qualities['hd'] = {format:'video_webm_720p', codec:'webm', displayName:'HD', displayQuality:'720p', source:Player.get('url') + v.video_webm_720p_download}; 
-          if (typeof(v.video_webm_360p_download)!='undefined' && v.video_webm_360p_download.length>0) 
-            $this.qualities['standard'] = {format:'video_webm_720p', codec:'webm', displayName:'Standard', displayQuality:'360p', source:Player.get('url') + v.video_webm_360p_download}; 
+          Player.fail('Unknown video type loaded');
         }
+
         Player.fire('player:video:qualitychange');
         $this._currentTime = $this.start;
         if($this.qualities[$this.quality]) {

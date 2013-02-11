@@ -40,6 +40,8 @@ Player.provide('subtitles',
         $this.subtitles = [];
         $this.subtitleText = '';
         $this.defaultLocale = '';
+        $this.hasSubtitles = false;
+        Player.fire('player:subtitlechange');
       }
 
       /* GETTERS */
@@ -138,7 +140,6 @@ Player.provide('subtitles',
                 },
                 Player.fail
             );
-              
           }
         });
 
