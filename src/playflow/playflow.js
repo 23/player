@@ -27,7 +27,9 @@
   - identityCountdownText [get]
 
   Todo:
+  - flash support
   - flow
+  - mix and match
   - fire events / check analytics
   - update help texts in product
   - 
@@ -35,7 +37,7 @@
 
 Player.provide('playflow', 
   {
-    identityCountdown: false,
+    identityCountdown: true,
     identityAllowClose: true,
     identityCountdownTextSingular: "This advertisement will end in % second",
     identityCountdownTextPlural: "This advertisement will end in % seconds"
@@ -119,7 +121,7 @@ Player.provide('playflow',
                 $this.cancelPlayflow();
               }
               // If this loads after the content (i.e. if we're switching display device, fire an event that we're ready)
-              if(e=='loaded') {
+              if(e=='ready') {
                 $this.beginClip();
               } else if(e=='ended') {
                 Player.fire('player:playflow:video:complete');

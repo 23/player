@@ -72,7 +72,7 @@ Player.provide('video-display',
       });
 
       // Create a container with the correct aspect ratio and a video element
-      $this.canvas = $(document.createElement('div')).addClass('video-canvas')
+      $this.canvas = $(document.createElement('div')).addClass('video-canvas');
       $this.container.append($this.canvas);
 
       /* PROPERTIES */

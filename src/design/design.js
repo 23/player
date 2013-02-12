@@ -113,7 +113,6 @@ Player.provide('design',
               // (fall back to background color + opacity if RGBa is not supported
               $('.scrubber-container, .info-pane, .sharing-container, .player-browse #browse, div.button ul').css({backgroundColor:$this.trayBackgroundColor, opacity:$this.trayAlpha});
           }
-          $('div.button, a.button').css({backgroundColor:$this.trayBackgroundColor, opacity:$this.trayAlpha});
           // Vertical and horisontal padding
           $('video-display').css({bottom:$this.verticalPadding+'px', left:$this.horizontalPadding+'px'})
       }
