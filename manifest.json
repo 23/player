@@ -33,6 +33,7 @@
         "subtitle-button",
         "quality-button",
         "info-button",
-        "info"
+        "info",
+        "playflow"
     ]
 }
