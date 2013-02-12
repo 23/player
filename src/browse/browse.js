@@ -49,8 +49,6 @@ Player.provide('browse',
           }
       }
       $this.handleScrollThumbs = function(){
-          try {
-              if($this.browseItems&&$this.browseContainer&&$this.browseLeft&&$this.browseRight) {
                   var itemsWidth = $this.browseItems.width();
                   if(itemsWidth==0) {
                       window.setTimeout($this.handleScrollThumbs, 800);
@@ -60,8 +58,6 @@ Player.provide('browse',
                   var containerWidth = $this.browseContainer.width();
                   $this.browseLeft.toggle( itemsLeft < 0);
                   $this.browseRight.toggle( itemsLeft > (itemsWidth-containerWidth)*-1 );
-              }
-          }catch(e){}
       }
       $this.scroll = function(direction){
           try {
