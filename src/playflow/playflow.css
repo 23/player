@@ -5,14 +5,17 @@
     left:0;
     bottom:0;
     right:0;
-    background-color:black;
     display:none;
+    z-index:201;
 }
 .player-playflow .playflow-canvas {
     position:absolute; 
     width:100%; 
     height:100%; 
     cursor:pointer;
+}
+.player-playflow .playflow-content table {
+    background-color:black;
 }
 .player-playflow .playflow-canvas video, 
 .player-playflow .playflow-content table, 

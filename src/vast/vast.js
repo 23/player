@@ -42,15 +42,12 @@
   - vastURL [set]
   - closeIdentity [set]
   - vastActive [set]
-  - identityCountdown [get]
-  - identityAllowClose [get]
   - vastAdPosition [get]
 
   ****
 
   IMMEDIATE TODO:
   - Bootstrap using settings
-  - Identity countdown and close
   - State control for play begin/end with pre and postroll. 
     This should also use the same ads for all videos.
   - Show postroll text as overlay.
@@ -65,11 +62,7 @@
 Player.provide('vast', 
   {
     active:false,
-    urls:[],
-    identityCountdown: false,
-    identityAllowClose: true,
-    identityCountdownTextSingular: "This advertisement will end in % second",
-    identityCountdownTextPlural: "This advertisement will end in % seconds"
+    urls:[]
   }, 
   function(Player,$,opts){
       var $this = this;
@@ -162,7 +155,6 @@ Player.provide('vast',
       
       // Merge in player settings and update the display if needed
       Player.bind('player:settings', function(){
-          PlayerUtilities.mergeSettings($this, ['identityCountdown', 'identityAllowClose', 'identityCountdownTextSingular', 'identityCountdownTextPlural']);
           if($this.active) $this.render();
       });
       // Play advertising on play, if any
@@ -180,22 +172,10 @@ Player.provide('vast',
           $this.urls.push({url:url, loaded:false});
           $this.syncUrls();
       });
-      Player.setter('closeIdentity', function(){
-          if(Player.get('identityAllowClose')) {
-              Player.fire('player:vast:video:close');
-              $this.destroyAd();
-          }
-      });
 
       // Expose properties
       Player.getter('vastActive', function(){
           return $this.active;
-      });
-      Player.getter('identityCountdown', function(){
-          return $this.identityCountdown;
-      });
-      Player.getter('identityAllowClose', function(){
-          return $this.identityAllowClose;
       });
       Player.getter('vastAdPosition', function(){
           return 'preroll';

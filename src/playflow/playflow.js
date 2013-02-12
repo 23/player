@@ -27,12 +27,9 @@
   - identityCountdownText [get]
 
   Todo:
-  - flash support
-  - flow
-  - mix and match
+  - mix and match: aftertext anden gang
   - fire events / check analytics
-  - update help texts in product
-  - 
+  - ie7
 */
 
 Player.provide('playflow', 
@@ -51,19 +48,20 @@ Player.provide('playflow',
 
       // Play either preroll or postroll clips
       $this.beginClip = function(){
-        if(!$this.eingebaut||$this.playflowClip.length==0) return;
+        $this.stealEingebaut();
+        if($this.playflowClip.length==0) return;
         $this.eingebaut.setSource($this.playflowClip);
         $this.eingebaut.setPlaying(true);
         $($this.container).show();
-        $($this.canvas).show();
         $($this.clicks).show();
         $this.updateCountdown();
       }
       $this.endClip = function(){
         $($this.container).hide();
-        $($this.canvas).hide();
         $($this.clicks).hide();
         if($this.eingebaut) $this.eingebaut.setPlaying(false);
+        $this.restoreEingebaut();
+
         if($this.playflowState=='before'||$this.playflowState=='preroll') {
           $this.playflowState = 'during'
           Player.set('playing', true);
@@ -97,8 +95,6 @@ Player.provide('playflow',
       }
 
       // Create containers
-      $this.canvas = $(document.createElement('div')).addClass('playflow-canvas');
-      $this.container.append($this.canvas);
       $this.clicks = $(document.createElement('div')).addClass('playflow-click-container');
       $this.container.append($this.clicks);
       $this.clicks.click(function(){
@@ -112,26 +108,39 @@ Player.provide('playflow',
     
       // Logic to load the display device with Eingebaut
       $this.eingebaut = null;
-      $this.loadEingebaut = function(){
-          if($this.eingebaut) return;
-
-          $this.eingebaut = new Eingebaut($this.canvas, Player.get('displayDevice'), '', function(e){
-              // Error if no display device is available
-              if(e=='loaded'&&$this.eingebaut.displayDevice=='none') {
-                $this.cancelPlayflow();
-              }
-              // If this loads after the content (i.e. if we're switching display device, fire an event that we're ready)
-              if(e=='ready') {
-                $this.beginClip();
-              } else if(e=='ended') {
-                Player.fire('player:playflow:video:complete');
-                $this.endClip();
-              } else if(e=='progress'||e=='timeupdate') {
-                $this.updateCountdown();
-              }
-            });
-        $this.eingebaut.load();
+      $this.originalEingebaut ={
+        callback: null,
+        source: null
+      }
+      $this.eingebautCallback = function(e){
+        // Error if no display device is available
+        if(e=='loaded'&&$this.eingebaut.displayDevice=='none') {
+          $this.cancelPlayflow();
+        }
+        // If this loads after the content (i.e. if we're switching display device, fire an event that we're ready)
+        if(e=='ready') {
+          $this.beginClip();
+        } else if(e=='ended'||e=='pause') {
+          Player.fire('player:playflow:video:complete');
+          $this.endClip();
+        } else if(e=='progress'||e=='timeupdate') {
+          $this.updateCountdown();
+        }
       };
+      $this.stealEingebaut = function(){
+        if(!$this.eingebaut) {
+          $this.eingebaut = Player.get('videoElement');
+          $this.originalEingebaut.callback = $this.eingebaut.callback;
+        }
+        $this.originalEingebaut.source = $this.eingebaut.getSource();
+        $this.eingebaut.callback = $this.eingebautCallback;        
+        $this.eingebaut.container.parent().css({zIndex:200});
+      };
+      $this.restoreEingebaut = function(){
+        $this.eingebaut.callback = $this.originalEingebaut.callback;        
+        if($this.originalEingebaut.source) $this.eingebaut.setSource($this.originalEingebaut.source);
+        $this.eingebaut.container.parent().css({zIndex:''});
+      }
 
       // Merge in player settings and update the display if needed
       Player.bind('player:settings', function(){
@@ -145,7 +154,6 @@ Player.provide('playflow',
           var playflow_type = Player.get(type=='preroll' ? 'playflowBeforeDownloadType' : 'playflowAfterDownloadType');
           var url = Player.get(type=='preroll' ? 'playflowBeforeDownloadURL' : 'playflowAfterDownloadURL');
           if(playflow_type=='video' && url.length>0) {
-            $this.loadEingebaut();
             $this.playflowState = type;
             $this.playflowClip = Player.get('url') + url;
             $this.playflowLink = Player.get(type=='preroll' ? 'playflowBeforeLink' : 'playflowAfterLink')
