@@ -49,15 +49,19 @@ Player.provide('browse',
           }
       }
       $this.handleScrollThumbs = function(){
-                  var itemsWidth = $this.browseItems.width();
-                  if(itemsWidth==0) {
-                      window.setTimeout($this.handleScrollThumbs, 800);
-                      return;
-                  }
-                  var itemsLeft = $this.browseItems.position()['left'];
-                  var containerWidth = $this.browseContainer.width();
-                  $this.browseLeft.toggle( itemsLeft < 0);
-                  $this.browseRight.toggle( itemsLeft > (itemsWidth-containerWidth)*-1 );
+          try {
+              var itemsWidth = $this.browseItems.width();
+              if(itemsWidth==0) {
+                  window.setTimeout($this.handleScrollThumbs, 800);
+                  return;
+              }
+              var itemsLeft = $this.browseItems.position()['left'];
+              var containerWidth = $this.browseContainer.width();
+              $this.browseLeft.toggle( itemsLeft < 0);
+              $this.browseRight.toggle( itemsLeft > (itemsWidth-containerWidth)*-1 );
+          }catch(e){
+              window.setTimeout($this.handleScrollThumbs, 1000);
+          }
       }
       $this.scroll = function(direction){
           try {
