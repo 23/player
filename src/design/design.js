@@ -123,6 +123,12 @@ Player.provide('design',
           var l = $('.tray-left div.tray-button:visible').length * 33;
           var r = $('.tray-right div.tray-button:visible').length * 33;
           if(l>0) $('.tray-scrubber').css({marginLeft:l+'px', marginRight:r+'px'});
+
+          // This is a pretty fancy fix for an IE7 bug: 
+          // Empty elements are given layout, causing all kinds of buttons the .tray-right
+          // and tray-left to go flying. Very litterally: Hide empty stuff, show other.
+          $('.tray-right>div:empty, .tray-left>div:empty').hide();
+          $('.tray-right>div:parent, .tray-left>div:parent').show();
       }
       $(window).load(_resize);
       $(window).resize(_resize);
