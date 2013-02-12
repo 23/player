@@ -25,18 +25,11 @@
   - identityAllowClose [get]
   - playflowAdPosition [get]
   - identityCountdownText [get]
-
-  Todo:
-  - fire events / check analytics
-  - med live
-  - target
-  - iphone
-  - close default
 */
 
 Player.provide('playflow', 
   {
-    identityCountdown: true,
+    identityCountdown: false,
     identityAllowClose: true,
     identityCountdownTextSingular: "This advertisement will end in % second",
     identityCountdownTextPlural: "This advertisement will end in % seconds"
@@ -60,6 +53,7 @@ Player.provide('playflow',
         // Handle clicks on Playflow video
         if($this.playflowLink.length>0) {
           $this.endClip();
+          Player.fire('player:playflow:video:click');
           window.open($this.playflowLink);
         }
       });
@@ -74,6 +68,7 @@ Player.provide('playflow',
         $this.stealEingebaut();
         $this.eingebaut.setSource($this.playflowClip);
         $this.eingebaut.setPlaying(true);
+        Player.fire('player:playflow:video:start');
         $($this.container).show();
         $($this.clicks).show();
         $this.updateCountdown();
@@ -106,7 +101,13 @@ Player.provide('playflow',
           $this.playflowState = 'aftertext';
           if(Player.get('playflowAfterText').length>0) {
               $($this.container).show();
-              $this.render(function(){}, 'playflow/playflow-after-text.liquid', $this.content);
+              Player.fire('player:playflow:overlay:start');
+              $this.render(function(){
+                // fire a click event when someone clicks an <a> element in the playflow after text
+                $this.content.find('table a').click(function(){
+                  Player.fire('player:playflow:overlay:click');
+                });
+              }, 'playflow/playflow-after-text.liquid', $this.content);
           } else {
               $this.endAfterText();
           }
@@ -114,6 +115,7 @@ Player.provide('playflow',
       // Finalize the Playflow after text
       $this.endAfterText = function(){
           $($this.container).hide();
+          Player.fire('player:playflow:overlay:complete');
           $this.content.html('');
           $this.playflowState = 'ended';
       }
@@ -132,7 +134,7 @@ Player.provide('playflow',
         // If this loads after the content (i.e. if we're switching display device, fire an event that we're ready)
         if(e=='ready') {
           $this.beginClip();
-        } else if(e=='ended') {
+        } else if(e=='ended' || (e=='pause'&&!$this.eingebaut.allowHiddenControls())) {
           Player.fire('player:playflow:video:complete');
           $this.endClip();
         } else if(e=='progress'||e=='timeupdate') {
@@ -155,6 +157,7 @@ Player.provide('playflow',
       $this.restoreEingebaut = function(){
         $this.eingebaut.callback = $this.originalEingebaut.callback;        
         $this.eingebaut.container.parent().css({zIndex:''});
+        Player.fire('player:video:pause');
         if($this.originalEingebaut.source) $this.eingebaut.setSource($this.originalEingebaut.source);
       }
 
@@ -216,7 +219,13 @@ Player.provide('playflow',
       Player.getter('playflowState', function(){return $this.playflowState;});
       Player.getter('identityCountdown', function(){return $this.identityCountdown;});
       Player.getter('identityAllowClose', function(){return $this.identityAllowClose;});
-      Player.getter('playflowAdPosition', function(){return ($this.playflowState=='preroll'||$this.playflowState=='postroll'||$this.playflowState=='aftertext' ? $this.playflowState : 'none');});
+      Player.getter('playflowAdPosition', function(){
+        if($this.playflowState=='before'||$this.playflowState=='preroll'||$this.playflowState=='during') {
+          return 'preroll';
+        } else {
+          return 'postroll';
+        }
+      });
 
       // Format countdown
       Player.getter('identityCountdownText', function(){
