@@ -66,6 +66,7 @@ Player.provide('playflow',
       $this.beginClip = function(){
         if($this.playflowClip.length==0) return;
         $this.stealEingebaut();
+        $this.eingebaut.setCurrentTime(0);
         $this.eingebaut.setSource($this.playflowClip);
         $this.eingebaut.setPlaying(true);
         Player.fire('player:playflow:video:start');
