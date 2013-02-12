@@ -27,9 +27,11 @@
   - identityCountdownText [get]
 
   Todo:
-  - mix and match: aftertext anden gang
   - fire events / check analytics
-  - ie7
+  - med live
+  - target
+  - iphone
+  - close default
 */
 
 Player.provide('playflow', 
@@ -46,16 +48,37 @@ Player.provide('playflow',
       $this.playflowClip = '';
       $this.playflowLink = '';
 
+      // Merge in player settings and update the display if needed
+      Player.bind('player:settings', function(){
+          PlayerUtilities.mergeSettings($this, ['identityCountdown', 'identityAllowClose', 'identityCountdownTextSingular', 'identityCountdownTextPlural']);
+      });
+
+      // Create containers
+      $this.clicks = $(document.createElement('div')).addClass('playflow-click-container');
+      $this.container.append($this.clicks);
+      $this.clicks.click(function(){
+        // Handle clicks on Playflow video
+        if($this.playflowLink.length>0) {
+          $this.endClip();
+          window.open($this.playflowLink);
+        }
+      });
+      $this.content = $(document.createElement('div')).addClass('playflow-content');
+      $this.container.append($this.content);
+
+
+
       // Play either preroll or postroll clips
       $this.beginClip = function(){
-        $this.stealEingebaut();
         if($this.playflowClip.length==0) return;
+        $this.stealEingebaut();
         $this.eingebaut.setSource($this.playflowClip);
         $this.eingebaut.setPlaying(true);
         $($this.container).show();
         $($this.clicks).show();
         $this.updateCountdown();
       }
+      // Finalize playback of either a preroll or a postroll
       $this.endClip = function(){
         $($this.container).hide();
         $($this.clicks).hide();
@@ -70,15 +93,15 @@ Player.provide('playflow',
         }
         $this.updateCountdown();
       }
+      // Update the countdown display, if applicable
       $this.updateCountdown = function(){
         if($this.playflowState=='preroll'||$this.playflowState=='postroll') {
           $this.render(function(){}, 'playflow/playflow-countdown.liquid', $this.content);
-        } else {
+        } else if($this.playflowState!='aftertext') {
           $this.content.html('');
         }
       }
-
-      // Handle after text
+      // Show the Playflow after text
       $this.beginAfterText = function(){
           $this.playflowState = 'aftertext';
           if(Player.get('playflowAfterText').length>0) {
@@ -88,31 +111,20 @@ Player.provide('playflow',
               $this.endAfterText();
           }
       }
+      // Finalize the Playflow after text
       $this.endAfterText = function(){
           $($this.container).hide();
           $this.content.html('');
           $this.playflowState = 'ended';
       }
-
-      // Create containers
-      $this.clicks = $(document.createElement('div')).addClass('playflow-click-container');
-      $this.container.append($this.clicks);
-      $this.clicks.click(function(){
-          if($this.playflowLink.length>0) {
-            $this.endClip();
-            window.open($this.playflowLink);
-          }
-      });
-      $this.content = $(document.createElement('div')).addClass('playflow-content');
-      $this.container.append($this.content);
     
       // Logic to load the display device with Eingebaut
       $this.eingebaut = null;
-      $this.originalEingebaut ={
+      $this.originalEingebaut = {
         callback: null,
         source: null
       }
-      $this.eingebautCallback = function(e){
+      $this.playflowEingebautCallback = function(e){
         // Error if no display device is available
         if(e=='loaded'&&$this.eingebaut.displayDevice=='none') {
           $this.cancelPlayflow();
@@ -120,59 +132,63 @@ Player.provide('playflow',
         // If this loads after the content (i.e. if we're switching display device, fire an event that we're ready)
         if(e=='ready') {
           $this.beginClip();
-        } else if(e=='ended'||e=='pause') {
+        } else if(e=='ended') {
           Player.fire('player:playflow:video:complete');
           $this.endClip();
         } else if(e=='progress'||e=='timeupdate') {
           $this.updateCountdown();
         }
       };
+      // This method takes over the `video-display` version of eingebaut and uses it for video playback
+      // It also overwrites with its own callback function, makes sure that other elements do not receive
+      // any callbacks while playflow is in progress.
       $this.stealEingebaut = function(){
         if(!$this.eingebaut) {
           $this.eingebaut = Player.get('videoElement');
           $this.originalEingebaut.callback = $this.eingebaut.callback;
         }
         $this.originalEingebaut.source = $this.eingebaut.getSource();
-        $this.eingebaut.callback = $this.eingebautCallback;        
+        $this.eingebaut.callback = $this.playflowEingebautCallback;        
         $this.eingebaut.container.parent().css({zIndex:200});
       };
+      // Restore the eingebaut object from `video-display` back to it original state.
       $this.restoreEingebaut = function(){
         $this.eingebaut.callback = $this.originalEingebaut.callback;        
-        if($this.originalEingebaut.source) $this.eingebaut.setSource($this.originalEingebaut.source);
         $this.eingebaut.container.parent().css({zIndex:''});
+        if($this.originalEingebaut.source) $this.eingebaut.setSource($this.originalEingebaut.source);
       }
 
-      // Merge in player settings and update the display if needed
-      Player.bind('player:settings', function(){
-          PlayerUtilities.mergeSettings($this, ['identityCountdown', 'identityAllowClose', 'identityCountdownTextSingular', 'identityCountdownTextPlural']);
-      });
 
-      // Play advertising on play, if any
+      // Initiate the playback of a preroll/postroll if defined for this clip
       $this.initiateClip = function(type) {
           $this.playflowClip = '';
           $this.playflowLink = '';
           var playflow_type = Player.get(type=='preroll' ? 'playflowBeforeDownloadType' : 'playflowAfterDownloadType');
           var url = Player.get(type=='preroll' ? 'playflowBeforeDownloadURL' : 'playflowAfterDownloadURL');
           if(playflow_type=='video' && url.length>0) {
-            $this.playflowState = type;
             $this.playflowClip = Player.get('url') + url;
             $this.playflowLink = Player.get(type=='preroll' ? 'playflowBeforeLink' : 'playflowAfterLink')
             $this.beginClip();
             return false;
           } else {
-            $this.endClip();
             return true;
           }
       }
-      Player.bind('player:video:beforeplay', function(){
-          if($this.playflowState!='before') return true;
-          return($this.initiateClip('preroll'));
-      });
-      Player.bind('player:video:ended', function(){
-          return($this.initiateClip('postroll'));
-      });
+
+      // When a video is loaded, reset the state of the Playflow
       Player.bind('player:video:loaded', function(){
           $this.playflowState = 'before';
+      });
+      // Prerolls before the clip begins
+      Player.bind('player:video:beforeplay', function(){
+          if($this.playflowState!='before') return true;
+          $this.playflowState = 'preroll';
+          return($this.initiateClip($this.playflowState));
+      });
+      // Postrolls after the clip has ended
+      Player.bind('player:video:ended', function(){
+          $this.playflowState = 'postroll';
+          return($this.initiateClip($this.playflowState));
       });
 
       // Close clip
@@ -202,6 +218,7 @@ Player.provide('playflow',
       Player.getter('identityAllowClose', function(){return $this.identityAllowClose;});
       Player.getter('playflowAdPosition', function(){return ($this.playflowState=='preroll'||$this.playflowState=='postroll'||$this.playflowState=='aftertext' ? $this.playflowState : 'none');});
 
+      // Format countdown
       Player.getter('identityCountdownText', function(){
         try {
           var duration = $this.eingebaut.getDuration();
