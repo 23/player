@@ -95,6 +95,8 @@ Player.provide('design',
           }
       });
 
+      $this.dummyElement = $(document.createElement('div')).css({backgroundColor:'rgba(0,0,0,.666)'});
+      $this.rgbaSupport = /^rgba/.test($this.dummyElement.css('backgroundColor'));
       $this.applyDesignPreferences = function(){
           // Tray title font, size, weight
           $('h1').css({fontFamily:$this.trayFont, fontSize:$this.trayTitleFontSize+'px', fontWeight:$this.trayTitleFontWeight});
@@ -105,8 +107,9 @@ Player.provide('design',
           // Background color and opacity
           $('div.button, a.button').css({backgroundColor:$this.trayBackgroundColor, opacity:$this.trayAlpha});
           $('.scrubber-play').css({backgroundColor:$this.scrubberColor});
-          $('.scrubber-container, .info-pane, .sharing-container, .player-browse #browse, div.button ul').css({backgroundColor:$this.trayBackgroundColorRGBA});
-          if(!/^rgba/.test($('.scrubber-container').css('backgroundColor'))) {
+          if($this.rgbaSupport) {
+              $('.scrubber-container, .info-pane, .sharing-container, .player-browse #browse, div.button ul').css({backgroundColor:$this.trayBackgroundColorRGBA});
+          } else {
               // (fall back to background color + opacity if RGBa is not supported
               $('.scrubber-container, .info-pane, .sharing-container, .player-browse #browse, div.button ul').css({backgroundColor:$this.trayBackgroundColor, opacity:$this.trayAlpha});
           }
