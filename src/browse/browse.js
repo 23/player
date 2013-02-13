@@ -1,4 +1,4 @@
-/* 
+/*
    MODULE: BROWSE (or recomendations)
    Let users browse for recommendations.
 
@@ -11,7 +11,7 @@
    Fires:
    - player:browse:updated
    - player:browse:loaded
-   
+
    Answers properties:
    - showBrowse [get/set]
    - browseMode [get/set]
@@ -21,7 +21,7 @@
    - browse_video_id [set]
 */
 
-Player.provide('browse', 
+Player.provide('browse',
   {
     showBrowse: true,
     browseMode: false,
@@ -59,7 +59,9 @@ Player.provide('browse',
               var containerHeight = $this.browseContainer.height();
               $this.browseLeft.toggle( itemsTop < 0);
               $this.browseRight.toggle( itemsTop > (itemsHeight-containerHeight)*-1 );
-          }catch(e){console.log(e);}
+          }catch(e){
+	      window.setTimeout($this.handleScrollThumbs, 1000);
+	  }
       }
       $this.scroll = function(direction){
           try {
@@ -78,7 +80,7 @@ Player.provide('browse',
       // Load recommendations through the API
       $this.loadedRecommendations = false;
       $this.loadRecommendations = function(){
-          if ($this.loadedRecommendations || !Player.get('showBrowse')) return; 
+          if ($this.loadedRecommendations || !Player.get('showBrowse')) return;
 
           // If we're looking at a single video, load some recommendations as well
           if(Player.get('clips').length==1) {
