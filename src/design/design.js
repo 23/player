@@ -103,14 +103,14 @@ Player.provide('design',
           // Text color
           $('body,button').css({color:$this.trayTextColor});
           // Background color and opacity
-          $('div.button, a.button').css({backgroundColor:$this.trayBackgroundColor, opacity:$this.trayAlpha});
+          $('div.big-play-button, a.button').css({backgroundColor:$this.trayBackgroundColor, opacity:$this.trayAlpha});
           $('.scrubber-play').css({backgroundColor:$this.scrubberColor});
-          $('.scrubber-container, .info-pane, .sharing-container, .player-browse #browse, div.button ul').css({backgroundColor:$this.trayBackgroundColorRGBA});
-          if(!/^rgba/.test($('.scrubber-container').css('backgroundColor'))) {
+          $('.info-pane, .sharing-container, .player-browse #browse, div.button ul, .tray-navigation').css({backgroundColor:$this.trayBackgroundColorRGBA, opacity});
+          if(!/^rgba/.test($('.tray-navigation').css('backgroundColor'))) {
               // (fall back to background color + opacity if RGBa is not supported
-              $('.scrubber-container, .info-pane, .sharing-container, .player-browse #browse, div.button ul').css({backgroundColor:$this.trayBackgroundColor, opacity:$this.trayAlpha});
+              $('.info-pane, .sharing-container, .player-browse #browse, div.button ul, .tray-navigation').css({backgroundColor:$this.trayBackgroundColor, opacity:$this.trayAlpha});
           }
-          $('div.button, a.button').css({backgroundColor:$this.trayBackgroundColor, opacity:$this.trayAlpha});
+          //$('div.button, a.button').css({backgroundColor:$this.trayBackgroundColor, opacity:$this.trayAlpha});
           // Vertical and horisontal padding
           $('video-display').css({bottom:$this.verticalPadding+'px', left:$this.horizontalPadding+'px'})
       }
@@ -118,8 +118,8 @@ Player.provide('design',
 
       // RESIZE HANDLING
       var _resize = function(){
-          var l = $('.tray-left div.tray-button:visible').length * 33;
-          var r = $('.tray-right div.tray-button:visible').length * 33;
+          var l = $('.tray-left div.tray-button:visible').length * 43;
+          var r = $('.tray-right div.tray-button:visible').length * 39;
           if(l>0) $('.tray-scrubber').css({marginLeft:l+'px', marginRight:r+'px'});
       }
       $(window).load(_resize);
