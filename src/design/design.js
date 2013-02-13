@@ -9,12 +9,12 @@ Player.provide('design',
     verticalPadding:0,
     horizontalPadding:0,
     trayAlpha:0.8,
-    trayBackgroundColor:'#000000',
-    trayTextColor:'#ffffff',
+    trayBackgroundColor:'#222222',
+    trayTextColor:'#DDDDDD',
     trayFont:'Helvetica',
-    trayTitleFontSize:14,
-    trayTitleFontWeight:'bold',
-    trayContentFontSize:12,
+    trayTitleFontSize:20,
+    trayTitleFontWeight:'normal',
+    trayContentFontSize:15,
     trayContentFontWeight:'normal',
     scrubberColor:'#eeeeee'
   },
@@ -108,10 +108,10 @@ Player.provide('design',
           $('.scrubber-play').css({backgroundColor:$this.scrubberColor});
           $this.rgbaSupport = /^rgba/.test($this.dummyElement.css('backgroundColor'));
           if($this.rgbaSupport) {
-              $('.scrubber-container, .info-pane, .sharing-container, .player-browse #browse, div.button ul').css({backgroundColor:$this.trayBackgroundColorRGBA});
+              $('.info-pane, .sharing-container, .player-browse #browse, div.button ul, .tray-navigation, .section-title').css({backgroundColor:$this.trayBackgroundColorRGBA});
           } else {
               // (fall back to background color + opacity if RGBa is not supported
-              $('.info-pane, .sharing-container, .player-browse #browse, div.button ul, .tray-navigation').css({backgroundColor:$this.trayBackgroundColor, opacity:$this.trayAlpha});
+              $('.info-pane, .sharing-container, .player-browse #browse, div.button ul, .tray-navigation, .section-title').css({backgroundColor:$this.trayBackgroundColor, opacity:$this.trayAlpha});
           }
           // Vertical and horisontal padding
           $('video-display').css({bottom:$this.verticalPadding+'px', left:$this.horizontalPadding+'px'})

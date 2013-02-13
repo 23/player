@@ -14,13 +14,13 @@ body {
     overflow:hidden;
 }
 h1 {
-    font-size:14px; /*updated in js via player settings */
+    font-size:20px; /*updated in js via player settings */
     line-height:2em;
-    font-weight:bold; /*updated in js via player settings */
+    font-weight:normal; /*updated in js via player settings */
     letter-spacing:.3px;
 }
 p {
-    font-size:12px; /*updated in js via player settings */
+    font-size:15px; /*updated in js via player settings */
     font-weight:normal; /*updated in js via player settings */
     line-height:1.5em;
     letter-spacing:.3px;
@@ -151,7 +151,7 @@ a.button { /* standard button design as a straight link */
 }
 .tray-right .tray-button { /* buttons right of scrubber */
     float:right;
-    margin-left:3px;
+    padding: 0 1px;
 }
 .tray-scrubber {  /* scrubber position */
     margin:0 200px 0 33px; /* this will be updated using JS to fix the with of .tray-left and .tray-right */
@@ -185,7 +185,7 @@ a.button { /* standard button design as a straight link */
 }
 .scrubber-track, .scrubber-buffer, .scrubber-play {
     position:absolute; 
-    top:16px;
+    top:15px;
     left:0;
     height:6px;
     width:0;
@@ -205,7 +205,7 @@ a.button { /* standard button design as a straight link */
     display:none;
     cursor:pointer;
     position:absolute;
-    top:7px;
+    top:9px;
     background-color:#eee;
     border-radius:1px;
     font-size:9px;
@@ -219,7 +219,7 @@ a.button { /* standard button design as a straight link */
 }
 .scrubber-time {
     position:absolute; 
-    top: 13px;
+    top: 12px;
     right: 10px;
 }
 .scrubber-thumbnail {
@@ -239,24 +239,31 @@ a.button { /* standard button design as a straight link */
 /* === Module: Sections === */
 .sections {
     position:absolute; 
-    top:14px;
+    top:11px;
     left:10px;
-    right:10px;
+    right:50px;
     height:0; /* for ie7's sake, otherwise this element covers the scrubber  */
 }
 .section {
     position:absolute; 
     top:0;
-    width:8px;
-    height:8px; 
+    width:6px;
+    height:12px; 
     margin:0px 0 0 -4px;
     border:1px solid black;
     background-color:#ccc;
-    border-radius:5px;
     cursor:pointer;
 }
 .section-title {
     display:none;
+    position: absolute;
+    bottom: 35px;
+    white-space: nowrap;
+    padding: 6px 8px;
+}
+
+.section:hover .section-title {
+    display: block;
 }
 /* === /Sections === */
 
