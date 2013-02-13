@@ -1,0 +1,9 @@
+{% if identityCountdown %}
+<div class="playflow-countdown">
+  {{identityCountdownText}}
+
+  {% if identityAllowClose %}
+    <div click="$set:closeIdentity:true" class="playflow-close"></div>
+  {% endif %}
+</div>
+{% endif %}

@@ -1,8 +1,8 @@
-/* 
+/*
   DESIGN THEME FOR THE PLAYER
 */
 
-Player.provide('design', 
+Player.provide('design',
   {
     showTray: true,
     trayTimeout: 0,
@@ -17,7 +17,7 @@ Player.provide('design',
     trayContentFontSize:12,
     trayContentFontWeight:'normal',
     scrubberColor:'#eeeeee'
-  }, 
+  },
   function(Player,$,opts){
       // This is required to add the template to the page
       var $this = this;
@@ -28,7 +28,7 @@ Player.provide('design',
 
 
       // This is the heavy lifting for the design
-      // (and what you will want to change in order to 
+      // (and what you will want to change in order to
       //  modify the behaviour of the design.)
 
       // BUTTON MENUS
@@ -79,7 +79,7 @@ Player.provide('design',
 
           // Honour `showTray`
           $('#tray').toggle($this.showTray ? true : false);
-          // Honour `trayTimeout`          
+          // Honour `trayTimeout`
           if($this.showTray&&$this.trayTimeout>0) {
               var triggerTrayTimeout = function(){
                   window.clearTimeout($this.trayTimeoutId);
@@ -95,6 +95,7 @@ Player.provide('design',
           }
       });
 
+      $this.dummyElement = $(document.createElement('div')).css({backgroundColor:'rgba(0,0,0,.666)'});
       $this.applyDesignPreferences = function(){
           // Tray title font, size, weight
           $('h1').css({fontFamily:$this.trayFont, fontSize:$this.trayTitleFontSize+'px', fontWeight:$this.trayTitleFontWeight});
@@ -106,12 +107,13 @@ Player.provide('design',
           //$('div.button ul').css({backgroundColor:$this.trayBackgroundColor});
           $('.tray-left div.button, .big-play-button, a.button').css({backgroundColor:$this.trayBackgroundColor, opacity:$this.trayAlpha});
           $('.scrubber-play').css({backgroundColor:$this.scrubberColor});
-          $('.tray-right-container, .info-pane, .sharing-container, .player-browse #browse').css({backgroundColor:$this.trayBackgroundColorRGBA});
-          if(!/^rgba/.test($('.tray-right-container').css('backgroundColor'))) {
+          $this.rgbaSupport = /^rgba/.test($this.dummyElement.css('backgroundColor'));
+          if($this.rgbaSupport) {
+              $('.scrubber-container, .info-pane, .sharing-container, .player-browse #browse').css({backgroundColor:$this.trayBackgroundColorRGBA});
+          } else {
               // (fall back to background color + opacity if RGBa is not supported
               $('.tray-right-container, .info-pane, .sharing-container, .player-browse #browse').css({backgroundColor:$this.trayBackgroundColor, opacity:$this.trayAlpha});
           }
-          //$('div.button, a.button').css({backgroundColor:$this.trayBackgroundColor, opacity:$this.trayAlpha});
           // Vertical and horisontal padding
           $('video-display').css({bottom:$this.verticalPadding+'px', left:$this.horizontalPadding+'px'})
       }
@@ -125,6 +127,12 @@ Player.provide('design',
             $('.tray-right').css({width: r});
           }
           $('.player-info:visible').css({width: (rc-r-30)});
+
+          // This is a pretty fancy fix for an IE7 bug:
+          // Empty elements are given layout, causing all kinds of buttons the .tray-right
+          // and tray-left to go flying. Very litterally: Hide empty stuff, show other.
+          $('.tray-right>div:empty, .tray-left>div:empty').hide();
+          $('.tray-right>div:parent, .tray-left>div:parent').show();
       }
       $(window).load(_resize);
       $(window).resize(_resize);
@@ -133,7 +141,7 @@ Player.provide('design',
           _resize();
           $this.applyDesignPreferences();
       });
-      
+
       // Return a reference
       return $this;
   }
