@@ -268,6 +268,13 @@ Player.provide('core',
         }
       });
       Player.getter('video_aspect_ratio', function(){return ($this.video.video_medium_width||1) / ($this.video.video_medium_height||1);});
+      Player.getter('video_sharable', function(){
+        try {
+          return ($this.video && $this.video.album_id.length>0 && $this.video.published_p && !$this.video.album_hide_p);
+        }catch(e){
+          return false;
+        }
+      });
       
       // Information about frames for the current video
       Player.getter('video_has_frames', function(){try {return ($this.video.video_frames_size>0);} catch(e) {return false;}});
