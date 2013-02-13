@@ -32,7 +32,7 @@ button {
     padding:0 5px 0 30px;
     border:none;
     background-repeat:no-repeat;
-    background-position:left center;
+    background-position:center center;
     cursor:pointer;
     height:30px; 
     line-height:32px;
@@ -48,7 +48,6 @@ div.button { /* standard button design */
     position:relative;
     height:36px;
     width:36px;
-    border-radius:2px;
     /*background-color:black;  /*updated in js via player settings */
     background-position:center center;
     background-repeat:no-repeat;
@@ -142,8 +141,9 @@ a.button { /* standard button design as a straight link */
     position:relative;
     margin:0;
     background-color: black; /* adjusted in js */
-    background-color: rgba(0,0,0,0.8)
+    background-color: rgba(0,0,0,0.8);
     height: 36px;
+    border-bottom: 1px solid black;
 }
 .tray-left .tray-button { /* buttons left of scrubber */
     float:left;
@@ -285,32 +285,34 @@ a.button { /* standard button design as a straight link */
 .sharing-container {
     background:rgb(0,0,0); /*fallback for browser with no RGBa support */
     background:rgba(0,0,0,.8); /*updated in js via player settings */
-    margin:3px 5px 0 5px;
-    border-radius:2px;
-    padding:10px;
+    padding:10px 40px;
 }
-.share-embed {
-    padding-bottom:10px;
+#share-left {
+    float: left;
 }
-.share-embed input {
-    width:80%;
-    max-width:471px;
-    line-height:20px;
-    font-size:11px;
-    height:20px;
+#share-right {
+    float: right;
+}
+#embed-container {
+    position: absolute;
+    left: 200px;
+    right: 165px;
+}
+#embed-container input {
+    width:100%;
+    line-height:28px;
+    font-size:12px;
+    height:22px;
     padding:3px;
     border:none;
     background-color:white;
     box-shadow: inset 0 0 6px #666;
 }
-.share-embed-label {
-    float:left;
-    font-size:14px; 
-    padding:0 23px 0 32px; 
-    font-weight:bold;
-    line-height:26px;
-    background:url('embed-icon.png') left center no-repeat;
-}
+/*.share-embed-label {
+    background-image:url('embed-icon.png');
+    width: 30px;
+    height: 30px;
+}*/
 .share-buttons {
     height:30px;
     overflow:hidden;

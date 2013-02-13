@@ -52,6 +52,11 @@ Player.provide('sections',
           $this.render();
         });
 
+      $(document).on('mouseover', '.section', function(){
+          var title = $(this).children(".section-title");
+          title.css({left: (title.outerWidth() / -2) + 3});
+        });
+
       return $this;
   }
 );
