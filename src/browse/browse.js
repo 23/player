@@ -59,7 +59,9 @@ Player.provide('browse',
               var containerWidth = $this.browseContainer.width();
               $this.browseLeft.toggle( itemsLeft < 0);
               $this.browseRight.toggle( itemsLeft > (itemsWidth-containerWidth)*-1 );
-          }catch(e){}
+          }catch(e){
+              window.setTimeout($this.handleScrollThumbs, 1000);
+          }
       }
       $this.scroll = function(direction){
           try {

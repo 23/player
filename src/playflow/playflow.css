@@ -1,14 +1,74 @@
-.player-playflow, .playflow-video, .playflow-click-container {
-    position:absolute; 
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-}
+/* Position all elements, generally just fill the screen */
 .player-playflow {
+    position:fixed; 
+    top:0; 
+    left:0;
+    bottom:0;
+    right:0;
     display:none;
+    z-index:201;
+}
+.player-playflow .playflow-canvas {
+    position:absolute; 
+    width:100%; 
+    height:100%; 
+    cursor:pointer;
+}
+.player-playflow .playflow-content table {
     background-color:black;
 }
-.playflow-click-container {
+.player-playflow .playflow-after-text, 
+.player-playflow .playflow-after-text table, 
+.player-playflow .playflow-click-container {
+    position:absolute; 
+    top:0; 
+    left:0;
+    width:100%; 
+    height:100%; 
+}
+
+
+/* Click container for the video */
+.player-playflow .playflow-click-container {
     cursor:pointer;
+}
+
+/* Base styling for after text */
+.player-playflow, .player-playflow a {
+    color:white;
+}
+
+/* Countdown */
+.playflow-countdown {
+    background:black;
+    background:rgba(0,0,0,.6);
+    padding-left:10px;
+    color:white;
+    font-size:12px;
+    line-height:30px;
+    position:fixed;
+    top:0;
+    left:0;
+    right:0;
+    height:30px;
+}
+
+/* Close button, both for countdown and for after text */
+.playflow-close {
+    position:fixed;
+    top:10px; 
+    right:10px;
+    width:30px;
+    height:30px;
+    background:url('close-icon.png') center center no-repeat;
+    cursor:pointer;
+}
+@media 
+(-webkit-min-device-pixel-ratio: 2), 
+(min-resolution: 192dpi) { 
+    .playflow-close {background-image:url('close-icon@2x.png'); background-size:30px;}
+}
+.playflow-countdown .playflow-close {
+    right:0;
+    top:0;
 }

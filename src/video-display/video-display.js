@@ -12,6 +12,7 @@
   - player:video:seeking
   - player:video:stalled
   - player:video:canplay
+  - player:video:beforeplay
   - player:video:play
   - player:video:playing
   - player:video:pause
@@ -41,6 +42,7 @@
   - displayDevice [get]
   - verticalPadding [get]
   - horizontalPadding [get]
+  - displayDevice [get]
 
   Liquid filters:
   - formatTime: Formats number of seconds as a nice readable timestamp
@@ -70,7 +72,7 @@ Player.provide('video-display',
       });
 
       // Create a container with the correct aspect ratio and a video element
-      $this.canvas = $(document.createElement('div')).addClass('video-canvas')
+      $this.canvas = $(document.createElement('div')).addClass('video-canvas');
       $this.container.append($this.canvas);
 
       /* PROPERTIES */
@@ -114,6 +116,7 @@ Player.provide('video-display',
         $this.container.click(_togglePlayback);
         // Handle keyboard events
         $(document).keypress(function(e){
+            try {if(Player.get('playflowActive')) return;} catch(e){}
             if(!e.ctrlKey && !e.altKey && !e.metaKey) {
               var matched = false;
               // Toogle playback on space/enter press
@@ -136,6 +139,7 @@ Player.provide('video-display',
             }
           });
         $(document).keydown(function(e){
+            try {if(Player.get('playflowActive')) return;} catch(e){}
             if(!e.ctrlKey && !e.altKey && !e.metaKey) {
               var matched = false;
               // Increase volume on +/up
@@ -277,7 +281,10 @@ Player.provide('video-display',
       });
 
       Player.setter('playing', function(playing){
-          if($this.video) $this.video.setPlaying(playing);
+          if($this.video) {
+              if(playing && !Player.fire('player:video:beforeplay')) return false;
+              $this.video.setPlaying(playing);
+          }
       });
       Player.setter('paused', function(paused){
           if($this.video) $this.video.setPaused(paused);
