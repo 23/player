@@ -109,7 +109,7 @@ Player.provide('design',
           $('.scrubber-play').css({backgroundColor:$this.scrubberColor});
           $this.rgbaSupport = /^rgba/.test($this.dummyElement.css('backgroundColor'));
           if($this.rgbaSupport) {
-              $('.scrubber-container, .info-pane, .sharing-container, .player-browse #browse').css({backgroundColor:$this.trayBackgroundColorRGBA});
+              $('.tray-right-container, .info-pane, .sharing-container, .player-browse #browse').css({backgroundColor:$this.trayBackgroundColorRGBA});
           } else {
               // (fall back to background color + opacity if RGBa is not supported
               $('.tray-right-container, .info-pane, .sharing-container, .player-browse #browse').css({backgroundColor:$this.trayBackgroundColor, opacity:$this.trayAlpha});
