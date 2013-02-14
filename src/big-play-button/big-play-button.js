@@ -14,7 +14,7 @@
 
 Player.provide('big-play-button', 
   {
-    showBigPlay: true
+    showBigPlay: false
   }, 
   function(Player,$,opts){
     var $this = this;

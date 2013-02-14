@@ -261,7 +261,6 @@ a.button { /* standard button design as a straight link */
     margin:0px 0 0 -4px;
     border:1px solid black;
     background-color:#ccc;
-    border-radius:5px;
     cursor:pointer;
 }
 .section-title {

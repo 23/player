@@ -28,6 +28,14 @@ Player.provide('info',
           PlayerUtilities.mergeSettings($this, ['showDescriptions', 'infoTimeout']);
         });
 
+      $(document).mousemove(function(){
+        Player.set('showDescriptions', true);
+        if($this.infoTimeout>0) {
+            setTimeout(function(){Player.set('showDescriptions', false);}, $this.infoTimeout);
+          }
+          Player.fire('player:infoengaged');
+      });
+
       // Bind to events
       Player.bind('player:infoengaged', function(e,video){
           $this.render();
@@ -52,12 +60,7 @@ Player.provide('info',
      
       /* SETTERS */
       Player.setter('showDescriptions', function(sd){
-          if(sd) {
-              Player.set('browseMode', false);
-              Player.set('showSharing', false);
-          }
           $this.showDescriptions = sd;
-          $this.infoTimeout = 0; // disable fade-out when showDescription is explicitly set
           Player.fire('player:infoengaged');
         });
 

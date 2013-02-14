@@ -109,10 +109,10 @@ Player.provide('design',
 
           $this.rgbaSupport = /^rgba/.test($this.dummyElement.css('backgroundColor'));
           if($this.rgbaSupport) {
-              $('.tray-navigation, .scrubber-container, .sharing-container, div.button ul').css({backgroundColor:$this.trayBackgroundColorRGBA});
+              $('.big-play-button, .tray-navigation, .scrubber-container, .sharing-container, div.button ul').css({backgroundColor:$this.trayBackgroundColorRGBA});
           } else {
               // (fall back to background color + opacity if RGBa is not supported
-              $('.tray-navigation, .scrubber-container, .sharing-container, div.button ul').css({backgroundColor:$this.trayBackgroundColor, opacity:$this.trayAlpha});
+              $('.big-play-button, .tray-navigation, .scrubber-container, .sharing-container, div.button ul').css({backgroundColor:$this.trayBackgroundColor, opacity:$this.trayAlpha});
           }
           // Vertical and horisontal padding
           $('video-display').css({bottom:$this.verticalPadding+'px', left:$this.horizontalPadding+'px'})
