@@ -1,5 +1,9 @@
-{% if scrubberTime != empty %}
-  {{scrubberTime|formatTime}}
+{% if scrubberTime == 0 and currentTime == 0 %}
+	{{duration|formatTime}}
 {% else %}
-  {{currentTime|formatTime}}
+	{% if scrubberTime != empty %}
+	  {{scrubberTime|formatTime}}
+	{% else %}
+	  {{currentTime|formatTime}}
+	{% endif %}
 {% endif %}
