@@ -68,7 +68,7 @@ div.button { /* standard button design */
 div.highlight-button {
     opacity:1 !important;
 }
-div.button:hover {
+div.button:hover, div.activebutton {
     opacity:1;
 }
 div.button.big { /* big version of same button */
@@ -459,7 +459,7 @@ table.browse-recommendations div {
 .size-small .info-button, 
 .size-small .browse-button-on,
 .size-small .browse-button-off,
-.size-small .sharing-container 
+.size-small .sharing-container #embed-container, 
 .size-small .player-browse #browse {
     display:none;
 }
