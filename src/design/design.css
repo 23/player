@@ -161,7 +161,48 @@ a.button { /* standard button design as a straight link */
 }
 /* === /tray === */
 
+/* Volume */
 
+div.volume-button ul {
+    padding: 0;
+    margin: 0;
+    width: 39px;
+    list-style: none;
+}
+
+div.volume-button ul li {
+    width: 39px;
+    height: 120px;
+    padding: 0;
+    margin: 0;
+    background-image: none !important;
+    position: relative;
+}
+div.volume-button .volume-track, div.volume-button .volume-filled {
+    position: absolute;
+    width: 5px;
+    bottom: 8px;
+    left: 17px;
+    border-radius: 2px;
+}
+div.volume-button .volume-track {
+    top: 10px;
+    background-color: #000000;
+}
+div.volume-button .volume-filled {
+    height: 30px;
+    background-color: #BBBBBB;
+}
+div.volume-button .volume-handle {
+    position: absolute;
+    height: 30px;
+    background-color: #FFFFFF;
+    width: 9px;
+    height: 9px;
+    border-radius: 5px;
+    bottom: 4px;
+    left: 15px;
+}
 
 
 /* ========================= INDIVIDUAL MODULES ======================== */

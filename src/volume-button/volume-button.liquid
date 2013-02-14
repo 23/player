@@ -1,9 +1,16 @@
 {% if supportsVolumeChange %}
-<div class="tray-button button volume-button {% if volumeMuted %}volume-button-on highlight-button{% else %}volume-button-off{% endif %}" click="$toggle:volumeMuted">
+<div class="tray-button button volume-button {% if volumeMuted %}volume-button-on highlight-button{% else %}volume-button-off{% endif %}" click="$fire:player:volume-engaged">
   {% if volumeMuted %}
   <!--Sound-->
   {% else %}
   <!--Mute-->
   {% endif %}
+<ul>
+	<li>
+	<div class="volume-track"></div>
+	<div class="volume-filled"></div>
+	<div class="volume-handle"></div>
+	</li>
+</ul>
 </div>
 {% endif %}
