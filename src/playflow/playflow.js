@@ -173,9 +173,9 @@ Player.provide('playflow',
             $this.playflowClip = Player.get('url') + url;
             $this.playflowLink = Player.get(type=='preroll' ? 'playflowBeforeLink' : 'playflowAfterLink')
             $this.beginClip();
-            return false;
-          } else {
             return true;
+          } else {
+            return false;
           }
       }
 
@@ -187,12 +187,22 @@ Player.provide('playflow',
       Player.bind('player:video:beforeplay', function(){
           if($this.playflowState!='before') return true;
           $this.playflowState = 'preroll';
-          return($this.initiateClip($this.playflowState));
+          if ($this.initiateClip($this.playflowState)) {
+              return false;
+          } else {
+              $this.playflowState = 'during';
+              return true;
+          }
       });
       // Postrolls after the clip has ended
       Player.bind('player:video:ended', function(){
           $this.playflowState = 'postroll';
-          return($this.initiateClip($this.playflowState));
+          if ($this.initiateClip($this.playflowState)) {
+              return false;
+          } else {
+              $this.beginAfterText();
+              return true;
+          }
       });
 
       // Close clip
