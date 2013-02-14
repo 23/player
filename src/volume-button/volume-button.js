@@ -57,7 +57,7 @@ Player.provide('volume-button',
       $this.volumeFilled = $this.container.find('.volume-filled');
       $this.volumeTrack = $this.container.find('.volume-track');
 
-      var volumeFilledHeight = (parseInt($this.volumeTrack.parent().css('height')) - 18) * volume;
+      var volumeFilledHeight = (parseInt($this.volumeTrack.parent().css('height')) - 22) * volume;
       //var volumeFilledHeight = $this.volumeTrack.height() * volume;
       $this.volumeFilled.css({height: volumeFilledHeight});
       $this.volumeHandle.css({bottom: Math.max(volumeFilledHeight+4, 4)});
