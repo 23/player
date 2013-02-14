@@ -9,26 +9,29 @@
 
   <div class="big-button tray-button">{% player big-play-button %}</div>
 
+  {% player logo %}
   {% player subtitles %}
+  {% player info %}
+  {% player browse %}
 
   <!-- Control bar or tray -->
   <div id="tray">
-    {% player info %}
+    
     {% player sharing %}
 
     <div class="tray-navigation">
-      <ul class="tray-left">
+      <div class="tray-left">
         {% player play-button %}
-      </ul>
+      </div>
 
       <div class="tray-right">
         {% player fullscreen-button %}
-        {% player volume-button %}
-        {% player subtitle-button %}
         {% player quality-button %}
         {% player share-button %}
-        {% player info-button %}
-        {% player browse-button %}
+        {% player volume-button %}
+        {% player social-button with "service":"twitter" %}
+        {% player social-button with "service":"facebook" %}
+        {% player subtitle-button %}
       </div>
 
       <div class="tray-scrubber">
@@ -38,10 +41,8 @@
         </div>
       </div>
     </div>
-    {% player browse %}
   </div>
 
-  {% player logo %}
 </div>
 
 

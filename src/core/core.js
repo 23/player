@@ -244,6 +244,11 @@ Player.provide('core',
       Player.getter('clips', function(){return $this.clips;});
       Player.getter('streams', function(){return $this.streams;});
       Player.getter('settings', function(){return $this.settings;});
+      Player.getter('show_social', function(){
+        var ss = $this.video ? $this.video.show_social||'' : '';
+        if (typeof ss === 'string' && ss === '0') return false;
+        return true;
+      });
 
       // Information about the current video
       Player.getter('video_title', function(){return ($this.video ? $this.video.title||'' : '');});

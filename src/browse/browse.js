@@ -27,8 +27,8 @@ Player.provide('browse',
     browseMode: false,
     recommendationMethod: 'channel-popular',
     playlistClickMode:'inline',
-    browseThumbnailWidth:120,
-    browseThumbnailHeight:68
+    browseThumbnailWidth:200,
+    browseThumbnailHeight:113
   },
   function(Player,$,opts){
       var $this = this;

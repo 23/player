@@ -1,8 +1,8 @@
 {% if showDescriptions == true %}
   {% if video_title != empty or video_content != empty %}
-    <div class="info-pane">
+    <div class="info-pane-container">
       {% if video_title != empty%}<h1>{{video_title|truncatewords:15}}</h1>{% endif %}
-      {% if video_content != empty%}<div class="info-description"><p>{{video_content|strip_html|truncatewords:30}}</p></div>{% endif %}
+      {% if video_content != empty%}<div class="info-pane"><div class="info-description"><p>{{video_content}}</p></div></div>{% endif %}
     </div>
   {% endif %}
 {% endif %}

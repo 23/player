@@ -22,11 +22,20 @@ Player.provide('info',
   function(Player,$,opts){
       var $this = this;
       $.extend($this, opts);
+      $this.infoTimeoutId = null;
       
       // Listen to find if we show show info
       Player.bind('player:settings', function(e,settings){
           PlayerUtilities.mergeSettings($this, ['showDescriptions', 'infoTimeout']);
         });
+
+      function triggerInfoTimeout() {
+        Player.set('showDescriptions', true);
+        if($this.infoTimeout>0) {
+            window.clearTimeout($this.infoTimeoutId);
+            $this.infoTimeoutId = setTimeout(function(){Player.set('showDescriptions', false);}, $this.infoTimeout);
+        }
+      }
 
       // Bind to events
       Player.bind('player:infoengaged', function(e,video){
@@ -37,10 +46,17 @@ Player.provide('info',
       });
       Player.bind('player:settings player:video:loaded', function(e,video){
           if($this.infoTimeout>0) {
-            setTimeout(function(){Player.set('showDescriptions', false);}, $this.infoTimeout);
+            window.clearTimeout($this.infoTimeoutId);
+            $this.infoTimeoutId = setTimeout(function(){Player.set('showDescriptions', false);}, $this.infoTimeout);
           }
           Player.fire('player:infoengaged');
         });
+
+      Player.bind('player:video:pause', function(){
+        if (!Player.get('playing') && !Player.get('browseMode')) {
+          triggerInfoTimeout();
+        }
+      });
 
       /* GETTERS */
       Player.getter('showDescriptions', function(){
@@ -52,14 +68,19 @@ Player.provide('info',
      
       /* SETTERS */
       Player.setter('showDescriptions', function(sd){
-          if(sd) {
-              Player.set('browseMode', false);
-              Player.set('showSharing', false);
-          }
           $this.showDescriptions = sd;
-          $this.infoTimeout = 0; // disable fade-out when showDescription is explicitly set
           Player.fire('player:infoengaged');
+          $(window).resize();
         });
+
+      $(document).mousemove(function(){
+        if (!Player.get('playing') && !Player.get('browseMode')) {
+          triggerInfoTimeout();
+        }
+      });
+      $(document).mouseleave(function(){
+        Player.set('showDescriptions', false);
+      });
 
       return $this;
   }

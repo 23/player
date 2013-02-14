@@ -9,14 +9,14 @@ Player.provide('design',
     verticalPadding:0,
     horizontalPadding:0,
     trayAlpha:0.8,
-    trayBackgroundColor:'#000000',
-    trayTextColor:'#ffffff',
-    trayFont:'Helvetica',
-    trayTitleFontSize:14,
-    trayTitleFontWeight:'bold',
+    trayBackgroundColor:'#CCCCCC',
+    trayTextColor:'#000000',
+    trayFont:'DKTRegular',
+    trayTitleFontSize:22,
+    trayTitleFontWeight:'normal',
     trayContentFontSize:12,
     trayContentFontWeight:'normal',
-    scrubberColor:'#eeeeee'
+    scrubberColor:'#9C332F'
   }, 
   function(Player,$,opts){
       // This is required to add the template to the page
@@ -100,18 +100,20 @@ Player.provide('design',
           // Tray title font, size, weight
           $('h1').css({fontFamily:$this.trayFont, fontSize:$this.trayTitleFontSize+'px', fontWeight:$this.trayTitleFontWeight});
           // Tray content font, size, weight
-          $('p').css({fontFamily:$this.trayFont, fontSize:$this.trayContentFontSize+'px', fontWeight:$this.trayContentFontWeight});
+          //$('p').css({fontFamily:$this.trayFont, fontSize:$this.trayContentFontSize+'px', fontWeight:$this.trayContentFontWeight});
           // Text color
           $('body,button').css({color:$this.trayTextColor});
           // Background color and opacity
-          $('div.button, a.button').css({backgroundColor:$this.trayBackgroundColor, opacity:$this.trayAlpha});
+          //$('div.button, a.button').css({backgroundColor:$this.trayBackgroundColor, opacity:$this.trayAlpha});
           $('.scrubber-play').css({backgroundColor:$this.scrubberColor});
           $this.rgbaSupport = /^rgba/.test($this.dummyElement.css('backgroundColor'));
           if($this.rgbaSupport) {
-              $('.scrubber-container, .info-pane, .sharing-container, .player-browse #browse, div.button ul').css({backgroundColor:$this.trayBackgroundColorRGBA});
+              $('div.button ul, .tray-navigation, .info-pane, .sharing-container, .player-browse #browse').css({backgroundColor:$this.trayBackgroundColorRGBA});
+              $('.player-browse #browse').css({backgroundColor:'rgba(0,0,0,0.8)'});
           } else {
               // (fall back to background color + opacity if RGBa is not supported
-              $('.scrubber-container, .info-pane, .sharing-container, .player-browse #browse, div.button ul').css({backgroundColor:$this.trayBackgroundColor, opacity:$this.trayAlpha});
+              $('div.button ul, .tray-navigation, .info-pane, .sharing-container, .player-browse #browse').css({backgroundColor:$this.trayBackgroundColor, opacity:$this.trayAlpha});
+              $('.player-browse #browse').css({backgroundColor:'rgb(0,0,0)', opacity:0.8});
           }
           // Vertical and horisontal padding
           $('video-display').css({bottom:$this.verticalPadding+'px', left:$this.horizontalPadding+'px'})
@@ -120,9 +122,14 @@ Player.provide('design',
 
       // RESIZE HANDLING
       var _resize = function(){
-          var l = $('.tray-left div.tray-button:visible').length * 33;
+          /*var l = $('.tray-left div.tray-button:visible').length * 33;
           var r = $('.tray-right div.tray-button:visible').length * 33;
-          if(l>0) $('.tray-scrubber').css({marginLeft:l+'px', marginRight:r+'px'});
+          if(l>0) $('.tray-scrubber').css({marginLeft:l+'px', marginRight:r+'px'});*/
+          $('#browse').height($(window).height()-$('#tray').height());
+          $('.browse-container, .browse-left, .browse-right').css({top: $(window).height()/2-145/2});
+
+          $('.info-pane-container h1').css({right: $('.info-pane').outerWidth()});
+          $('.info-pane').css({width: Math.min($(window).width()/3, 300), bottom: $('#tray').height()});
 
           // This is a pretty fancy fix for an IE7 bug: 
           // Empty elements are given layout, causing all kinds of buttons the .tray-right

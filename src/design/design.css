@@ -1,7 +1,29 @@
 /* ========================= BROWSER RESET ======================== */
 body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td{margin:0;padding:0;}table{border-collapse:collapse;border-spacing:0;}fieldset,img{border:0;}address,caption,cite,code,dfn,em,strong,th,var{font-style:normal;font-weight:normal;}ol,ul {list-style:none;}caption,th {text-align:left;}h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:normal;}q:before,q:after{content:'';}abbr,acronym {border:0;}* focus, video, object, player, embed {outline:none} *{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;-o-user-select:none;user-select:none;}iframe{border:0} input,textarea{-webkit-user-select:text;-moz-user-select:text;-ms-user-select:text;-o-user-select:text;user-select:text;}iframe{border:0}
 
+@font-face {
+    font-family: 'DKTHeavyRegular';
+    src: url('http://kglteater.dk/Components/PageTypes/Content/fonts/dkt_heavy-webfont.eot');
+    src: url('http://kglteater.dk/Components/PageTypes/Content/fonts/dkt_heavy-webfont.eot?#iefix') format('embedded-opentype'),
+         url('http://kglteater.dk/Components/PageTypes/Content/fonts/dkt_heavy-webfont.woff') format('woff'),
+         url('http://kglteater.dk/Components/PageTypes/Content/fonts/dkt_heavy-webfont.ttf') format('truetype'),
+         url('http://kglteater.dk/Components/PageTypes/Content/fonts/http://kglteater.dk/Components/PageTypes/Content/fonts/dkt_heavy-webfont.svg#DKTHeavyRegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
 
+}
+
+@font-face {
+    font-family: 'DKTRegular';
+    src: url('http://kglteater.dk/Components/PageTypes/Content/fonts/dkt-webfont.eot');
+    src: url('http://kglteater.dk/Components/PageTypes/Content/fonts/dkt-webfont.eot?#iefix') format('embedded-opentype'),
+         url('http://kglteater.dk/Components/PageTypes/Content/fonts/dkt-webfont.woff') format('woff'),
+         url('http://kglteater.dk/Components/PageTypes/Content/fonts/dkt-webfont.ttf') format('truetype'),
+         url('http://kglteater.dk/Components/PageTypes/Content/fonts/dkt-webfont.svg#DKTRegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
 
 
 /* ========================= GENERAL TAGS ======================== */
@@ -9,21 +31,24 @@ a img {border:0;}
 body {
     margin:0; 
     background-color:black; 
-    color:white;  /*updated in js via player settings */
-    font:11px/14px Helvetica;  /*updated in js via player settings */
+    color:black;  /*updated in js via player settings */
+    font:11px/14px DKTRegular, Helvetica;  /*updated in js via player settings */
     overflow:hidden;
 }
 h1 {
-    font-size:14px; /*updated in js via player settings */
+    font-size:16px; /*updated in js via player settings */
     line-height:2em;
     font-weight:bold; /*updated in js via player settings */
     letter-spacing:.3px;
 }
 p {
-    font-size:12px; /*updated in js via player settings */
+    font-size:15px; /*updated in js via player settings */
     font-weight:normal; /*updated in js via player settings */
     line-height:1.5em;
     letter-spacing:.3px;
+}
+.size-medium p {
+    font-size: 12px;
 }
 button {
     background-color:#3B3B3C;
@@ -46,15 +71,22 @@ button {
 /* === buttons === */
 div.button { /* standard button design */
     position:relative;
-    height:30px;
-    width:30px;
-    border-radius:2px;
-    background-color:black;  /*updated in js via player settings */
+    height:34px;
+    width:34px;
     background-position:center center;
     background-repeat:no-repeat;
     opacity:.8;
     cursor:pointer;
     font-size:0;
+}
+.tray-right div.button {
+    border-left: 1px solid #BBB;
+}
+.tray-left div.button {
+    width: 58px;
+    height: 55px;
+    position: absolute;
+    bottom: 12px;
 }
 div.highlight-button {
     opacity:1 !important;
@@ -71,7 +103,7 @@ div.button ul { /* button menus */
     display:none;
     opacity:0;
     position:absolute;
-    bottom:32px; 
+    bottom:35px; 
     right:0;
     background:rgb(0,0,0); /*fallback for browser with no RGBa support */
     background:rgba(0,0,0,.8); /*updated in js via player settings */
@@ -130,7 +162,6 @@ a.button { /* standard button design as a straight link */
 }
 .tray-navigation {
     position:relative;
-    margin:3px 5px 5px 5px;
 }
 .tray-left .tray-button { /* buttons left of scrubber */
     float:left;
@@ -138,10 +169,10 @@ a.button { /* standard button design as a straight link */
 }
 .tray-right .tray-button { /* buttons right of scrubber */
     float:right;
-    margin-left:3px;
+    padding: 0 2px;
 }
 .tray-scrubber {  /* scrubber position */
-    margin:0 200px 0 33px; /* this will be updated using JS to fix the with of .tray-left and .tray-right */
+    clear: both;
 }
 .tray-scrubber-sub {
     position:relative;
@@ -156,7 +187,7 @@ a.button { /* standard button design as a straight link */
 /* === Module: Scrubber === */
 .scrubber-container {
     position:relative;
-    height:30px;
+    height:10px;
     background:rgb(0,0,0); /*fallback for browser with no RGBa support */
     background:rgba(0,0,0,.8); /*updated in js via player settings */
     border-radius:2px;
@@ -164,17 +195,17 @@ a.button { /* standard button design as a straight link */
 }
 .scrubber {
     position:absolute; 
-    top:0px;
-    left:10px;
-    right:10px;
-    height:30px;
+    bottom:0px;
+    left:0px;
+    right:0px;
+    height:10px;
     cursor:pointer;
 }
 .scrubber-track, .scrubber-buffer, .scrubber-play {
     position:absolute; 
-    top:12px;
+    bottom:0;
     left:0;
-    height:6px;
+    height:10px;
     width:0;
     cursor:pointer;
 }
@@ -225,9 +256,9 @@ a.button { /* standard button design as a straight link */
 /* === Module: Sections === */
 .sections {
     position:absolute; 
-    top:10px;
-    left:10px;
-    right:10px;
+    top:0px;
+    left:0px;
+    right:0px;
     height:0; /* for ie7's sake, otherwise this element covers the scrubber  */
 }
 .section {
@@ -248,11 +279,26 @@ a.button { /* standard button design as a straight link */
 
 /* === Module: Info === */
 .info-pane {
-    margin:0 5px;
+    margin:0;
     background:rgb(0,0,0); /*fallback for browser with no RGBa support */
     background:rgba(0,0,0,.8); /*updated in js via player settings */
-    border-radius:2px;
-    padding:5px 10px 8px 10px;
+    padding:10px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 44px;
+    width: 300px;
+    border-bottom: 1px solid #BBB;
+    overflow: hidden;
+}
+
+.info-pane-container h1 {
+    position: fixed;
+    top: 0;
+    left: 0;
+    text-shadow: 1px 1px 2px #333;
+    color: white;
+    padding: 0 10px;
 }
 /* === /Info === */
 
@@ -260,16 +306,14 @@ a.button { /* standard button design as a straight link */
 .sharing-container {
     background:rgb(0,0,0); /*fallback for browser with no RGBa support */
     background:rgba(0,0,0,.8); /*updated in js via player settings */
-    margin:3px 5px 0 5px;
-    border-radius:2px;
-    padding:10px;
+    padding: 10px 10px 20px;
+    border-bottom: 1px solid #BBB;
 }
 .share-embed {
     padding-bottom:10px;
 }
 .share-embed input {
-    width:80%;
-    max-width:471px;
+    width:90%;
     line-height:20px;
     font-size:11px;
     height:20px;
@@ -279,12 +323,10 @@ a.button { /* standard button design as a straight link */
     box-shadow: inset 0 0 6px #666;
 }
 .share-embed-label {
-    float:left;
     font-size:14px; 
-    padding:0 23px 0 32px; 
+    padding:0 ; 
     font-weight:bold;
     line-height:26px;
-    background:url('embed-icon.png') left center no-repeat;
 }
 .share-buttons {
     height:30px;
@@ -296,13 +338,14 @@ a.button { /* standard button design as a straight link */
 /* Place the browse pane within the player */
 .player-browse #browse {
     position:relative;
-    padding:10px 2px;
     background:rgb(0,0,0); /*fallback for browser with no RGBa support */
     background:rgba(0,0,0,.8); /*updated in js via player settings */
+    color: white;
+    text-align: center;
 }
 /* Place left and right browsing with a carousel in the middle */
 .browse-container, .browse-left, .browse-right {
-    height:105px;
+    height:145px;
     overflow:hidden;
 }
 .browse-left, .browse-right {
@@ -315,16 +358,16 @@ a.button { /* standard button design as a straight link */
     opacity:.8;
 }
 .browse-left {
-    left:0;
+    left:15px;
     background-image:url('prev-icon.png');
 }
 .browse-right {
-    right:0;
+    right:15px;
     background-image:url('next-icon.png');
 }
 .browse-container {
     position:relative;
-    margin:0 30px;
+    margin:0 70px;
 }
 /* Thumbnails in a fully standard table, 
    makes sure we don't need to handle breaking
@@ -341,19 +384,32 @@ table.browse-recommendations td {
     padding:0 10px;
 }
 table.browse-recommendations img {
-    width:120px;
-    height:67px;
+    width:200px;
+    height:113px;
 }
 table.browse-recommendations div {
     line-height:16px;
     height:32px;
     overflow:hidden;
 }
+
+.social-container {height: 160px;}
+.social-container table {margin: 0 auto; position: relative;}
+
+table.browse-recommendations td.social-button {width: 134px; height: 129px;}
+
+td.facebook {background-image:url('facebook-button.png'); background-repeat: no-repeat; background-position: center center;}
+td.twitter {background-image:url('twitter-button.png'); background-repeat: no-repeat; background-position: center center;}
+td.google {background-image:url('google-button.png'); background-repeat: no-repeat; background-position: center center;}
+td.tumblr {background-image:url('tumblr-button.png'); background-repeat: no-repeat; background-position: center center;}
+
+.share-message {position: absolute; bottom: 0; left: 0; right: 0; font-size: 20px; line-height: 20px;}
+
 /* === /Browse === */
 
 /* Button graphics */
 .play-button {background-image:url('play-icon.png');}
-.big-play-button {background-image:url('big-play-icon.png');}
+.big-play-button {background-image:url('play-icon.png');}
 .pause-button {background-image:url('pause-icon.png');}
 .stop-button {background-image:url('stop-icon.png');}
 .facebook-button {background-image:url('facebook-icon.png');}
@@ -381,47 +437,59 @@ table.browse-recommendations div {
 .size-tiny .tray-scrubber,
 .size-tiny .info-pane,
 .size-tiny .sharing-container,
-.size-tiny .player-browse #browse {
+.size-tiny .player-browse #browse,
+.size-tiny td.tumblr,
+.size-tiny td.google {
     display:none !important;
 }
 
 /* Hide some elements in slightly small players */
-.size-small .info-description,
+.size-small .info-pane,
 .size-small .subtitle-button,
 .size-small .info-button, 
 .size-small .browse-button-on,
 .size-small .browse-button-off,
-.size-small .sharing-container 
-.size-small .player-browse #browse {
+.size-small .sharing-container,
+.size-small .player-browse #browse,
+.size-small td.tumblr,
+.size-small td.google {
     display:none;
+}
+
+.size-medium td.tumblr, .size-medium td.google {
+    display: none;
 }
 
 /* All graphics in retina version */
 @media 
 (-webkit-min-device-pixel-ratio: 2), 
 (min-resolution: 192dpi) { 
-    .play-button {background-image:url('play-icon@2x.png'); background-size:30px;}
-    .big-play-button {background-image:url('big-play-icon@2x.png'); background-size:60px;}
-    .pause-button {background-image:url('pause-icon@2x.png'); background-size:30px;}
+    .play-button {background-image:url('play-icon@2x.png'); background-size:58px;}
+    .big-play-button {background-image:url('play-icon@2x.png'); background-size:58px;}
+    .pause-button {background-image:url('pause-icon@2x.png'); background-size:58px;}
     .stop-button {background-image:url('stop-icon@2x.png'); background-size:30px;}
-    .facebook-button {background-image:url('facebook-icon@2x.png'); background-size:30px;}
-    .twitter-button {background-image:url('twitter-icon@2x.png'); background-size:30px;}
+    .facebook-button {background-image:url('facebook-icon@2x.png'); background-size:21px;}
+    .twitter-button {background-image:url('twitter-icon@2x.png'); background-size:21px;}
     .google-button {background-image:url('google-icon@2x.png'); background-size:30px;}
     .site-button {background-image:url('site-icon@2x.png'); background-size:30px;}
     .browse-button-on {background-image:url('browse-on-icon@2x.png'); background-size:30px;}
     .browse-button-off {background-image:url('browse-off-icon@2x.png'); background-size:30px;}
-    .share-button {background-image:url('share-icon@2x.png'); background-size:30px;}
+    .share-button {background-image:url('share-icon@2x.png'); background-size:20px;}
     .info-button {background-image:url('info-icon@2x.png'); background-size:30px;}
-    .volume-button-on {background-image:url('volume-on-icon@2x.png'); background-size:30px;}
-    .volume-button-off {background-image:url('volume-off-icon@2x.png'); background-size:30px;}
-    .fullscreen-button {background-image:url('fullscreen-icon@2x.png'); background-size:30px;}
+    .volume-button-on {background-image:url('volume-on-icon@2x.png'); background-size:20px;}
+    .volume-button-off {background-image:url('volume-off-icon@2x.png'); background-size:23px;}
+    .fullscreen-button {background-image:url('fullscreen-icon@2x.png'); background-size:16px;}
     .mail-button {background-image:url('mail-icon@2x.png'); background-size:30px;}
-    .quality-button {background-image:url('quality-icon@2x.png'); background-size:30px;}
+    .quality-button {background-image:url('quality-icon@2x.png'); background-size:25px;}
     .subtitle-button {background-image:url('subtitle-icon@2x.png'); background-size:30px;}
 
     div.button ul li {background-image:url('not-selected-icon@2x.png'); background-size:30px;}
     div.button ul li.selected {background-image:url('selected-icon@2x.png'); background-size:30px;}
-    .share-embed-label {background-image:url('embed-icon@2x.png'); background-size:30px;}
-    .browse-left {background-image:url('prev-icon@2x.png'); background-size:30px;}
-    .browse-right {background-image:url('next-icon@2x.png'); background-size:30px;}
+    .browse-left {background-image:url('prev-icon@2x.png'); background-size:20px;}
+    .browse-right {background-image:url('next-icon@2x.png'); background-size:20px;}
+
+    td.facebook {background-image:url('facebook-button@2x.png'); background-size: 134px;}
+    td.twitter {background-image:url('twitter-button@2x.png'); background-size: 134px;}
+    td.google {background-image:url('google-button@2x.png'); background-size: 134px;}
+    td.tumblr {background-image:url('tumblr-button@2x.png'); background-size: 134px;}
 }
