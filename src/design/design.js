@@ -8,8 +8,8 @@ Player.provide('design',
     trayTimeout: 0,
     verticalPadding:0,
     horizontalPadding:0,
-    trayAlpha:0.8,
-    trayBackgroundColor:'#DCDCDC',
+    trayAlpha:0.85,
+    trayBackgroundColor:'#FFFFFF',
     trayTextColor:'#ffffff',
     trayFont:'Open Sans',
     trayTitleFontSize:28,
@@ -109,10 +109,10 @@ Player.provide('design',
 
           $this.rgbaSupport = /^rgba/.test($this.dummyElement.css('backgroundColor'));
           if($this.rgbaSupport) {
-              $('.scrubber-container, .sharing-container, div.button ul').css({backgroundColor:$this.trayBackgroundColorRGBA});
+              $('.tray-navigation, .scrubber-container, .sharing-container, div.button ul').css({backgroundColor:$this.trayBackgroundColorRGBA});
           } else {
               // (fall back to background color + opacity if RGBa is not supported
-              $('.scrubber-container, .sharing-container, div.button ul').css({backgroundColor:$this.trayBackgroundColor, opacity:$this.trayAlpha});
+              $('.tray-navigation, .scrubber-container, .sharing-container, div.button ul').css({backgroundColor:$this.trayBackgroundColor, opacity:$this.trayAlpha});
           }
           // Vertical and horisontal padding
           $('video-display').css({bottom:$this.verticalPadding+'px', left:$this.horizontalPadding+'px'})

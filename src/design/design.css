@@ -73,10 +73,8 @@ div.button { /* standard button design */
     position:relative;
     height:34px;
     width:34px;
-    /*background-color:black;  /*updated in js via player settings */
     background-position:center center;
     background-repeat:no-repeat;
-    opacity:.8;
     cursor:pointer;
     font-size:0;
 }
@@ -155,17 +153,19 @@ a.button { /* standard button design as a straight link */
     width:100%;
 }
 .tray-navigation {
-    position:relative;;
-    background-color: rgba(220,220,220, 0.8)
+    position:relative;
+    background-color: rgb(255, 255, 255); /* updated in js */
+    background-color: rgba(255,255,255, 0.85); /* Updated in js */
 }
 .tray-left .tray-button { /* buttons left of scrubber */
     float:left;
     margin-right:3px;
+    width: 40px;
 }
 .tray-right .tray-button { /* buttons right of scrubber */
     float:right;
     padding: 0 2px;
-    border-left: 1px solid rgb(240,240,240);
+    border-left: 1px solid #e6e6e6;
 }
 .tray-scrubber {  /* scrubber position */
     clear:both;
@@ -327,8 +327,7 @@ a.button { /* standard button design as a straight link */
 }
 .share-buttons button {
     background-color: transparent;
-    border-bottom: 1px solid rgb(240,240,240);
-    opacity: 0.8;
+    border-bottom: 1px solid #e6e6e6;
     box-sizing: content-box;
 }
 
@@ -347,7 +346,7 @@ a.button { /* standard button design as a straight link */
     width: 240px;
     padding:30px 0px;
     background:rgb(120,120,120); /*fallback for browser with no RGBa support */
-    background:rgba(120,120,120,.8); /*updated in js via player settings */
+    background:rgba(120,120,120,.6);
 }
 /* Place left and right browsing with a carousel in the middle */
 .browse-container, .browse-left, .browse-right {
@@ -360,7 +359,6 @@ a.button { /* standard button design as a straight link */
     cursor:pointer;
     background-position:center center;
     background-repeat:no-repeat;
-    opacity:.8;
 }
 .browse-left {
     top:0;
