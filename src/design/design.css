@@ -229,7 +229,7 @@ a.button { /* standard button design as a straight link */
 }
 .scrubber-thumbnail {
     position:absolute;
-    bottom:61px;
+    bottom:52px;
     border:1px solid #999;
     background-color:#999;
     display:none;
@@ -339,7 +339,7 @@ a.button { /* standard button design as a straight link */
 /* Place the browse pane within the player */
 .player-browse #browse {
     position:relative;
-    padding:10px 2px;
+    padding:10px 2px 5px;
     background:rgb(0,0,0); /*fallback for browser with no RGBa support */
     background:rgba(0,0,0,.8); /*updated in js via player settings */
     margin: 3px 5px 0 5px;
