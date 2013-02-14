@@ -13,7 +13,7 @@ Player.provide('design',
     trayTextColor:'#ffffff',
     trayFont:'Open Sans',
     trayTitleFontSize:28,
-    trayTitleFontWeight:'bold',
+    trayTitleFontWeight:'normal',
     trayContentFontSize:12,
     trayContentFontWeight:'normal',
     scrubberColor:'#89D5CE',
@@ -99,13 +99,12 @@ Player.provide('design',
       $this.dummyElement = $(document.createElement('div')).css({backgroundColor:'rgba(0,0,0,.666)'});
       $this.applyDesignPreferences = function(){
           // Tray title font, size, weight
-          //$('h1').css({fontFamily:$this.trayFont, fontSize:$this.trayTitleFontSize+'px', fontWeight:$this.trayTitleFontWeight});
+          $('h1').css({fontFamily:$this.trayFont, fontSize:$this.trayTitleFontSize+'px', fontWeight:$this.trayTitleFontWeight});
           // Tray content font, size, weight
-          //$('p').css({fontFamily:$this.trayFont, fontSize:$this.trayContentFontSize+'px', fontWeight:$this.trayContentFontWeight});
+          $('p').css({fontFamily:$this.trayFont, fontSize:$this.trayContentFontSize+'px', fontWeight:$this.trayContentFontWeight});
           // Text color
           $('body').css({color:$this.trayTextColor});
           // Background color and opacity
-          //$('div.button, a.button').css({backgroundColor:$this.trayBackgroundColor, opacity:$this.trayAlpha});
           $('.scrubber-play').css({backgroundColor:$this.scrubberColor});
 
           $this.rgbaSupport = /^rgba/.test($this.dummyElement.css('backgroundColor'));
@@ -122,10 +121,6 @@ Player.provide('design',
 
       // RESIZE HANDLING
       var _resize = function(){
-          var l = $('.tray-left div.tray-button:visible').length * 33;
-          var r = $('.tray-right div.tray-button:visible').length * 33;
-
-          if(l>0) $('.tray-scrubber').css({marginLeft:l+'px', marginRight:r+'px'});
 
           // This is a pretty fancy fix for an IE7 bug:
           // Empty elements are given layout, causing all kinds of buttons the .tray-right

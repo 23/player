@@ -84,7 +84,7 @@ div.highlight-button {
     opacity:1 !important;
     background-color: rgba(120,120,120,0.6);
 }
-div.button:hover {
+div.button:hover, div.activebutton {
     opacity:1;
 }
 div.button.big { /* big version of same button */
