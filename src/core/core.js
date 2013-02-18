@@ -294,7 +294,7 @@ Player.provide('core',
           var b = $('body')
           var w = $(window).width();
           if(w<300) $this.playerSize = 'tiny';
-          else if(w<450) $this.playerSize = 'small';
+          else if(w<440) $this.playerSize = 'small';
           else if(w<700) $this.playerSize = 'medium';
           else if(w<900) $this.playerSize = 'large';
           else $this.playerSize = 'full';
