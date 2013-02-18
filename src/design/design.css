@@ -479,7 +479,7 @@ table.browse-recommendations div {
 
 /* CSS Animations and Transitions */
 @-moz-keyframes menuSlideIn {
-    from {opacity:0; margin-bottom:0;}
+    from {opacity:0; margin-bottom:-15px;}
     to {opacity:1;}
 }
 @-webkit-keyframes menuSlideIn {
