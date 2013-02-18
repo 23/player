@@ -19,6 +19,8 @@ Player.provide('big-play-button',
   function(Player,$,opts){
     var $this = this;
     $.extend($this, opts);
+    $this.showAnimation = [{opacity:'show'}, 300];
+    $this.hideAnimation = [{opacity:'hide'}, 150];
     $this.render();
 
     // Get relevant settings
