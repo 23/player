@@ -22,6 +22,8 @@ Player.provide('info',
   function(Player,$,opts){
       var $this = this;
       $.extend($this, opts);
+      $this.showAnimation = [{opacity:'show'}, 600];
+      $this.hideAnimation = [{opacity:'hide'}, 400];
       
       // Listen to find if we show show info
       Player.bind('player:settings', function(e,settings){
