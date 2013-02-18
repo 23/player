@@ -37,6 +37,7 @@ Player.provide('sharing',
   function(Player,$,opts){
       var $this = this;
       $.extend($this, opts);
+      $this.showAnimation = [{opacity:'show'}, 400];
 
       // Helper function
       var absolutize = function(u){
