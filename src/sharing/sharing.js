@@ -38,6 +38,9 @@ Player.provide('sharing',
       var $this = this;
       $.extend($this, opts);
 
+      $this.showAnimation = [{opacity:'show', height:'show'}, 300];
+      $this.hideAnimation = [{opacity:'hide', height:'hide'}, 200];
+
       // Helper function
       var absolutize = function(u){
         if(!/\/\//.test(u)) u = Player.get('url')+u;

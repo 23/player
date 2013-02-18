@@ -91,11 +91,16 @@ div.button ul { /* button menus */
 div.activebutton {
     filter: alpha(enabled=false) !important; /* IE alpha overflow hidden bug, http://labs.thesedays.com/blog/2011/06/02/ie-alpha-overflow-hidden-bug/ */
 }
+
 div.activebutton ul { /* active button menus */
     display:block;
     font-size:11px;
     line-height:22px;
     opacity:1;
+
+    -webkit-animation: menuSlideIn 400ms;
+    -moz-animation: menuSlideIn 400ms;
+    animation: menuSlideIn 400ms;
 }
 div.button ul li { /* menu items */
     white-space:nowrap;
@@ -503,4 +508,19 @@ table.browse-recommendations div {
     .share-embed-label {background-image:url('embed-icon@2x.png'); background-size:30px;}
     .browse-left {background-image:url('prev-icon@2x.png'); background-size:30px;}
     .browse-right {background-image:url('next-icon@2x.png'); background-size:30px;}
+}
+
+
+/* CSS Animations and Transitions */
+@-moz-keyframes menuSlideIn {
+    from {opacity:0; margin-bottom:-15px;}
+    to {opacity:1;}
+}
+@-webkit-keyframes menuSlideIn {
+    from {opacity:0; margin-bottom:-15px;}
+    to {opacity:1;}
+}
+@keyframes menuSlideIn {
+    from {opacity:0;margin-bottom:-15px;}
+    to {opacity:1;}
 }
