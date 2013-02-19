@@ -94,7 +94,7 @@ Player.provide('design',
                   }
 
                   $this.trayTimeoutId = window.setTimeout(function(){
-                      if(!Player.get('showSharing')&&!Player.get('browseMode')&&!Player.get('showSharing')) {
+                      if(!Player.get('showSharing')&&!Player.get('browseMode')) {
                         $('.tray-navigation').animate({opacity:0}, 300, function(){
                             $('#tray').addClass('minimized');
                             $('.tray-navigation').css({opacity:1});
