@@ -13,6 +13,7 @@ Player.provide('volume-button',
     $.extend($this, opts);
     $this.videoVolume = null;
     $this.render(function(){
+        updateVolumeIcon();
         $this.volumeHandle = $this.container.find('.volume-handle');
 
         /* Make volume-handle draggable */
@@ -48,25 +49,45 @@ Player.provide('volume-button',
               // Clicks on the handle shouldn't bubble to clicks on the scrubber
               e.stopPropagation(); 
           });
+          $('.volume-filled, .volume-track').click(function(e){
+            console.debug(e);
+          });
         }
     });
+
+    var updateVolumeIcon = function(){
+      $this.container.find('.volume-button')
+        .removeClass('volume-button-on volume-button-off')
+        .addClass(Player.get('volumeMuted') ? 'volume-button-on' : 'volume-button-off');
+    }
+
+    var volumeFromClientY = function(clientY) {
+      if(clientY.clientY) clientY = clientY.clientY;
+      var vol = ((clientY-$this.volumeTrack.offset().top-$this.volumeTrack.height())*-1) / $this.volumeTrack.height();
+      Player.set('volume', vol);
+    }
 
     var updateVolume = function() {
       var volume = Player.get('volume');
       $this.volumeHandle = $this.container.find('.volume-handle');
       $this.volumeFilled = $this.container.find('.volume-filled');
       $this.volumeTrack = $this.container.find('.volume-track');
+      $this.volumeFilled.click(volumeFromClientY);
+      $this.volumeTrack.click(volumeFromClientY);
 
       var volumeFilledHeight = (parseInt($this.volumeTrack.parent().css('height')) - 22) * volume;
       //var volumeFilledHeight = $this.volumeTrack.height() * volume;
       $this.volumeFilled.css({height: volumeFilledHeight});
       $this.volumeHandle.css({bottom: Math.max(volumeFilledHeight+4, 4)});
+
     }
 
     Player.bind('player:video:volumechange player:load', function(e){
+        updateVolumeIcon();
         if($this.videoVolume==null) {
           updateVolume();
         }
+
       });
 
     Player.bind('player:volume-engaged', function(e){updateVolume();});

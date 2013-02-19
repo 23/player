@@ -36,6 +36,8 @@ Player.provide('design',
       Player.bind('glue:render', function(e, container){
           $(container).find('div.button:has(ul)').each(function(i,div){
               $(div).click(function(e){
+                  if(e&&e.target&& ($(e.target).hasClass('volume-track') || $(e.target).hasClass('volume-filled'))) return;
+
                   if($(div).hasClass('activebutton')) {
                       $(div).removeClass('activebutton')
                   } else {
@@ -50,12 +52,12 @@ Player.provide('design',
       });
       // Destroy menus when applicable
       $('body').click(function(e){
+          if(e&&e.target&& ($(e.target).hasClass('volume-track') || $(e.target).hasClass('volume-filled'))) return;
           $('.activebutton').each(function(i,el){
               el = $(el);
               if(!el.is(e.target)) el.removeClass('activebutton');
           });
       });
-
 
       // SHOW TRAY AND TIME IT OUT
       // Handle settings
