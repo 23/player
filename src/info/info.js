@@ -17,7 +17,7 @@
 Player.provide('info', 
   {
     showDescriptions: true,
-    infoTimeout: 10000
+    infoTimeout: 5000
   },
   function(Player,$,opts){
       var $this = this;
@@ -30,27 +30,14 @@ Player.provide('info',
           PlayerUtilities.mergeSettings($this, ['showDescriptions', 'infoTimeout']);
         });
 
-      $this.infoTimeoutId = null;
-      $(document).mousemove(function(){
-          Player.set('showDescriptions', true);
-          if($this.infoTimeout>0) {
-              if($this.infoTimeoutId) window.clearTimeout($this.infoTimeoutId);
-              $this.infoTimeoutId = setTimeout(function(){Player.set('showDescriptions', false);}, $this.infoTimeout);
-          }
-          Player.fire('player:infoengaged');
-      });
-
       // Bind to events
       Player.bind('player:infoengaged', function(e,video){
           $this.render();
       });
-      Player.bind('player:video:play', function(e,video){
-          //Player.set('showDescriptions', false);
+      Player.bind('player:video:play player:video:playing', function(e,video){
+          Player.set('showDescriptions', true);
       });
       Player.bind('player:settings player:video:loaded', function(e,video){
-          if($this.infoTimeout>0) {
-            $this.infoTimeoutId = setTimeout(function(){Player.set('showDescriptions', false);}, $this.infoTimeout);
-          }
           Player.fire('player:infoengaged');
         });
 
@@ -63,8 +50,17 @@ Player.provide('info',
         });
      
       /* SETTERS */
+      $this.infoTimeoutId = null;
       Player.setter('showDescriptions', function(sd){
           $this.showDescriptions = sd;
+
+          if(sd && $this.infoTimeout>0){
+            if($this.infoTimeoutId) window.clearTimeout($this.infoTimeoutId);
+            $this.infoTimeoutId = window.setTimeout(function(){
+              Player.set('showDescriptions', false);
+            }, $this.infoTimeout);
+          }
+
           Player.fire('player:infoengaged');
         });
 
