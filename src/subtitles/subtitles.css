@@ -11,6 +11,7 @@
     padding:3px 5px;
     margin:0 auto;
     text-shadow: -1px -1px 0 #333, 1px -1px 0 #333, -1px 1px 0 #333, 1px 1px 0 #333;  
+    color:white;
 }
 .design-bars .subtitles-container span {
     background-color:black;
