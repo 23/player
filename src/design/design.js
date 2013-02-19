@@ -39,11 +39,11 @@ Player.provide('design',
                   if(e&&e.target&& ($(e.target).hasClass('volume-track') || $(e.target).hasClass('volume-filled'))) return;
 
                   if($(div).hasClass('activebutton')) {
-                      $(div).removeClass('activebutton')
+                      $(div).removeClass('activebutton');
                   } else {
-                      $('.activebutton').each(function(i,el){
-                          $(el).removeClass('activebutton');
-                      });
+                      $('.activebutton').removeClass('activebutton');
+                      Player.set('browseMode', false);
+                      Player.set('showSharing', false);
                       $(div).addClass('activebutton');
                       e.stopPropagation();
                   }
