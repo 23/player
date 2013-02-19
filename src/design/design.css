@@ -180,7 +180,7 @@ a.button { /* standard button design as a straight link */
 /* === Module: Scrubber === */
 
 .scrubber-container {
-    position:relative;
+    /*position:relative;*/
     height:30px;
     filter: alpha(enabled=false) !important; /* IE alpha overflow hidden bug, http://labs.thesedays.com/blog/2011/06/02/ie-alpha-overflow-hidden-bug/ */
 }
