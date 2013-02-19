@@ -42,6 +42,9 @@ Player.provide('scrubber',
               $this.scrubberContainer.removeClass('hover').removeClass('scrubber-container-hover');
           });
 
+          // Update the scrubber contents
+          $this.updateScrubber();
+
           // Handle clicks on the time line
           $this.scrubber.click(function(e){
               var duration = Player.get('duration');
