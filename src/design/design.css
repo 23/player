@@ -80,6 +80,7 @@ div.button { /* standard button design */
 }
 div.highlight-button {
     opacity:1 !important;
+    background-color: rgb(120,120,120);
     background-color: rgba(120,120,120,0.6);
 }
 div.button:hover, div.activebutton {
@@ -98,7 +99,6 @@ div.button ul { /* button menus */
     background-color: rgb(200,200,200);
     background-color: rgba(200,200,200,0.6);
     line-height:25px;
-    padding:2px 10px;
     text-align:left;
 }
 div.activebutton {
@@ -119,11 +119,18 @@ div.activebutton ul { /* active button menus */
 }
 div.button ul li { /* menu items */
     white-space:nowrap;
-    background:url('not-selected-icon.png') -10px -5px no-repeat;
-    padding-left:14px;
+    background:url('not-selected-icon.png') -2px -3px no-repeat;
+    padding:1px 10px 1px 24px;
     color: black;
+    background-color: rgb(120,120,120);
+    background-color: rgba(120,120,120,0.6);
 }
-div.button ul li.hover { /* menu item hover */
+div.button ul li:first-child {
+    padding-top:6px;
+    background-position:-2px 3px;
+}
+div.button ul li:last-child {
+    padding-bottom:6px;
 }
 div.button ul li.selected { /* menu item selected */
     background-image:url('selected-icon.png');
@@ -343,12 +350,19 @@ a.button { /* standard button design as a straight link */
 
 /* === Module: Browse === */
 /* Place the browse pane within the player */
-.player-browse #browse {
+.player-browse #browse, .player-browse #browsesub {
     position:absolute;
     top: 0;
     right: 0;
-    bottom: 44px;
     width: 240px;
+}
+.player-browse #browse {
+    background-color: rgb(200,200,200);
+    background-color: rgba(200,200,200,0.6);
+    bottom: 44px;
+}
+.player-browse #browsesub {
+    bottom: 0;
     padding:30px 0px;
     background:rgb(120,120,120); /*fallback for browser with no RGBa support */
     background:rgba(120,120,120,.6);
