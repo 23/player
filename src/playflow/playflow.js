@@ -157,7 +157,7 @@ Player.provide('playflow',
       // Restore the eingebaut object from `video-display` back to it original state.
       $this.restoreEingebaut = function(){
         $this.eingebaut.callback = $this.originalEingebaut.callback;        
-        $this.eingebaut.container.parent().css({zIndex:''});
+        $this.eingebaut.container.parent().css({zIndex:0});
         Player.fire('player:video:pause');
         if($this.originalEingebaut.source) $this.eingebaut.setSource($this.originalEingebaut.source);
       }
