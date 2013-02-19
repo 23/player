@@ -110,6 +110,7 @@ Player.provide('sharing',
           if(!Player.get('socialSharing')) return;
           $this.showSharing = ss;
           if(ss) {
+              $('.activebutton').removeClass('activebutton');
               Player.set('browseMode', false);
           }
           if(ss) Player.fire('player:sharing:shareengaged', {});
