@@ -34,8 +34,8 @@ Player.provide('browse',
       var $this = this;
       $.extend($this, opts);
 
-      $this.showAnimation = [{opacity:'show', height:'show'}, 300];
-      $this.hideAnimation = [{opacity:'hide', height:'hide'}, 200];
+      $this.showAnimation = [{opacity:'show'}, 300];
+      $this.hideAnimation = [{opacity:'hide'}, 200];
 
       // Render the browse interface and enable a simple carousel
       $this.build = function(){
