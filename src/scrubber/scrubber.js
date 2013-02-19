@@ -28,6 +28,7 @@ Player.provide('scrubber',
           $this.scrubberContainer = $($this.container).find('.scrubber-container');
           $this.bufferContainer = $($this.container).find('.scrubber-buffer');
           $this.playContainer = $($this.container).find('.scrubber-play');
+          $this.trackContainer = $($this.container).find('.scrubber-track');
           $this.handleContainer = $($this.container).find('.scrubber-handle');
           $this.timeContainer = $($this.container).find('.scrubber-time');
           $this.thumbnailContainer = $($this.container).find('.scrubber-thumbnail');
@@ -47,8 +48,8 @@ Player.provide('scrubber',
               if(isNaN(duration)||duration<=0) {
                   Player.set('playing', true);
               } else {
-                  var offsetX = e.pageX - $(e.target).offsetParent().offset().left;
-                  Player.set('currentTime', offsetX / $this.scrubber.width() * duration);
+                  var offsetX = e.pageX - $this.trackContainer.offsetParent().offset().left;
+                  Player.set('currentTime', offsetX / $this.trackContainer.width() * duration);
                   Player.set('playing', true);
               }
           });
