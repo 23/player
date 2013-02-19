@@ -46,7 +46,7 @@ button {
 /* === buttons === */
 div.button { /* standard button design */
     position:relative;
-    height:39px;
+    height:35px;
     width:36px;
     /*background-color:black;  /*updated in js via player settings */
     background-position:center center;
@@ -56,7 +56,7 @@ div.button { /* standard button design */
     font-size:0;
 }
 .tray-left .button {
-    height: 39px;
+    height: 35px;
     width: 40px;
 }
 .tray-left .button {
@@ -70,18 +70,27 @@ div.highlight-button {
 }
 div.button:hover, div.activebutton, div.highlight-button {
     opacity:1;
-    background-color: #272727;
+    background-color: #1E1E1E;
+    -webkit-box-shadow: inset 0 0 1px black;
+    -moz-box-shadow: inset 0 0 1px black;
+    box-shadow: inset 0 0 1px black;
+
+    -o-transition:.2s;
+    -ms-transition:.2s;
+    -moz-transition:.2s;
+    -webkit-transition:.2s;
+    transition:.2s;
 }
 div.button.big { /* big version of same button */
-    height:60px;
-    width:60px;
-    border-radius:3px;
+    height:50px;
+    width:50px;
+    border-radius:1px;
 }
 div.button ul { /* button menus */
     display:none;
     opacity:0;
     position:absolute;
-    bottom:39px; 
+    bottom:35px; 
     right:0;
     background-color: #272727;
     line-height:25px;
@@ -97,6 +106,7 @@ div.activebutton ul { /* active button menus */
     font-size:11px;
     line-height:22px;
     opacity:1;
+    background-color:#222;
 
     -webkit-animation: menuSlideIn 400ms;
     -moz-animation: menuSlideIn 400ms;
@@ -146,8 +156,11 @@ a.button { /* standard button design as a straight link */
     position:relative;
     margin:0;
     background: url(tray-bg.png) repeat-x;
-    height: 39px;
-    box-shadow: 0px 2px 4px #000;
+    height: 35px;
+
+    -webkit-box-shadow: 0px 4px 6px black;
+    -moz-box-shadow: 0px 4px 6px black;
+    box-shadow: 0px 4px 6px black;
 }
 .tray-left .tray-button { /* buttons left of scrubber */
     float:left;
@@ -180,6 +193,7 @@ div.volume-button ul li {
     padding: 0;
     margin: 0;
     background-image: none !important;
+    background-color:#222;
     position: relative;
 }
 div.volume-button .volume-track, div.volume-button .volume-filled {
@@ -213,9 +227,7 @@ div.volume-button .volume-handle {
 /* === Module: Scrubber === */
 .scrubber-container {
     position:relative;
-    height:36px;
-    /*background:rgb(0,0,0); /*fallback for browser with no RGBa support */
-    /*background:rgba(0,0,0,.8); /*updated in js via player settings */
+    height:32px;
     border-radius:2px;
     filter: alpha(enabled=false) !important; /* IE alpha overflow hidden bug, http://labs.thesedays.com/blog/2011/06/02/ie-alpha-overflow-hidden-bug/ */
 }
@@ -224,12 +236,12 @@ div.volume-button .volume-handle {
     top:0px;
     left:10px;
     right:50px;
-    height:36px;
+    height:32px;
     cursor:pointer;
 }
 .scrubber-track, .scrubber-buffer, .scrubber-play {
     position:absolute; 
-    top:16px;
+    top:14px;
     left:0;
     height:7px;
     width:0;
@@ -237,19 +249,24 @@ div.volume-button .volume-handle {
 }
 .scrubber-track {
     width:100%;
-    background-color:#272727;
+    background-color:black;
+    background-color:rgba(15,15,15,.95);
+
+    -webkit-box-shadow: inset 0 0 4px black;
+    -moz-box-shadow: inset 0 0 4px black;
+    box-shadow: inset 0 0 4px black;
 }
 .scrubber-buffer {
-    background-color:#666;
+    background-color:#111;
 }
 .scrubber-play {
-    background-color:#eee; /*updated in js via player settings */
+    background-color:rgb(230,230,230); /*updated in js via player settings */
 }
 .scrubber-handle {
     display:none;
     cursor:pointer;
     position:absolute;
-    top:9px;
+    top:7px;
     background-color:#eee;
     border-radius:1px;
     font-size:9px;
@@ -263,14 +280,13 @@ div.volume-button .volume-handle {
 }
 .scrubber-time {
     position:absolute; 
-    top: 13px;
+    top: 11px;
     right: 10px;
 }
 .scrubber-thumbnail {
     position:absolute;
-    bottom:37px;
-    border-radius:2px;
-    border:2px solid white;
+    bottom:40px;
+    border:1px solid #999;
     display:none;
 }
 .scrubber-thumbnail-sub {
@@ -291,12 +307,15 @@ div.volume-button .volume-handle {
 .section {
     position:absolute; 
     top:0;
-    width:6px;
-    height:13px; 
-    margin:0px 0 0 -4px;
-    border:1px solid black;
+    width:5px;
+    height:11px; 
+    margin:0 0 0 -2px;
     background-color:#ccc;
     cursor:pointer;
+    box-shadow: 0px 0 6px black;
+}
+.section:hover {
+    background-color:white;
 }
 .section-title {
     display:none;

@@ -8,15 +8,15 @@ Player.provide('design',
     trayTimeout: 0,
     verticalPadding:0,
     horizontalPadding:0,
-    trayAlpha:0.9,
-    trayBackgroundColor:'#333333',
-    trayTextColor:'#DDDDDD',
+    trayAlpha:0.75,
+    trayBackgroundColor:'#000000',
+    trayTextColor:'#ffffff',
     trayFont:'Helvetica',
-    trayTitleFontSize:20,
+    trayTitleFontSize:16,
     trayTitleFontWeight:'normal',
-    trayContentFontSize:15,
+    trayContentFontSize:12,
     trayContentFontWeight:'normal',
-    scrubberColor:'#eeeeee'
+    scrubberColor:'#E6E6E6'
   },
   function(Player,$,opts){
       // This is required to add the template to the page
