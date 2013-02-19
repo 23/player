@@ -262,6 +262,12 @@ Player.provide('video-display',
       }
       Player.bind('player:video:loaded', $this.loadContent);
 
+
+      // After playback has started once, don't use the `start` parameter any longer
+      Player.bind('player:video:playing', function(){
+          Player.set('start', 0);
+      });
+
  
       /* SETTERS */
       Player.setter('quality', function(quality){
@@ -294,6 +300,9 @@ Player.provide('video-display',
       });
       Player.setter('volume', function(volume){          
           if($this.video) $this.video.setVolume(volume);
+      });
+      Player.setter('start', function(s){          
+          $this.start = s;
       });
 
       /* GETTERS */
