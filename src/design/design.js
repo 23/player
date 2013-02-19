@@ -88,7 +88,7 @@ Player.provide('design',
                   if($('#tray').hasClass('minimized')) {
                       $('.tray-navigation').css({opacity:0});
                       $('#tray').removeClass('minimized');
-                      $('.tray-navigation').animate({opacity:1}, 200);
+                      $('.tray-navigation').animate({opacity:1}, 300);
                   }
 
                   $this.trayTimeoutId = window.setTimeout(function(){
