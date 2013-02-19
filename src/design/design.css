@@ -80,7 +80,7 @@ div.button { /* standard button design */
 }
 div.highlight-button {
     opacity:1 !important;
-    background-color: rgb(120,120,120);
+    background-color: #ccc;
     background-color: rgba(120,120,120,0.3);
 }
 div.button:hover, div.activebutton {
@@ -104,7 +104,7 @@ div.button ul { /* button menus */
 }
 div.activebutton {
     filter: alpha(enabled=false) !important; /* IE alpha overflow hidden bug, http://labs.thesedays.com/blog/2011/06/02/ie-alpha-overflow-hidden-bug/ */
-    background-color: rgb(120,120,120);
+    background-color: #ccc;
     background-color: rgba(120,120,120,0.3);
 }
 
@@ -122,7 +122,7 @@ div.button ul li { /* menu items */
     white-space:nowrap;
     background:url('not-selected-icon.png') -2px -3px no-repeat;
     padding:1px 10px 1px 24px;
-    background-color: rgb(120,120,120);
+    background-color: #ccc;
     background-color: rgba(120,120,120,0.3);
 }
 div.button ul li:first-child {
@@ -372,7 +372,7 @@ a.button { /* standard button design as a straight link */
 .player-browse #browsesub {
     bottom: 0;
     padding:30px 0px;
-    background:rgb(120,120,120); /*fallback for browser with no RGBa support */
+    background:#ccc; /*fallback for browser with no RGBa support */
     background:rgba(120,120,120,0.3);
 }
 /* Place left and right browsing with a carousel in the middle */
