@@ -140,7 +140,7 @@ Player.provide('video-display',
                 matched = true;
               }
               
-              if (matched) event.preventDefault();
+              if (matched) e.preventDefault();
             }
           });
         $(document).keydown(function(e){
@@ -168,7 +168,7 @@ Player.provide('video-display',
                 matched = true;
               }
               
-              if(matched) event.preventDefault();
+              if(matched) e.preventDefault();
             }
           });
       }
