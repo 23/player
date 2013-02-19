@@ -82,7 +82,7 @@ Player.provide('video-display',
       // Logic to load the display device with Eingebaut
       $this.loadEingebaut = function(){
           $this.canvas.html('');
-          $this.video = new Eingebaut($this.canvas, $this.displayDevice, '', function(e){
+          $this.video = new Eingebaut($this.canvas, $this.displayDevice, '/resources/um/player/eingebaut/1.0/Eingebaut.swf', function(e){
               // Error if no display device is available
               if(e=='loaded'&&$this.video.displayDevice=='none') {
                   Player.set('error', 'This player requires a modern web browser or a recent version of Adobe Flash.');
