@@ -28,6 +28,7 @@ Player.provide('info',
       // Listen to find if we show show info
       Player.bind('player:settings', function(e,settings){
           PlayerUtilities.mergeSettings($this, ['showDescriptions', 'infoTimeout']);
+          Player.set('showDescriptions', $this.showDescriptions);
         });
 
       // Bind to events
