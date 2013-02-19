@@ -163,6 +163,7 @@ Player.provide('browse',
         });
       Player.setter('browseMode', function(bm){
           if(bm) {
+              $('.activebutton').removeClass('activebutton');
               Player.set('showSharing', false);
           }
           $this.browseMode = bm;

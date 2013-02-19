@@ -51,6 +51,7 @@ Player.provide('info',
       /* SETTERS */
       Player.setter('showDescriptions', function(sd){
           if(sd) {
+              $('.activebutton').removeClass('activebutton');
               Player.set('browseMode', false);
               Player.set('showSharing', false);
           }
