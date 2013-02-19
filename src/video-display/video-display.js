@@ -80,6 +80,7 @@ Player.provide('video-display',
       $this.rawSource = "";
 
       // Logic to load the display device with Eingebaut
+      $this._queuePlay = false;
       $this.loadEingebaut = function(){
           $this.canvas.html('');
           $this.video = new Eingebaut($this.canvas, $this.displayDevice, '', function(e){
@@ -91,6 +92,10 @@ Player.provide('video-display',
               if(e=='loaded') {
                 var _v = Player.get('video');
                 if(_v) Player.fire('player:video:loaded', _v);
+              }
+              if((e=='canplay'||e=='loaded')&&$this._queuePlay) {
+                $this.video.setPlaying(true);
+                $this._queuePlay = false;
               }
               // Don't send event during switching, it only confuses the UI
               if($this.video.switching && (e=='playing'||e=='pause')) return;
@@ -295,9 +300,13 @@ Player.provide('video-display',
       });
 
       Player.setter('playing', function(playing){
-          if($this.video) {
-              if(playing && !Player.fire('player:video:beforeplay')) return false;
-              $this.video.setPlaying(playing);
+          try {
+              if($this.video) {
+                  if(playing && !Player.fire('player:video:beforeplay')) return false;
+                  $this.video.setPlaying(playing);
+              }
+          }catch(e){
+              $this._queuePlay = true;
           }
       });
       Player.setter('paused', function(paused){
