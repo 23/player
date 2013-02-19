@@ -33,7 +33,7 @@ a img {border:0;}
 body {
     margin:0; 
     background-color:black; 
-    color:white;  /*updated in js via player settings */
+    color:#333;  /*updated in js via player settings */
     font:11px/14px 'Open Sans', sans-serif;  /*updated in js via player settings */
     overflow:hidden;
 }
@@ -81,7 +81,7 @@ div.button { /* standard button design */
 div.highlight-button {
     opacity:1 !important;
     background-color: rgb(120,120,120);
-    background-color: rgba(120,120,120,0.6);
+    background-color: rgba(120,120,120,0.3);
 }
 div.button:hover, div.activebutton {
     opacity:1;
@@ -105,7 +105,7 @@ div.button ul { /* button menus */
 div.activebutton {
     filter: alpha(enabled=false) !important; /* IE alpha overflow hidden bug, http://labs.thesedays.com/blog/2011/06/02/ie-alpha-overflow-hidden-bug/ */
     background-color: rgb(120,120,120);
-    background-color: rgba(120,120,120,0.6);
+    background-color: rgba(120,120,120,0.3);
 }
 
 div.activebutton ul { /* active button menus */
@@ -122,9 +122,8 @@ div.button ul li { /* menu items */
     white-space:nowrap;
     background:url('not-selected-icon.png') -2px -3px no-repeat;
     padding:1px 10px 1px 24px;
-    color: black;
     background-color: rgb(120,120,120);
-    background-color: rgba(120,120,120,0.6);
+    background-color: rgba(120,120,120,0.3);
 }
 div.button ul li:first-child {
     padding-top:6px;
@@ -294,6 +293,7 @@ a.button { /* standard button design as a straight link */
     position: absolute;
     top: 10px;
     left: 10px;
+    color:white;
 }
 
 .info-pane {
@@ -373,7 +373,7 @@ a.button { /* standard button design as a straight link */
     bottom: 0;
     padding:30px 0px;
     background:rgb(120,120,120); /*fallback for browser with no RGBa support */
-    background:rgba(120,120,120,.6);
+    background:rgba(120,120,120,0.3);
 }
 /* Place left and right browsing with a carousel in the middle */
 .browse-container, .browse-left, .browse-right {

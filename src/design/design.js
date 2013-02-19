@@ -10,7 +10,7 @@ Player.provide('design',
     horizontalPadding:0,
     trayAlpha:0.85,
     trayBackgroundColor:'#FFFFFF',
-    trayTextColor:'#ffffff',
+    trayTextColor:'#333',
     trayFont:'Open Sans',
     trayTitleFontSize:28,
     trayTitleFontWeight:'normal',
@@ -40,6 +40,8 @@ Player.provide('design',
                   if($(div).hasClass('activebutton')) {
                       $(div).removeClass('activebutton')
                   } else {
+                      Player.set('browseMode', false);
+                      Player.set('showSharing', false);
                       $('.activebutton').each(function(i,el){
                           $(el).removeClass('activebutton');
                       });
@@ -88,7 +90,7 @@ Player.provide('design',
                   if($('#tray').hasClass('minimized')) {
                       $('.tray-navigation').css({opacity:0});
                       $('#tray').removeClass('minimized');
-                      $('.tray-navigation').animate({opacity:1}, 300);
+                      $('.tray-navigation').animate({opacity:1}, 800);
                   }
 
                   $this.trayTimeoutId = window.setTimeout(function(){
