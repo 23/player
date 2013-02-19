@@ -15,7 +15,8 @@
     cursor:pointer;
 }
 .player-playflow .playflow-content table {
-    background-color:black;
+    background-color:white;
+    background-color:rgba(255,255,255,.95);
 }
 .player-playflow .playflow-after-text, 
 .player-playflow .playflow-after-text table, 
@@ -35,13 +36,13 @@
 
 /* Base styling for after text */
 .player-playflow, .player-playflow a {
-    color:white;
+    color:#333;
 }
 
 /* Countdown */
 .playflow-countdown {
-    background:black;
-    background:rgba(0,0,0,.6);
+    background-color:white;
+    background-color:rgba(255,255,255,.8);
     padding-left:10px;
     color:white;
     font-size:12px;
