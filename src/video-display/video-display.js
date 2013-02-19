@@ -301,8 +301,8 @@ Player.provide('video-display',
 
       Player.setter('playing', function(playing){
           try {
-              if($this.video) {
-                  if(playing && !Player.fire('player:video:beforeplay')) return false;
+              if($this.video) {                
+                  if(playing && !Player.get('playing') && !Player.fire('player:video:beforeplay')) return false;
                   $this.video.setPlaying(playing);
               }
           }catch(e){
