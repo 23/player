@@ -468,7 +468,7 @@ table.browse-recommendations div {
 (min-resolution: 192dpi) { 
     .play-button {background-image:url('big-play-icon@2x.png'); background-size:60px;}
     .big-play-button {background-image:url('big-play-icon@2x.png'); background-size:60px;}
-    .pause-button {background-image:url('pause-icon@2x.png'); background-size:30px;}
+    .pause-button {background-image:url('pause-icon@2x.png'); background-size:60px;}
     .stop-button {background-image:url('stop-icon@2x.png'); background-size:30px;}
     .facebook-button {background-image:url('facebook-icon@2x.png'); background-size:30px;}
     .twitter-button {background-image:url('twitter-icon@2x.png'); background-size:30px;}
