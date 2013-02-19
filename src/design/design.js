@@ -81,13 +81,15 @@ Player.provide('design',
           // Honour `showTray`
           $('#tray').toggle($this.showTray ? true : false);
           // Honour `trayTimeout`
+          $this._minimized = false;
           if($this.showTray&&$this.trayTimeout>0) {
               var triggerTrayTimeout = function(){
                   window.clearTimeout($this.trayTimeoutId);
                 
-                  if($('#tray').hasClass('minimized')) {
+                  if($this._minimized) {
                       $('.tray-navigation').css({opacity:0});
                       $('#tray').removeClass('minimized');
+                      $this._minimized = false;
                       $('.tray-navigation').animate({opacity:1}, 800);
                   }
 
@@ -95,6 +97,7 @@ Player.provide('design',
                       if(!Player.get('showSharing')&&!Player.get('browseMode')) {
                         $('.tray-navigation').animate({opacity:0}, 300, function(){
                             $('#tray').addClass('minimized');
+                            $this._minimized = true;
                             $('.tray-navigation').css({opacity:1});
                           });
                       }

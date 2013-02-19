@@ -30,10 +30,12 @@ Player.provide('info',
           PlayerUtilities.mergeSettings($this, ['showDescriptions', 'infoTimeout']);
         });
 
+      $this.infoTimeoutId = null;
       $(document).mousemove(function(){
-        Player.set('showDescriptions', true);
-        if($this.infoTimeout>0) {
-            setTimeout(function(){Player.set('showDescriptions', false);}, $this.infoTimeout);
+          Player.set('showDescriptions', true);
+          if($this.infoTimeout>0) {
+              if($this.infoTimeoutId) window.clearTimeout($this.infoTimeoutId);
+              $this.infoTimeoutId = setTimeout(function(){Player.set('showDescriptions', false);}, $this.infoTimeout);
           }
           Player.fire('player:infoengaged');
       });
@@ -47,7 +49,7 @@ Player.provide('info',
       });
       Player.bind('player:settings player:video:loaded', function(e,video){
           if($this.infoTimeout>0) {
-            setTimeout(function(){Player.set('showDescriptions', false);}, $this.infoTimeout);
+            $this.infoTimeoutId = setTimeout(function(){Player.set('showDescriptions', false);}, $this.infoTimeout);
           }
           Player.fire('player:infoengaged');
         });
