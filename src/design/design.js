@@ -136,7 +136,6 @@ Player.provide('design',
       }
       $(window).load(_resize);
       $(window).resize(_resize);
-      $(document).mousemove(_resize);
       Player.bind('glue:render', function(){
           _resize();
           $this.applyDesignPreferences();
