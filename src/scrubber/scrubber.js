@@ -161,10 +161,11 @@ Player.provide('scrubber',
       // EVENTS
       // Set the frames background on load
       Player.bind('player:video:loaded', function(){
+          $this.render();
           $this.loadedFrameBackground = false;
       });
       // Update scrubber on progress and on window resize
-      Player.bind('player:video:ready player:video:populate player:video:progress player:video:timeupdate player:video:seeked player:video:ended', $this.updateScrubber);
+      Player.bind('player:video:progress player:video:timeupdate player:video:seeked player:video:ended', $this.updateScrubber);
       $(window).resize($this.updateScrubber);
 
 

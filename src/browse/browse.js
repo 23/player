@@ -94,7 +94,9 @@ Player.provide('browse',
                   function(data){
                       $this.loadedRecommendations = true;
                       $.each(data.photos, function(i,photo){
-                          Player.get('clips').push(new PlayerVideo(Player,$,'clip',photo));
+                          if(photo.photo_id!=Player.get('video_photo_id')) {
+                              Player.get('clips').push(new PlayerVideo(Player,$,'clip',photo));
+                          }
                       });
                       Player.fire('player:browse:loaded');
                       Player.fire('player:browse:updated');
