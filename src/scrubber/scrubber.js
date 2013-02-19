@@ -164,7 +164,7 @@ Player.provide('scrubber',
           $this.loadedFrameBackground = false;
       });
       // Update scrubber on progress and on window resize
-      Player.bind('player:video:progress player:video:timeupdate player:video:seeked player:video:ended', $this.updateScrubber);
+      Player.bind('player:video:ready player:video:populate player:video:progress player:video:timeupdate player:video:seeked player:video:ended', $this.updateScrubber);
       $(window).resize($this.updateScrubber);
 
 

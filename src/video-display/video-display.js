@@ -175,6 +175,7 @@ Player.provide('video-display',
       });
       
       $this._currentTime = false;
+      $this._loadVolumeCookie = true;
       $this.loadContent = function(){
         // If the display device isn't ready yet, wait for it
         if(!$this.video || !$this.video.ready) {
@@ -248,6 +249,13 @@ Player.provide('video-display',
         }else{
           Player.set('quality', 'standard');
         }
+
+        // Possibly load volume preference from previous session
+        if($this._loadVolumeCookie&&$this.video) {
+          var cookieVolume = Cookie.get('playerVolume');
+          if(cookieVolume.length>0) Player.set('volume', new Number(cookieVolume));
+          $this._loadVolumeCookie = false;
+        }
         
         if($this.autoPlay) {
           // Might want to autoPlay it
@@ -299,7 +307,10 @@ Player.provide('video-display',
           if($this.video) $this.video.setCurrentTime(currentTime);
       });
       Player.setter('volume', function(volume){          
-          if($this.video) $this.video.setVolume(volume);
+          if($this.video) {
+              $this.video.setVolume(volume);
+              Cookie.set('playerVolume', new String(volume));
+          }
       });
       Player.setter('start', function(s){          
           $this.start = s;
