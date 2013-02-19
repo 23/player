@@ -187,6 +187,10 @@ a.button { /* standard button design as a straight link */
 .tray-scrubber-sub {
     position:relative;
 }
+#tray.minimized .tray-left, #tray.minimized .tray-right {
+    display:none;
+}
+
 /* === /tray === */
 
 
@@ -219,7 +223,7 @@ a.button { /* standard button design as a straight link */
     background-color:#888;
 }
 .scrubber-buffer {
-    background-color:#666;
+    background-color:#777;
 }
 .scrubber-play {
     background-color:#eee; /*updated in js via player settings */
@@ -246,15 +250,19 @@ a.button { /* standard button design as a straight link */
 }
 .scrubber-thumbnail {
     position:absolute;
-    bottom:37px;
+    bottom:40px;
     border-radius:2px;
-    border:2px solid white;
+    border:2px solid #ccc;
     display:none;
 }
 .scrubber-thumbnail-sub {
     background-repeat: 'no-repeat';
     width:100%;
     height:100%;
+}
+#tray.minimized .scrubber-container {
+    height:5px;
+    overflow:hidden;
 }
 /* === /Sharing === */
 
@@ -269,11 +277,10 @@ a.button { /* standard button design as a straight link */
 .section {
     position:absolute; 
     top:0;
-    width:8px;
-    height:8px; 
+    width:10px;
+    height:10px; 
     margin:0px 0 0 -4px;
-    border:1px solid black;
-    background-color:#ccc;
+    background-color:#444;
     cursor:pointer;
 }
 .section-title {

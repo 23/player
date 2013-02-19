@@ -5,7 +5,7 @@
 Player.provide('design',
   {
     showTray: true,
-    trayTimeout: 0,
+    trayTimeout: 10000,
     verticalPadding:0,
     horizontalPadding:0,
     trayAlpha:0.85,
@@ -84,10 +84,19 @@ Player.provide('design',
           if($this.showTray&&$this.trayTimeout>0) {
               var triggerTrayTimeout = function(){
                   window.clearTimeout($this.trayTimeoutId);
-                  $('#tray').show();
+                
+                  if($('#tray').hasClass('minimized')) {
+                      $('.tray-navigation').css({opacity:0});
+                      $('#tray').removeClass('minimized');
+                      $('.tray-navigation').animate({opacity:1}, 200);
+                  }
+
                   $this.trayTimeoutId = window.setTimeout(function(){
-                      if(!Player.get('showSharing')&&!Player.get('browseMode')) {
-                          $('#tray').hide();
+                      if(!Player.get('showSharing')&&!Player.get('browseMode')&&!Player.get('showSharing')) {
+                        $('.tray-navigation').animate({opacity:0}, 300, function(){
+                            $('#tray').addClass('minimized');
+                            $('.tray-navigation').css({opacity:1});
+                          });
                       }
                   }, $this.trayTimeout);
               }
