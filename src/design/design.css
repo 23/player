@@ -447,21 +447,6 @@ table.browse-recommendations div {
 .subtitle-button {background-image:url('subtitle-icon.png');}
 
 
-/* Hover color for sharing buttons */
-.site-button:hover, .mail-button:hover, .facebook-button:hover, .twitter-button:hover, .google-button:hover {
-    -o-transition:.2s;
-    -ms-transition:.2s;
-    -moz-transition:.2s;
-    -webkit-transition:.2s;
-    transition:.2s;
-}
-
-.site-button:hover {background-color: #47953e;}
-.mail-button:hover {background-color: #92008b;}
-.facebook-button:hover {background-color: #3c5a98;}
-.twitter-button:hover {background-color: #2ba9e1;}
-.google-button:hover {background-color: #dd4b38;}
-
 /* Hide a number of elements in very small players */
 .size-tiny .info-button, 
 .size-tiny .share-button,
