@@ -146,6 +146,7 @@ a.button { /* standard button design as a straight link */
     margin-left:3px;
 }
 .tray-scrubber {  /* scrubber position */
+    display:none;
     margin:0 200px 0 33px; /* this will be updated using JS to fix the with of .tray-left and .tray-right */
 }
 .tray-scrubber-sub {
