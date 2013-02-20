@@ -133,7 +133,6 @@ Player.provide('design',
 
       // RESIZE HANDLING
       var _resize = function(){
-
           // This is a pretty fancy fix for an IE7 bug:
           // Empty elements are given layout, causing all kinds of buttons the .tray-right
           // and tray-left to go flying. Very litterally: Hide empty stuff, show other.
@@ -141,7 +140,6 @@ Player.provide('design',
           $('.tray-right>div:parent, .tray-left>div:parent').show();
 
       }
-      $(window).load(_resize);
       $(window).resize(_resize);
       Player.bind('glue:render', function(){
           _resize();
