@@ -218,12 +218,20 @@ Player.provide('video-display',
               $this.qualities['standard'] = {format:'video_medium', displayName:'Standard', displayQuality:'360p', codec:'h264', source:Player.get('url') + v.video_medium_download}; 
             if (typeof(v.video_mobile_high_download)!='undefined' && v.video_mobile_high_download.length>0) 
               $this.qualities['low'] = {format:'video_mobile_high', displayName:'Low', displayQuality:'180p', codec:'h264', source:Player.get('url') + v.video_mobile_high_download};
-          } else {
-            // WebM
+          } else if (typeof(v.video_webm_360p_download)!='undefined' && v.video_webm_360p_download.length>0 && $this.video.canPlayType('video/webm')) {
+            // WebM (if there are available clips)
             if (typeof(v.video_webm_720p_download)!='undefined' && v.video_webm_720p_download.length>0) 
               $this.qualities['hd'] = {format:'video_webm_720p', codec:'webm', displayName:'HD', displayQuality:'720p', source:Player.get('url') + v.video_webm_720p_download}; 
             if (typeof(v.video_webm_360p_download)!='undefined' && v.video_webm_360p_download.length>0) 
               $this.qualities['standard'] = {format:'video_webm_720p', codec:'webm', displayName:'Standard', displayQuality:'360p', source:Player.get('url') + v.video_webm_360p_download}; 
+          } else if($this.displayDevice=='html5' && !$this.video.canPlayType('video/mp4; codecs="avc1.42E01E"')) {
+            // Switch to a Flash display device when WebM isn't available
+            Player.set('loading', true);
+            $this.displayDevice = 'flash';
+            $this.loadEingebaut();
+            if($this.displayDevice!='flash') {
+                Player.set('error', "This clip required Adobe Flash to be installed.");
+            }
           }
         } else if (v.type=='stream') {
           // LIVE VIDEO
@@ -301,8 +309,8 @@ Player.provide('video-display',
 
       Player.setter('playing', function(playing){
           try {
-              if($this.video) {
-                  if(playing && !Player.fire('player:video:beforeplay')) return false;
+              if($this.video) {                
+                  if(playing && !Player.get('playing') && !Player.fire('player:video:beforeplay')) return false;
                   $this.video.setPlaying(playing);
               }
           }catch(e){

@@ -118,13 +118,12 @@ Player.provide('design',
           $('video-display').css({bottom:$this.verticalPadding+'px', left:$this.horizontalPadding+'px'})
       }
 
-
       // RESIZE HANDLING
       var _resize = function(){
           var r = $('.tray-right div.tray-button:visible').length * 28;
           var rc = $('.tray-right-container').width();
           if(r>0) {
-            $('.tray-right').css({width: r});
+	      $('.tray-right').css({width: r});
           }
           $('.player-info:visible').css({width: (rc-r-30)});
 

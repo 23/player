@@ -172,6 +172,7 @@ Player.provide('playflow',
           var v = Player.get('videoElement');
           if(!v.canPlayType('video/mp4; codecs="avc1.42E01E"')) url = '';
           if(playflow_type=='video' && url.length>0) {
+            Player.set('showBigPlay', false);
             $this.playflowClip = Player.get('url') + url;
             $this.playflowLink = Player.get(type=='preroll' ? 'playflowBeforeLink' : 'playflowAfterLink')
             $this.beginClip();
