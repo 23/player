@@ -140,7 +140,6 @@ Player.provide('design',
           var l = $('.tray-left div.tray-button:visible').length * 33;
           var r = $('.tray-right div.tray-button:visible').length * 33;
           if(l>0) {
-            $('.tray-scrubber').css({marginLeft:l+'px', marginRight:r+'px', display:'block'});
             if(_resizeInterval) {
               window.clearInterval(_resizeInterval);
               _resizeInterval = null;
