@@ -399,6 +399,10 @@ Player.provide('video-display',
       Player.getter('verticalPadding', function(){
           return $this.verticalPadding;
       });
+      Player.getter('isTouchDevice', function(){
+          return !!('ontouchstart' in window) // works on most browsers 
+              || !!('onmsgesturechange' in window); // works on ie10
+      });
 
       
       return $this;
