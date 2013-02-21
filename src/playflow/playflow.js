@@ -157,7 +157,7 @@ Player.provide('playflow',
       // Restore the eingebaut object from `video-display` back to it original state.
       $this.restoreEingebaut = function(){
         $this.eingebaut.callback = $this.originalEingebaut.callback;        
-        $this.eingebaut.container.parent().css({zIndex:''});
+        $this.eingebaut.container.parent().css({zIndex:0});
         Player.fire('player:video:pause');
         if($this.originalEingebaut.source) $this.eingebaut.setSource($this.originalEingebaut.source);
       }
@@ -169,7 +169,10 @@ Player.provide('playflow',
           $this.playflowLink = '';
           var playflow_type = Player.get(type=='preroll' ? 'playflowBeforeDownloadType' : 'playflowAfterDownloadType');
           var url = Player.get(type=='preroll' ? 'playflowBeforeDownloadURL' : 'playflowAfterDownloadURL');
+          var v = Player.get('videoElement');
+          if(!v.canPlayType('video/mp4; codecs="avc1.42E01E"')) url = '';
           if(playflow_type=='video' && url.length>0) {
+            Player.set('showBigPlay', false);
             $this.playflowClip = Player.get('url') + url;
             $this.playflowLink = Player.get(type=='preroll' ? 'playflowBeforeLink' : 'playflowAfterLink')
             $this.beginClip();

@@ -80,6 +80,7 @@ Player.provide('video-display',
       $this.rawSource = "";
 
       // Logic to load the display device with Eingebaut
+      $this._queuePlay = false;
       $this.loadEingebaut = function(){
           $this.canvas.html('');
           $this.video = new Eingebaut($this.canvas, $this.displayDevice, '/resources/um/player/eingebaut/1.0/Eingebaut.swf', function(e){
@@ -91,6 +92,10 @@ Player.provide('video-display',
               if(e=='loaded') {
                 var _v = Player.get('video');
                 if(_v) Player.fire('player:video:loaded', _v);
+              }
+              if((e=='canplay'||e=='loaded')&&$this._queuePlay) {
+                $this.video.setPlaying(true);
+                $this._queuePlay = false;
               }
               // Don't send event during switching, it only confuses the UI
               if($this.video.switching && (e=='playing'||e=='pause')) return;
@@ -135,7 +140,7 @@ Player.provide('video-display',
                 matched = true;
               }
               
-              if (matched) event.preventDefault();
+              if (matched) e.preventDefault();
             }
           });
         $(document).keydown(function(e){
@@ -163,7 +168,7 @@ Player.provide('video-display',
                 matched = true;
               }
               
-              if(matched) event.preventDefault();
+              if(matched) e.preventDefault();
             }
           });
       }
@@ -175,6 +180,7 @@ Player.provide('video-display',
       });
       
       $this._currentTime = false;
+      $this._loadVolumeCookie = true;
       $this.loadContent = function(){
         // If the display device isn't ready yet, wait for it
         if(!$this.video || !$this.video.ready) {
@@ -212,12 +218,20 @@ Player.provide('video-display',
               $this.qualities['standard'] = {format:'video_medium', displayName:'Standard', displayQuality:'360p', codec:'h264', source:Player.get('url') + v.video_medium_download}; 
             if (typeof(v.video_mobile_high_download)!='undefined' && v.video_mobile_high_download.length>0) 
               $this.qualities['low'] = {format:'video_mobile_high', displayName:'Low', displayQuality:'180p', codec:'h264', source:Player.get('url') + v.video_mobile_high_download};
-          } else {
-            // WebM
+          } else if (typeof(v.video_webm_360p_download)!='undefined' && v.video_webm_360p_download.length>0 && $this.video.canPlayType('video/webm')) {
+            // WebM (if there are available clips)
             if (typeof(v.video_webm_720p_download)!='undefined' && v.video_webm_720p_download.length>0) 
               $this.qualities['hd'] = {format:'video_webm_720p', codec:'webm', displayName:'HD', displayQuality:'720p', source:Player.get('url') + v.video_webm_720p_download}; 
             if (typeof(v.video_webm_360p_download)!='undefined' && v.video_webm_360p_download.length>0) 
               $this.qualities['standard'] = {format:'video_webm_720p', codec:'webm', displayName:'Standard', displayQuality:'360p', source:Player.get('url') + v.video_webm_360p_download}; 
+          } else if($this.displayDevice=='html5' && !$this.video.canPlayType('video/mp4; codecs="avc1.42E01E"')) {
+            // Switch to a Flash display device when WebM isn't available
+            Player.set('loading', true);
+            $this.displayDevice = 'flash';
+            $this.loadEingebaut();
+            if($this.displayDevice!='flash') {
+                Player.set('error', "This clip required Adobe Flash to be installed.");
+            }
           }
         } else if (v.type=='stream') {
           // LIVE VIDEO
@@ -248,6 +262,13 @@ Player.provide('video-display',
         }else{
           Player.set('quality', 'standard');
         }
+
+        // Possibly load volume preference from previous session
+        if($this._loadVolumeCookie&&$this.video) {
+          var cookieVolume = Cookie.get('playerVolume');
+          if(cookieVolume.length>0) Player.set('volume', new Number(cookieVolume));
+          $this._loadVolumeCookie = false;
+        }
         
         if($this.autoPlay) {
           // Might want to autoPlay it
@@ -261,6 +282,12 @@ Player.provide('video-display',
         Player.fire('player:video:ready', $this.video);
       }
       Player.bind('player:video:loaded', $this.loadContent);
+
+
+      // After playback has started once, don't use the `start` parameter any longer
+      Player.bind('player:video:playing', function(){
+          Player.set('start', 0);
+      });
 
  
       /* SETTERS */
@@ -281,9 +308,13 @@ Player.provide('video-display',
       });
 
       Player.setter('playing', function(playing){
-          if($this.video) {
-              if(playing && !Player.fire('player:video:beforeplay')) return false;
-              $this.video.setPlaying(playing);
+          try {
+              if($this.video) {                
+                  if(playing && !Player.get('playing') && !Player.fire('player:video:beforeplay')) return false;
+                  $this.video.setPlaying(playing);
+              }
+          }catch(e){
+              $this._queuePlay = true;
           }
       });
       Player.setter('paused', function(paused){
@@ -293,7 +324,13 @@ Player.provide('video-display',
           if($this.video) $this.video.setCurrentTime(currentTime);
       });
       Player.setter('volume', function(volume){          
-          if($this.video) $this.video.setVolume(volume);
+          if($this.video) {
+              $this.video.setVolume(volume);
+              Cookie.set('playerVolume', new String(volume));
+          }
+      });
+      Player.setter('start', function(s){          
+          $this.start = s;
       });
 
       /* GETTERS */

@@ -34,6 +34,9 @@ Player.provide('browse',
       var $this = this;
       $.extend($this, opts);
 
+      $this.showAnimation = [{opacity:'show', height:'show'}, 300];
+      $this.hideAnimation = [{opacity:'hide', height:'hide'}, 200];
+
       // Render the browse interface and enable a simple carousel
       $this.build = function(){
           // Find the relavant elements in the template
@@ -91,7 +94,9 @@ Player.provide('browse',
                   function(data){
                       $this.loadedRecommendations = true;
                       $.each(data.photos, function(i,photo){
-                          Player.get('clips').push(new PlayerVideo(Player,$,'clip',photo));
+                          if(photo.photo_id!=Player.get('video_photo_id')) {
+                              Player.get('clips').push(new PlayerVideo(Player,$,'clip',photo));
+                          }
                       });
                       Player.fire('player:browse:loaded');
                       Player.fire('player:browse:updated');
@@ -158,6 +163,7 @@ Player.provide('browse',
         });
       Player.setter('browseMode', function(bm){
           if(bm) {
+              $('.activebutton').removeClass('activebutton');
               Player.set('showSharing', false);
               Player.set('showDescriptions', false);
           }

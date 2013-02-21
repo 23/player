@@ -37,11 +37,11 @@ Player.provide('design',
           $(container).find('div.button:has(ul)').each(function(i,div){
               $(div).click(function(e){
                   if($(div).hasClass('activebutton')) {
-                      $(div).removeClass('activebutton')
+                      $(div).removeClass('activebutton');
                   } else {
-                      $('.activebutton').each(function(i,el){
-                          $(el).removeClass('activebutton');
-                      });
+                      $('.activebutton').removeClass('activebutton');
+                      Player.set('browseMode', false);
+                      Player.set('showSharing', false);
                       $(div).addClass('activebutton');
                       e.stopPropagation();
                   }
@@ -136,8 +136,19 @@ Player.provide('design',
           // and tray-left to go flying. Very litterally: Hide empty stuff, show other.
           $('.tray-right>div:empty, .tray-left>div:empty').hide();
           $('.tray-right>div:parent, .tray-left>div:parent').show();
+
+          var l = $('.tray-left div.tray-button:visible').length * 33;
+          var r = $('.tray-right div.tray-button:visible').length * 33;
+          if(l>0) {
+            $('.tray-scrubber').css({marginLeft:l+'px', marginRight:r+'px', display:'block'});
+            if(_resizeInterval) {
+              window.clearInterval(_resizeInterval);
+              _resizeInterval = null;
+            }
+          }
+        
       }
-      $(window).load(_resize);
+      var _resizeInterval = window.setInterval(_resize,50);
       $(window).resize(_resize);
       Player.bind('glue:render', function(){
           _resize();

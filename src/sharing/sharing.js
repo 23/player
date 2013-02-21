@@ -37,6 +37,7 @@ Player.provide('sharing',
   function(Player,$,opts){
       var $this = this;
       $.extend($this, opts);
+      $this.showAnimation = [{opacity:'show'}, 400];
 
       // Helper function
       var absolutize = function(u){
@@ -108,6 +109,7 @@ Player.provide('sharing',
           if(!Player.get('socialSharing')) return;
           $this.showSharing = ss;
           if(ss) {
+              $('.activebutton').removeClass('activebutton');
               Player.set('browseMode', false);
           }
           $(window).resize();

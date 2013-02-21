@@ -22,7 +22,7 @@ Player.provide('scrubber',
       // BUILD AND RENDER
       // Build the template
       $this.scrubberTime = null;
-      $this.render(function(){
+      $this.onRender = function(){
           // Find the relavant elements in the template
           $this.scrubber = $($this.container).find('.scrubber');
           $this.scrubberContainer = $($this.container).find('.scrubber-container');
@@ -40,6 +40,9 @@ Player.provide('scrubber',
           $this.scrubberContainer.mouseleave(function(){
               $this.scrubberContainer.removeClass('hover').removeClass('scrubber-container-hover');
           });
+
+          // Update the scrubber contents
+          $this.updateScrubber();
 
           // Handle clicks on the time line
           $this.scrubber.click(function(e){
@@ -102,8 +105,8 @@ Player.provide('scrubber',
                   e.stopPropagation(); 
               });
           }
-
-      });
+      };
+      $this.render($this.onRender);
 
 
       // METHODS
@@ -161,6 +164,7 @@ Player.provide('scrubber',
       // EVENTS
       // Set the frames background on load
       Player.bind('player:video:loaded', function(){
+          $this.render($this.onRender);
           $this.loadedFrameBackground = false;
       });
       // Update scrubber on progress and on window resize
