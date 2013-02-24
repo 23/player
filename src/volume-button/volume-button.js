@@ -19,7 +19,7 @@ Player.provide('volume-button',
         /* Make volume-handle draggable */
 
         if($this.volumeHandle) {
-          $('body').on('mousedown', '.volume-handle', function(e){
+          $this.volumeHandle.on('mousedown', function(e){
             // Enable dragging and different positioning of the volume handle
             $this.videoVolume = Player.get('volume'); 
             e.stopPropagation();
@@ -76,7 +76,6 @@ Player.provide('volume-button',
       $this.volumeTrack.click(volumeFromClientY);
 
       var volumeFilledHeight = (parseInt($this.volumeTrack.parent().css('height')) - 22) * volume;
-      //var volumeFilledHeight = $this.volumeTrack.height() * volume;
       $this.volumeFilled.css({height: volumeFilledHeight});
       $this.volumeHandle.css({bottom: Math.max(volumeFilledHeight+4, 4)});
 
@@ -89,6 +88,13 @@ Player.provide('volume-button',
         }
 
       });
+
+    Player.bind('player:video:loaded', function(e){
+      // If volume change is not supported, rerender to hide volume button
+      if (!Player.get('supportsVolumeChange')) {
+        $this.render();
+      }
+    });
 
     Player.bind('player:volume-engaged', function(e){updateVolume();});
 
