@@ -60,8 +60,6 @@ Player.provide('playflow',
       $this.content = $(document.createElement('div')).addClass('playflow-content');
       $this.container.append($this.content);
 
-
-
       // Play either preroll or postroll clips
       $this.beginClip = function(){
         if($this.playflowClip.length==0) return;
@@ -73,9 +71,11 @@ Player.provide('playflow',
         $($this.container).show();
         $($this.clicks).show();
         $this.updateCountdown();
+        $this.eingebaut.video[0].addEventListener('webkitendfullscreen', $this.endClip, false);
       }
       // Finalize playback of either a preroll or a postroll
       $this.endClip = function(){
+        $this.eingebaut.video[0].removeEventListener('webkitendfullscreen', $this.endClip, false);
         $($this.container).hide();
         $($this.clicks).hide();
         if($this.eingebaut) $this.eingebaut.setPlaying(false);
@@ -86,6 +86,9 @@ Player.provide('playflow',
           Player.set('playing', true);
         } else if($this.playflowState=='during'||$this.playflowState=='postroll') {
           $this.beginAfterText();
+          try {
+            $this.eingebaut.video[0].webkitExitFullScreen();
+          } catch(e){}
         }
         $this.updateCountdown();
       }
@@ -135,7 +138,7 @@ Player.provide('playflow',
         // If this loads after the content (i.e. if we're switching display device, fire an event that we're ready)
         if(e=='ready') {
           $this.beginClip();
-        } else if(e=='ended' || (e=='pause'&&!$this.eingebaut.allowHiddenControls())) {
+        } else if(e=='ended') {
           Player.fire('player:playflow:video:complete');
           $this.endClip();
         } else if(e=='progress'||e=='timeupdate') {
