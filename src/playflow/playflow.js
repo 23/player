@@ -71,11 +71,15 @@ Player.provide('playflow',
         $($this.container).show();
         $($this.clicks).show();
         $this.updateCountdown();
-        $this.eingebaut.video[0].addEventListener('webkitendfullscreen', $this.endClip, false);
+        if (!!('webkitendfullscreen' in window)) {
+          $this.eingebaut.video[0].addEventListener('webkitendfullscreen', $this.endClip, false);
+        }
       }
       // Finalize playback of either a preroll or a postroll
       $this.endClip = function(){
-        $this.eingebaut.video[0].removeEventListener('webkitendfullscreen', $this.endClip, false);
+        if (!!('webkitendfullscreen' in window)) {
+          $this.eingebaut.video[0].removeEventListener('webkitendfullscreen', $this.endClip, false);
+        }
         $($this.container).hide();
         $($this.clicks).hide();
         if($this.eingebaut) $this.eingebaut.setPlaying(false);
