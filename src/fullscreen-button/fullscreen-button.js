@@ -34,18 +34,6 @@ Player.provide('fullscreen-button',
         $this.render();
       });
 
-    // Hide elements when Flash is prompting for full screen
-    Player.bind('player:video:fullscreenprompt', function(e){
-        $('.big-button, .video-canvas div').hide();
-      });
-    Player.bind('player:video:clearfullscreenprompt', function(e){
-        $('.big-button, .video-canvas div').show();
-      });
-    Player.bind('player:video:enterfullscreen', function(e){
-        Player.set('playing', true);
-        Player.set('analyticsEvent', 'fullscreen');
-      });
-
     /* GETTERS */
     Player.getter('supportsFullscreen', function(){
         var ve = Player.get('videoElement');
@@ -60,7 +48,9 @@ Player.provide('fullscreen-button',
         if(!Player.get('supportsFullscreen')) return;
         var ve = Player.get('videoElement');
         if(ve) {
+            Player.set('playing', true);
             if(fs) {
+                Player.set('analyticsEvent', 'fullscreen');
                 ve.enterFullscreen();
             } else {
                 ve.leaveFullscreen();
