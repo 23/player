@@ -166,6 +166,7 @@ a.button { /* standard button design as a straight link */
     width:100%;
 }
 .tray-navigation {
+    *filter: alpha(enabled=false) !important; /* IE alpha overflow hidden bug, http://labs.thesedays.com/blog/2011/06/02/ie-alpha-overflow-hidden-bug/ */
     position:relative;
 }
 .tray-left .tray-button { /* buttons left of scrubber */
