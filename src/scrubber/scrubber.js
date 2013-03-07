@@ -29,7 +29,7 @@ Player.provide('scrubber',
           $this.bufferContainer = $($this.container).find('.scrubber-buffer');
           $this.playContainer = $($this.container).find('.scrubber-play');
           $this.handleContainer = $($this.container).find('.scrubber-handle');
-          $this.timeContainer = $($this.container).find('.scrubber-time');
+          $this.timeContainer = $('.time-container');
           $this.thumbnailContainer = $($this.container).find('.scrubber-thumbnail');
           $this.thumbnailContainerSub = $($this.container).find('.scrubber-thumbnail-sub');
 
