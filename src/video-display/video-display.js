@@ -362,7 +362,7 @@ Player.provide('video-display',
           return ($this.video ? $this.video.getPlaying() : false);
       });
       Player.getter('currentTime', function(){
-          return ($this.video ? $this.video.getCurrentTime() : 0);
+          return ($this.video && isFinite($this.video.getCurrentTime()) ? $this.video.getCurrentTime() : 0);
       });
       Player.getter('volume', function(){
           return ($this.video ? $this.video.getVolume() : 1);
