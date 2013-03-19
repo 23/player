@@ -279,7 +279,7 @@ Player.provide('core',
       // Information about frames for the current video
       Player.getter('video_has_frames', function(){try {return ($this.video.video_frames_size>0);} catch(e) {return false;}});
       Player.getter('video_frames_width', function(){return 180;});
-      Player.getter('video_frames_height', function(){return 180/Player.get('video_aspect_ratio');});
+      Player.getter('video_frames_height', function(){return 180/(Player.get('video').video_frames_width/Player.get('video').video_frames_height);});
       Player.getter('video_frames_src', function(){return (Player.get('video_has_frames') ? Player.get('video_base_url') + Player.get('video_frames_width') + 'xfr' : '');});
       Player.getter('video_num_frames', function(){var d = Player.get('video_duration'); return Math.ceil(d/Math.ceil(d/200)) + 1;});
 
