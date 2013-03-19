@@ -40,8 +40,6 @@
 var PlayerVideo = function(Player,$,type,data){
     // Set up the object
     var $v = this;
-    $v.type = type; // 'clip' or 'stream'
-    $v.populated = false;
 
     // Mix in defaults
     defaults = {
@@ -57,6 +55,8 @@ var PlayerVideo = function(Player,$,type,data){
         length:0
     }
     $.extend($v, defaults, data);
+    $v.type = type; // 'clip' or 'stream'
+    $v.populated = false;
     $v.aspectRatio = 1.0*$v.video_medium_width/$v.video_medium_height;
     $v.id = ($v.type=='clip' ? $v.photo_id : $v.livestream_id);
 
