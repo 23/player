@@ -1,10 +1,10 @@
-/* 
+/*
   CORE PLAYER FOR 23 VIDEO
-  This is the guts of the video player, which will load in 
+  This is the guts of the video player, which will load in
   data and settings from the API and manage events to trigger
   playback and more.
 
-  The module does not display any content on its own and has 
+  The module does not display any content on its own and has
   no template.
 
   Fires events:
@@ -45,9 +45,9 @@ var PlayerVideo = function(Player,$,type,data){
 
     // Mix in defaults
     defaults = {
-        title:'', 
-        content:'', 
-        tree_id:'', 
+        title:'',
+        content:'',
+        tree_id:'',
         token:'',
         link:'',
         formats:{},
@@ -66,12 +66,12 @@ var PlayerVideo = function(Player,$,type,data){
       $v.content = $v.description_html;
     }
 
-    // Init data model for extra information about the clip 
+    // Init data model for extra information about the clip
     // from modules, for example as sections array.
     // (all data needed even when the clip isn't active)
     $v = Player.fire('player:video:init', $v);
 
-    // Populate the clip with extra information 
+    // Populate the clip with extra information
     // such as subtitles, sections and more,
     // depending on whether modules are activated.
     // (all data needed only when the clip activated)
@@ -82,7 +82,7 @@ var PlayerVideo = function(Player,$,type,data){
     }
 
     $v.switchTo = function(){
-        // The first time the clip is activated, populate it 
+        // The first time the clip is activated, populate it
         if(!$v.populated) {
             $v.populate($v.switchTo);
             return;
@@ -95,11 +95,11 @@ var PlayerVideo = function(Player,$,type,data){
     return $v;
 }
 
-Player.provide('core', 
+Player.provide('core',
   {
     domain:'',
     player_id: 0
-  }, 
+  },
   function(Player,$,opts){
       var $this = this;
       $.extend($this, opts);
@@ -275,13 +275,13 @@ Player.provide('core',
           return false;
         }
       });
-      
+
       // Information about frames for the current video
       Player.getter('video_has_frames', function(){try {return ($this.video.video_frames_size>0);} catch(e) {return false;}});
       Player.getter('video_frames_width', function(){return 180;});
       Player.getter('video_frames_height', function(){return 180/Player.get('video_aspect_ratio');});
       Player.getter('video_frames_src', function(){return (Player.get('video_has_frames') ? Player.get('video_base_url') + Player.get('video_frames_width') + 'xfr' : '');});
-      Player.getter('video_num_frames', function(){var d = Player.get('video_duration'); return Math.floor(d/Math.ceil(d/200))});
+      Player.getter('video_num_frames', function(){var d = Player.get('video_duration'); return Math.ceil(d/Math.ceil(d/200)) + 1;});
 
       // Different sizes of players (this is used by non-design modules such as subtitles, thus placed here.)
       $this.playerSize = 'medium';
@@ -308,7 +308,7 @@ Player.provide('core',
               $this.loaded = true;
               Player.fire('player:loaded');
 
-              var loadStreamsByDefault = 
+              var loadStreamsByDefault =
                 (typeof(Player.parameters.liveevent_stream_id)!='undefined'||typeof(Player.parameters.liveevent_id)!='undefined')
                 ||
                 (typeof(Player.parameters.photo_id)=='undefined'&&typeof(Player.parameters.album_id)=='undefined'&&typeof(Player.parameters.tag)=='undefined');
