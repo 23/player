@@ -211,7 +211,7 @@ Player.provide('video-display',
 
           // Chrome has a bug in seeking h264 files, which we've worked around recently; but for older clips
           // the better choice is to play with webm when possible.
-          preferWebM = (/Chrome/.test(navigator.userAgent) && $this.video.canPlayType('video/webm') && v.photo_id<7626643 && typeof(v.video_webm_360p_download)!='undefined' && v.video_webm_360p_download.length>0 && $this.video.canPlayType('video/webm'));
+          preferWebM = (/Chrome/.test(navigator.userAgent) v.photo_id<7626643 && typeof(v.video_webm_360p_download)!='undefined' && v.video_webm_360p_download.length>0 && $this.video.canPlayType('video/webm'));
 
           if( ($this.displayDevice!='html5' || $this.video.canPlayType('video/mp4; codecs="avc1.42E01E"')) && !preferWebM ) {
             // H.264
