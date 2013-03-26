@@ -277,7 +277,7 @@ Player.provide('video-display',
         
         if($this.autoPlay) {
           // Might want to autoPlay it
-          Player.set('playing', true);
+          ////Player.set('playing', true);
         } else {
           // Otherwise fire a non-event
           Player.fire('player:video:pause', $this.video);
