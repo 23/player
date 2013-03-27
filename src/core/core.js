@@ -40,8 +40,6 @@
 var PlayerVideo = function(Player,$,type,data){
     // Set up the object
     var $v = this;
-    $v.type = type; // 'clip' or 'stream'
-    $v.populated = false;
 
     // Mix in defaults
     defaults = {
@@ -57,6 +55,8 @@ var PlayerVideo = function(Player,$,type,data){
         length:0
     }
     $.extend($v, defaults, data);
+    $v.type = type; // 'clip' or 'stream'
+    $v.populated = false;
     $v.aspectRatio = 1.0*$v.video_medium_width/$v.video_medium_height;
     $v.id = ($v.type=='clip' ? $v.photo_id : $v.livestream_id);
 
@@ -119,9 +119,9 @@ Player.provide('core',
       if($this.domain=='') $this.domain = $this.settings.domain||document.domain;
       if($this.domain=='localhost' || $this.domain.match(/^10\./) || $this.domain.match(/^192\.168\./)) $this.domain = 'reference.dev.visualtube.net';
       // Build player_id if we're loadin for examaple 1234.ithml
-      if($this.player_id==0) {
+      if($this.settings.player_id==0) {
           var p=location.pathname.match(/\/([0-9]+)\.i?html/);
-          if(p) $this.player_id = p[1];
+          if(p) $this.settings.player_id = p[1];
       }
       $this.url = $this.protocol + '://' + $this.domain;
       $this.api = new Visualplatform($this.domain);

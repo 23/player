@@ -211,7 +211,6 @@ Player.provide('video-display',
 
           // Chrome has a bug in seeking h264 files, which we've worked around recently; but for older clips
           // the better choice is to play with webm when possible.
-
           preferWebM = (/Chrome/.test(navigator.userAgent) && v.photo_id<7626643 && typeof(v.video_webm_360p_download)!='undefined' && v.video_webm_360p_download.length>0 && $this.video.canPlayType('video/webm'));
 
           if( ($this.displayDevice!='html5' || $this.video.canPlayType('video/mp4; codecs="avc1.42E01E"')) && !preferWebM ) {
@@ -277,8 +276,11 @@ Player.provide('video-display',
         }
         
         if($this.autoPlay) {
-          // Might want to autoPlay it
-          Player.set('playing', true);
+          // Might want to autoPlay it 
+          // (iOS requires user interaction to start playback and thus won't support auto play apart from in edge cases)
+          if(!/(iPhone|iPod|iPad)/.test(navigator.userAgent)) {
+            Player.set('playing', true);
+          }
         } else {
           // Otherwise fire a non-event
           Player.fire('player:video:pause', $this.video);
