@@ -276,8 +276,11 @@ Player.provide('video-display',
         }
         
         if($this.autoPlay) {
-          // Might want to autoPlay it
-          ////Player.set('playing', true);
+          // Might want to autoPlay it 
+          // (iOS requires user interaction to start playback and thus won't support auto play apart from in edge cases)
+          if(!/(iPhone|iPod|iPad)/.test(navigator.userAgent)) {
+            Player.set('playing', true);
+          }
         } else {
           // Otherwise fire a non-event
           Player.fire('player:video:pause', $this.video);
