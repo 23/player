@@ -278,8 +278,8 @@ Player.provide('video-display',
         
         if($this.autoPlay) {
           // Might want to autoPlay it 
-          // (iOS requires user interaction to start playback and thus won't support auto play apart from in edge cases)
-          if(!/(iPhone|iPod|iPad)/.test(navigator.userAgent)) {
+          // (iOS + Windows Phone 8 requires user interaction to start playback and thus won't support auto play apart from in edge cases)
+          if(!/(iPhone|iPod|iPad|Windows.Phone)/.test(navigator.userAgent)) {
             Player.set('playing', true);
           }
         } else {
