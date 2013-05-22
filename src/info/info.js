@@ -23,6 +23,7 @@ Player.provide('info',
       var $this = this;
       $.extend($this, opts);
       $this.infoTimeoutId = null;
+      $this.showAnimation = [{opacity:'show'}, 400];
       
       // Listen to find if we show show info
       Player.bind('player:settings', function(e,settings){
@@ -33,7 +34,11 @@ Player.provide('info',
         Player.set('showDescriptions', true);
         if($this.infoTimeout>0) {
             window.clearTimeout($this.infoTimeoutId);
-            $this.infoTimeoutId = setTimeout(function(){Player.set('showDescriptions', false);}, $this.infoTimeout);
+            $this.infoTimeoutId = setTimeout(function(){
+              if (Player.get("playing")) {
+                Player.set('showDescriptions', false);
+              }
+            }, $this.infoTimeout);
         }
       }
 
@@ -44,19 +49,18 @@ Player.provide('info',
       Player.bind('player:video:play', function(e,video){
           Player.set('showDescriptions', false);
       });
+      Player.bind('player:sharing:shareengaged', function(){
+          $this.showDescriptions = false;
+          $this.render();
+      });
       Player.bind('player:settings player:video:loaded', function(e,video){
           if($this.infoTimeout>0) {
             window.clearTimeout($this.infoTimeoutId);
-            $this.infoTimeoutId = setTimeout(function(){Player.set('showDescriptions', false);}, $this.infoTimeout);
+            //$this.infoTimeoutId = setTimeout(function(){Player.set('showDescriptions', false);}, $this.infoTimeout);
           }
           Player.fire('player:infoengaged');
         });
 
-      Player.bind('player:video:pause', function(){
-        if (!Player.get('playing') && !Player.get('browseMode')) {
-          triggerInfoTimeout();
-        }
-      });
 
       /* GETTERS */
       Player.getter('showDescriptions', function(){
@@ -73,14 +77,6 @@ Player.provide('info',
           $(window).resize();
         });
 
-      $(document).mousemove(function(){
-        if (!Player.get('playing') && !Player.get('browseMode')) {
-          triggerInfoTimeout();
-        }
-      });
-      $(document).mouseleave(function(){
-        Player.set('showDescriptions', false);
-      });
 
       return $this;
   }

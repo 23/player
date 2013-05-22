@@ -36,15 +36,18 @@ body {
     overflow:hidden;
 }
 h1 {
-    font-size:16px; /*updated in js via player settings */
+    font-size:20px; /*updated in js via player settings */
     line-height:1.4em;
     font-weight:bold; /*updated in js via player settings */
     letter-spacing:.3px;
 }
+.size-medium h1 {
+    font-size: 17px;
+}
 p {
     font-size:15px; /*updated in js via player settings */
     font-weight:normal; /*updated in js via player settings */
-    line-height:1.5em;
+    line-height:1.2em;
     letter-spacing:.3px;
 }
 .size-medium p {
@@ -83,8 +86,8 @@ div.button { /* standard button design */
     border-left: 1px solid #BBB;
 }
 .tray-left div.button {
-    width: 58px;
-    height: 55px;
+    width: 64px;
+    height: 60px;
     position: absolute;
     bottom: 12px;
 }
@@ -289,27 +292,18 @@ a.button { /* standard button design as a straight link */
 /* === /Sections === */
 
 /* === Module: Info === */
-.info-pane {
+.info-pane-container {
     margin:0;
     background:rgb(0,0,0); /*fallback for browser with no RGBa support */
     background:rgba(0,0,0,.8); /*updated in js via player settings */
-    padding:10px;
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 44px;
-    width: 300px;
+    padding:4px 10px 30px;
     border-bottom: 1px solid #BBB;
     overflow: hidden;
 }
 
 .info-pane-container h1 {
-    position: fixed;
-    top: 2px;
-    left: 0;
-    text-shadow: 1px 1px 2px #333;
-    color: white;
-    padding: 0 10px;
+    color: black;
+    padding: 4px 0 6px 0;
 }
 /* === /Info === */
 
@@ -496,7 +490,7 @@ td.tumblr {background-image:url('tumblr-button.png'); background-repeat: no-repe
     .browse-button-on {background-image:url('browse-on-icon@2x.png'); background-size:30px;}
     .browse-button-off {background-image:url('browse-off-icon@2x.png'); background-size:30px;}
     .share-button {background-image:url('share-icon@2x.png'); background-size:20px;}
-    .info-button {background-image:url('info-icon@2x.png'); background-size:30px;}
+    .info-button {background-image:url('info-icon@2x.png'); background-size:21px;}
     .volume-button-on {background-image:url('volume-on-icon@2x.png'); background-size:20px;}
     .volume-button-off {background-image:url('volume-off-icon@2x.png'); background-size:23px;}
     .fullscreen-button {background-image:url('fullscreen-icon@2x.png'); background-size:16px;}

@@ -7,7 +7,7 @@
   {% player video-display with "displayDevice":"html5" %}
   {% player playflow %}
 
-  {% player info %}
+  
 
   <div class="big-button tray-button">{% player big-play-button %}</div>
 
@@ -18,7 +18,8 @@
   <!-- Control bar or tray -->
   <div id="tray">
     {% player sharing %}
-
+    {% player info %}
+    
     <div class="tray-navigation">
       <div class="tray-left">
         {% player play-button %}
@@ -32,6 +33,7 @@
         {% player social-button with "service":"twitter" %}
         {% player social-button with "service":"facebook" %}
         {% player subtitle-button %}
+        {% player info-button %}
         <div class="time-container tray-button"></div>
       </div>
 

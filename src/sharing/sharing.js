@@ -64,6 +64,11 @@ Player.provide('sharing',
           $this.render();
         });
 
+      Player.bind('player:infoengaged', function(){
+          $this.showSharing = false;
+          $this.render();
+      });
+
       /* GETTERS */
       Player.getter('socialSharing', function(){
           return (typeof($this.socialSharing)!='undefined'&&$this.socialSharing&&$this.socialSharing!='0') && Player.get('video_sharable');
