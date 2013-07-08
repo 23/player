@@ -54,6 +54,8 @@ Player.provide('video-display',
     displayDevice:'html5',
     quality: '',
     autoPlay: false,
+    showThumbnailOnEnd: true,
+    fullscreenQuality: '',
     start:0,
     verticalPadding:0,
     horizontalPadding:0
@@ -105,6 +107,7 @@ Player.provide('video-display',
               Player.fire('player:video:' + e);
             });
         $this.video.load();
+        $this.video.showPosterOnEnd = $this.showThumbnailOnEnd;
         $this.displayDevice = $this.video.displayDevice;
       };
 
@@ -175,7 +178,7 @@ Player.provide('video-display',
 
       // Merge in player settings
       Player.bind('player:settings', function(e,s){
-        PlayerUtilities.mergeSettings($this, ['autoPlay', 'start', 'verticalPadding', 'horizontalPadding', 'displayDevice']);
+        PlayerUtilities.mergeSettings($this, ['autoPlay', 'start', 'verticalPadding', 'horizontalPadding', 'displayDevice', 'fullscreenQuality']);
         if($this.video&&$this.video.displayDevice!=$this.displayDevice) $this.loadEingebaut();
         $this.container.css({left:$this.horizontalPadding+'px', bottom:$this.verticalPadding+'px'});
       });
@@ -298,6 +301,15 @@ Player.provide('video-display',
           Player.set('start', 0);
       });
 
+      // In some cases, we want to switch up the quality when going to full screen
+      Player.bind('player:video:enterfullscreen', function(e){
+        if($this.fullscreenQuality.length && $this.qualities[$this.fullscreenQuality]) {
+          var q = Player.get('quality');
+          if(q!=$this.fullscreenQuality) {
+            Player.set('quality', $this.fullscreenQuality);
+          }
+        }
+      });
  
       /* SETTERS */
       Player.setter('quality', function(quality){
