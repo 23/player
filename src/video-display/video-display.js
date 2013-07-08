@@ -54,6 +54,7 @@ Player.provide('video-display',
     displayDevice:'html5',
     quality: '',
     autoPlay: false,
+    showThumbnailOnEnd: true,
     start:0,
     verticalPadding:0,
     horizontalPadding:0
@@ -105,6 +106,7 @@ Player.provide('video-display',
               Player.fire('player:video:' + e);
             });
         $this.video.load();
+        $this.video.showPosterOnEnd = $this.showThumbnailOnEnd;
         $this.displayDevice = $this.video.displayDevice;
       };
 
