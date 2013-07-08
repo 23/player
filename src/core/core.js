@@ -117,7 +117,7 @@ Player.provide('core',
 
       // Build domain
       if($this.domain=='') $this.domain = $this.settings.domain||document.domain;
-      if($this.domain=='localhost' || $this.domain=='127.0.0.1' || $this.domain.match(/^10\./) || $this.domain.match(/^192\.168\./)) $this.domain = 'reference.dev.visualtube.net';
+      if($this.domain=='localhost' || $this.domain=='127.0.0.1' || $this.domain.match(/^10\./) || $this.domain.match(/^192\.168\./) || $this.domain.match(/^172\.1[6-9]\./)) $this.domain = 'reference.dev.visualtube.net';
       // Build player_id if we're loadin for examaple 1234.ithml
       if($this.settings.player_id==0) {
           var p=location.pathname.match(/\/([0-9]+)\.i?html/);
