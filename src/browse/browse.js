@@ -27,6 +27,7 @@ Player.provide('browse',
     browseMode: false,
     recommendationMethod: 'channel-popular',
     playlistClickMode:'inline',
+    loop: false,
     browseThumbnailWidth:120,
     browseThumbnailHeight:68
   },
@@ -110,11 +111,43 @@ Player.provide('browse',
       }
 
 
+      // Helper methods for skipping in and looping playlists
+      $this.getCurrentVideoIndex = function(){
+        var current_photo_id = Player.get('video_photo_id')
+        var currentIndex = -1;
+        var c = Player.get('clips');
+        c.each(function(clip,i){
+          if(clip.photo_id==current_photo_id) currentIndex = i;
+        });
+        return currentIndex;
+      }
+      $this.getNextVideo = function(){
+        var c = Player.get('clips');
+        var i = $this.getCurrentVideoIndex() + 1;
+        if(!c[i]) {
+          $this.loadRecommendations();
+          i = 0;
+        }
+        return c[i];
+      }
+      $this.getPreviousVideo = function(){
+        var c = Player.get('clips');
+        var i = $this.getCurrentVideoIndex() - 1;
+        if(i<0) i = 0;
+        return c[i];
+      }
+      $this.playNextVideo = function(){
+        Player.set('browse_photo_id', $this.getNextVideo().photo_id);
+      }      
+      $this.playPreviousVideo = function(){
+        Player.set('browse_photo_id', $this.getPreviousVideo().photo_id);
+      }      
+      
       // Bind to events
       $this.firstLoad = true;
       Player.bind('player:video:loaded', function(){
           if($this.firstLoad) {
-              PlayerUtilities.mergeSettings($this, ['showBrowse', 'browseMode', 'recommendationMethod', 'playlistClickMode']);
+              PlayerUtilities.mergeSettings($this, ['showBrowse', 'browseMode', 'recommendationMethod', 'playlistClickMode', 'loop']);
               $this.loadRecommendations();
               Player.fire('player:browse:updated');
               $this.firstLoad = false;
@@ -126,7 +159,11 @@ Player.provide('browse',
           Player.set('browseMode', false);
       });
       Player.bind('player:video:ended', function(){
-          Player.set('browseMode', true);
+          if($this.loop) {
+              $this.playNextVideo();
+          } else {
+              Player.set('browseMode', true);
+          }
       });
 
       // Build a specific thumbnail for the browse pane
