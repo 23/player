@@ -178,7 +178,7 @@ Player.provide('video-display',
 
       // Merge in player settings
       Player.bind('player:settings', function(e,s){
-        PlayerUtilities.mergeSettings($this, ['autoPlay', 'start', 'verticalPadding', 'horizontalPadding', 'displayDevice', 'fullscreenQuality']);
+        PlayerUtilities.mergeSettings($this, ['autoPlay', 'start', 'verticalPadding', 'horizontalPadding', 'displayDevice', 'fullscreenQuality', 'showThumbnailOnEnd']);
         if($this.video&&$this.video.displayDevice!=$this.displayDevice) $this.loadEingebaut();
         $this.container.css({left:$this.horizontalPadding+'px', bottom:$this.verticalPadding+'px'});
       });
