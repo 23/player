@@ -5,8 +5,8 @@
   <div class="browse-container">
     <table class="browse-recommendations"><tr>
       {% for stream in streams %}
-        {% if stream.liveevent_stream_id != video_liveevent_stream_id %}
-          <td class="browse-recommendation browse-live-recommendation-{{forloop.index0}}" click="$set:browse_liveevent_stream_id:{{stream.liveevent_stream_id}}">
+        {% if stream.live_id != video_live_id %}
+          <td class="browse-recommendation browse-live-recommendation-{{forloop.index0}}" click="$set:browse_live_id:{{stream.live_id}}">
             <img src="{{url}}{{stream.browseThumbnailUrl}}" />
             <div>Live: {{stream.name}}</div>
           </td>

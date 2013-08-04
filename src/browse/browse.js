@@ -221,11 +221,11 @@ Player.provide('browse',
               Player.set('playing', true);
           }
         });
-      Player.setter('browse_liveevent_stream_id', function(id){
+      Player.setter('browse_live_id', function(id){
           if(Player.get('playlistClickMode')=='link') {
-              Player.set('open_liveevent_stream_id', id);
+              Player.set('open_live_id', id);
           } else {
-              Player.set('video_liveevent_stream_id', id);
+              Player.set('video_live_id', id);
               Player.set('playing', true);
           }
         });
