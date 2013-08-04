@@ -51,6 +51,7 @@ Player.provide('analytics',
       var _lastTimeUpdate = 0;
       var _reportTime = 
       Player.bind('player:video:play player:video:pause player:video:end player:video:timeupdate', function(e){
+          if(Player.get('video_type')=='live') return;
           if(e=='player:video:timeupdate') {
               // Throttle time update reports
               if(((new Date)-_lastTimeUpdate)/1000.0 < $this.timeReportRate)
@@ -86,6 +87,7 @@ Player.provide('analytics',
 
       // General method to report events
       Player.setter('analyticsEvent', function(e){
+          if(Player.get('video_type')=='live') return;
           if(typeof(e.event)=='undefined') {
             e = {event:e};
           }

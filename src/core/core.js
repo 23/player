@@ -58,7 +58,7 @@ var PlayerVideo = function(Player,$,type,data){
     $v.type = type; // 'clip' or 'stream'
     $v.populated = false;
     $v.aspectRatio = 1.0*$v.video_medium_width/$v.video_medium_height;
-    $v.id = ($v.type=='clip' ? $v.photo_id : $v.livestream_id);
+    $v.id = ($v.type=='clip' ? $v.photo_id : $v.live_id);
 
     // Someone smartly gave different variable names to streams
     if($v.type=='stream') {
@@ -157,11 +157,11 @@ Player.provide('core',
           // Load live streams
           $this.streams = [];
           methods.push({
-              method:'/api/liveevent/stream/list',
-              data:$.extend(Player.parameters, {player_id:$this.settings.player_id}),
+              method:'/api/live/list',
+              data:$.extend(Player.parameters, {upcoming_p:1, ordering:'streaming', player_id:$this.settings.player_id}),
               callback: function(data){
                   if(data.status=='ok') {
-                      $.each(data.streams, function(i,stream){
+                      $.each(data.live, function(i,stream){
                           $this.streams.push(new PlayerVideo(Player,$,'stream',stream));
                       });
                   }
@@ -216,17 +216,17 @@ Player.provide('core',
               }
             });
         });
-      Player.setter('video_liveevent_stream_id', function(vlsi){
+      Player.setter('video_live_id', function(vli){
           $.each($this.streams, function(i,s){
-              if(s.liveevent_stream_id==vlsi) {
+              if(s.live_id==vli) {
                 s.switchTo();
                 return;
               }
             });
         });
-      Player.setter('open_liveevent_stream_id', function(olsi){
+      Player.setter('open_live_id', function(oli){
           $.each($this.streams, function(i,s){
-              if(s.liveevent_stream_id==olsi) {
+              if(s.live_id==oli) {
                 Player.set('playing', false);
                 window.open(Player.get('url') + s.link);
                 return;
@@ -249,7 +249,7 @@ Player.provide('core',
       Player.getter('video_title', function(){return ($this.video ? $this.video.title||'' : '');});
       Player.getter('video_content', function(){return ($this.video ? $this.video.content||'' : '');});
       Player.getter('video_photo_id', function(){return ($this.video ? $this.video.photo_id||'' : '');});
-      Player.getter('video_liveevent_stream_id', function(){return ($this.video ? $this.video.liveevent_stream_id||'' : '');});
+      Player.getter('video_live_id', function(){return ($this.video ? $this.video.live_id||'' : '');});
       Player.getter('video_duration', function(){return ($this.video ? $this.video.video_length||'' : '');});
       Player.getter('video_type', function(){return ($this.video ? $this.video.type||'' : '');});
       Player.getter('video_tree_id', function(){return ($this.video ? $this.video.tree_id||'' : '');});
@@ -308,11 +308,16 @@ Player.provide('core',
               $this.loaded = true;
               Player.fire('player:loaded');
 
+              var currentlyStreaming = false;
+              $.each($this.streams, function(i,s){
+                if(s.streaming_p) currentlyStreaming = true;
+              });
+            
               var loadStreamsByDefault =
-                (typeof(Player.parameters.liveevent_stream_id)!='undefined'||typeof(Player.parameters.liveevent_id)!='undefined')
+                typeof(Player.parameters.live_id)!='undefined'
                 ||
                 (typeof(Player.parameters.photo_id)=='undefined'&&typeof(Player.parameters.album_id)=='undefined'&&typeof(Player.parameters.tag)=='undefined');
-              if(loadStreamsByDefault&&$this.streams.length>0) {
+              if(loadStreamsByDefault&&$this.streams.length>0&&currentlyStreaming) {
                   $this.streams[0].switchTo(); // live stream is possible
               } else if($this.clips.length>0) {
                   $this.clips[0].switchTo(); // otherwise show the clip
