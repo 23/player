@@ -83,11 +83,17 @@ Player.provide('browse',
 
       // Load recommendations through the API
       $this.loadedRecommendations = false;
-      $this.loadRecommendations = function(){
-          if ($this.loadedRecommendations || !Player.get('showBrowse')) return;
+      $this.loadRecommendations = function(overwrite){
+          if(typeof(overwrite)=='undefined') overwrite = false;
+          if(overwrite) $this.loadedRecommendations = false;
+          if ($this.loadedRecommendations || !Player.get('showBrowse')) return; 
+          if (overwrite){
+            var c = Player.get('clips');
+            c = [];
+          }
 
           // If we're looking at a single video, load some recommendations as well
-          if(Player.get('clips').length==1) {
+          if(Player.get('clips').length<=1) {
               var opts = (/-new$/.test(Player.get('recommendationMethod')) ? {orderby:'uploaded', order:'desc'} : {orderby:'rank', order:'desc'});
               if(/^channel-/.test(Player.get('recommendationMethod'))) opts['album_id'] = Player.get('video_album_id');
               Player.get('api').photo.list(
@@ -125,7 +131,7 @@ Player.provide('browse',
         var c = Player.get('clips');
         var i = $this.getCurrentVideoIndex() + 1;
         if(!c[i]) {
-          $this.loadRecommendations();
+          $this.loadRecommendations(true);
           i = 0;
         }
         return c[i];
@@ -214,11 +220,11 @@ Player.provide('browse',
               Player.set('playing', true);
           }
         });
-      Player.setter('browse_liveevent_stream_id', function(id){
+      Player.setter('browse_live_id', function(id){
           if(Player.get('playlistClickMode')=='link') {
-              Player.set('open_liveevent_stream_id', id);
+              Player.set('open_live_id', id);
           } else {
-              Player.set('video_liveevent_stream_id', id);
+              Player.set('video_live_id', id);
               Player.set('playing', true);
           }
         });
