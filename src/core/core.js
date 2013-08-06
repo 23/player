@@ -51,13 +51,11 @@ var PlayerVideo = function(Player,$,type,data){
         formats:{},
         width:0,
         height:0,
-        aspectRatio:1,
         length:0
     }
     $.extend($v, defaults, data);
     $v.type = type; // 'clip' or 'stream'
     $v.populated = false;
-    $v.aspectRatio = 1.0*$v.video_medium_width/$v.video_medium_height;
     $v.id = ($v.type=='clip' ? $v.photo_id : $v.live_id);
 
     // Someone smartly gave different variable names to streams
