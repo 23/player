@@ -326,6 +326,7 @@ Player.provide('video-display',
 
           if(Player.get('video_playable')) {
             // Switch the source and jump to current spot
+            playableSource = '';
             var playing = Player.get('playing');
             $this.video.setSource($this.rawSource, ($this._currentTime === false ? Player.get('currentTime') : $this._currentTime));
             $this._currentTime = false;
@@ -333,6 +334,7 @@ Player.provide('video-display',
             Player.fire('player:video:qualitychange');
             Player.set('playing', playing);
           } else {
+            Player.set('playing', false);
             playableSource = $this.rawSource;
           }
       });
@@ -340,7 +342,9 @@ Player.provide('video-display',
       Player.setter('playing', function(playing){
           if(!Player.get('video_playable')) return;
           if(playableSource!='') {
-            $this.video.setSource(playableSource, 0);
+            try {
+              $this.video.setSource(playableSource, 0);
+            }catch(e){};
             playableSource = '';
           }
           try {
