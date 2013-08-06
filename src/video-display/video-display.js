@@ -200,7 +200,9 @@ Player.provide('video-display',
 
         // Set poster
         var videoPoster = (v.type=='clip' ? v.large_download + '/thumbnail.jpg' : v.preview_large_download + '/thumbnail.jpg');
-        $this.video.setPoster(Player.get('url') + videoPoster);
+        try {
+          $this.video.setPoster(Player.get('url') + videoPoster);
+        }catch(e){}
 
         // Reset qualities
         $this.qualities = {};
