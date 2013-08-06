@@ -1,0 +1,38 @@
+/* LIVE PREVIEW */
+.player-live-preview,
+.preview-thumbnail,
+.preview-countdown {
+  position:absolute; 
+  top:0; 
+  left:0; 
+  width:100%; 
+  height:100%;
+}
+
+.preview-thumbnail {
+  background-position:center center;
+  background-size:contain;
+  background-repeat:no-repeat;
+}
+
+.preview-countdown td {
+  text-align:center;
+  vertical-align:middle;
+  font-size:30px;
+  line-height:1.2em;
+  padding:0 10%;
+}
+.size-small .preview-countdown td {
+  font-size:22px;
+}
+.size-tiny .preview-countdown td {
+  font-size:18px;
+}
+
+.preview-offline {
+  position:absolute; 
+  top:0; 
+  left:0; 
+  background-color:black; 
+  padding:3px;
+}

@@ -51,19 +51,20 @@ var PlayerVideo = function(Player,$,type,data){
         formats:{},
         width:0,
         height:0,
-        aspectRatio:1,
         length:0
     }
     $.extend($v, defaults, data);
     $v.type = type; // 'clip' or 'stream'
     $v.populated = false;
-    $v.aspectRatio = 1.0*$v.video_medium_width/$v.video_medium_height;
     $v.id = ($v.type=='clip' ? $v.photo_id : $v.live_id);
+    $v.playable_p = true;
 
     // Someone smartly gave different variable names to streams
     if($v.type=='stream') {
       $v.title = $v.name
       $v.content = $v.description_html;
+      $v.streaming_p = ($v.streaming_p=='1'||$v.streaming_p=='t');
+      $v.playable_p = $v.streaming_p;
     }
 
     // Init data model for extra information about the clip
@@ -78,9 +79,32 @@ var PlayerVideo = function(Player,$,type,data){
     $v.populate = function(callback){
         $v = Player.fire('player:video:populate', $v);
         $v.populated = true;
-        callback();
+        callback($v);
     }
 
+    // Reload the clip/meta from API
+    $v.reload = function(callback){
+      callback = callback||function(){};
+      var method = ($v.type=='clip' ? '/api/photo/list' : '/api/live/list');
+      var query = ($v.type=='clip' ? {photo_id:$v.photo_id, token:$v.token} : {live_id:$v.live_id, token:$v.token});
+      var object =($v.type=='clip' ? 'photos' : 'live');
+      Player.get('api')[method](
+        query,
+        function(data){
+          if(data[object].length>0) { 
+            $v = new PlayerVideo(Player,$,$v.type,data[object][0]);
+            $v.populate(function(){
+              Player.set('video', $v);
+              Player.fire('player:video:loaded', $v);
+              Player.set('video', $v);
+              callback($v);              
+            });
+          } 
+        },
+        Player.fail
+      );
+    }
+    
     $v.switchTo = function(){
         // The first time the clip is activated, populate it
         if(!$v.populated) {
@@ -275,6 +299,7 @@ Player.provide('core',
           return false;
         }
       });
+      Player.getter('video_playable', function(){return $this.video&&$this.video.playable_p;});
 
       // Information about frames for the current video
       Player.getter('video_has_frames', function(){try {return ($this.video.video_frames_size>0);} catch(e) {return false;}});
