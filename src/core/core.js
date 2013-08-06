@@ -338,11 +338,17 @@ Player.provide('core',
                 if(s.streaming_p) currentlyStreaming = true;
               });
             
-              var loadStreamsByDefault =
-                typeof(Player.parameters.live_id)!='undefined'
-                ||
-                (typeof(Player.parameters.photo_id)=='undefined'&&typeof(Player.parameters.album_id)=='undefined'&&typeof(Player.parameters.tag)=='undefined');
-              if(loadStreamsByDefault&&$this.streams.length>0&&currentlyStreaming) {
+              if(typeof(Player.parameters.live_id)!='undefined'){
+                // If we're embedding a specific stream, show that stream
+                loadStreamsByDefault = true;
+              } else if (typeof(Player.parameters.photo_id)!='undefined'||typeof(Player.parameters.album_id)!='undefined'||typeof(Player.parameters.tag)!='undefined') {
+                // If we're embedding specific clips, show those
+                loadStreamsByDefault = false;
+              } else {
+                // Otherwise, prioritize the stream when streaming - otherwise now.
+                loadStreamsByDefault = currentlyStreaming;
+              }
+              if(loadStreamsByDefault&&$this.streams.length>0) {
                   $this.streams[0].switchTo(); // live stream is possible
               } else if($this.clips.length>0) {
                   $this.clips[0].switchTo(); // otherwise show the clip
