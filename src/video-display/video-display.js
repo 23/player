@@ -332,6 +332,7 @@ Player.provide('video-display',
       });
 
       Player.setter('playing', function(playing){
+          if(!Player.get('video_playable')) return;
           try {
               if($this.video) {                
                   if(playing && !Player.get('playing') && !Player.fire('player:video:beforeplay')) return false;
