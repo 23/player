@@ -20,7 +20,7 @@ Player.provide('live-preview',
       $.extend($this, opts);
       $this.showAnimation = [{opacity:'show'}, 400];
 
-      $this.nextStartTime = null;
+      $this.nextStartTime = '';
       $this.showLivePreview = false;
       $this.showLiveCountdown = false;
     
@@ -33,7 +33,7 @@ Player.provide('live-preview',
       }
       window.setInterval(updateCountdown, 500);
       var formatCountdown = function(d){
-        if(d===null) return('');
+        if(d=='') return('');
         var seconds = Math.max((d-(new Date))/1000,0);
         var ret = [];
         $.each([
@@ -60,7 +60,7 @@ Player.provide('live-preview',
       Player.bind('player:video:loaded', function(e,video){
           $this.showLivePreview = (video.type=='stream' && video.next_start_time.length && video.streaming_p=='0');
           $this.showLiveCountdown = ($this.showLivePreview && video.show_countdown_p=='1');
-          $this.nextStartTime = (video.next_start_time_epoch.length ? new Date(parseInt(video.next_start_time_epoch)) : null);
+          $this.nextStartTime = (video.next_start_time_epoch.length ? new Date(parseInt(video.next_start_time_epoch)) : '');
           $this.render(onRender);
       });
 
@@ -75,6 +75,20 @@ Player.provide('live-preview',
           return $this.nextStartTime;
         });
 
+      /* Reload the stream every now an then to see if it has gone live */
+      var reloadStream = function(){
+        var v = Player.get('video');
+        if(v && v.type=='stream' && !Player.get('video_playable')) {
+          v.reload(function(){
+            if(Player.get('video_playable')) Player.set('playing', true);
+          });
+        }
+        
+        // If the stream is set to go live within the next 10 minutes, we'll reload every 20 seconds. Otherwise give it 2 minutes.
+        window.setTimeout(reloadStream, ($this.nextStartTime!='' && $this.nextStartTime-(new Date)<10*60*1000 ? 20000 : 120000));  
+      }
+      window.setTimeout(reloadStream, 30);
+    
       return $this;
   }
 );
