@@ -199,7 +199,7 @@ Player.provide('video-display',
         var s = Player.get('settings');
 
         // Set poster
-        var videoPoster = (v.type=='clip' ? v.large_download + '/thumbnail.jpg' : v.preview_large_download + '/thumbnail.jpg');
+        var videoPoster = (v.type=='clip' ? v.large_download + '/thumbnail.jpg' : v.preview_large_download);
         try {
           $this.video.setPoster(Player.get('url') + videoPoster);
         }catch(e){}
@@ -250,7 +250,7 @@ Player.provide('video-display',
           $this.start = 0; // Reset the start parameter for live video
           if($this.displayDevice=='html5' && $this.video.canPlayType('application/vnd.apple.mpegurl')) {
             // The current Eingebaut display is html5 and Apple HLS is supported. This feels like the future.
-            $this.qualities['standard'] = {format:'hls', codec:'unknown', displayName:'Automatic', displayQuality:'unknown', source:v.http_stream};
+            $this.qualities['standard'] = {format:'hls', codec:'unknown', displayName:'Automatic', displayQuality:'unknown', source:v.hls_stream};
           } else if($this.displayDevice=='flash') {
             // Flash has been loaded, so we can throw an HDS stream at the display and have it work.
             $this.qualities['standard'] = {format:'hds', codec:'unknown', displayName:'Automatic', displayQuality:'unknown', source:v.hds_stream};
