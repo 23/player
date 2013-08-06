@@ -57,11 +57,14 @@ var PlayerVideo = function(Player,$,type,data){
     $v.type = type; // 'clip' or 'stream'
     $v.populated = false;
     $v.id = ($v.type=='clip' ? $v.photo_id : $v.live_id);
+    $v.playable_p = true;
 
     // Someone smartly gave different variable names to streams
     if($v.type=='stream') {
       $v.title = $v.name
       $v.content = $v.description_html;
+      $v.playable_p = ($v.streaming_p=='1'||$v.streaming_p=='t');
+      console.debug($v.playable_p);
     }
 
     // Init data model for extra information about the clip
@@ -273,6 +276,7 @@ Player.provide('core',
           return false;
         }
       });
+      Player.getter('video_playable', function(){return $this.video&&$this.video.playable_p;});
 
       // Information about frames for the current video
       Player.getter('video_has_frames', function(){try {return ($this.video.video_frames_size>0);} catch(e) {return false;}});
