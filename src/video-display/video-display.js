@@ -315,24 +315,34 @@ Player.provide('video-display',
       });
  
       /* SETTERS */
+      var playableSource = '';
       Player.setter('quality', function(quality){
           // Sanity check
           if(!$this.qualities[quality]) return;
 
           // Update the global value
           $this.quality = quality;
-          // Switch the source and jump to current spot
-          var playing = Player.get('playing');
           $this.rawSource = $this.qualities[$this.quality].source;
-          $this.video.setSource($this.rawSource, ($this._currentTime === false ? Player.get('currentTime') : $this._currentTime));
-          $this._currentTime = false;
-          Player.fire('player:video:sourcechange');
-          Player.fire('player:video:qualitychange');
-          Player.set('playing', playing);
+
+          if(Player.get('video_playable')) {
+            // Switch the source and jump to current spot
+            var playing = Player.get('playing');
+            $this.video.setSource($this.rawSource, ($this._currentTime === false ? Player.get('currentTime') : $this._currentTime));
+            $this._currentTime = false;
+            Player.fire('player:video:sourcechange');
+            Player.fire('player:video:qualitychange');
+            Player.set('playing', playing);
+          } else {
+            playableSource = $this.rawSource;
+          }
       });
 
       Player.setter('playing', function(playing){
           if(!Player.get('video_playable')) return;
+          if(playableSource!='') {
+            $this.video.setSource(playableSource, 0);
+            playableSource = '';
+          }
           try {
               if($this.video) {                
                   if(playing && !Player.get('playing') && !Player.fire('player:video:beforeplay')) return false;
