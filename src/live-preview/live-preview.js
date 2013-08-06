@@ -58,8 +58,8 @@ Player.provide('live-preview',
           $this.render(onRender);
       });
       Player.bind('player:video:loaded', function(e,video){
-          $this.showLivePreview = (video.type=='stream' && video.next_start_time.length && video.streaming_p=='0');
-          $this.showLiveCountdown = ($this.showLivePreview && video.show_countdown_p=='1');
+          $this.showLivePreview = (video.type=='stream' && video.streaming_p=='0');
+          $this.showLiveCountdown = ($this.showLivePreview && video.next_start_time.length && video.show_countdown_p=='1');
           $this.nextStartTime = (video.next_start_time_epoch.length ? new Date(parseInt(video.next_start_time_epoch)) : '');
           $this.render(onRender);
       });
