@@ -45,7 +45,7 @@ Player.provide('live-preview',
           ['second', 'seconds', 1]
         ], function(i,x){
           var num = Math.floor(seconds/x[2]);
-          if(num>0||ret.length>0) {
+          if(num>0||ret.length>0||x[2]==1) {
             ret.push(num + ' ' + x[num==1 ? 0 : 1]);
             seconds -= num*x[2];
           }
