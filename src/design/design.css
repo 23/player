@@ -455,7 +455,7 @@ table.browse-recommendations div {
 .browse-button-off {background-image:url('browse-off-icon.png');}
 .share-button {background-image:url('share-icon.png');}
 .info-button {background-image:url('info-icon.png');}
-.volume-button-on {background-image:url('volume-on-icon.png');}
+.volume-button, .volume-button-on {background-image:url('volume-on-icon.png');}
 .volume-button-off {background-image:url('volume-off-icon.png');}
 .fullscreen-button {background-image:url('fullscreen-icon.png');}
 .mail-button {background-image:url('mail-icon.png');}
@@ -518,7 +518,7 @@ table.browse-recommendations div {
     .browse-button-off {background-image:url('browse-off-icon@2x.png'); background-size:30px;}
     .share-button {background-image:url('share-icon@2x.png'); background-size:30px;}
     .info-button {background-image:url('info-icon@2x.png'); background-size:30px;}
-    .volume-button-on {background-image:url('volume-on-icon@2x.png'); background-size:30px;}
+    .volume-button, .volume-button-on {background-image:url('volume-on-icon@2x.png'); background-size:30px;}
     .volume-button-off {background-image:url('volume-off-icon@2x.png'); background-size:30px;}
     .fullscreen-button {background-image:url('fullscreen-icon@2x.png'); background-size:30px;}
     .mail-button {background-image:url('mail-icon@2x.png'); background-size:30px;}
