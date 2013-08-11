@@ -1,12 +1,14 @@
 {% if showLivePreview %}
-  <div class="preview-thumbnail"></div>
-  {% if showLiveCountdown %}
-    <table class="preview-countdown"><tr><td>
-      <span></span> 
-      <br/>
-      to {{video_title}}
-    </td></tr></table>
-  {% else %}
-    <div class="preview-offline">{{video_title}} is not live right now</div>
-  {% endif %}
+  <div class="preview-container">
+    <div class="preview-thumbnail"></div>
+    {% if showLiveCountdown %}
+      <table class="preview-countdown"><tr><td>
+        <span></span> 
+        <br/>
+        to {{video_title}}
+      </td></tr></table>
+    {% else %}
+      <div class="preview-offline">{{video_title}} is not live right now</div>
+    {% endif %}
+  </div>
 {% endif %}
