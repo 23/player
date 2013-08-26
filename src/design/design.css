@@ -5,9 +5,9 @@ body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,
     font-family: 'DKTHeavyRegular';
     src: url('http://kglteater.dk/Components/PageTypes/Content/fonts/dkt_heavy-webfont.eot');
     src: url('http://kglteater.dk/Components/PageTypes/Content/fonts/dkt_heavy-webfont.eot?#iefix') format('embedded-opentype'),
-         url('http://kglteater.dk/Components/PageTypes/Content/fonts/dkt_heavy-webfont.woff') format('woff'),
+         url('http://video.kglteater.dk/files/dkt_heavy-webfont.woff') format('woff'),
          url('http://kglteater.dk/Components/PageTypes/Content/fonts/dkt_heavy-webfont.ttf') format('truetype'),
-         url('http://kglteater.dk/Components/PageTypes/Content/fonts/http://kglteater.dk/Components/PageTypes/Content/fonts/dkt_heavy-webfont.svg#DKTHeavyRegular') format('svg');
+         url('http://kglteater.dk/Components/PageTypes/Content/fonts/dkt_heavy-webfont.svg#DKTHeavyRegular') format('svg');
     font-weight: normal;
     font-style: normal;
 
@@ -17,7 +17,7 @@ body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,
     font-family: 'DKTRegular';
     src: url('http://kglteater.dk/Components/PageTypes/Content/fonts/dkt-webfont.eot');
     src: url('http://kglteater.dk/Components/PageTypes/Content/fonts/dkt-webfont.eot?#iefix') format('embedded-opentype'),
-         url('http://kglteater.dk/Components/PageTypes/Content/fonts/dkt-webfont.woff') format('woff'),
+         url('http://video.kglteater.dk/files/dkt-webfont.woff') format('woff'),
          url('http://kglteater.dk/Components/PageTypes/Content/fonts/dkt-webfont.ttf') format('truetype'),
          url('http://kglteater.dk/Components/PageTypes/Content/fonts/dkt-webfont.svg#DKTRegular') format('svg');
     font-weight: normal;
