@@ -147,8 +147,9 @@ a.button { /* standard button design as a straight link */
     height:50px;
 }
 .tray-right{
-    margin: 7px 5px 0 0 ;
+    margin: 7px 5px 0 0;
     float: right;
+    width: 100%;
 }
 .tray-right .tray-button { /* buttons right of scrubber */
     float:right;
@@ -162,7 +163,7 @@ a.button { /* standard button design as a straight link */
     background:rgb(0,0,0); /*fallback for browser with no RGBa support */
     background:rgba(0,0,0,.8); /*updated in js via player settings */
     margin: 0 0 0 63px;
-    
+    position: relative;
 }
 .tray-scrubber {  /* scrubber position */
     margin: 0; /* this will be updated using JS to fix the with of .tray-left and .tray-right */
@@ -287,8 +288,9 @@ a.button { /* standard button design as a straight link */
 
 /* === Module: Info === */
 .player-info {
-    float: left;
-    margin: 5px 0 0 10px;
+    position: absolute;
+    top: 5px;
+    left: 10px;
     text-transform: uppercase;
     overflow: hidden;
     width: 0; /*updated in js*/
