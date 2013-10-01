@@ -424,7 +424,7 @@ Player.provide('video-display',
           return ($this.video ? $this.video.getBufferTime() : 0);
       });
       Player.getter('isLive', function(){
-          return ($this.video ? $this.video.getIsLive() : false);
+          return (Player.get("video").type == "stream");
       });
       Player.getter('src', function(){
           return ($this.video ? $this.video.getSource() : '');
