@@ -164,6 +164,7 @@ a.button { /* standard button design as a straight link */
     background:rgba(0,0,0,.8); /*updated in js via player settings */
     margin: 0 0 0 63px;
     position: relative;
+    filter: alpha(enabled=false) !important; /* IE alpha overflow hidden bug, http://labs.thesedays.com/blog/2011/06/02/ie-alpha-overflow-hidden-bug/ */
 }
 .tray-scrubber {  /* scrubber position */
     margin: 0; /* this will be updated using JS to fix the with of .tray-left and .tray-right */
