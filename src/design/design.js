@@ -117,6 +117,14 @@ Player.provide('design',
           $('video-display').css({bottom:$this.verticalPadding+'px', left:$this.horizontalPadding+'px'})
       }
 
+      // Fullscreen on pinch to zoom
+      if ('ontouchstart' in document.documentElement) {
+          $(document).on("gesturechange", function(e){
+              if (e.originalEvent.scale > 1) {
+		  Player.set("fullscreen", true);
+              }
+          });
+      }
 
       // RESIZE HANDLING
       var _resize = function(){
