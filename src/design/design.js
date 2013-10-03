@@ -127,9 +127,11 @@ Player.provide('design',
           });
           // Quicker response on tap
           $(document).on("touchstart", function(e){
-              $(e.target).click();
-              e.preventDefault();
-              e.stopPropagation();
+              if (e.originalEvent.touches.length == 1) {
+                  $(e.target).click();
+                  e.preventDefault();
+                  e.stopPropagation();
+              }
           });
       }
 
