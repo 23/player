@@ -119,6 +119,65 @@ Player.provide('subtitles',
           Player.set('subtitleText', '');
         }
       }
+      $this.possiblyInsertSubtitleTracks = function(){
+        if (/iPhone|iPad/.test(navigator.userAgent)) {
+          var ve = Player.get("videoElement");
+          if (typeof(ve) != "undefined") {
+            v = $(ve.video[0]);
+          } else {
+            return;
+          }
+          v.find("track").remove();
+          $.each($this.locales, function(i,o){
+            var track = $("<track>");
+            track.attr("kind", "subtitles");
+            track.attr("src", o.href.replace(/\.srt|\.websrt/,".vtt"));
+            track.attr("srclang", o.locale.match(/^([^_]+)_/)[1]);
+            track.attr("label", o.language.match( /^([^\(]+)\(/ )[1]);
+            if (o.default_p && _onByDefault && !/iPad/.test(navigator.userAgent)) {
+              track.prop("default", true);
+            }
+            v.append(track);
+          });
+          $this.bindFullscreenListeners(v);
+        }
+      };
+      $this.fullscreenListenersBound = false;
+      $this.bindFullscreenListeners = function(v){
+        if (/iPad/.test(navigator.userAgent) && !$this.fullscreenListenersBound) {
+          var ve = v.get(0);
+          // Possibly show track elements when we enter fullscreen
+          ve.addEventListener('webkitbeginfullscreen', function(){
+            for (var i = 0; i < ve.textTracks.length; i += 1) {
+              if (ve.textTracks[i].language == Player.get("subtitleLocale").substr(0,2)) {
+                ve.textTracks[i].mode = "showing";
+              } else {
+                ve.textTracks[i].mode = "disabled";
+              }
+            }
+          }, false);
+          // Disable native track elements when we leave fullscreen
+          // and mirror showing/disabled subtitles in the subtitles module
+          ve.addEventListener('webkitendfullscreen', function(){
+            var _showingSubtitlesFound = false;
+            for (var i = 0; i < ve.textTracks.length; i += 1) {
+              if (ve.textTracks[i].mode == "showing") {
+                $.each($this.locales, function(a,o){
+                  if (ve.textTracks[i].language == o.locale.substr(0,2)) {
+                    Player.set("subtitleLocale", o.locale);
+                    _showingSubtitlesFound = true;
+                  }
+                });
+              }
+              ve.textTracks[i].mode = "disabled";
+            }
+            if (!_showingSubtitlesFound) {
+              Player.set("subtitleLocale", "");
+            }
+          }, false);
+        }
+        $this.fullscreenListenersBound = true;
+      };
 
       // Load some list of available subtitles
       // Uses the /api/photo/subtitle/list API endpoint
@@ -137,6 +196,7 @@ Player.provide('subtitles',
                         $this.locales[o.locale] = o;
                       });
                     Player.set('subtitleLocale', (_onByDefault?$this.defaultLocale:''));
+                    $this.possiblyInsertSubtitleTracks();
                 },
                 Player.fail
             );
