@@ -96,8 +96,10 @@ Player.provide('video-display',
                 if(_v) Player.fire('player:video:loaded', _v);
               }
               if((e=='canplay'||e=='loaded')&&$this._queuePlay) {
-                $this.video.setPlaying(true);
-                $this._queuePlay = false;
+                try {
+                  $this.video.setPlaying(true);
+                  $this._queuePlay = false;
+                } catch(e){}
               }
               // Don't send event during switching, it only confuses the UI
               if($this.video.switching && (e=='playing'||e=='pause')) return;
@@ -281,13 +283,11 @@ Player.provide('video-display',
           if(cookieVolume.length>0) Player.set('volume', new Number(cookieVolume));
           $this._loadVolumeCookie = false;
         }
-        
-        if($this.autoPlay) {
-          // Might want to autoPlay it 
+
+        // Might want to autoPlay it
+        if($this.autoPlay && !/(iPhone|iPod|iPad|Windows.Phone)/.test(navigator.userAgent)) {
           // (iOS + Windows Phone 8 requires user interaction to start playback and thus won't support auto play apart from in edge cases)
-          if(!/(iPhone|iPod|iPad|Windows.Phone)/.test(navigator.userAgent)) {
-            Player.set('playing', true);
-          }
+          Player.set('playing', true);
         } else {
           // Otherwise fire a non-event
           Player.fire('player:video:pause', $this.video);
