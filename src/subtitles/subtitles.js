@@ -106,7 +106,7 @@ Player.provide('subtitles',
           Player.set('subtitleText', '');
         });
       $this.possiblyRender = function(){
-        if($this.subtitles.length>0) {
+        if(Player.get('playing') && $this.subtitles.length>0) {
           var time = Player.get('currentTime');
           var text = '';
           $.each($this.subtitles, function(i,s){
