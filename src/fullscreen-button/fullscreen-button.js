@@ -1,17 +1,17 @@
-/* 
+/*
    MODULE: FULLSCREEN BUTTON
    Handle full screen button and shortcut.
-   
+
    Fires:
    - player:fullscreenchange
-   
+
    Answers properties:
    - supportsFullscreen [get]
    - fullscreen [get/set]
 */
 
-Player.provide('fullscreen-button', 
-  {}, 
+Player.provide('fullscreen-button',
+  {},
   function(Player,$,opts){
     var $this = this;
     $.extend($this, opts);
@@ -23,13 +23,8 @@ Player.provide('fullscreen-button',
         }
       });
 
-    // Notify elements when fullscreen changes
-    $(document).bind('fullscreenchange mozfullscreenchange webkitfullscreenchange', function(e){
-        Player.fire('player:fullscreenchange');
-      });
-
     // Update UI when full screen changes
-    Player.bind('player:fullscreenchange player:loaded player:video:ready', function(e){
+    Player.bind('player:video:fullscreenchange player:loaded player:video:ready', function(e){
         $this.container.toggle(Player.get('supportsFullscreen'));
         $this.render();
       });
@@ -67,7 +62,7 @@ Player.provide('fullscreen-button',
             }
         }
       });
-      
+
     return $this;
   }
 );
