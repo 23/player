@@ -281,13 +281,11 @@ Player.provide('video-display',
           if(cookieVolume.length>0) Player.set('volume', new Number(cookieVolume));
           $this._loadVolumeCookie = false;
         }
-        
-        if($this.autoPlay) {
-          // Might want to autoPlay it 
+
+        // Might want to autoPlay it
+        if($this.autoPlay && !/(iPhone|iPod|iPad|Windows.Phone)/.test(navigator.userAgent)) {
           // (iOS + Windows Phone 8 requires user interaction to start playback and thus won't support auto play apart from in edge cases)
-          if(!/(iPhone|iPod|iPad|Windows.Phone)/.test(navigator.userAgent)) {
-            Player.set('playing', true);
-          }
+          Player.set('playing', true);
         } else {
           // Otherwise fire a non-event
           Player.fire('player:video:pause', $this.video);
