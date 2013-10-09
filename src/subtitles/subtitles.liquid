@@ -1,4 +1,4 @@
-{% if hasSubtitles and enableSubtitles %}
+{% if playing and hasSubtitles and enableSubtitles %}
 <div class="subtitles-container" style="padding-bottom:{{verticalPadding}}px">
   {% for line in subtitleText %} 
     <span>{{line}}</span>
