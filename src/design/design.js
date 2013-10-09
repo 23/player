@@ -128,6 +128,7 @@ Player.provide('design',
           // Quicker response on tap
           $(document).on("touchstart", function(e){
               if (e.originalEvent.touches.length == 1) {
+		  try {$(e.target).mousemove();}catch(e){}
                   $(e.target).click();
                   e.preventDefault();
                   e.stopPropagation();
