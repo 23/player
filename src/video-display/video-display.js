@@ -96,8 +96,10 @@ Player.provide('video-display',
                 if(_v) Player.fire('player:video:loaded', _v);
               }
               if((e=='canplay'||e=='loaded')&&$this._queuePlay) {
-                $this.video.setPlaying(true);
-                $this._queuePlay = false;
+                try {
+                  $this.video.setPlaying(true);
+                  $this._queuePlay = false;
+                } catch(e){}
               }
               // Don't send event during switching, it only confuses the UI
               if($this.video.switching && (e=='playing'||e=='pause')) return;
