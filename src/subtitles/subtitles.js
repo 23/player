@@ -99,7 +99,7 @@ Player.provide('subtitles',
           _onByDefault = s.subtitlesOnByDefault||false;
           Player.fire('player:subtitlechange');
         });
-      Player.bind('player:video:progress player:video:timeupdate player:video:seeked', function(e,o){
+      Player.bind('player:video:play play:video:playing player:video:pause player:video:progress player:video:timeupdate player:video:seeked', function(e,o){
           $this.possiblyRender();
         });
       Player.bind('player:video:ended', function(e,o){
