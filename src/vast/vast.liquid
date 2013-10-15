@@ -1,2 +1,11 @@
-<video class="vast-video"></video>
-<div class="vast-click-container"></div>
+<div class="vast-click-container" click="$set:clickAd:true"></div>
+{% if vastShowCountdown or vastAllowClose %}
+  <div class="vast-countdown-container">
+    {% if vastShowCountdown %}
+      <div class="vast-countdown-text">{{ vastCountdownText }}</div>
+    {% endif %}
+    {% if vastAllowClose %}
+      <div class="vast-close" click="$set:closeAd:true"></div>
+    {% endif %}
+  </div>
+{% endif %}

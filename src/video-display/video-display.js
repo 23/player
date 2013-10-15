@@ -1,7 +1,7 @@
-/* 
+/*
   MODULE: VIDEO
-  Handle all video playback for the current video 
-  (including quality, buffering, scrubbing, volume, progress and skipping) 
+  Handle all video playback for the current video
+  (including quality, buffering, scrubbing, volume, progress and skipping)
 
   Fires events:
   - player:video:loadeddata
@@ -18,12 +18,12 @@
   - player:video:pause
   - player:video:loadedmetadata
   - player:video:ended
-  - player:video:volumechange   
+  - player:video:volumechange
   - player:video:playerloaded
   - player:video:playerready
   - player:video:sourcechange
   - player:video:qualitychange
-  
+
   Answers properties:
   - playing [get/set]
   - currentTime [get/set]
@@ -48,7 +48,7 @@
   - formatTime: Formats number of seconds as a nice readable timestamp
 */
 
-Player.provide('video-display', 
+Player.provide('video-display',
   {
     className:'video-display',
     displayDevice:'html5',
@@ -59,7 +59,7 @@ Player.provide('video-display',
     start:0,
     verticalPadding:0,
     horizontalPadding:0
-  }, 
+  },
   function(Player,$,opts){
       var $this = this;
       $.extend($this, opts);
@@ -83,42 +83,44 @@ Player.provide('video-display',
 
       // Logic to load the display device with Eingebaut
       $this._queuePlay = false;
-      $this.loadEingebaut = function(){
+      $this.loadEingebaut = function(displayDevice, callback){
+          if (displayDevice) {$this.displayDevice = displayDevice;}
+          var callback = callback || function(e){
+            // Error if no display device is available
+            if(e=='loaded'&&$this.video.displayDevice=='none') {
+              Player.set('error', 'This player requires a modern web browser or a recent version of Adobe Flash.');
+            }
+            // If this loads after the content (i.e. if we're switching display device, fire an event that we're ready)
+            if(e=='loaded') {
+              var _v = Player.get('video');
+              if(_v) Player.fire('player:video:loaded', _v);
+            }
+            if((e=='canplay'||e=='loaded')&&$this._queuePlay) {
+              try {
+                $this.video.setPlaying(true);
+                $this._queuePlay = false;
+              } catch(e){}
+            }
+            // Don't send event during switching, it only confuses the UI
+            if($this.video.switching && (e=='playing'||e=='pause')) return;
+            // Modify event names slightly
+            if(e=='loaded'||e=='ready') e = 'player'+e;
+            // Fire the player event
+            Player.fire('player:video:' + e);
+          };
           $this.canvas.html('');
-          $this.video = new Eingebaut($this.canvas, $this.displayDevice, '', function(e){
-              // Error if no display device is available
-              if(e=='loaded'&&$this.video.displayDevice=='none') {
-                  Player.set('error', 'This player requires a modern web browser or a recent version of Adobe Flash.');
-              }
-              // If this loads after the content (i.e. if we're switching display device, fire an event that we're ready)
-              if(e=='loaded') {
-                var _v = Player.get('video');
-                if(_v) Player.fire('player:video:loaded', _v);
-              }
-              if((e=='canplay'||e=='loaded')&&$this._queuePlay) {
-                try {
-                  $this.video.setPlaying(true);
-                  $this._queuePlay = false;
-                } catch(e){}
-              }
-              // Don't send event during switching, it only confuses the UI
-              if($this.video.switching && (e=='playing'||e=='pause')) return;
-              // Modify event names slightly
-              if(e=='loaded'||e=='ready') e = 'player'+e;
-              // Fire the player event
-              Player.fire('player:video:' + e);
-            });
-        $this.video.load();
-        $this.video.showPosterOnEnd = $this.showThumbnailOnEnd;
-        $this.displayDevice = $this.video.displayDevice;
+          $this.video = new Eingebaut($this.canvas, $this.displayDevice, '', callback);
+          $this.video.load();
+          $this.video.showPosterOnEnd = $this.showThumbnailOnEnd;
+          $this.displayDevice = $this.video.displayDevice;
       };
 
-      // When the module has been loaded in to the DOM, load the display device    
+      // When the module has been loaded in to the DOM, load the display device
       $this.onAppend = function(){
         $this.loadEingebaut();
         $this.loadShortcuts();
       }
-      
+
       /* EVENT HANDLERS */
       var _togglePlayback = function(){Player.set('playing', !Player.get('playing'))}
       $this.loadShortcuts = function(){
@@ -144,7 +146,7 @@ Player.provide('video-display',
                 Player.set('volume', 1);
                 matched = true;
               }
-              
+
               if (matched) e.preventDefault();
             }
           });
@@ -162,7 +164,7 @@ Player.provide('video-display',
                 Player.set('volume', Player.get('volume')-0.2);
                 matched = true;
               }
-              // Scrub on right arrow            
+              // Scrub on right arrow
               if(e.keyCode==39) {
                 Player.set('currentTime', Player.get('currentTime')+30);
                 matched = true;
@@ -172,7 +174,7 @@ Player.provide('video-display',
                 Player.set('currentTime', Player.get('currentTime')-30);
                 matched = true;
               }
-              
+
               if(matched) e.preventDefault();
             }
           });
@@ -184,7 +186,7 @@ Player.provide('video-display',
         if($this.video&&$this.video.displayDevice!=$this.displayDevice) $this.loadEingebaut();
         $this.container.css({left:$this.horizontalPadding+'px', bottom:$this.verticalPadding+'px'});
       });
-      
+
       $this._currentTime = false;
       $this._loadVolumeCookie = true;
       $this.loadContent = function(){
@@ -195,7 +197,7 @@ Player.provide('video-display',
         }
         // If no display device is supported, give up
         if($this.displayDevice=='none') return;
-          
+
         // Load up the new video
         var v = Player.get('video');
         var s = Player.get('settings');
@@ -215,7 +217,7 @@ Player.provide('video-display',
           // Handle quality defaults
           $this.quality = $this.quality || s.defaultQuality || 'standard';
           if($this.quality=='high') $this.quality = 'hd';
-          
+
           // Handle formats or qualities
 
           // Chrome has a bug in seeking h264 files, which we've worked around recently; but for older clips
@@ -224,20 +226,20 @@ Player.provide('video-display',
 
           if( ($this.displayDevice!='html5' || $this.video.canPlayType('video/mp4; codecs="avc1.42E01E"')) && !preferWebM ) {
             // H.264
-            if (typeof(v.video_1080p_download)!='undefined' && v.video_1080p_download.length>0 && v.video_1080p_size>0) 
+            if (typeof(v.video_1080p_download)!='undefined' && v.video_1080p_download.length>0 && v.video_1080p_size>0)
               $this.qualities['fullhd'] = {format:'video_1080p', codec:'h264', displayName:'Full HD', displayQuality:'1080p', source:Player.get('url') + v.video_1080p_download};
-            if (typeof(v.video_hd_download)!='undefined' && v.video_hd_download.length>0) 
-              $this.qualities['hd'] = {format:'video_hd', codec:'h264', displayName:'HD', displayQuality:'720p', source:Player.get('url') + v.video_hd_download}; 
-            if (typeof(v.video_medium_download)!='undefined' && v.video_medium_download.length>0) 
-              $this.qualities['standard'] = {format:'video_medium', displayName:'Standard', displayQuality:'360p', codec:'h264', source:Player.get('url') + v.video_medium_download}; 
-            if (typeof(v.video_mobile_high_download)!='undefined' && v.video_mobile_high_download.length>0) 
+            if (typeof(v.video_hd_download)!='undefined' && v.video_hd_download.length>0)
+              $this.qualities['hd'] = {format:'video_hd', codec:'h264', displayName:'HD', displayQuality:'720p', source:Player.get('url') + v.video_hd_download};
+            if (typeof(v.video_medium_download)!='undefined' && v.video_medium_download.length>0)
+              $this.qualities['standard'] = {format:'video_medium', displayName:'Standard', displayQuality:'360p', codec:'h264', source:Player.get('url') + v.video_medium_download};
+            if (typeof(v.video_mobile_high_download)!='undefined' && v.video_mobile_high_download.length>0)
               $this.qualities['low'] = {format:'video_mobile_high', displayName:'Low', displayQuality:'180p', codec:'h264', source:Player.get('url') + v.video_mobile_high_download};
           } else if (typeof(v.video_webm_360p_download)!='undefined' && v.video_webm_360p_download.length>0 && $this.video.canPlayType('video/webm')) {
             // WebM (if there are available clips)
-            if (typeof(v.video_webm_720p_download)!='undefined' && v.video_webm_720p_download.length>0) 
-              $this.qualities['hd'] = {format:'video_webm_720p', codec:'webm', displayName:'HD', displayQuality:'720p', source:Player.get('url') + v.video_webm_720p_download}; 
-            if (typeof(v.video_webm_360p_download)!='undefined' && v.video_webm_360p_download.length>0) 
-              $this.qualities['standard'] = {format:'video_webm_720p', codec:'webm', displayName:'Standard', displayQuality:'360p', source:Player.get('url') + v.video_webm_360p_download}; 
+            if (typeof(v.video_webm_720p_download)!='undefined' && v.video_webm_720p_download.length>0)
+              $this.qualities['hd'] = {format:'video_webm_720p', codec:'webm', displayName:'HD', displayQuality:'720p', source:Player.get('url') + v.video_webm_720p_download};
+            if (typeof(v.video_webm_360p_download)!='undefined' && v.video_webm_360p_download.length>0)
+              $this.qualities['standard'] = {format:'video_webm_720p', codec:'webm', displayName:'Standard', displayQuality:'360p', source:Player.get('url') + v.video_webm_360p_download};
           } else if($this.displayDevice=='html5' && !$this.video.canPlayType('video/mp4; codecs="avc1.42E01E"')) {
             // Switch to a Flash display device when WebM isn't available
             Player.set('loading', true);
@@ -292,7 +294,7 @@ Player.provide('video-display',
           // Otherwise fire a non-event
           Player.fire('player:video:pause', $this.video);
         }
-        
+
         // We're ready now
         Player.fire('player:video:ready', $this.video);
       }
@@ -313,7 +315,7 @@ Player.provide('video-display',
           }
         }
       });
- 
+
       /* SETTERS */
       var playableSource = '';
       Player.setter('quality', function(quality){
@@ -348,7 +350,7 @@ Player.provide('video-display',
             playableSource = '';
           }
           try {
-              if($this.video) {                
+              if($this.video) {
                   if(playing && !Player.get('playing') && !Player.fire('player:video:beforeplay')) return false;
                   $this.video.setPlaying(playing);
               }
@@ -362,13 +364,13 @@ Player.provide('video-display',
       Player.setter('currentTime', function(currentTime){
           if($this.video) $this.video.setCurrentTime(currentTime);
       });
-      Player.setter('volume', function(volume){          
+      Player.setter('volume', function(volume){
           if($this.video) {
               $this.video.setVolume(volume);
               Cookie.set('playerVolume', new String(volume));
           }
       });
-      Player.setter('start', function(s){          
+      Player.setter('start', function(s){
           $this.start = s;
       });
 
@@ -399,12 +401,12 @@ Player.provide('video-display',
       });
       Player.getter('volume', function(){
           return ($this.video ? $this.video.getVolume() : 1);
-      });      
+      });
       Player.getter('supportsVolumeChange', function(){
           try {
               return $this.video.supportsVolumeChange();
           }catch(e) {return true;}
-      });      
+      });
       Player.getter('ended', function(){
           return ($this.video ? $this.video.getEnded() : false);
       });
@@ -439,11 +441,13 @@ Player.provide('video-display',
           return $this.verticalPadding;
       });
       Player.getter('isTouchDevice', function(){
-          return !!('ontouchstart' in window) // works on most browsers 
+          return !!('ontouchstart' in window) // works on most browsers
               || !!('onmsgesturechange' in window); // works on ie10
       });
+      Player.getter('eingebautConstructor', function(){
+          return $this.loadEingebaut;
+      });
 
-      
       return $this;
   }
 );
