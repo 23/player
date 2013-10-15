@@ -20,7 +20,7 @@
         "social-button",
         "video-display",
         "live-preview",
-        "logo", 
+        "logo",
         "scrubber",
         "subtitles",
         "sections",
@@ -35,6 +35,7 @@
         "quality-button",
         "info-button",
         "info",
-        "playflow"
+        "playflow",
+        "vast"
     ]
 }
