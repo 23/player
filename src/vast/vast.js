@@ -27,10 +27,10 @@ Player.provide('vast',
     Player.bind('player:settings', function(e,settings){
       PlayerUtilities.mergeSettings($this, ['adsVastURL', 'adsShowPreroll', 'adsShowPostroll', 'adsShowCountdown', 'adsAllowClose', 'adsCountdownTextSingular', 'adsCountdownTextPlural']);
       if (typeof $this.adsCountdownTextSingular == "undefined" || $this.adsCountdownTextSingular == "") {
-        $this.adsCountdownTextSingular == "This advertisement will end in % second";
+        $this.adsCountdownTextSingular = "This advertisement will end in % second";
       }
       if (typeof $this.adsCountdownTextPlural == "undefined" || $this.adsCountdownTextPlural == "") {
-        $this.adsCountdownTextPlural == "This advertisement will end in % seconds";
+        $this.adsCountdownTextPlural = "This advertisement will end in % seconds";
       }
       if (typeof $this.adsVastURL != "undefined" && $this.adsVastURL != "") {
         Player.set("vastURL", $this.adsVastURL);
