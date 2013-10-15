@@ -27,10 +27,10 @@ Player.provide('vast',
     Player.bind('player:settings', function(e,settings){
       PlayerUtilities.mergeSettings($this, ['adsVastURL', 'adsShowPreroll', 'adsShowPostroll', 'adsShowCountdown', 'adsAllowClose', 'adsCountdownTextSingular', 'adsCountdownTextPlural']);
       if (typeof $this.adsCountdownTextSingular == "undefined" || $this.adsCountdownTextSingular == "") {
-        $this.adsCountdownTextSingular = "This advertisement will end in % second";
+        $this.adsCountdownTextSingular = "This ad will end in % second";
       }
       if (typeof $this.adsCountdownTextPlural == "undefined" || $this.adsCountdownTextPlural == "") {
-        $this.adsCountdownTextPlural = "This advertisement will end in % seconds";
+        $this.adsCountdownTextPlural = "This ad will end in % seconds";
       }
       if (typeof $this.adsVastURL != "undefined" && $this.adsVastURL != "") {
         Player.set("vastURL", $this.adsVastURL);
@@ -153,7 +153,7 @@ Player.provide('vast',
     });
     Player.bind("player:vast:pause", function(){
       var remaining = Player.get("duration") - Player.get("currentTime");
-      if (playthrough > 1) {
+      if (remaining > 1) {
         $this.reportEvent("pause", false);
       }
     });
@@ -209,6 +209,7 @@ Player.provide('vast',
     };
     // Restore the eingebaut object from `video-display` back to it original state.
     $this.restoreEingebaut = function(){
+      Player.set("playing", false);
       $this.eingebaut.callback = $this.originalEingebaut.callback;
       $this.eingebaut.container.parent().css({zIndex:0});
       Player.fire('player:video:pause');
