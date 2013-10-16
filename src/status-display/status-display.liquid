@@ -1,3 +1,7 @@
+{% if showSeeking %}
+  <div class="seeking-indicator"></div>
+{% endif %}
+
 {% if displayDevice == 'none' %}
   <div class="error-display">
     <p>
@@ -17,6 +21,3 @@
   <div class="loading-indicator"></div>
 {% endif %}
 
-{% if video_playable and (seeking or stalled) %}
-  <div class="seeking-indicator"></div>
-{% endif %}
