@@ -56,6 +56,9 @@ Player.provide('status-display',
     Player.bind('player:video:progress player:video:timeupdate player:video:flashloaded player:video:seeking player:video:seeked player:video:stalled player:video:play player:video:pause player:video:playing', function(e){
         $this.render();
       });
+    Player.getter('showSeeking', function(){
+        return Player.get('video_playable') && (Player.get('seeking') || Player.get('stalled'))
+      });
 
     return $this;
   }
