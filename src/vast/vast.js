@@ -150,6 +150,8 @@ Player.provide('vast',
       $this.reportEvent("creativeView", true);
       $this.reportEvent("start", true);
       if (Player.get("fullscreen")) {$this.reportEvent("fullscreen", true);}
+      $this.lastVolume = Player.get("volume");
+      if ($this.lastVolume) == 0) {$this.reportEvent("mute", true);}
     });
     Player.bind("player:vast:pause", function(){
       var remaining = Player.get("duration") - Player.get("currentTime");
@@ -174,6 +176,15 @@ Player.provide('vast',
     });
     Player.bind("player:vast:leavefullscreen", function(){
       $this.reportEvent("collapse");
+    });
+    Player.bind("player:vast:volumechange", function(){
+      var currentVolume = Player.get("volume");
+      if ($this.lastVolume == 0 && currentVolume != 0) {
+        $this.reportEvent("unmute", false);
+      } else if ($this.lastVolume != 0 && currentVolume == 0) {
+        $this.reportEvent("mute", false);
+      }
+      $this.lastVolume = currentVolume;
     });
 
     // Logic to load the display device with Eingebaut
