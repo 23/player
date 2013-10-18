@@ -60,6 +60,7 @@ Player.provide('vast',
       }
     };
 
+    // Parse vast document and fail gracefully on syntax errors or missing data
     $this.parseData = function(data){
       $this.dataParsed = true;
       $this.VAST = $(data).find("VAST");
@@ -99,8 +100,10 @@ Player.provide('vast',
       if ($this.queuePlay) {$this.playNextAd();}
     };
 
+    // Track failed attempts to load and parse vast documents
     $this.failLoadingXML = function(){
       $this.vastUrlCount -= 1;
+      // If we've run out of valid vast info, deactivate the module and possibly play the content video
       if ($this.vastUrlCount == 0) {
         $this.active = false;
         if ($this.queuePlay) {
@@ -110,7 +113,9 @@ Player.provide('vast',
       }
     };
 
-    $this.ajaxReport = function(url, event){
+    // Report an event to url specified in vast document
+    // "dataType: image" defined at the end of this file
+    $this.ajaxReport = function(url){
       $.ajax({
         url: url,
         success: function(){},
@@ -119,6 +124,8 @@ Player.provide('vast',
       });
     };
     $this.reportedEvents = [];
+    // Request to report an event.
+    // "checkReported = true" for reporting the event, only if it hasn't already been reported.
     $this.reportEvent = function(event, checkReported){
       var reported = false;
       if (checkReported) {
@@ -145,6 +152,7 @@ Player.provide('vast',
       }
       $this.reportedEvents.push(event);
     };
+    // Listen for events that should be reported
     Player.bind("player:vast:play", function(){
       $this.reportEvent("impression", true);
       $this.reportEvent("creativeView", true);
@@ -228,6 +236,7 @@ Player.provide('vast',
       $this.container.hide();
     };
 
+    // Plays next playable ad
     $this.playNextAd = function(){
       $this.reportedEvents = [];
       $this.currentAdIndex += 1;
@@ -254,6 +263,8 @@ Player.provide('vast',
       $this.render();
     };
 
+    // Ends the current ad
+    // Should only be called, if an ad is currently playing
     $this.destroyAd = function(keepPlaying){
       if(typeof keepPlaying == "undefined") {
         keepPlaying = true;
@@ -272,6 +283,7 @@ Player.provide('vast',
       }
     };
 
+    // When content video starts playing, check if we should show an ad
     Player.bind("player:video:play", function(){
       if ($this.active && ($this.vastState == 'before' || $this.vastState == 'ended') && $this.adsShowPreroll) {
         $this.vastState = 'preroll';
@@ -286,6 +298,7 @@ Player.provide('vast',
       }
     });
 
+    // Possibly show an ad when content video has finished playback
     Player.bind("player:video:ended", function(){
       if ($this.active && $this.adsShowPostroll && $this.playableAds.length > 0) {
         $this.vastState = 'postroll';
@@ -309,6 +322,7 @@ Player.provide('vast',
       }
     });
 
+    // Register a new url and activate the module
     Player.setter('vastURL', function(url){
       var urls = url.split("\n");
       $.each(urls, function(i, v){
@@ -358,6 +372,7 @@ Player.provide('vast',
   }
 );
 
+// Enable cross domain ajax calls in IE8+9
 function checkIEAjaxFallback(){
   // jQuery.XDomainRequest.js
   // Author: Jason Moon - @JSONMOON
@@ -451,6 +466,8 @@ function checkIEAjaxFallback(){
   }
 }
 
+// Register custom transpart type for reporting events
+// Used for simply requesting a cross domain url and ignoring whether the request succeeds or fails
 $.ajaxTransport( "image", function( s ) {
   if ( s.type === "GET" && s.async ) {
     var image;
