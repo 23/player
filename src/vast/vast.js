@@ -159,7 +159,7 @@ Player.provide('vast',
       $this.reportEvent("start", true);
       if (Player.get("fullscreen")) {$this.reportEvent("fullscreen", true);}
       $this.lastVolume = Player.get("volume");
-      if ($this.lastVolume) == 0) {$this.reportEvent("mute", true);}
+      if ($this.lastVolume == 0) {$this.reportEvent("mute", true);}
     });
     Player.bind("player:vast:pause", function(){
       var remaining = Player.get("duration") - Player.get("currentTime");
