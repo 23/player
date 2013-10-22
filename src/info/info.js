@@ -36,7 +36,7 @@ Player.provide('info',
           $this.render();
       });
       Player.bind('player:video:play player:video:playing', function(e,video){
-          Player.set('showDescriptions', true);
+          Player.set('showDescriptions', false);
       });
       Player.bind('player:settings player:video:loaded', function(e,video){
           Player.fire('player:infoengaged');
