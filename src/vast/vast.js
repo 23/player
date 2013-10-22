@@ -240,6 +240,7 @@ Player.provide('vast',
     $this.playNextAd = function(){
       $this.reportedEvents = [];
       $this.currentAdIndex += 1;
+      $this.contentDuration = Player.get("duration");
       if ($this.playableAds.length <= $this.currentAdIndex) {
         $this.currentAdIndex = 0;
       }
@@ -359,7 +360,12 @@ Player.provide('vast',
       }
     });
     Player.getter('vastShowCountdown', function(){
-      return $this.adsShowCountdown;
+      if ($this.adsShowCountdown) {
+        var duration = Player.get("duration");
+        return (duration<$this.contentDuration-2||duration>$this.contentDuration+2);
+      } else {
+        return false;
+      }
     });
     Player.getter('vastActive', function(){
       return $this.active;
