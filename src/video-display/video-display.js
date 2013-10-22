@@ -1,7 +1,7 @@
-/* 
+/*
   MODULE: VIDEO
-  Handle all video playback for the current video 
-  (including quality, buffering, scrubbing, volume, progress and skipping) 
+  Handle all video playback for the current video
+  (including quality, buffering, scrubbing, volume, progress and skipping)
 
   Fires events:
   - player:video:loadeddata
@@ -18,12 +18,12 @@
   - player:video:pause
   - player:video:loadedmetadata
   - player:video:ended
-  - player:video:volumechange   
+  - player:video:volumechange
   - player:video:playerloaded
   - player:video:playerready
   - player:video:sourcechange
   - player:video:qualitychange
-  
+
   Answers properties:
   - playing [get/set]
   - currentTime [get/set]
@@ -48,7 +48,7 @@
   - formatTime: Formats number of seconds as a nice readable timestamp
 */
 
-Player.provide('video-display', 
+Player.provide('video-display',
   {
     className:'video-display',
     displayDevice:'html5',
@@ -57,7 +57,7 @@ Player.provide('video-display',
     start:0,
     verticalPadding:0,
     horizontalPadding:0
-  }, 
+  },
   function(Player,$,opts){
       var $this = this;
       $.extend($this, opts);
@@ -108,12 +108,32 @@ Player.provide('video-display',
         $this.displayDevice = $this.video.displayDevice;
       };
 
-      // When the module has been loaded in to the DOM, load the display device    
+      // When the module has been loaded in to the DOM, load the display device
       $this.onAppend = function(){
-        $this.loadEingebaut();
-        $this.loadShortcuts();
+          $this.loadEingebaut();
+          $this.loadShortcuts();
+	  if (/(iPhone|iPod|iPad)/.test(navigator.userAgent)) {
+	      $this.useNative();
+	  }
       }
-      
+
+      $this.useNative = function(){
+          $this.video.callback = function(){};
+          var $video = $("video");
+          if ($video.length < 1) {
+              setTimeout($this.useNative, 100);
+          } else {
+	      $(".player-design").remove();
+              $video.attr("controls", true);
+	      $video.css({
+		  width: "100%",
+		  height: "100%",
+		  diplay: "block"
+	      });
+              $("body").append($video);
+          }
+      };
+
       /* EVENT HANDLERS */
       var _togglePlayback = function(){Player.set('playing', !Player.get('playing'))}
       $this.loadShortcuts = function(){
@@ -139,7 +159,7 @@ Player.provide('video-display',
                 Player.set('volume', 1);
                 matched = true;
               }
-              
+
               if (matched) e.preventDefault();
             }
           });
@@ -157,7 +177,7 @@ Player.provide('video-display',
                 Player.set('volume', Player.get('volume')-0.2);
                 matched = true;
               }
-              // Scrub on right arrow            
+              // Scrub on right arrow
               if(e.keyCode==39) {
                 Player.set('currentTime', Player.get('currentTime')+30);
                 matched = true;
@@ -167,7 +187,7 @@ Player.provide('video-display',
                 Player.set('currentTime', Player.get('currentTime')-30);
                 matched = true;
               }
-              
+
               if(matched) e.preventDefault();
             }
           });
@@ -178,7 +198,7 @@ Player.provide('video-display',
           PlayerUtilities.mergeSettings($this, ['autoPlay', 'start', 'verticalPadding', 'horizontalPadding']);
           $this.container.css({left:$this.horizontalPadding+'px', bottom:$this.verticalPadding+'px'});
       });
-      
+
       $this._currentTime = false;
       $this._loadVolumeCookie = true;
       $this.loadContent = function(){
@@ -189,7 +209,7 @@ Player.provide('video-display',
         }
         // If no display device is supported, give up
         if($this.displayDevice=='none') return;
-          
+
         // Load up the new video
         var v = Player.get('video');
         var s = Player.get('settings');
@@ -206,7 +226,7 @@ Player.provide('video-display',
           // Handle quality defaults
           $this.quality = $this.quality || s.defaultQuality || 'standard';
           if($this.quality=='high') $this.quality = 'hd';
-          
+
           // Handle formats or qualities
 
           // Chrome has a bug in seeking h264 files, which we've worked around recently; but for older clips
@@ -215,20 +235,20 @@ Player.provide('video-display',
 
           if( ($this.displayDevice!='html5' || $this.video.canPlayType('video/mp4; codecs="avc1.42E01E"')) && !preferWebM ) {
             // H.264
-            if (typeof(v.video_1080p_download)!='undefined' && v.video_1080p_download.length>0 && v.video_1080p_size>0) 
+            if (typeof(v.video_1080p_download)!='undefined' && v.video_1080p_download.length>0 && v.video_1080p_size>0)
               $this.qualities['fullhd'] = {format:'video_1080p', codec:'h264', displayName:'Full HD', displayQuality:'1080p', source:Player.get('url') + v.video_1080p_download};
-            if (typeof(v.video_hd_download)!='undefined' && v.video_hd_download.length>0) 
-              $this.qualities['hd'] = {format:'video_hd', codec:'h264', displayName:'HD', displayQuality:'720p', source:Player.get('url') + v.video_hd_download}; 
-            if (typeof(v.video_medium_download)!='undefined' && v.video_medium_download.length>0) 
-              $this.qualities['standard'] = {format:'video_medium', displayName:'Standard', displayQuality:'360p', codec:'h264', source:Player.get('url') + v.video_medium_download}; 
-            if (typeof(v.video_mobile_high_download)!='undefined' && v.video_mobile_high_download.length>0) 
+            if (typeof(v.video_hd_download)!='undefined' && v.video_hd_download.length>0)
+              $this.qualities['hd'] = {format:'video_hd', codec:'h264', displayName:'HD', displayQuality:'720p', source:Player.get('url') + v.video_hd_download};
+            if (typeof(v.video_medium_download)!='undefined' && v.video_medium_download.length>0)
+              $this.qualities['standard'] = {format:'video_medium', displayName:'Standard', displayQuality:'360p', codec:'h264', source:Player.get('url') + v.video_medium_download};
+            if (typeof(v.video_mobile_high_download)!='undefined' && v.video_mobile_high_download.length>0)
               $this.qualities['low'] = {format:'video_mobile_high', displayName:'Low', displayQuality:'180p', codec:'h264', source:Player.get('url') + v.video_mobile_high_download};
           } else if (typeof(v.video_webm_360p_download)!='undefined' && v.video_webm_360p_download.length>0 && $this.video.canPlayType('video/webm')) {
             // WebM (if there are available clips)
-            if (typeof(v.video_webm_720p_download)!='undefined' && v.video_webm_720p_download.length>0) 
-              $this.qualities['hd'] = {format:'video_webm_720p', codec:'webm', displayName:'HD', displayQuality:'720p', source:Player.get('url') + v.video_webm_720p_download}; 
-            if (typeof(v.video_webm_360p_download)!='undefined' && v.video_webm_360p_download.length>0) 
-              $this.qualities['standard'] = {format:'video_webm_720p', codec:'webm', displayName:'Standard', displayQuality:'360p', source:Player.get('url') + v.video_webm_360p_download}; 
+            if (typeof(v.video_webm_720p_download)!='undefined' && v.video_webm_720p_download.length>0)
+              $this.qualities['hd'] = {format:'video_webm_720p', codec:'webm', displayName:'HD', displayQuality:'720p', source:Player.get('url') + v.video_webm_720p_download};
+            if (typeof(v.video_webm_360p_download)!='undefined' && v.video_webm_360p_download.length>0)
+              $this.qualities['standard'] = {format:'video_webm_720p', codec:'webm', displayName:'Standard', displayQuality:'360p', source:Player.get('url') + v.video_webm_360p_download};
           } else if($this.displayDevice=='html5' && !$this.video.canPlayType('video/mp4; codecs="avc1.42E01E"')) {
             // Switch to a Flash display device when WebM isn't available
             Player.set('loading', true);
@@ -274,9 +294,9 @@ Player.provide('video-display',
           if(cookieVolume.length>0) Player.set('volume', new Number(cookieVolume));
           $this._loadVolumeCookie = false;
         }
-        
+
         if($this.autoPlay) {
-          // Might want to autoPlay it 
+          // Might want to autoPlay it
           // (iOS requires user interaction to start playback and thus won't support auto play apart from in edge cases)
           if(!/(iPhone|iPod|iPad)/.test(navigator.userAgent)) {
             Player.set('playing', true);
@@ -285,7 +305,7 @@ Player.provide('video-display',
           // Otherwise fire a non-event
           Player.fire('player:video:pause', $this.video);
         }
-        
+
         // We're ready now
         Player.fire('player:video:ready', $this.video);
       }
@@ -297,7 +317,7 @@ Player.provide('video-display',
           Player.set('start', 0);
       });
 
- 
+
       /* SETTERS */
       Player.setter('quality', function(quality){
           // Sanity check
@@ -317,7 +337,7 @@ Player.provide('video-display',
 
       Player.setter('playing', function(playing){
           try {
-              if($this.video) {                
+              if($this.video) {
                   if(playing && !Player.get('playing') && !Player.fire('player:video:beforeplay')) return false;
                   $this.video.setPlaying(playing);
               }
@@ -331,13 +351,13 @@ Player.provide('video-display',
       Player.setter('currentTime', function(currentTime){
           if($this.video) $this.video.setCurrentTime(currentTime);
       });
-      Player.setter('volume', function(volume){          
+      Player.setter('volume', function(volume){
           if($this.video) {
               $this.video.setVolume(volume);
               Cookie.set('playerVolume', new String(volume));
           }
       });
-      Player.setter('start', function(s){          
+      Player.setter('start', function(s){
           $this.start = s;
       });
 
@@ -368,12 +388,12 @@ Player.provide('video-display',
       });
       Player.getter('volume', function(){
           return ($this.video ? $this.video.getVolume() : 1);
-      });      
+      });
       Player.getter('supportsVolumeChange', function(){
           try {
               return $this.video.supportsVolumeChange();
           }catch(e) {return true;}
-      });      
+      });
       Player.getter('ended', function(){
           return ($this.video ? $this.video.getEnded() : false);
       });
@@ -408,11 +428,11 @@ Player.provide('video-display',
           return $this.verticalPadding;
       });
       Player.getter('isTouchDevice', function(){
-          return !!('ontouchstart' in window) // works on most browsers 
+          return !!('ontouchstart' in window) // works on most browsers
               || !!('onmsgesturechange' in window); // works on ie10
       });
 
-      
+
       return $this;
   }
 );
