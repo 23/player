@@ -167,7 +167,7 @@ Player.provide('browse',
       Player.bind('player:video:ended', function(){
           if($this.loop) {
               $this.playNextVideo();
-          } else {
+          } else if($this.showBrowse) {
               Player.set('browseMode', true);
           }
       });
