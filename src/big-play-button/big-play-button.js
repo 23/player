@@ -26,6 +26,7 @@ Player.provide('big-play-button',
     // Get relevant settings
     Player.bind('player:settings', function(e,settings){
         PlayerUtilities.mergeSettings($this, ['showBigPlay']);
+        $this.render();
       });
 
     // Update element on play, pause and more
