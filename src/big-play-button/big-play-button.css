@@ -17,3 +17,9 @@
 .big-play-container table td div {
     margin:0 auto;
 }
+.big-play-button-custom img {
+    display:block;
+    cursor:pointer;
+    max-width:140px;
+    max-height:80px;
+}

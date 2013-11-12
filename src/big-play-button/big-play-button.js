@@ -14,8 +14,9 @@
 
 Player.provide('big-play-button', 
   {
-    showBigPlay: true
-  }, 
+    showBigPlay: true,
+    bigPlaySource: ''
+  },
   function(Player,$,opts){
     var $this = this;
     $.extend($this, opts);
@@ -25,7 +26,10 @@ Player.provide('big-play-button',
 
     // Get relevant settings
     Player.bind('player:settings', function(e,settings){
-        PlayerUtilities.mergeSettings($this, ['showBigPlay']);
+        PlayerUtilities.mergeSettings($this, ['showBigPlay', 'bigPlaySource']);
+        if($this.bigPlaySource.length>0 && !/\/\//.test($this.bigPlaySource)){
+            $this.bigPlaySource = Player.get('url')+$this.bigPlaySource;
+        }
         $this.render();
       });
 
@@ -38,6 +42,9 @@ Player.provide('big-play-button',
     Player.getter('showBigPlay', function(){
         return $this.showBigPlay;
       });
+    Player.getter('bigPlaySource', function(){
+        return $this.bigPlaySource;
+    });
     /* SETTERS */
     Player.setter('showBigPlay', function(sbp){
         $this.showBigPlay = sbp;
