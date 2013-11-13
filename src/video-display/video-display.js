@@ -191,6 +191,8 @@ Player.provide('video-display',
       $this._currentTime = false;
       $this._loadVolumeCookie = true;
       $this.loadContent = function(){
+        if ($this.video && typeof $this.video.controller != 'undefined' && $this.video.controller != '') return;
+
         // If the display device isn't ready yet, wait for it
         if(!$this.video || !$this.video.ready) {
           Player.bind('player:video:playerready', $this.loadContent);
