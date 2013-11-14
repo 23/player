@@ -63,6 +63,7 @@ Player.provide('design',
       $this.trayTimeoutId = null;
       Player.bind('player:settings', function(e){
           PlayerUtilities.mergeSettings($this, ['showTray', 'trayTimeout', 'verticalPadding', 'horizontalPadding', 'trayAlpha','trayBackgroundColor','trayTextColor','trayFont','trayTitleFontSize','trayTitleFontWeight','trayContentFontSize','trayContentFontWeight', 'scrubberColor']);
+          $this.trayTitleFontSize = $this.trayContentFontSize * 1.3;
 
           // Allow for background color transparency
           var colorTest = $this.trayBackgroundColor.match(/^\#(..)(..)(..)$/);
@@ -85,7 +86,7 @@ Player.provide('design',
           if($this.showTray&&$this.trayTimeout>0) {
               var triggerTrayTimeout = function(){
                   window.clearTimeout($this.trayTimeoutId);
-                
+
                   if($this._minimized) {
                       $('.tray-navigation').css({opacity:0});
                       $('#tray').removeClass('minimized');
@@ -155,7 +156,6 @@ Player.provide('design',
           // and tray-left to go flying. Very litterally: Hide empty stuff, show other.
           $('.tray-right>div:empty, .tray-left>div:empty').hide();
           $('.tray-right>div:parent, .tray-left>div:parent').show();
-
       }
       $(window).resize(_resize);
       Player.bind('glue:render', function(){
