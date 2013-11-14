@@ -217,10 +217,6 @@ Player.provide('video-display',
 
         if (v.type=='clip') {
           // ON DEMAND VIDEO
-          // Handle quality defaults
-          $this.quality = $this.quality || s.defaultQuality || 'standard';
-          if($this.quality=='high') $this.quality = 'hd';
-
           // Handle formats or qualities
 
           // Chrome has a bug in seeking h264 files, which we've worked around recently; but for older clips
@@ -228,6 +224,10 @@ Player.provide('video-display',
           preferWebM = (/Chrome/.test(navigator.userAgent) && v.photo_id<7626643 && typeof(v.video_webm_360p_download)!='undefined' && v.video_webm_360p_download.length>0 && $this.video.canPlayType('video/webm'));
 
           if( ($this.displayDevice!='html5' || $this.video.canPlayType('video/mp4; codecs="avc1.42E01E"')) && !preferWebM ) {
+            // HTTP Live Streaming
+            if (typeof(v.video_hls_download)!='undefined' && v.video_hls_download.length>0 && v.video_hls_size>0 && $this.video.canPlayType('application/vnd.apple.mpegURL')) {
+              $this.qualities['auto'] = {format:'video_hls', codec:'hls', displayName:'Auto', displayQuality:'Auto', source:Player.get('url') + v.video_hls_download};
+            }
             // H.264
             if (typeof(v.video_1080p_download)!='undefined' && v.video_1080p_download.length>0 && v.video_1080p_size>0)
               $this.qualities['fullhd'] = {format:'video_1080p', codec:'h264', displayName:'Full HD', displayQuality:'1080p', source:Player.get('url') + v.video_1080p_download};
@@ -252,6 +252,11 @@ Player.provide('video-display',
                 Player.set('error', "This clip required Adobe Flash to be installed.");
             }
           }
+          // Handle quality defaults
+          var _fallback = $this.qualities['auto'] ? 'auto' : 'standard';
+          $this.quality = $this.quality || s.defaultQuality || _fallback;
+          if($this.quality=='high') $this.quality = 'hd';
+
         } else if (v.type=='stream') {
           // LIVE VIDEO
           $this.start = 0; // Reset the start parameter for live video
