@@ -1,4 +1,4 @@
-/* 
+/*
   MODULE: SRUBBER
   Show time line for the video currently being played.
 
@@ -13,7 +13,7 @@
   - scrubberTime [get]
 */
 
-Player.provide('scrubber', 
+Player.provide('scrubber',
   {},
   function(Player,$,opts){
       var $this = this;
@@ -46,14 +46,33 @@ Player.provide('scrubber',
           $this.updateScrubber();
 
           // Handle clicks on the time line
-          $this.scrubber.click(function(e){
+          $this.scrubber.on("click", function(e, oe){
               var duration = Player.get('duration');
               if(isNaN(duration)||duration<=0) {
                   Player.set('playing', true);
               } else {
+                  if (!e.pageX && oe && oe.pageX) {
+                       e = oe;
+                  }
                   var offsetX = e.pageX - $this.trackContainer.offsetParent().offset().left;
-                  Player.set('currentTime', offsetX / $this.trackContainer.width() * duration);
+                  Player.set('currentTime', offsetX / $this.scrubber.width() * duration);
                   Player.set('playing', true);
+              }
+              e.stopPropagation();
+          });
+          $this.scrubber.on("touchmove", function(e){
+              console.log("move");
+              $this.dragging = true;
+              var duration = Player.get("duration");
+              var offsetX = e.originalEvent.pageX - $(e.target).offsetParent().offset().left;
+              $this.displayPlayProgress = offsetX / $this.scrubber.width() * duration;
+              $this.updateScrubber();
+          });
+          $this.scrubber.on("touchend", function(e){
+              if ($this.dragging) {
+                  $this.dragging = false;
+                  Player.set("currentTime", $this.displayPlayProgress);
+                  Player.set("playing", true);
               }
           });
 
@@ -63,7 +82,7 @@ Player.provide('scrubber',
                   $this.thumbnailContainer.hide();
                   return;
               }
-              
+
               var offsetX = e.pageX - $(e.target).offsetParent().offset().left;
               var playhead = offsetX/$this.scrubber.width() * Player.get('duration');
               $this.showFrame(playhead);
@@ -78,14 +97,14 @@ Player.provide('scrubber',
           if($this.handleContainer) {
               $this.handleContainer.mousedown(function(){
                   // Enable dragging and different positioning of the scruber
-                  $this.scrubberTime = Player.get('currentTime'); 
+                  $this.scrubberTime = Player.get('currentTime');
               });
               $(document).mousemove(function(e){
                   if($this.scrubberTime!==null) {
                       // Update $this.scrubberTime based on the dragging
                       var scrubberLeft = $this.scrubber.offset()['left'];
                       var scrubberWidth = $this.scrubber.width();
-                      var x = Math.max(0, Math.min(e.clientX-scrubberLeft, scrubberWidth)); 
+                      var x = Math.max(0, Math.min(e.clientX-scrubberLeft, scrubberWidth));
                       $this.scrubberTime = x/scrubberWidth * Player.get('duration');
                       // Set the frame
                       $this.showFrame($this.scrubberTime);
@@ -103,7 +122,7 @@ Player.provide('scrubber',
               });
               $this.handleContainer.on('click, mousemove', function(e){
                   // Clicks on the handle shouldn't bubble to clicks on the scrubber
-                  e.stopPropagation(); 
+                  e.stopPropagation();
               });
           }
       };
@@ -125,7 +144,7 @@ Player.provide('scrubber',
               $this.bufferContainer.css({width:(100.0*Player.get('bufferTime')/duration)+'%'});
           }catch(e){}
           try {
-              $this.playContainer.css({width:(100.0*Player.get('currentTime')/duration)+'%'});
+              $this.playContainer.css({width:(100.0*Player.get('displayPlayProgress')/duration)+'%'});
           }catch(e){}
           try {
               $this.handleContainer.css({left: (($this.scrubberTime||Player.get('currentTime'))/duration * $this.scrubber.width()) - ($this.handleContainer.width()/2) +'px'});
@@ -145,7 +164,7 @@ Player.provide('scrubber',
           // Position and show the thumbnail container
           if(!$this.loadedFrameBackground) {
               $this.thumbnailContainer.css({
-                  width:Player.get('video_frames_width')+'px', 
+                  width:Player.get('video_frames_width')+'px',
                   height:(Player.get('video_frames_height')-2)+'px'
               });
               $this.thumbnailContainerSub.css({
@@ -178,7 +197,13 @@ Player.provide('scrubber',
       Player.getter('scrubberTime', function(){
           return $this.scrubberTime||'';
       });
-
+      Player.getter('displayPlayProgress', function(){
+          if ($this.dragging) {
+              return $this.displayPlayProgress;
+          } else {
+              return Player.get('currentTime');
+          }
+      });
 
       return $this;
   }

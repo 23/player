@@ -157,6 +157,8 @@ Player.provide('playflow',
           $this.eingebaut = Player.get('videoElement');
           $this.originalEingebaut.callback = $this.eingebaut.callback;
         }
+        $this.eingebaut.controller = 'playflow';
+        if($this.eingebaut.floatingPoster) $this.eingebaut.floatingPoster.hide();
         $this.originalEingebaut.source = $this.eingebaut.getSource();
         $this.eingebaut.callback = $this.playflowEingebautCallback;        
         $this.eingebaut.container.parent().css({zIndex:200});
@@ -165,6 +167,7 @@ Player.provide('playflow',
       $this.restoreEingebaut = function(){
         $this.eingebaut.callback = $this.originalEingebaut.callback;        
         $this.eingebaut.container.parent().css({zIndex:0});
+        $this.eingebaut.controller = '';
         Player.fire('player:video:pause');
         if($this.originalEingebaut.source) $this.eingebaut.setSource($this.originalEingebaut.source);
       }

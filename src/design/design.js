@@ -130,7 +130,7 @@ Player.provide('design',
           $(document).on("touchstart", function(e){
               if (e.originalEvent.touches.length == 1) {
 		  try {$(e.target).mousemove();}catch(e){}
-                  $(e.target).click();
+                  $(e.target).trigger("click", e.originalEvent);
                   e.preventDefault();
                   e.stopPropagation();
               }
