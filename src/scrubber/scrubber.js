@@ -45,14 +45,33 @@ Player.provide('scrubber',
           $this.updateScrubber();
 
           // Handle clicks on the time line
-          $this.scrubber.click(function(e){
+          $this.scrubber.on("click", function(e, oe){
               var duration = Player.get('duration');
               if(isNaN(duration)||duration<=0) {
                   Player.set('playing', true);
               } else {
+                  if (!e.pageX && oe && oe.pageX) {
+                       e = oe;
+                  }
                   var offsetX = e.pageX - $(e.target).offsetParent().offset().left;
                   Player.set('currentTime', offsetX / $this.scrubber.width() * duration);
                   Player.set('playing', true);
+              }
+              e.stopPropagation();
+          });
+          $this.scrubber.on("touchmove", function(e){
+              console.log("move");
+              $this.dragging = true;
+              var duration = Player.get("duration");
+              var offsetX = e.originalEvent.pageX - $(e.target).offsetParent().offset().left;
+              $this.displayPlayProgress = offsetX / $this.scrubber.width() * duration;
+              $this.updateScrubber();
+          });
+          $this.scrubber.on("touchend", function(e){
+              if ($this.dragging) {
+                  $this.dragging = false;
+                  Player.set("currentTime", $this.displayPlayProgress);
+                  Player.set("playing", true);
               }
           });
 
@@ -124,7 +143,7 @@ Player.provide('scrubber',
               $this.bufferContainer.css({width:(100.0*Player.get('bufferTime')/duration)+'%'});
           }catch(e){}
           try {
-              $this.playContainer.css({width:(100.0*Player.get('currentTime')/duration)+'%'});
+              $this.playContainer.css({width:(100.0*Player.get('displayPlayProgress')/duration)+'%'});
           }catch(e){}
           try {
               $this.handleContainer.css({left: (($this.scrubberTime||Player.get('currentTime'))/duration * $this.scrubber.width()) - ($this.handleContainer.width()/2) +'px'});
@@ -177,7 +196,13 @@ Player.provide('scrubber',
       Player.getter('scrubberTime', function(){
           return $this.scrubberTime||'';
       });
-
+      Player.getter('displayPlayProgress', function(){
+          if ($this.dragging) {
+              return $this.displayPlayProgress;
+          } else {
+              return Player.get('currentTime');
+          }
+      });
 
       return $this;
   }
