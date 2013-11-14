@@ -62,6 +62,7 @@ Player.provide('design',
       $this.trayTimeoutId = null;
       Player.bind('player:settings', function(e){
           PlayerUtilities.mergeSettings($this, ['showTray', 'trayTimeout', 'verticalPadding', 'horizontalPadding', 'trayAlpha','trayBackgroundColor','trayTextColor','trayFont','trayTitleFontSize','trayTitleFontWeight','trayContentFontSize','trayContentFontWeight', 'scrubberColor']);
+          $this.trayTitleFontSize = $this.trayContentFontSize * 1.3;
 
           // Allow for background color transparency
           var colorTest = $this.trayBackgroundColor.match(/^\#(..)(..)(..)$/);
