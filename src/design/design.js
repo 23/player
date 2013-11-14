@@ -1,8 +1,8 @@
-/* 
+/*
   DESIGN THEME FOR THE PLAYER
 */
 
-Player.provide('design', 
+Player.provide('design',
   {
     showTray: true,
     trayTimeout: 0,
@@ -17,7 +17,7 @@ Player.provide('design',
     trayContentFontSize:12,
     trayContentFontWeight:'normal',
     scrubberColor:'#eeeeee'
-  }, 
+  },
   function(Player,$,opts){
       // This is required to add the template to the page
       var $this = this;
@@ -28,7 +28,7 @@ Player.provide('design',
 
 
       // This is the heavy lifting for the design
-      // (and what you will want to change in order to 
+      // (and what you will want to change in order to
       //  modify the behaviour of the design.)
 
       // BUTTON MENUS
@@ -62,6 +62,7 @@ Player.provide('design',
       $this.trayTimeoutId = null;
       Player.bind('player:settings', function(e){
           PlayerUtilities.mergeSettings($this, ['showTray', 'trayTimeout', 'verticalPadding', 'horizontalPadding', 'trayAlpha','trayBackgroundColor','trayTextColor','trayFont','trayTitleFontSize','trayTitleFontWeight','trayContentFontSize','trayContentFontWeight', 'scrubberColor']);
+          $this.trayTitleFontSize = $this.trayContentFontSize * 1.3;
 
           // Allow for background color transparency
           var colorTest = $this.trayBackgroundColor.match(/^\#(..)(..)(..)$/);
@@ -79,7 +80,7 @@ Player.provide('design',
 
           // Honour `showTray`
           $('#tray').toggle($this.showTray ? true : false);
-          // Honour `trayTimeout`          
+          // Honour `trayTimeout`
           if($this.showTray&&$this.trayTimeout>0) {
               var triggerTrayTimeout = function(){
                   window.clearTimeout($this.trayTimeoutId);
@@ -137,7 +138,7 @@ Player.provide('design',
 
       // RESIZE HANDLING
       var _resize = function(){
-          // This is a pretty fancy fix for an IE7 bug: 
+          // This is a pretty fancy fix for an IE7 bug:
           // Empty elements are given layout, causing all kinds of buttons the .tray-right
           // and tray-left to go flying. Very litterally: Hide empty stuff, show other.
           $('.tray-right>div:empty, .tray-left>div:empty').hide();
@@ -152,7 +153,7 @@ Player.provide('design',
               _resizeInterval = null;
             }
           }
-        
+
       }
       var _resizeInterval = window.setInterval(_resize,50);
       $(window).resize(_resize);
@@ -160,7 +161,7 @@ Player.provide('design',
           _resize();
           $this.applyDesignPreferences();
       });
-      
+
       // Return a reference
       return $this;
   }
