@@ -16,7 +16,7 @@
   - identityAllowClose [get]
   - identityCountdownText [get]
   - closeIdentity [set]
-  - videoActions [get]
+  - videoActions [get] (before, relative time from 0 to 1, after)
   */
 
 Player.provide('actions', 
@@ -29,12 +29,11 @@ Player.provide('actions',
   function(Player,$,opts){
     var $this = this;
     $.extend($this, opts);
-    $this.actionsHandlers = {};
-    
-    
-    // MODULE PROPERTIES
+    $this.showHandlers = {};
+    $this.hideHandlers = {};
+    $this.activeActions = {};
+    $this.normalizedActionsPosition = -1; // (-1 for "before", relative time from 0 to 1 during playback, 2 for "after")
     // Build default properties and merge in player settings
-    $this.actionsPosition = 'before'; // (before, relative time from 0 to 1, after)
     Player.bind('player:settings', function(){
       PlayerUtilities.mergeSettings($this, ['identityCountdown', 'identityAllowClose', 'identityCountdownTextSingular', 'identityCountdownTextPlural']);
     });
@@ -48,12 +47,63 @@ Player.provide('actions',
       if(!v.actions) {
         Player.get('api').action.get(
           {photo_id:v.photo_id, token:v.token},
-          function(data){v.actions = data.actions;},
+          function(data){
+            v.actions = data.actions;
+            $.each(v.actions, function(i,action){
+              action.normalizedStartTime = (action.start_time == "before" ? -1 : (action.start_time == "after" ? 2 : action.start_time));
+              action.normalizedEndTime = (action.end_time == "before" ? -1 : (action.end_time == "after" ? 2 : action.end_time));
+            });
+          },
           Player.fail
         );
       }
     });
 
+
+    
+    // HANDLERS FOR ACTION TYPES
+    // HANDLER: TEXT
+    $this.showHandlers['text'] = function(action){
+      // TODO: Write `text` show handler
+    }
+    $this.hideHandlers['text'] = function(action){
+      // TODO: Write `text` hide handler
+    }
+    // HANDLER: HTML
+    $this.showHandlers['html'] = function(action){
+      // TODO: Write `html` show handler
+    }
+    $this.hideHandlers['html'] = function(action){
+      // TODO: Write `html` hide handler
+    }
+    // HANDLER: IMAGE
+    $this.showHandlers['image'] = function(action){
+      // TODO: Write `image` show handler
+    }
+    $this.hideHandlers['image'] = function(action){
+      // TODO: Write `image` hide handler
+    }
+    // HANDLER: PRODUCT
+    $this.showHandlers['product'] = function(action){
+      // TODO: Write `product` show handler
+    }
+    $this.hideHandlers['product'] = function(action){
+      // TODO: Write `product` hide handler
+    }
+    // HANDLER: VIDEO
+    $this.showHandlers['video'] = function(action){
+      // TODO: Write `video` show handler
+    }
+    $this.hideHandlers['video'] = function(action){
+      // TODO: Write `video` hide handler
+    }
+    // HANDLER: AD
+    $this.showHandlers['ad'] = function(action){
+      // TODO: Write `ad` show handler
+    }
+    $this.hideHandlers['ad'] = function(action){
+      // TODO: Write `ad` hide handler
+    }
     
     
     // CONTROLLER LISTENING TO PLAYBACK STATE AND DISPATCHING ACTIONS
@@ -62,10 +112,10 @@ Player.provide('actions',
       // Normalize actionsPosition
       switch(event){
       case'player:video:beforeplay':
-        $this.actionsPosition = 'before';
+        $this.normalizedActionsPosition = -1; // "before"
         break;
       case 'player:video:ended':
-        $this.actionsPosition = 'after';
+        $this.normalizedActionsPosition = 2; // "after"
         break;
       default:
         try {
@@ -75,13 +125,38 @@ Player.provide('actions',
         }
       }
 
-      // TODO: Start dispatching actions here
+      // Dispatch actions
+      $.each(Player.get('videoActions'), function(i,action){
+        // Figure out of the action should be active or not
+        var actionActive = $this.normalizedActionsPosition>=action.normalizedStartTime && $this.normalizedActionsPosition<=action.normalizedEndTime;
+        
+        if(actionActive && !$this.activeActions[action.action_id]) {
+          // Activate action by adding a container and calling the show handler
+          action.container = $(document.createElement('div')).addClass('action').addClass('action-'+action.type);
+          $this.container.add(action.container);
+          $this.activeActions[action.action_id] = action;
+          $this.showHandlers[action.type](action);
+        } else if(!actionActive && $this.activeActions[action.action_id]) {
+          // Deactivate action by calling hide handler and then unloading the container
+          $this.hideHandlers[action.type](action);
+          $this.container.remove(action.container);
+          delete action.container;
+          delete $this.activeActions[action.action_id];
+        }
+      });
     });
 
 
     // GETTERS EXPOSING GENERIC PROPERTIES OF THE MODULE
     Player.getter('videoActions', function(){return Player.get('video').actions||{};});
-    Player.getter('actionsPosition', function(){return $this.actionsPosition;});
+    Player.getter('actionsPosition', function(){
+      switch($this.normalizedActionsPosition) {
+        case -1: return "before";
+        case 2: return "after";
+        default: return $this.normalizedActionsPosition;
+      }
+      return $this.actionsPosition;
+    });
     Player.getter('identityCountdown', function(){return $this.identityCountdown;});
     Player.getter('identityAllowClose', function(){return $this.identityAllowClose;});
     Player.getter('identityCountdownText', function(){
