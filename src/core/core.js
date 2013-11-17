@@ -196,7 +196,7 @@ Player.provide('core',
           $this.clips = [];
           methods.push({
               method:'/api/photo/list',
-              data:$.extend({size:10}, Player.parameters, {player_id:$this.settings.player_id}),
+              data:$.extend({size:10, include_actions_p:1}, Player.parameters, {player_id:$this.settings.player_id}),
               callback: function(data){
                   if(data.status=='ok') {
                       $.each(data.photos, function(i,photo){

@@ -16,6 +16,7 @@
   - identityAllowClose [get]
   - identityCountdownText [get]
   - closeIdentity [set]
+  - videoActions [get]
   */
 
 Player.provide('actions', 
@@ -28,7 +29,7 @@ Player.provide('actions',
   function(Player,$,opts){
     var $this = this;
     $.extend($this, opts);
-
+    $this.actionsHandlers = {};
     
     
     // MODULE PROPERTIES
@@ -43,7 +44,14 @@ Player.provide('actions',
     // VERIFY AND RETRIEVE ACTIONS DATA
     // When a video is loaded, reset the state of the Actions
     // Also this, is where we may need to populate the `actions` property of the video object
-    Player.bind('player:video:loaded', function(){
+    Player.bind('player:video:loaded', function(e,v){
+      if(!v.actions) {
+        Player.get('api').action.get(
+          {photo_id:v.photo_id, token:v.token},
+          function(data){v.actions = data.actions;},
+          Player.fail
+        );
+      }
     });
 
     
@@ -72,6 +80,7 @@ Player.provide('actions',
 
 
     // GETTERS EXPOSING GENERIC PROPERTIES OF THE MODULE
+    Player.getter('videoActions', function(){return Player.get('video').actions||{};});
     Player.getter('actionsPosition', function(){return $this.actionsPosition;});
     Player.getter('identityCountdown', function(){return $this.identityCountdown;});
     Player.getter('identityAllowClose', function(){return $this.identityAllowClose;});
