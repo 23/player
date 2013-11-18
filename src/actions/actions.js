@@ -40,27 +40,6 @@ Player.provide('actions',
 
     
 
-    // VERIFY AND RETRIEVE ACTIONS DATA
-    // When a video is loaded, reset the state of the Actions
-    // Also this, is where we may need to populate the `actions` property of the video object
-    Player.bind('player:video:loaded', function(e,v){
-      if(!v.actions) {
-        Player.get('api').action.get(
-          {photo_id:v.photo_id, token:v.token},
-          function(data){
-            v.actions = data.actions;
-            $.each(v.actions, function(i,action){
-              action.normalizedStartTime = (action.start_time == "before" ? -1 : (action.start_time == "after" ? 2 : action.start_time));
-              action.normalizedEndTime = (action.end_time == "before" ? -1 : (action.end_time == "after" ? 2 : action.end_time));
-            });
-          },
-          Player.fail
-        );
-      }
-    });
-
-
-    
     // HANDLERS FOR ACTION TYPES
     // HANDLER: TEXT
     $this.showHandlers['text'] = function(action){
@@ -107,8 +86,7 @@ Player.provide('actions',
     
     
     // CONTROLLER LISTENING TO PLAYBACK STATE AND DISPATCHING ACTIONS
-    // Prerolls before the clip begins
-    Player.bind('player:video:beforeplay player:video:play player:video:playing player:video:pause player:video:timeupdate player:video:ended', function(event){
+    var _dispatcher = function(event){
       // Normalize actionsPosition
       switch(event){
       case'player:video:beforeplay':
@@ -119,9 +97,9 @@ Player.provide('actions',
         break;
       default:
         try {
-          $this.actionsPosition = Player.get('currentTime') / Player.get('duration');
+          $this.normalizedActionsPosition = Player.get('currentTime') / Player.get('duration');
         }catch(e){
-          $this.actionsPosition = 0;
+          $this.normalizedActionsPosition = 0;
         }
       }
 
@@ -129,24 +107,54 @@ Player.provide('actions',
       $.each(Player.get('videoActions'), function(i,action){
         // Figure out of the action should be active or not
         var actionActive = $this.normalizedActionsPosition>=action.normalizedStartTime && $this.normalizedActionsPosition<=action.normalizedEndTime;
-        
+      
         if(actionActive && !$this.activeActions[action.action_id]) {
           // Activate action by adding a container and calling the show handler
+          console.debug('Show action', action);
           action.container = $(document.createElement('div')).addClass('action').addClass('action-'+action.type);
-          $this.container.add(action.container);
+          console.debug(action.container);
+          $this.container.append(action.container);
           $this.activeActions[action.action_id] = action;
           $this.showHandlers[action.type](action);
         } else if(!actionActive && $this.activeActions[action.action_id]) {
           // Deactivate action by calling hide handler and then unloading the container
+          console.debug('Hide action', action);
           $this.hideHandlers[action.type](action);
-          $this.container.remove(action.container);
+          action.container.remove();
           delete action.container;
           delete $this.activeActions[action.action_id];
         }
       });
+      
+      return true;
+    }
+
+
+    // VERIFY AND RETRIEVE ACTIONS DATA
+    // When a video is loaded, reset the state of the Actions
+    // Also this, is where we may need to populate the `actions` property of the video object
+    Player.bind('player:video:loaded', function(e,v){
+      if(!v.actions) {
+        Player.get('api').action.get(
+          {photo_id:v.photo_id, token:v.token},
+          function(data){
+            v.actions = data.actions;
+            $.each(v.actions, function(i,action){
+              action.normalizedStartTime = (action.start_time == "before" ? -1 : (action.start_time == "after" ? 2 : parseFloat(action.start_time)));
+              action.normalizedEndTime = (action.end_time == "before" ? -1 : (action.end_time == "after" ? 2 : parseFloat(action.end_time)));
+            });
+            _dispatcher();
+          },
+          Player.fail
+        );
+      }
+      _dispatcher();
     });
 
+    // EVENTS TO DISPATCHER
+    Player.bind('player:video:beforeplay player:video:play player:video:playing player:video:pause player:video:timeupdate player:video:ended', _dispatcher);
 
+    
     // GETTERS EXPOSING GENERIC PROPERTIES OF THE MODULE
     Player.getter('videoActions', function(){return Player.get('video').actions||{};});
     Player.getter('actionsPosition', function(){
