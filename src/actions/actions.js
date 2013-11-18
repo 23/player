@@ -43,35 +43,27 @@ Player.provide('actions',
     // HANDLERS FOR ACTION TYPES
     // HANDLER: TEXT
     $this.showHandlers['text'] = function(action){
-      // TODO: Write `text` show handler
-    }
-    $this.hideHandlers['text'] = function(action){
-      // TODO: Write `text` hide handler
+      // TODO: Make sure text scales well in text and html boxes
+      action.container.html(action.text);
     }
     // HANDLER: HTML
     $this.showHandlers['html'] = function(action){
-      // TODO: Write `html` show handler
-    }
-    $this.hideHandlers['html'] = function(action){
-      // TODO: Write `html` hide handler
+      action.container.html(action.html);
     }
     // HANDLER: IMAGE
     $this.showHandlers['image'] = function(action){
-      // TODO: Write `image` show handler
-    }
-    $this.hideHandlers['image'] = function(action){
-      // TODO: Write `image` hide handler
+      // TODO: Write `image` show handle making sure image is displayed correctly in the correct aspect ratio
+      var img = $(document.createElement('img')).attr('src', action.image_url);
+      action.container.append(img);
     }
     // HANDLER: PRODUCT
     $this.showHandlers['product'] = function(action){
       // TODO: Write `product` show handler
     }
-    $this.hideHandlers['product'] = function(action){
-      // TODO: Write `product` hide handler
-    }
     // HANDLER: VIDEO
     $this.showHandlers['video'] = function(action){
       // TODO: Write `video` show handler
+      // TODO: Honour `identityCountdown` and friend in video and ad handlers
     }
     $this.hideHandlers['video'] = function(action){
       // TODO: Write `video` hide handler
@@ -108,20 +100,42 @@ Player.provide('actions',
         // Figure out of the action should be active or not
         var actionActive = $this.normalizedActionsPosition>=action.normalizedStartTime && $this.normalizedActionsPosition<=action.normalizedEndTime;
       
+        // TODO: Fire show & hide handlers listed in the beginning of this file
         if(actionActive && !$this.activeActions[action.action_id]) {
           // Activate action by adding a container and calling the show handler
           console.debug('Show action', action);
-          action.container = $(document.createElement('div')).addClass('action').addClass('action-'+action.type);
-          console.debug(action.container);
-          $this.container.append(action.container);
+          
+          // Create a few dom containers for the actin
+          var parent = $(document.createElement('div')).addClass('action').addClass('action-'+action.type);
+          var container = $(document.createElement('div')).addClass('action-content');
+          parent.append(container);
+          $this.container.append(parent);
+          action.container = container;
+          action.parent = parent;
+
+          // Click container for the element
+          if(typeof(action.link)!='undefined') {
+            var screen = $(document.createElement('a')).addClass('action-screen').attr({href:action.link, target:action.link_target||'_new'});
+            parent.append(screen);
+          }
+          // Set position
+          if(typeof(action.x)!='undefined' && typeof(action.y)!='undefined') {
+            parent.css({top:(parseFloat(action.x)*100)+'%', left:(parseFloat(action.y)*100)+'%'});
+          }
+          // Set size
+          if(typeof(action.width)!='undefined' && typeof(action.height)!='undefined') {
+            parent.css({width:(parseFloat(action.width)*100)+'%', height:(parseFloat(action.height)*100)+'%'});
+          }
+          
           $this.activeActions[action.action_id] = action;
-          $this.showHandlers[action.type](action);
+          if($this.showHandlers[action.type]) $this.showHandlers[action.type](action);
         } else if(!actionActive && $this.activeActions[action.action_id]) {
           // Deactivate action by calling hide handler and then unloading the container
           console.debug('Hide action', action);
-          $this.hideHandlers[action.type](action);
-          action.container.remove();
+          if($this.hideHandlers[action.type]) $this.hideHandlers[action.type](action);
+          action.parent.remove();
           delete action.container;
+          delete action.parent;
           delete $this.activeActions[action.action_id];
         }
       });
@@ -147,12 +161,17 @@ Player.provide('actions',
           },
           Player.fail
         );
+      } else {
+        $.each(v.actions, function(i,action){
+          action.normalizedStartTime = (action.start_time == "before" ? -1 : (action.start_time == "after" ? 2 : parseFloat(action.start_time)));
+          action.normalizedEndTime = (action.end_time == "before" ? -1 : (action.end_time == "after" ? 2 : parseFloat(action.end_time)));
+        });
       }
       _dispatcher();
     });
 
     // EVENTS TO DISPATCHER
-    Player.bind('player:video:beforeplay player:video:play player:video:playing player:video:pause player:video:timeupdate player:video:ended', _dispatcher);
+    Player.bind('player:video:beforeplay player:video:play player:video:playing player:video:timeupdate player:video:ended', _dispatcher);
 
     
     // GETTERS EXPOSING GENERIC PROPERTIES OF THE MODULE
@@ -188,3 +207,17 @@ Player.provide('actions',
     return $this;
   }
 );
+
+
+
+/* UTILITY FUNCTION FOR CONTROLLING PLAYBACK STATE */
+var VastHandler = function(url){
+  var $vast = this;
+  $vast.url = url;
+  $vast.on = function(){
+  }
+  return $vast;
+}
+
+var stealEingebaut = function(){
+}
