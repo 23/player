@@ -39,6 +39,7 @@ Player.provide('analytics',
         o.user_player_resolution = screen.width+'x'+screen.height;
         o.user_player_version = Player.version;
         o.referer = document.referrer;
+        o.uuid = Player.get('uuid');
         return o;
       }
       

@@ -333,6 +333,7 @@ Player.provide('video-display',
           // Update the global value
           $this.quality = quality;
           $this.rawSource = $this.qualities[$this.quality].source;
+          $this.rawSource += ($this.rawSource.match(/\?/) ? '&' : '?') + 'uuid='+Player.get('uuid');
 
           if(Player.get('video_playable')) {
             // Switch the source and jump to current spot
