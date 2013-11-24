@@ -129,7 +129,7 @@ Player.provide('core',
       $.extend($this, opts);
 
       $this.protocol = (/^https/.test(location.href) ? 'https' : 'http');
-
+    
       // PROPERTIES
       $this.settings = $.extend(opts, Player.parameters);
       $.each($this.settings, function(i,v){
@@ -325,6 +325,13 @@ Player.provide('core',
       $(window).resize($this.handleSize);
       Player.getter('playerSize', function(){return $this.playerSize;});
 
+      // Player ID for internal routing
+      $this.uuid = Cookie.get('uuid');
+      if(!$this.uuid.length) {
+        $this.uuid = 'xxxxxxxx-xxxx-0xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);return v.toString(16);});
+        if(window.ALLOW_TRACKING_COOKIES!==false) Cookie.set('uuid', $this.uuid, 120);
+      }
+      Player.getter('uuid', function(){return $this.uuid;});
 
       // Load the player
       $this.bootstrap = function(){
