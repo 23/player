@@ -89,6 +89,7 @@ Player.provide('scrubber',
           $this.scrubber.mouseleave(function(e){
               if($this.scrubberTime==null) {
                   $this.thumbnailContainer.hide();
+                  $this.frameBackgroundShown = false;
               }
           });
 
@@ -149,7 +150,9 @@ Player.provide('scrubber',
               $this.handleContainer.css({left: (($this.scrubberTime||Player.get('currentTime'))/duration * $this.scrubber.width()) - ($this.handleContainer.width()/2) +'px'});
           }catch(e){}
       }
+      $this.initFrameBackground = false;
       $this.loadedFrameBackground = false;
+      $this.frameBackgroundShown = false;
       $this.showFrame = function(playhead) {
           // The frame is calculated by the playhead position and the number of total frames.
           var relativePlayhead = playhead/Player.get('duration');
@@ -161,19 +164,25 @@ Player.provide('scrubber',
           var positionOffset = (relativePlayhead*scrubberWidth) - (thumbnailWidth/2);
           var positionOffset = Math.max(0, Math.min(positionOffset, scrubberWidth-thumbnailWidth));
           // Position and show the thumbnail container
-          if(!$this.loadedFrameBackground) {
+          if(!$this.initFrameBackground) {
               $this.thumbnailContainer.css({
-                  width:Player.get('video_frames_width')+'px', 
+                  width:Player.get('video_frames_width')+'px',
                   height:(Player.get('video_frames_height')-2)+'px'
               });
-              $this.thumbnailContainerSub.css({
-                  backgroundImage:'url(' + Player.get('video_frames_src') + ')'
-              });
-              $this.loadedFrameBackground = true;
+              $("<img>").load(function(){
+                  $this.loadedFrameBackground = true;
+		  $this.thumbnailContainerSub.css({
+                      backgroundImage:'url(' + Player.get('video_frames_src') + ')'
+		  });
+                  if($this.frameBackgroundShown) $this.thumbnailContainer.show();
+	      }).attr("src",Player.get("video_frames_src"));
+              $this.initFrameBackground = true;
           }
           $this.thumbnailContainer.css({
               left:positionOffset+'px'
-          }).show();
+          });
+          if($this.loadedFrameBackground) $this.thumbnailContainer.show();
+          $this.frameBackgroundShown = true;
           $this.thumbnailContainerSub.css({
               backgroundPosition: '0 -'+frameOffset+'px'
           });
@@ -184,7 +193,9 @@ Player.provide('scrubber',
       // Set the frames background on load
       Player.bind('player:video:loaded', function(){
           $this.render($this.onRender);
+          $this.initFrameBackground = false;
           $this.loadedFrameBackground = false;
+          $this.frameBackgroundShown = false;
       });
       // Update scrubber on progress and on window resize
       Player.bind('player:video:progress player:video:timeupdate player:video:seeked player:video:ended', $this.updateScrubber);
