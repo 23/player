@@ -451,7 +451,7 @@ Player.provide('video-display',
       });
       Player.getter('isTouchDevice', function(){
           return !!('ontouchstart' in window) // works on most browsers
-              || !!('onmsgesturechange' in window); // works on ie10
+              || !!(window.navigator.msMaxTouchPoints); // works on ie10
       });
       Player.getter('eingebautConstructor', function(){
           return $this.loadEingebaut;

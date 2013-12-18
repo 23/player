@@ -5,7 +5,7 @@
   <ul>
     {% for q in qualitiesArray %} 
     <li {% if q.quality == quality %}class="selected"{% endif %} click="$set:quality:{{q.quality}}; $set:playing:true">
-      {{q.displayName}} ({{q.displayQuality}})
+      {{q.displayName}}
     </li>
     {% endfor %}
   </ul>
