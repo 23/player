@@ -30,9 +30,13 @@ body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,
 
 /* ========================= GENERAL TAGS ======================== */
 a img {border:0;}
+html,body {
+    width:100%;
+    height:100%;
+    background-color: #000000;
+}
 body {
-    margin:0; 
-    background-color:black; 
+    margin:0;
     color:#333;  /*updated in js via player settings */
     font:11px/14px 'Open Sans', sans-serif;  /*updated in js via player settings */
     overflow:hidden;
@@ -58,7 +62,7 @@ button {
     background-repeat:no-repeat;
     background-position:center center;
     cursor:pointer;
-    height:34px; 
+    height:34px;
     width: 34px;
     line-height:34px;
     margin: 0;
@@ -95,7 +99,7 @@ div.button ul { /* button menus */
     display:none;
     opacity:0;
     position:absolute;
-    bottom:34px; 
+    bottom:34px;
     right:0;
     background-color: rgb(200,200,200);
     background-color: rgba(200,200,200,0.6);
@@ -136,9 +140,9 @@ div.button ul li.selected { /* menu item selected */
     background-image:url('selected-icon.png');
 }
 a.button { /* standard button design as a straight link */
-    display:inline-block; 
-    *display:inline; 
-    *zoom:1; 
+    display:inline-block;
+    *display:inline;
+    *zoom:1;
     border:1px solid #333;
     height:30px;
     width:30px;
@@ -212,7 +216,7 @@ a.button { /* standard button design as a straight link */
     cursor:pointer;
 }
 .scrubber-track, .scrubber-buffer, .scrubber-play {
-    position:absolute; 
+    position:absolute;
     top:0;
     left:0;
     height:10px;
@@ -247,7 +251,7 @@ a.button { /* standard button design as a straight link */
 }
 .scrubber-time {
     display:none;
-    position:absolute; 
+    position:absolute;
 }
 .scrubber-thumbnail {
     position:absolute;
@@ -269,17 +273,17 @@ a.button { /* standard button design as a straight link */
 
 /* === Module: Sections === */
 .sections {
-    position:absolute; 
+    position:absolute;
     top:0px;
     left:0px;
     right:0px;
     height:0; /* for ie7's sake, otherwise this element covers the scrubber  */
 }
 .section {
-    position:absolute; 
+    position:absolute;
     top:0;
     width:10px;
-    height:10px; 
+    height:10px;
     margin:0px 0 0 -4px;
     background-color:#444;
     cursor:pointer;
@@ -337,8 +341,8 @@ a.button { /* standard button design as a straight link */
 }
 .share-embed-label {
     float:left;
-    font-size:14px; 
-    padding:0 23px 0 32px; 
+    font-size:14px;
+    padding:0 23px 0 32px;
     font-weight:bold;
     line-height:26px;
     background:url('embed-icon.png') left center no-repeat;
@@ -403,7 +407,7 @@ a.button { /* standard button design as a straight link */
     width: 180px;
     margin:0 30px;
 }
-/* Thumbnails in a fully standard table, 
+/* Thumbnails in a fully standard table,
    makes sure we don't need to handle breaking
    or explicitly set the width */
 table.browse-recommendations {
@@ -449,7 +453,7 @@ table.browse-recommendations div {
 
 
 /* Hide a number of elements in very small players */
-.size-tiny .info-button, 
+.size-tiny .info-button,
 .size-tiny .share-button,
 .size-tiny .browse-button-on,
 .size-tiny .browse-button-off,
@@ -465,18 +469,18 @@ table.browse-recommendations div {
 /* Hide some elements in slightly small players */
 .size-small .info-description,
 .size-small .subtitle-button,
-.size-small .info-button, 
+.size-small .info-button,
 .size-small .browse-button-on,
 .size-small .browse-button-off,
-.size-small .sharing-container 
+.size-small .sharing-container
 .size-small .player-browse #browse {
     display:none;
 }
 
 /* All graphics in retina version */
-@media 
-(-webkit-min-device-pixel-ratio: 2), 
-(min-resolution: 192dpi) { 
+@media
+(-webkit-min-device-pixel-ratio: 2),
+(min-resolution: 192dpi) {
     .play-button {background-image:url('play-icon@2x.png'); background-size:30px;}
     .big-play-button {background-image:url('big-play-icon@2x.png'); background-size:60px;}
     .pause-button {background-image:url('pause-icon@2x.png'); background-size:30px;}
