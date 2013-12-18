@@ -6,9 +6,13 @@ body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,
 
 /* ========================= GENERAL TAGS ======================== */
 a img {border:0;}
+html,body {
+    width:100%;
+    height:100%;
+    background-color: #000000;
+}
 body {
-    margin:0; 
-    background-color:black; 
+    margin:0;
     color:white;  /*updated in js via player settings */
     font:11px/14px Helvetica;  /*updated in js via player settings */
     overflow:hidden;
