@@ -54,7 +54,7 @@ Player.provide('scrubber',
                        e = oe;
                   }
                   var offsetX = e.pageX - $(e.target).offsetParent().offset().left;
-                  Player.set('currentTime', offsetX / $this.scrubber.get(0).clientWidth * duration);
+                  Player.set('currentTime', offsetX / $this.scrubberContainer.get(0).clientWidth * duration);
                   Player.set('playing', true);
               }
               e.stopPropagation();
@@ -81,7 +81,7 @@ Player.provide('scrubber',
                   return;
               }
               var offsetX = e.pageX - $(e.target).offsetParent().offset().left;
-              var playhead = offsetX/$this.scrubber.get(0).clientWidth * Player.get('duration');
+              var playhead = offsetX/$this.scrubberContainer.get(0).clientWidth * Player.get('duration');
               $this.showFrame(playhead);
           });
           $this.scrubber.mouseleave(function(e){
@@ -158,7 +158,7 @@ Player.provide('scrubber',
           var frameOffset = Math.ceil(frameNumber * Player.get('video_frames_height'))+1;
           // Calculate position of the thumbnail display
           var thumbnailWidth = $this.thumbnailContainer.get(0).clientWidth;
-          var scrubberWidth = $this.scrubber.get(0).clientWidth;
+          var scrubberWidth = $this.scrubberContainer.get(0).clientWidth;
           var positionOffset = (relativePlayhead*scrubberWidth) - (thumbnailWidth/2);
           var positionOffset = Math.max(0, Math.min(positionOffset, scrubberWidth-thumbnailWidth));
           // Position and show the thumbnail container
