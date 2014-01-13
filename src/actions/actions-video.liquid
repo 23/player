@@ -1,0 +1,11 @@
+{% if hasLink %}<div class="action-click-container" click="$set:clickAction:true"></div>{% endif %}
+{% if identityCountdown or identityAllowClose %}
+  <div class="action-countdown-container">
+    {% if identityCountdown %}
+      <div class="action-countdown-text">{{ identityCountdownText }}</div>
+    {% endif %}
+    {% if identityAllowClose %}
+      <div class="action-close" click="$set:closeIdentity:true"></div>
+    {% endif %}
+  </div>
+{% endif %}
