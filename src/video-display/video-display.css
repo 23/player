@@ -1,5 +1,5 @@
 .video-display {
-    position:fixed; 
+    position:absolute; 
     top:0; 
     left:0;
     bottom:0; /*might be updated in js via player settings in the 'design' module */
