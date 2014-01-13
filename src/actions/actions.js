@@ -47,8 +47,8 @@ Player.provide('actions',
     // HANDLER: TEXT
     $this.showHandlers['text'] = function(action){
       // TODO: Make sure text scales well in text and html boxes
-      var parentFontSize = action.font_size || 10;
-      action.parent.css({"font-size": parentFontSize});
+      var parentFontSize = action.font_size || 11;
+      action.parent.css({"font-size": parentFontSize+'px'});
       action.container.html(action.text);
       _resize();
     }
