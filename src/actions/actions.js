@@ -49,7 +49,21 @@ Player.provide('actions',
       // TODO: Make sure text scales well in text and html boxes
       var parentFontSize = action.font_size || 11;
       action.parent.css({"font-size": parentFontSize+'px'});
-      action.container.html(action.text);
+      action.text = action.text.replace(/\n/g, '<br />');
+      var table = $("<table><tr><td></td></tr></table>");
+      var cell = table.find("td");
+      cell.append(action.text);
+      if(action.valign&&action.valign!="top"){
+        cell.css({
+          "vertical-align": (action.valign=="center"?"middle":action.valign)
+        })
+      }
+      if(action.halign&&action.halign!="left"){
+        cell.css({
+          "text-align": action.halign
+        })
+      }
+      action.container.html(table);
       _resize();
     }
     // HANDLER: HTML
@@ -58,27 +72,36 @@ Player.provide('actions',
     }
     // HANDLER: IMAGE
     $this.showHandlers['image'] = function(action){
-      action.valign = "bottom";
-      action.halign = "left";
       // TODO: Write `image` show handle making sure image is displayed correctly in the correct aspect ratio
-      var img = $(document.createElement('img')).attr('src', action.image_url);
+      var img = $(document.createElement('img'));
+      var table = $("<table><tr><td></td></tr></table>");
+      var cell = table.find("td");
       if(action.valign && action.valign != "center"){
-        var props = {};
-        props["margin-"+action.valign] = 0;
-        img.css(props).addClass(action.valign);
-      }else{
-        img.addClass("middle");
+        cell.css({"vertical-align": action.valign});
       }
       if(action.halign && action.halign != "center"){
-        var props = {};
-        props["margin-"+action.halign] = 0;
-        img.css(props);
+        cell.css({"text-align": action.halign});
       }
-      action.container.append(img);
-    }
-    // HANDLER: PRODUCT
-    $this.showHandlers['product'] = function(action){
-      // TODO: Write `product` show handler
+      cell.append(img);
+      action.container.append(table);
+      img.load(function(){
+        action.image_width = img.width();
+        action.image_height = img.height();
+        action.aspect_ratio = action.image_width / action.image_height;
+        if(action.aspect_ratio>action.container.width()/action.container.height()){
+          img.css({
+            width: Math.img(action.container.width(), action.image_width),
+            height: "auto",
+            visibility: "visible"
+          });
+        }else{
+          img.css({
+            width: "auto",
+            height: Math.min(action.container.height(), action.image_height),
+            visibility: "visible"
+          });
+        }
+      }).attr('src', Player.get("url")+action.image);
     }
     // HANDLER: VIDEO
     $this.showHandlers['video'] = function(action){
@@ -91,9 +114,6 @@ Player.provide('actions',
         $this.dispatcherActive = true;
       }, action);
       return false;
-    }
-    $this.hideHandlers['video'] = function(action){
-      // TODO: Write `video` hide handler
     }
     // HANDLER: AD
     $this.showHandlers['ad'] = function(action){
@@ -110,29 +130,48 @@ Player.provide('actions',
     $this.hideHandlers['ad'] = function(action){
       // TODO: Write `ad` hide handler
     }
+
+    // HANDLER: BANNER
     $this.showHandlers['banner'] = function(action){
       if(action.parsed){
-        action.valign = "top";
         action.reportedEvents = [];
-        var img = $(document.createElement('img')).attr('src', action.image_url);
-        if(action.clickthrough) {
-          img.css({"cursor":"pointer"}).click(function(){
-            window.open(action.clickthrough);
-          });
-        }
+        var img = $(document.createElement('img'));
+        var table = $("<table><tr><td></td></tr></table>");
+        var cell = table.find("td");
         if(action.valign && action.valign != "center"){
-          var props = {};
-          props["margin-"+action.valign] = 0;
-          img.css(props);
+          cell.css({"vertical-align": action.valign});
         }
         if(action.halign && action.halign != "center"){
-          var props = {};
-          props["margin-"+action.halign] = 0;
-          img.css(props);
+          cell.css({"text-align": action.halign});
         }
-        action.container.append(img);
+        cell.append(img);
+        if($this.identityAllowClose){
+          cell.wrapInner("<span class='banner-wrap'></span>");
+          $("<div class='close-button'></div>").click(function(){action.container.remove();}).appendTo(cell.find(".banner-wrap"));
+          //cell.find(".banner-wrap").append("<div class='close-button'></div>");
+        }
+        action.container.append(table);
+        img.load(function(){
+          action.image_width = img.width();
+          action.image_height = img.height();
+          action.aspect_ratio = action.image_width / action.image_height;
+          if(action.aspect_ratio>action.container.width()/action.container.height()){
+            img.css({
+              width: Math.min(action.container.width(), action.image_width),
+              height: "auto",
+              visibility: "visible"
+            });
+          }else{
+            img.css({
+              width: "auto",
+              height: Math.min(action.container.height(), action.image_height),
+              visibility: "visible"
+            });
+          }
+        }).attr('src', action.image_url);
         $this.reportEvent("impression", true, action);
       }else{
+        if(typeof action.ad_url=="undefined"||action.ad_url=="") return;
         $.ajax({
           url: action.ad_url,
           method: "GET",
@@ -181,13 +220,15 @@ Player.provide('actions',
     $this.hideHandlers['banner'] = function(action){
       
     };
+
+    // HANDLER: PRODUCT
     $this.showHandlers['product'] = function(action){
       var productParent = $(".product-parent");
       if(productParent.length<1){
         productParent = $("<div></div>").addClass("product-parent").appendTo($this.container);
       }
-      if(typeof action.image_url!='undefined' && action.image_url!=''){
-        var img = $(document.createElement('img')).attr({'src': action.image_url});
+      if(typeof action.image!='undefined' && action.image!=''){
+        var img = $(document.createElement('img')).attr({'src': Player.get("url")+action.image});
         img.appendTo(action.container);
       }
       if(typeof action.product_name!='undefined' && action.product_name!=''){
@@ -240,21 +281,26 @@ Player.provide('actions',
         $this.normalizedActionsPosition = 2; // "after"
         break;
       default:
-        try {
-          $this.normalizedActionsPosition = ct / d;
-        }catch(e){
-          $this.normalizedActionsPosition = 0;
+        if(!ct==0||event=="player:video:playing"){
+          try {
+            $this.normalizedActionsPosition = ct / d;
+          }catch(e){
+            $this.normalizedActionsPosition = 0;
+          }
+        }else{
+          $this.normalizedActionsPosition = -1;
+          $this.ignoreVideoActions = true;
         }
       }
       $this.dummyElement = $(document.createElement('div')).css({backgroundColor:'rgba(0,0,0,.666)'});
       // Dispatch actions
       $.each(Player.get('videoActions'), function(i,action){
-        
-        // Figure out of the action should be active or not
+        // Figure out if the action should be active or not
         var actionActive = $this.normalizedActionsPosition>=action.normalizedStartTime && $this.normalizedActionsPosition<=action.normalizedEndTime && !action.failed;
-        
+        var actionActive = (actionActive&&(!action.only_on_pause_p||!Player.get("playing")));
         // TODO: Fire show & hide handlers listed in the beginning of this file
         if(actionActive && !$this.activeActions[action.action_id]) {
+          if((action.type=="video"||action.type=="ad")&&$this.ignoreVideoActions) return;
           // Activate action by adding a container and calling the show handler
           // Create a few dom containers for the action
           var parent = $(document.createElement('div')).addClass('action').addClass('action-'+action.type);
@@ -266,7 +312,15 @@ Player.provide('actions',
 
           // Click container for the element
           if(typeof(action.link)!='undefined' && action.link != '') {
-            var screen = $(document.createElement('a')).addClass('action-screen').attr({href:action.link, target:action.link_target||'_new'});
+            var screen = $(document.createElement('a')).addClass('action-screen');
+            if(/^\$/.test(action.link)){
+              screen.click({command: action.link}, function(e){
+                Player.runCommand(e);
+                e.preventDefault();
+              });
+            }else{
+              screen.attr({href:action.link, target:action.link_target||'_new'});
+            }
             parent.append(screen);
           }
           // Set position
@@ -319,13 +373,13 @@ Player.provide('actions',
               action.parent.addClass("action-border-hover");
             }
           }
-          
+
           $this.activeActions[action.action_id] = action;
           if($this.showHandlers[action.type]) {
             return $this.showHandlers[action.type](action);
           }
+          
         } else if(!actionActive && $this.activeActions[action.action_id]) {
-          console.log("hiding", action);
           // Deactivate action by calling hide handler and then unloading the container
           if($this.hideHandlers[action.type]) var retain = $this.hideHandlers[action.type](action);
           if(!retain){
@@ -337,47 +391,16 @@ Player.provide('actions',
         }
       });
       
+      $this.ignoreVideoActions = false;
       return true;
     }
 
-    // VERIFY AND RETRIEVE ACTIONS DATA
-    // When a video is loaded, reset the state of the Actions
-    // Also this, is where we may need to populate the `actions` property of the video object
     Player.bind('player:video:loaded', function(e,v){
-      if(!$this.dispatcherActive) return;
-      if(!v.actions) {
-        $this.actionsLoaded = false;
-        Player.get('api').action.get(
-          {photo_id:v.photo_id, token:v.token},
-          function(data){
-            v.actions = data.actions;
-            $.each(v.actions, function(i,action){
-              action.normalizedStartTime = (action.start_time == "before" ? -1 : (action.start_time == "after" ? 2 : parseFloat(action.start_time)));
-              action.normalizedEndTime = (action.end_time == "before" ? -1 : (action.end_time == "after" ? 2 : parseFloat(action.end_time)));
-            });
-            $this.actionsLoaded = true;
-            _dispatcher();
-            if($this.queuePlay){
-              $this.queuePlay = false;
-              Player.set("playing", true);
-            }
-          },
-          Player.fail
-        );
-      } else {
-        $.each(v.actions, function(i,action){
-          action.normalizedStartTime = (action.start_time == "before" ? -1 : (action.start_time == "after" ? 2 : parseFloat(action.start_time)));
-          action.normalizedEndTime = (action.end_time == "before" ? -1 : (action.end_time == "after" ? 2 : parseFloat(action.end_time)));
-        });
-        $this.actionsLoaded = true;
-      }
-      $this.currentVideoActionIndex = -1;
-      _dispatcher();
-      _resize();
+      Player.set("loadActions", true);
     });
 
     // EVENTS TO DISPATCHER
-    Player.bind('player:video:beforeplay player:video:play player:video:playing player:video:timeupdate player:video:ended', _dispatcher);
+    Player.bind('player:video:beforeplay player:video:play player:video:playing player:video:timeupdate player:video:ended player:video:pause', _dispatcher);
     
     var getOverlappingActions = function(action){
       var actions = [];
@@ -389,8 +412,8 @@ Player.provide('actions',
     };
     
     var _resize = function(){
+      var v = Player.get("video");
       try{
-        var v = Player.get("video");
         var w = $(window);
         var wr = w.width()/w.height();
         var vr = v.video_medium_width / v.video_medium_height;
@@ -410,6 +433,22 @@ Player.provide('actions',
           });
         }
       }catch(e){}
+      $.each($this.activeActions||[], function(i, action){
+        if(action.type=="image"||action.type=="banner"){
+          var img = action.container.find("img");
+          if(action.aspect_ratio>action.container.width()/action.container.height()){
+            img.css({
+              width: Math.min(action.container.width(), action.image_width),
+              height: "auto"
+            });
+          }else{
+            img.css({
+              width: "auto",
+              height: Math.min(action.container.height(), action.image_width)
+            });
+          }
+        }
+      });
       window.setTimeout(function(){
         $(".action-text .action-content").css({fontSize:($this.container.width()/640*100)+'%'});
       },10);
@@ -446,6 +485,45 @@ Player.provide('actions',
     });
     Player.getter("videoActionPlaying", function(){
       return $this.videoActionPlaying;
+    });
+
+    // VERIFY AND RETRIEVE ACTIONS DATA
+    // When a video is loaded, reset the state of the Actions
+    // Also this, is where we may need to populate the `actions` property of the video object
+    Player.setter("loadActions", function(forceLoad){
+      $this.container.html("");
+      $this.activeActions={};
+      var v = Player.get("video");
+      if(!$this.dispatcherActive) return;
+      if(!v.actions||forceLoad) {
+        $this.actionsLoaded = false;
+        Player.get('api').action.get(
+          {photo_id:v.photo_id, token:v.token, cb: (new Date()).getTime()},
+          function(data){
+            v.actions = data.actions;
+            $.each(v.actions, function(i,action){
+              action.normalizedStartTime = (action.start_time == "before" ? -1 : (action.start_time == "after" ? 2 : parseFloat(action.start_time)));
+              action.normalizedEndTime = (action.end_time == "before" ? -1 : (action.end_time == "after" ? 2 : parseFloat(action.end_time)));
+            });
+            $this.actionsLoaded = true;
+            _dispatcher();
+            if($this.queuePlay){
+              $this.queuePlay = false;
+              Player.set("playing", true);
+            }
+          },
+          Player.fail
+        );
+      } else {
+        $.each(v.actions, function(i,action){
+          action.normalizedStartTime = (action.start_time == "before" ? -1 : (action.start_time == "after" ? 2 : parseFloat(action.start_time)));
+          action.normalizedEndTime = (action.end_time == "before" ? -1 : (action.end_time == "after" ? 2 : parseFloat(action.end_time)));
+        });
+        $this.actionsLoaded = true;
+      }
+      $this.currentVideoActionIndex = -1;
+      _dispatcher();
+      _resize();
     });
     Player.setter("videoActionPlaying", function(vap){
       $this.videoActionPlaying = vap;
@@ -501,7 +579,7 @@ Player.provide('actions',
         }
         // Build url of the video action
         if(action.type=='video'){
-          var videoUrl = [Player.get("url"), action.tree_id, action.photo_id, action.token, "video_medium/download/download-video.mp4"].join("/");
+          var videoUrl = Player.get("url")+action.video;
           // Play the video action
           $this.eingebaut.setSource(videoUrl);
           Player.set("playing", true);
@@ -531,7 +609,7 @@ Player.provide('actions',
     $this.loadAd = function(action){
       Player.set("playing", false);
       $.ajax({
-        url: action.ad_url,
+        url: action.ad_url||"fail",
         method: "GET",
         dataType: "xml",
         success: function(data){
@@ -713,7 +791,6 @@ Player.provide('actions',
   }
 );
 
-
 // Enable cross domain ajax calls in IE8+9
 function checkIEAjaxFallback(){
   // jQuery.XDomainRequest.js
@@ -807,6 +884,7 @@ function checkIEAjaxFallback(){
     });
   }
 }
+
 checkIEAjaxFallback();
 
 // Register custom transpart type for reporting events
