@@ -16,6 +16,12 @@
 
 .action-text {color:white; box-sizing: border-box; overflow:hidden;}
 .action-text .action-content {line-height:1.35em; padding: 0.6em 0.8em; font-family:Arial, Helvetica; position:absolute; top:0; left:0; bottom:0; right:0; box-sizing: border-box;}
+.action-text table, .action-text tr, .action-text td {
+  width: 100%;
+  height: 100%;
+  vertical-align: top;
+  text-align: left;
+}
 
 .action-ad, .action-video {
   z-index: 9999;
@@ -30,26 +36,33 @@
   height: 100%;
   width: 100%;
 }
+.action-banner table, .action-banner td, .action-image table, .action-image td {
+  width: 100%;
+  height: 100%;
+}
+.action-banner td, .action-image td {
+  text-align: center;
+  vertical-align: middle;
+}
 .action-banner img, .action-image img {
   height: auto;
   width: auto;
-  max-height: 100%;
-  max-width: 100%;
+  visibility: hidden;
+}
+.action-banner .banner-wrap {
+  display: inline-block;
+  position: relative;
+  zoom: 1;
+  *display: inline;
+}
+.action-banner .close-button {
   position: absolute;
-  *position: relative;
   top:0;
-  bottom:0;
-  left:0;
   right:0;
-  margin: auto;
-  *display: block;
-  *zoom: 1;
-}
-.action-image .middle{
-  *margin-top: expression((parentNode.offsetHeight.offsetHeight/2)-(parseInt(this.offsetHeight)/2) <0 ? "0" :(parentNode.offsetHeight/2)-(parseInt(this.offsetHeight)/2) +'px');
-}
-.action-image .bottom{
-  *margin-top: expression((parentNode.offsetHeight.offsetHeight)-(parseInt(this.offsetHeight)) <0 ? "0" :(parentNode.offsetHeight)-(parseInt(this.offsetHeight)) +'px');
+  width:30px;
+  height:30px;
+  background:url('close-icon.png') center center no-repeat;
+  cursor:pointer;
 }
 
 .product-parent {
@@ -144,6 +157,14 @@
 .action-product:hover .product-triangle {
   opacity:1;
   filter:none;
+}
+
+.action-html .action-content {
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
 }
 
 .action-click-container {
