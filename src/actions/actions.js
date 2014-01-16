@@ -148,7 +148,6 @@ Player.provide('actions',
         if($this.identityAllowClose){
           cell.wrapInner("<span class='banner-wrap'></span>");
           $("<div class='close-button'></div>").click(function(){action.container.remove();}).appendTo(cell.find(".banner-wrap"));
-          //cell.find(".banner-wrap").append("<div class='close-button'></div>");
         }
         action.container.append(table);
         img.load(function(){
@@ -297,7 +296,7 @@ Player.provide('actions',
       $.each(Player.get('videoActions'), function(i,action){
         // Figure out if the action should be active or not
         var actionActive = $this.normalizedActionsPosition>=action.normalizedStartTime && $this.normalizedActionsPosition<=action.normalizedEndTime && !action.failed;
-        var actionActive = (actionActive&&(!action.only_on_pause_p||!Player.get("playing")));
+        var actionActive = (actionActive && (!action.pause_mode || action.pause_mode!="only_on_pause" || !Player.get("playing")));
         // TODO: Fire show & hide handlers listed in the beginning of this file
         if(actionActive && !$this.activeActions[action.action_id]) {
           if((action.type=="video"||action.type=="ad")&&$this.ignoreVideoActions) return;
@@ -319,7 +318,9 @@ Player.provide('actions',
                 e.preventDefault();
               });
             }else{
-              screen.attr({href:action.link, target:action.link_target||'_new'});
+              screen.attr({href:action.link, target:action.link_target||'_new'}).click(function(){
+                Player.fire("player:action:click", action);
+              });
             }
             parent.append(screen);
           }
@@ -372,6 +373,10 @@ Player.provide('actions',
             }else if(action.border=='hover'){
               action.parent.addClass("action-border-hover");
             }
+          }
+
+          if(typeof action.pause_mode != "undefined" && action.pause_mode == "pause_playback"){
+            Player.set("playing", false);
           }
 
           $this.activeActions[action.action_id] = action;
@@ -530,6 +535,7 @@ Player.provide('actions',
     });
     Player.setter('clickAction', function(){
       if(typeof $this.activeVideoActions[$this.currentVideoActionIndex].link != 'undefined'){
+        Player.fire("player:action:click", $this.activeVideoActions[$this.currentVideoActionIndex]);
         window.open($this.activeVideoActions[$this.currentVideoActionIndex].link);
       }
     });
