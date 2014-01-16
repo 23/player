@@ -60,15 +60,13 @@ Player.provide('analytics',
       });
 
       // Bind to events for PlayFlow/VAST
-      Player.bind('player:actions:overlay:click', function(e){
+      Player.bind('player:action:click', function(e, action){
+        if(action.type!="video"&&action.type!="ad"){
           Player.set('analyticsEvent', {event:'callToActionClick'});
-        });
-      Player.bind('player:actions:video:click', function(e){
-          Player.set('analyticsEvent', {event: Player.get('actionsPosition')=='before' ? 'preRollClick' : 'postRollClick'});
-        });
-      Player.bind('player:actions:video:close', function(e){
-          Player.set('analyticsEvent', {event: Player.get('actionsPosition')=='before' ? 'preRollClose' : 'postRollClose'});
-        });
+        }else{
+          Player.set('analyticsEvent', {event: action.normalizedStartTime==-1 ? 'preRollClick' : 'postRollClick'});
+        }
+      });
       // Bind to events for sharing
       Player.bind('player:sharing:embedengaged', function(e){
           Player.set('analyticsEvent', {event:'embedEngaged'});
