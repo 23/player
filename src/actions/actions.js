@@ -334,7 +334,7 @@ Player.provide('actions',
           // Set colors
           if(typeof(action.background_color)!='undefined' && action.background_color!='' && action.background_color != "transparent") {
             var rgbaSupport = /^rgba/.test($this.dummyElement.css('backgroundColor'));
-            var alpha = action.transparency || 0.8;
+            var alpha = action.background_opacity || 0.8;
             if(rgbaSupport) {
               var colorTest = action.background_color.match(/^\#(..)(..)(..)$/);
               if(colorTest && colorTest.length==4) {
@@ -494,7 +494,7 @@ Player.provide('actions',
       $this.container.html("");
       $this.activeActions={};
       var v = Player.get("video");
-      if(!$this.dispatcherActive) return;
+      if(!$this.dispatcherActive||v.type=="stream") return;
       if(!v.actions||forceLoad) {
         $this.actionsLoaded = false;
         Player.get('api').action.get(
@@ -781,7 +781,7 @@ Player.provide('actions',
       }
       $this.eingebaut.callback = $this.originalEingebaut.callback;
       $this.eingebaut.container.css({ "z-index":""});
-      $this.eingebaut.container.parent().css({"z-index":"-1"});
+      $this.eingebaut.container.parent().css({"z-index":""});
       $this.eingebaut.setSource($this.originalEingebaut.src);
       $this.eingebaut.controller = '';
       $this.container.css({"position":""});
