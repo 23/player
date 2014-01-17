@@ -90,7 +90,7 @@ Player.provide('actions',
         action.aspect_ratio = action.image_width / action.image_height;
         if(action.aspect_ratio>action.container.width()/action.container.height()){
           img.css({
-            width: Math.img(action.container.width(), action.image_width),
+            width: Math.min(action.container.width(), action.image_width),
             height: "auto",
             visibility: "visible"
           });
@@ -449,7 +449,7 @@ Player.provide('actions',
           }else{
             img.css({
               width: "auto",
-              height: Math.min(action.container.height(), action.image_width)
+              height: Math.min(action.container.height(), action.image_height)
             });
           }
         }
