@@ -41,8 +41,6 @@ Player.provide('actions',
       PlayerUtilities.mergeSettings($this, ['identityCountdown', 'identityAllowClose', 'identityCountdownTextSingular', 'identityCountdownTextPlural']);
     });
 
-    
-
     // HANDLERS FOR ACTION TYPES
     // HANDLER: TEXT
     $this.showHandlers['text'] = function(action){
@@ -127,9 +125,6 @@ Player.provide('actions',
       }, action);
       return false;
     }
-    $this.hideHandlers['ad'] = function(action){
-      // TODO: Write `ad` hide handler
-    }
 
     // HANDLER: BANNER
     $this.showHandlers['banner'] = function(action){
@@ -175,6 +170,7 @@ Player.provide('actions',
           url: action.ad_url,
           method: "GET",
           dataType: "xml",
+          cache: false,
           success: function(data){
             var ad = $(data).find("VAST Ad InLine").eq(0);
             if(ad.length < 1){
@@ -216,9 +212,6 @@ Player.provide('actions',
         });
       }
     };
-    $this.hideHandlers['banner'] = function(action){
-      
-    };
 
     // HANDLER: PRODUCT
     $this.showHandlers['product'] = function(action){
@@ -231,23 +224,33 @@ Player.provide('actions',
         img.appendTo(action.container);
       }
       if(typeof action.product_name!='undefined' && action.product_name!=''){
-        var productName = $("<div></div>").addClass("product-name").append($("<div></div>").html(action.product_name)).appendTo(action.container);
+        var productName = $("<table><tr><td><div class='product-wrap'></div></td></tr></table>").addClass("product-info").appendTo(action.container);
+        var wrap = productName.find(".product-wrap");
+        wrap.append( $("<span></span>").addClass("product-name").html(action.product_name) );
+        if(typeof action.product_text!='undefined' && action.product_text!='') {
+          wrap.append("<br />");
+          wrap.append( $("<span></span>").addClass("product-description").html(action.product_text) );
+        }
         $("<div></div>").addClass("product-triangle").appendTo(action.container);
       }
       action.parent.appendTo(productParent).css({"display":"none"});
       action.parent.slideDown(200);
     };
     $this.hideHandlers['product'] = function(action){
-      action.parent.slideUp(200, function(){
-        $(this).remove();
-        var productParent = $(".product-parent");
-        if(productParent.find(".action").length<2){
-          productParent.remove();
-        }
-        delete action.container;
-        delete action.parent;
-        delete $this.activeActions[action.action_id];
-      });
+      if(!action.animating){
+        action.animating = true;
+        action.parent.slideUp(200, function(){
+          $(this).remove();
+          var productParent = $(".product-parent");
+          if(productParent.find(".action").length<1){
+            productParent.remove();
+          }
+          action.animating = false;
+          delete $this.activeActions[action.action_id];
+          delete action.container;
+          delete action.parent;
+        });
+      }
       return true;
     };
     
@@ -280,9 +283,9 @@ Player.provide('actions',
         $this.normalizedActionsPosition = 2; // "after"
         break;
       default:
-        if(!ct==0||event=="player:video:playing"){
+        if(ct!=0||event=="player:video:playing"){
           try {
-            $this.normalizedActionsPosition = ct / d;
+            $this.normalizedActionsPosition = (ct / d == 1 ? 2 : ct / d);
           }catch(e){
             $this.normalizedActionsPosition = 0;
           }
@@ -300,6 +303,10 @@ Player.provide('actions',
         // TODO: Fire show & hide handlers listed in the beginning of this file
         if(actionActive && !$this.activeActions[action.action_id]) {
           if((action.type=="video"||action.type=="ad")&&$this.ignoreVideoActions) return;
+
+          // Ad action to the list of active actions
+          $this.activeActions[action.action_id] = action;
+
           // Activate action by adding a container and calling the show handler
           // Create a few dom containers for the action
           var parent = $(document.createElement('div')).addClass('action').addClass('action-'+action.type);
@@ -310,7 +317,7 @@ Player.provide('actions',
           action.parent = parent;
 
           // Click container for the element
-          if(typeof(action.link)!='undefined' && action.link != '') {
+          if(typeof(action.link)!='undefined' && action.link != '' && action.type != "video") {
             var screen = $(document.createElement('a')).addClass('action-screen');
             if(/^\$/.test(action.link)){
               screen.click({command: action.link}, function(e){
@@ -325,14 +332,14 @@ Player.provide('actions',
             parent.append(screen);
           }
           // Set position
-          if(typeof(action.x)!='undefined' && typeof(action.y)!='undefined') {
+          if(typeof(action.x)!='undefined' && typeof(action.y)!='undefined' && action.type != "product") {
             parent.css({top:(parseFloat(action.y)*100)+'%', left:(parseFloat(action.x)*100)+'%'});
           }
           // Set size
-          if(typeof(action.width)!='undefined' && typeof(action.height)!='undefined') {
+          if(typeof(action.width)!='undefined' && typeof(action.height)!='undefined' && action.type != "product") {
             parent.css({width:(parseFloat(action.width)*100)+'%', height:(parseFloat(action.height)*100)+'%'});
           }
-          // Set colors
+          // Set background color and opacity
           if(typeof(action.background_color)!='undefined' && action.background_color!='' && action.background_color != "transparent") {
             var rgbaSupport = /^rgba/.test($this.dummyElement.css('backgroundColor'));
             var alpha = action.background_opacity || 0.8;
@@ -362,10 +369,10 @@ Player.provide('actions',
               }
             }
           }
+          // Set text color
           if(typeof(action.text_color)!='undefined'){
             parent.css({"color":action.text_color});
           }
-
           // Set border
           if(typeof(action.border)!='undefined'){
             if(action.border=='always'){
@@ -375,11 +382,14 @@ Player.provide('actions',
             }
           }
 
+          // Ad action to the list of active actions
+          //$this.activeActions[action.action_id] = action;
+          // Possibly pause video (important to be done after action has been added to activeActions
+          // because of async behaviour when using ExternalInterface)
           if(typeof action.pause_mode != "undefined" && action.pause_mode == "pause_playback"){
             Player.set("playing", false);
           }
 
-          $this.activeActions[action.action_id] = action;
           if($this.showHandlers[action.type]) {
             return $this.showHandlers[action.type](action);
           }
@@ -388,7 +398,9 @@ Player.provide('actions',
           // Deactivate action by calling hide handler and then unloading the container
           if($this.hideHandlers[action.type]) var retain = $this.hideHandlers[action.type](action);
           if(!retain){
-            if(action.parent) action.parent.remove();
+            if(action.parent) {
+              action.parent.remove();
+            }
             delete action.container;
             delete action.parent;
             delete $this.activeActions[action.action_id];
@@ -452,6 +464,11 @@ Player.provide('actions',
               height: Math.min(action.container.height(), action.image_height)
             });
           }
+        }
+        if(action.type=="text"&&/MSIE 7/.test(navigator.userAgent)){
+          window.setTimeout(function(){
+            action.container.outerHeight(action.parent.height());
+          },10);
         }
       });
       window.setTimeout(function(){
@@ -534,9 +551,10 @@ Player.provide('actions',
       $this.videoActionPlaying = vap;
     });
     Player.setter('clickAction', function(){
-      if(typeof $this.activeVideoActions[$this.currentVideoActionIndex].link != 'undefined'){
-        Player.fire("player:action:click", $this.activeVideoActions[$this.currentVideoActionIndex]);
-        window.open($this.activeVideoActions[$this.currentVideoActionIndex].link);
+      var action = $this.activeVideoActions[$this.currentVideoActionIndex];
+      if(typeof action.link != 'undefined' && action.link != ""){
+        Player.fire("player:action:click", action);
+        window.open(action.link, (typeof action.link_target != "undefined" ? action.link_target : "_blank"));
       }
     });
     Player.setter('closeIdentity', function(){
@@ -618,6 +636,7 @@ Player.provide('actions',
         url: action.ad_url||"fail",
         method: "GET",
         dataType: "xml",
+        cache: false,
         success: function(data){
           $this.parseVastResponse(data, action);
         },
