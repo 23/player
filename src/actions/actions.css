@@ -63,8 +63,8 @@
 .action-product {
   position: relative;
   display: block;
-  width: 55px;
-  height: 55px;
+  width: 75px;
+  height: 75px;
   margin: 10px;
   background: #FFFFFF;
   background: rgba(255,255,255,0.9);
@@ -72,14 +72,24 @@
   -moz-transition: background .25s ease-in-out;
   -webkit-transition: background .25s ease-in-out;
 }
+.size-small .action-product,
+.size-tiny .action-product {
+  width: 55px;
+  height: 55px;
+}
 .action-product:hover {
   background: #FFFFFF;
   background: rgba(255,255,255,0.95);
 }
 .action-product .action-content {
-  width:55px;
-  height:55px;
+  width:75px;
+  height:75px;
   text-align:center;
+}
+.size-small .action-product .action-content,
+.size-tiny .action-product .action-content {
+  width: 55px;
+  height: 55px;
 }
 .action-product img {
   position: absolute;
@@ -89,8 +99,8 @@
   right: 0px;
   width: auto;
   height: auto;
-  max-height: 55px;
-  max-width: 55px;
+  max-height: 100%;
+  max-width: 100%;
   margin: auto;
   *position: static;
   *margin-top: expression((parentNode.offsetHeight.offsetHeight/2)-(parseInt(this.offsetHeight)/2) <0 ? "0" :(parentNode.offsetHeight/2)-(parseInt(this.offsetHeight)/2) +'px');
@@ -98,8 +108,8 @@
 .action-product .product-info {
   position: absolute;
   top: 0;
-  left: 65px;
-  height: 55px;
+  left: 85px;
+  height: 75px;
   opacity:0;
   filter:alpha(opacity=0);
   -webkit-transition: opacity 0.2s ease-in;
@@ -108,6 +118,12 @@
   -ms-transition: opacity 0.2s ease-in;
   transition: opacity 0.2s ease-in;
 }
+.size-small .action-product .product-info,
+.size-tiny .action-product .product-info {
+  left: 65px;
+  height: 55px;
+}
+
 .action-product:hover .product-info {
   opacity:1;
   filter:none;
@@ -142,13 +158,18 @@
   border-top: 8px solid transparent;
   border-bottom: 8px solid transparent;
   position: absolute;
-  top: 19.5px;
-  left: 60px;
+  top: 29.5px;
+  left: 80px;
   -webkit-transition: opacity 0.2s ease-in;
   -moz-transition: opacity 0.2s ease-in;
   -o-transition: opacity 0.2s ease-in;
   -ms-transition: opacity 0.2s ease-in;
   transition: opacity 0.2s ease-in;
+}
+.size-small .action-product .product-triangle,
+.size-tiny .action-product .product-triangle {
+  top: 19.5px;
+  left: 60px;
 }
 .action-product:hover .product-triangle {
   opacity:1;
