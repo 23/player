@@ -41,6 +41,13 @@ Player.provide('actions',
       PlayerUtilities.mergeSettings($this, ['identityCountdown', 'identityAllowClose', 'identityCountdownTextSingular', 'identityCountdownTextPlural']);
     });
 
+    Player.bind('player:video:fullscreenprompt', function(e){
+      $this.container.hide();
+    });
+    Player.bind('player:video:clearfullscreenprompt', function(e){
+      $this.container.show();
+    });
+
     // HANDLERS FOR ACTION TYPES
     // HANDLER: TEXT
     $this.showHandlers['text'] = function(action){
@@ -299,6 +306,13 @@ Player.provide('actions',
       $.each(Player.get('videoActions'), function(i,action){
         // Figure out if the action should be active or not
         var actionActive = $this.normalizedActionsPosition>=action.normalizedStartTime && $this.normalizedActionsPosition<=action.normalizedEndTime && !action.failed;
+        if(!actionActive && action.pause_mode=="pause_playback"){
+          var start_sec = action.normalizedStartTime*Player.get("duration");
+          var end_sec = action.normalizedEndTime*Player.get("duration");
+          if(end_sec-start_sec<2){
+            actionActive = Player.get("currentTime")+0.5>=start_sec && Player.get("currentTime")-0.5<=end_sec && !action.failed;
+          }
+        }
         var actionActive = (actionActive && (!action.pause_mode || action.pause_mode!="only_on_pause" || !Player.get("playing")));
         // TODO: Fire show & hide handlers listed in the beginning of this file
         if(actionActive && !$this.activeActions[action.action_id]) {
@@ -507,6 +521,17 @@ Player.provide('actions',
     });
     Player.getter("videoActionPlaying", function(){
       return $this.videoActionPlaying;
+    });
+    Player.getter("afterVideoActionsShown", function(){
+      if($this.normalizedActionsPosition!=2) return false;
+      var shown = false;
+      $.each($this.activeActions, function(i,action){
+        if(action.type!="video"&&action.type!="video_ad"){
+          shown = true;
+          return false;
+        }
+      });
+      return shown;
     });
 
     // VERIFY AND RETRIEVE ACTIONS DATA
