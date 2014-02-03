@@ -428,6 +428,7 @@ Player.provide('actions',
       });
       
       $this.ignoreVideoActions = false;
+      Player.fire("player:action:dispatched");
       return true;
     }
 
@@ -527,11 +528,10 @@ Player.provide('actions',
     Player.getter("videoActionPlaying", function(){
       return $this.videoActionPlaying;
     });
-    Player.getter("afterVideoActionsShown", function(){
-      if($this.normalizedActionsPosition!=2) return false;
+    Player.getter("actionsShown", function(){
       var shown = false;
       $.each($this.activeActions, function(i,action){
-        if(action.type!="video"&&action.type!="video_ad"){
+        if(action.type!="video"&&action.type!="ad"){
           shown = true;
           return false;
         }
@@ -576,6 +576,7 @@ Player.provide('actions',
       $this.currentVideoActionIndex = -1;
       _dispatcher();
       _resize();
+      Player.fire("player:action:loaded");
     });
     Player.setter("videoActionPlaying", function(vap){
       $this.videoActionPlaying = vap;
