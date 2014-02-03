@@ -48,6 +48,11 @@ Player.provide('actions',
       $this.container.show();
     });
 
+    $this.container.on("click touchstart", function(e){
+      if(e.handled||e.target!=this) return
+      Player.set("playing", !Player.get("playing"));
+    });
+
     // HANDLERS FOR ACTION TYPES
     // HANDLER: TEXT
     $this.showHandlers['text'] = function(action){
