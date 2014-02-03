@@ -522,6 +522,17 @@ Player.provide('actions',
     Player.getter("videoActionPlaying", function(){
       return $this.videoActionPlaying;
     });
+    Player.getter("afterVideoActionsShown", function(){
+      if($this.normalizedActionsPosition!=2) return false;
+      var shown = false;
+      $.each($this.activeActions, function(i,action){
+        if(action.type!="video"&&action.type!="video_ad"){
+          shown = true;
+          return false;
+        }
+      });
+      return shown;
+    });
 
     // VERIFY AND RETRIEVE ACTIONS DATA
     // When a video is loaded, reset the state of the Actions
