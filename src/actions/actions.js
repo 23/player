@@ -41,6 +41,13 @@ Player.provide('actions',
       PlayerUtilities.mergeSettings($this, ['identityCountdown', 'identityAllowClose', 'identityCountdownTextSingular', 'identityCountdownTextPlural']);
     });
 
+    Player.bind('player:video:fullscreenprompt', function(e){
+      $this.container.hide();
+    });
+    Player.bind('player:video:clearfullscreenprompt', function(e){
+      $this.container.show();
+    });
+
     // HANDLERS FOR ACTION TYPES
     // HANDLER: TEXT
     $this.showHandlers['text'] = function(action){
