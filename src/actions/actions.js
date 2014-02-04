@@ -48,9 +48,15 @@ Player.provide('actions',
       $this.container.show();
     });
 
-    $this.container.on("click touchstart", function(e){
-      if(e.handled||e.target!=this) return
+    $this.container.on("click", function(e){
+      if(e.handled||e.target!=this) return;
       Player.set("playing", !Player.get("playing"));
+      e.handled = true;
+      e.stopPropagation();
+      e.preventDefault();
+    });
+    $this.container.on("touchstart", function(e){
+      e.stopPropagation();
     });
 
     // HANDLERS FOR ACTION TYPES
@@ -296,11 +302,12 @@ Player.provide('actions',
         // 'ended' triggers postrolls
         case 'player:video:ended':
           $this.normalizedActionsPosition = 2; // "after"
+          $this.beforeplayHandled = false;
           break;
         default:
           // If currentTime is bigger than 0 (or we receive an event confirming that playback has started),
           // make sure that prerolls have been handled, and set actionsPosition between 0 and 1
-          if(ct!=0||event=="player:video:playing"||event=="player:video:timeupdate"){
+          if(ct!=0||event=="player:video:playing"||event=="player:video:play"){
             if($this.beforeplayHandled){
               try {
                 if (ct/d != 1) {
@@ -865,7 +872,15 @@ Player.provide('actions',
       $this.eingebaut.container.parent().css({"z-index":""});
       $this.eingebaut.setSource($this.originalEingebaut.src);
       $this.eingebaut.controller = '';
-      $this.container.css({"position":""});
+      $this.container.css({"position": ""});
+      // IE9 has a weird bug where restoring z-index and position doesn't render .video-display correctly
+      // This fix forces the browser to rerender the element
+      if( /MSIE 9/.test(navigator.userAgent) ) {
+        $(".video-display").css({"position":"relative"});
+        window.setTimeout(function(){
+          $(".video-display").css({"position": "absolute"});
+        }, 500);
+      }
     };
 
     return $this;
