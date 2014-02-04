@@ -122,15 +122,14 @@ Player.provide('design',
           // Fullscreen on pinch to zoom
           $(document).on("gesturechange", function(e){
               if (e.originalEvent.scale > 1) {
-		  Player.set("fullscreen", true);
+		            Player.set("fullscreen", true);
               }
           });
           // Quicker response on tap
           $(document).on("touchstart", function(e){
               if (e.originalEvent.touches.length == 1) {
-		  try {$(e.target).mousemove();}catch(e){}
+		              try {$(e.target).mousemove();}catch(e){}
                   $(e.target).trigger("click", e.originalEvent);
-                  e.preventDefault();
                   e.stopPropagation();
               }
           });
