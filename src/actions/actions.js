@@ -95,6 +95,7 @@ Player.provide('actions',
       cell.append(img);
       action.container.append(table);
       img.load(function(){
+        //_resize();
         action.image_width = img.width();
         action.image_height = img.height();
         action.aspect_ratio = action.image_width / action.image_height;
@@ -264,18 +265,17 @@ Player.provide('actions',
     
     // CONTROLLER LISTENING TO PLAYBACK STATE AND DISPATCHING ACTIONS
     var _dispatcher = function(event){
-      // We need to get 'currentTime' and 'duration' before checking dispatcherActive, probably
+      // We need to get 'currentTime', 'duration' and 'playing' before checking dispatcherActive, probably
       // because interfacing with Flash's ExternalInterface in some cases is async and therefore
       // may allow other events being fired and possibly changing the value of dispatcherActive
       var ct = Player.get('currentTime');
       var d = Player.get('duration');
-      var startTime = Player.get("videoElement").getStartTime(); // Get the startTime property from Eingebaut in case we're seeking in the video
-      if(typeof startTime!="undefined"&&startTime!=false&&startTime!=0){
-        return true;
-      }
+      var playing = Player.get('playing');
+      // Is the dispatcher active and supposed to dispatch actions?
       if($this.dispatcherActive != true) {
         return true;
       }
+      // Queue playback, if actions are not loaded yet
       if(!$this.actionsLoaded){
         if(event=="player:video:beforeplay"){
           $this.queuePlay = true;
@@ -284,49 +284,68 @@ Player.provide('actions',
       }
       // Normalize actionsPosition
       switch(event){
-      case 'player:video:beforeplay':
-        if(ct==0){
-          $this.normalizedActionsPosition = -1; // "before"
-        }else{
-          $this.normalizedActionsPosition = ct / d;
-        }
-        break;
-      case 'player:video:ended':
-        $this.normalizedActionsPosition = 2; // "after"
-        break;
-      default:
-        if(ct!=0||event=="player:video:playing"||event=="player:video:timeupdate"){
-          try {
-            $this.normalizedActionsPosition = (ct / d == 1 ? 2 : ct / d);
-          }catch(e){
-            $this.normalizedActionsPosition = 0;
+        // In the beginning of a video, 'beforeplay' should trigger playback of prerolls
+        case 'player:video:beforeplay':
+          if(ct==0||!$this.beforeplayHandled){
+            $this.beforeplayHandled = true;
+            $this.normalizedActionsPosition = -1; // "before"
+          }else{
+            $this.normalizedActionsPosition = ct / d;
           }
-        }else{
-          $this.normalizedActionsPosition = -1;
-          $this.ignoreVideoActions = true;
-        }
+          break;
+        // 'ended' triggers postrolls
+        case 'player:video:ended':
+          $this.normalizedActionsPosition = 2; // "after"
+          break;
+        default:
+          // If currentTime is bigger than 0 (or we receive an event confirming that playback has started),
+          // make sure that prerolls have been handled, and set actionsPosition between 0 and 1
+          if(ct!=0||event=="player:video:playing"||event=="player:video:timeupdate"){
+            if($this.beforeplayHandled){
+              try {
+                if (ct/d != 1) {
+                  $this.normalizedActionsPosition = ct / d;
+                }
+              }catch(e){
+                $this.normalizedActionsPosition = 0;
+              }
+            }else{
+              // if beforeplay has not been handled, do so now
+              $this.normalizedActionsPosition = -1;
+              $this.beforeplayHandled = true;
+            }
+          }else{
+            // if playback has not yet started, so relevant static actions, but don't play prerolls just yet
+            $this.normalizedActionsPosition = -1;
+            $this.ignoreVideoActions = true;
+          }
       }
       $this.dummyElement = $(document.createElement('div')).css({backgroundColor:'rgba(0,0,0,.666)'});
+
       // Dispatch actions
       $.each(Player.get('videoActions'), function(i,action){
+
         // Figure out if the action should be active or not
+        // First, are we on or in between start time and end time?
         var actionActive = $this.normalizedActionsPosition>=action.normalizedStartTime && $this.normalizedActionsPosition<=action.normalizedEndTime && !action.failed;
+        // If not, check if we should be a little more flexible for actions that should pause playback
         if(!actionActive && action.pause_mode=="pause_playback"){
-          var start_sec = action.normalizedStartTime*Player.get("duration");
-          var end_sec = action.normalizedEndTime*Player.get("duration");
+          var start_sec = action.normalizedStartTime*d;
+          var end_sec = action.normalizedEndTime*d;
           if(end_sec-start_sec<2){
-            actionActive = Player.get("currentTime")+0.5>=start_sec && Player.get("currentTime")-0.5<=end_sec && !action.failed;
+            actionActive = ct+0.5>=start_sec && ct-0.5<=end_sec && !action.failed;
           }
         }
-        var actionActive = (actionActive && (!action.pause_mode || action.pause_mode!="only_on_pause" || !Player.get("playing")));
-        // TODO: Fire show & hide handlers listed in the beginning of this file
-        if(actionActive && !$this.activeActions[action.action_id]) {
-          if((action.type=="video"||action.type=="ad")&&$this.ignoreVideoActions) return;
+        // If action is active according to timing, check if it should only be shown when video is paused
+        var actionActive = (actionActive && (!action.pause_mode || action.pause_mode!="only_on_pause" || !playing));
 
+        if(actionActive && !$this.activeActions[action.action_id]) { // If action is active but have not yet been parsed, do so now
+
+          // Should we ignore video and video ad action? (If actionsPosition is -1, but playback has not started yet)
+          if((action.type=="video"||action.type=="ad")&&$this.ignoreVideoActions) return;
           // Ad action to the list of active actions
           $this.activeActions[action.action_id] = action;
 
-          // Activate action by adding a container and calling the show handler
           // Create a few dom containers for the action
           var parent = $(document.createElement('div')).addClass('action').addClass('action-'+action.type);
           var container = $(document.createElement('div')).addClass('action-content');
@@ -338,12 +357,12 @@ Player.provide('actions',
           // Click container for the element
           if(typeof(action.link)!='undefined' && action.link != '' && action.type != "video") {
             var screen = $(document.createElement('a')).addClass('action-screen');
-            if(/^\$/.test(action.link)){
+            if(/^\$/.test(action.link)){ // Is the link a Glue command? Run it!
               screen.click({command: action.link}, function(e){
                 Player.runCommand(e);
                 e.preventDefault();
               });
-            }else{
+            }else{ // Open link with relevant target
               screen.attr({href:action.link, target:action.link_target||'_new'}).click(function(){
                 Player.fire("player:action:click", action);
               });
@@ -362,7 +381,7 @@ Player.provide('actions',
           if(typeof(action.background_color)!='undefined' && action.background_color!='' && action.background_color != "transparent") {
             var rgbaSupport = /^rgba/.test($this.dummyElement.css('backgroundColor'));
             var alpha = action.background_opacity || 0.8;
-            if(rgbaSupport) {
+            if(rgbaSupport) { // We can do regular rgba coloring of the background
               var colorTest = action.background_color.match(/^\#(..)(..)(..)$/);
               if(colorTest && colorTest.length==4) {
                 var r = parseInt(colorTest[1], 16);
@@ -373,7 +392,7 @@ Player.provide('actions',
               }else{
                 parent.css({"background-color":action.background_color});
               }
-            }else{
+            }else{ // old browser. luckily, Microsoft's got us covered with filters
               if(/MSIE/.test(navigator.userAgent)){
                 var hexTransparency = Math.floor(alpha*255).toString(16).substr(0,2);
                 var rawColor = action.background_color.substr(1);
@@ -383,7 +402,7 @@ Player.provide('actions',
                   "zoom":"1",
                   "filter":"progid:DXImageTransform.Microsoft.gradient(startColorstr="+grad+",endColorstr="+grad+")"
                 });
-              }else{
+              }else{ // nothing to do about it, solid color it is
                 parent.css({"background-color":action.background_color});
               }
             }
@@ -401,20 +420,20 @@ Player.provide('actions',
             }
           }
 
-          // Ad action to the list of active actions
-          //$this.activeActions[action.action_id] = action;
           // Possibly pause video (important to be done after action has been added to activeActions
           // because of async behaviour when using ExternalInterface)
           if(typeof action.pause_mode != "undefined" && action.pause_mode == "pause_playback"){
             Player.set("playing", false);
           }
 
+          // Call the relevant showhandler, if it exists
           if($this.showHandlers[action.type]) {
             return $this.showHandlers[action.type](action);
           }
           
         } else if(!actionActive && $this.activeActions[action.action_id]) {
           // Deactivate action by calling hide handler and then unloading the container
+          // If the hide handler return true, it will be responsible for unloading the containers
           if($this.hideHandlers[action.type]) var retain = $this.hideHandlers[action.type](action);
           if(!retain){
             if(action.parent) {
@@ -433,6 +452,8 @@ Player.provide('actions',
     }
 
     Player.bind('player:video:loaded', function(e,v){
+      _resize();
+      $this.beforeplayHandled = false;
       Player.set("loadActions", true);
     });
 
@@ -447,10 +468,11 @@ Player.provide('actions',
       });
       return actions;
     };
+    mod = $this;
     
     var _resize = function(){
       var v = Player.get("video");
-      try{
+      if(typeof v != "undefined"){
         var w = $(window);
         var wr = w.width()/w.height();
         var vr = v.video_medium_width / v.video_medium_height;
@@ -469,8 +491,8 @@ Player.provide('actions',
             "margin-left":""+(w.width()-w.height()*vr)/2+"px"
           });
         }
-      }catch(e){}
-      $.each($this.activeActions||[], function(i, action){
+      }
+      $.each($this.activeActions||{}, function(i, action){
         if(action.type=="image"||action.type=="banner"){
           var img = action.container.find("img");
           if(action.aspect_ratio>action.container.width()/action.container.height()){
@@ -543,6 +565,8 @@ Player.provide('actions',
     // When a video is loaded, reset the state of the Actions
     // Also this, is where we may need to populate the `actions` property of the video object
     Player.setter("loadActions", function(forceLoad){
+      if($this.loadingActions) return;
+      $this.loadingActions = true;
       $this.container.html("");
       $this.activeActions={};
       var v = Player.get("video");
@@ -552,6 +576,7 @@ Player.provide('actions',
         Player.get('api').action.get(
           {photo_id:v.photo_id, token:v.token, cb: (new Date()).getTime()},
           function(data){
+            $this.loadingActions = false;
             v.actions = data.actions;
             $.each(v.actions, function(i,action){
               action.normalizedStartTime = (action.start_time == "before" ? -1 : (action.start_time == "after" ? 2 : parseFloat(action.start_time)));
