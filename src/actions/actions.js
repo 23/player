@@ -249,20 +249,16 @@ Player.provide('actions',
       action.parent.slideDown(200);
     };
     $this.hideHandlers['product'] = function(action){
-      if(!action.animating){
-        action.animating = true;
-        action.parent.slideUp(200, function(){
-          $(this).remove();
-          var productParent = $(".product-parent");
-          if(productParent.find(".action").length<1){
-            productParent.remove();
-          }
-          action.animating = false;
-          delete $this.activeActions[action.action_id];
-          delete action.container;
-          delete action.parent;
-        });
-      }
+      action.parent.stop().slideUp(200, function(){
+        $(this).remove();
+        var productParent = $(".product-parent");
+        if(productParent.find(".action").length<1){
+          productParent.remove();
+        }
+        delete $this.activeActions[action.action_id];
+        delete action.container;
+        delete action.parent;
+      });
       return true;
     };
     
@@ -273,6 +269,10 @@ Player.provide('actions',
       // may allow other events being fired and possibly changing the value of dispatcherActive
       var ct = Player.get('currentTime');
       var d = Player.get('duration');
+      var startTime = Player.get("videoElement").getStartTime(); // Get the startTime property from Eingebaut in case we're seeking in the video
+      if(typeof startTime!="undefined"&&startTime!=false&&startTime!=0){
+        return true;
+      }
       if($this.dispatcherActive != true) {
         return true;
       }
@@ -295,7 +295,7 @@ Player.provide('actions',
         $this.normalizedActionsPosition = 2; // "after"
         break;
       default:
-        if(ct!=0||event=="player:video:playing"){
+        if(ct!=0||event=="player:video:playing"||event=="player:video:timeupdate"){
           try {
             $this.normalizedActionsPosition = (ct / d == 1 ? 2 : ct / d);
           }catch(e){
