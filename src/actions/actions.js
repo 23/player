@@ -21,8 +21,8 @@
 
 Player.provide('actions', 
   {
-    identityCountdown: true,
-    identityAllowClose: true,
+    identityCountdown: false,
+    identityAllowClose: false,
     identityCountdownTextSingular: "This advertisement will end in % second",
     identityCountdownTextPlural: "This advertisement will end in % seconds"
   }, 
@@ -48,6 +48,7 @@ Player.provide('actions',
       $this.container.show();
     });
 
+    // Clicks on the container (but not individual actions) should toggle playback
     $this.container.on("click", function(e){
       if(e.handled||e.target!=this) return;
       Player.set("playing", !Player.get("playing"));
@@ -277,6 +278,8 @@ Player.provide('actions',
       var ct = Player.get('currentTime');
       var d = Player.get('duration');
       var playing = Player.get('playing');
+      var ve = Player.get("videoElement");
+      var startTime = (ve&&ve.getStartTime)?Player.get("videoElement").getStartTime()||false:false;
       // Is the dispatcher active and supposed to dispatch actions?
       if($this.dispatcherActive != true) {
         return true;
@@ -292,7 +295,7 @@ Player.provide('actions',
       switch(event){
         // In the beginning of a video, 'beforeplay' should trigger playback of prerolls
         case 'player:video:beforeplay':
-          if(ct==0||!$this.beforeplayHandled){
+          if((ct==0&&(startTime==false||startTime==0))||!$this.beforeplayHandled){
             $this.beforeplayHandled = true;
             $this.normalizedActionsPosition = -1; // "before"
           }else{
