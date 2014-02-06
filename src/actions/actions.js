@@ -388,7 +388,7 @@ Player.provide('actions',
             parent.css({width:(parseFloat(action.width)*100)+'%', height:(parseFloat(action.height)*100)+'%'});
           }
           // Set background color and opacity
-          if(typeof(action.background_color)!='undefined' && action.background_color!='' && action.background_color != "transparent") {
+          if(typeof(action.background_color)!='undefined' && action.background_color!='' && action.background_color != "transparent" && action.background_opacity != "0") {
             var rgbaSupport = /^rgba/.test($this.dummyElement.css('backgroundColor'));
             var alpha = action.background_opacity || 0.8;
             if(rgbaSupport) { // We can do regular rgba coloring of the background
@@ -464,6 +464,7 @@ Player.provide('actions',
     Player.bind('player:video:loaded', function(e,v){
       _resize();
       $this.beforeplayHandled = false;
+      $this.actionsLoaded = false;
       Player.set("loadActions", true);
     });
 
@@ -577,27 +578,36 @@ Player.provide('actions',
     Player.setter("loadActions", function(forceLoad){
       if($this.loadingActions) return;
       $this.loadingActions = true;
+      $this.actionsLoaded = false;
       $this.container.html("");
       $this.activeActions={};
       var v = Player.get("video");
-      if(!$this.dispatcherActive||v.type=="stream") return;
+      if(!$this.dispatcherActive||v.type=="stream"){
+        $this.actionsLoaded = true;
+        $this.loadingActions = false;
+        if($this.queuePlay){
+          $this.queuePlay = false;
+          Player.set("playing", true);
+        }
+        return;
+      }
       if(!v.actions||forceLoad) {
-        $this.actionsLoaded = false;
         Player.get('api').action.get(
           {photo_id:v.photo_id, token:v.token, cb: (new Date()).getTime()},
           function(data){
             $this.loadingActions = false;
+            $this.actionsLoaded = true;
             v.actions = data.actions;
             $.each(v.actions, function(i,action){
               action.normalizedStartTime = (action.start_time == "before" ? -1 : (action.start_time == "after" ? 2 : parseFloat(action.start_time)));
               action.normalizedEndTime = (action.end_time == "before" ? -1 : (action.end_time == "after" ? 2 : parseFloat(action.end_time)));
             });
-            $this.actionsLoaded = true;
             _dispatcher();
             if($this.queuePlay){
               $this.queuePlay = false;
               Player.set("playing", true);
             }
+            Player.fire("player:action:loaded");
           },
           Player.fail
         );
@@ -607,11 +617,16 @@ Player.provide('actions',
           action.normalizedEndTime = (action.end_time == "before" ? -1 : (action.end_time == "after" ? 2 : parseFloat(action.end_time)));
         });
         $this.actionsLoaded = true;
+        $this.loadingActions = false;
+        if($this.queuePlay){
+          $this.queuePlay = false;
+          Player.set("playing", true);
+        }
+        Player.fire("player:action:loaded");
       }
       $this.currentVideoActionIndex = -1;
       _dispatcher();
       _resize();
-      Player.fire("player:action:loaded");
     });
     Player.setter("videoActionPlaying", function(vap){
       $this.videoActionPlaying = vap;
@@ -856,11 +871,12 @@ Player.provide('actions',
       $this.eingebaut = Player.get("videoElement");
       $this.originalEingebaut.callback = $this.eingebaut.callback;
       $this.originalEingebaut.src = $this.eingebaut.getSource();
+      $this.originalEingebaut.background = $this.eingebaut.container.css("background-image");
       if($this.eingebaut.floatingPoster) $this.eingebaut.floatingPoster.hide();
       $this.eingebaut.callback = $this.actionsEingebautCallback;
       $this.eingebaut.controller = 'actions';
       $this.eingebaut.container.parent().css({ "z-index":200});
-      $this.eingebaut.container.css({ "z-index":200});
+      $this.eingebaut.container.css({ "z-index":200,"background-image":"none"});
       $this.container.css({"position":"static"});
     };
     
@@ -871,7 +887,7 @@ Player.provide('actions',
         $this.switchedToFlash = false;
       }
       $this.eingebaut.callback = $this.originalEingebaut.callback;
-      $this.eingebaut.container.css({ "z-index":""});
+      $this.eingebaut.container.css({ "z-index":"", "background-image":$this.originalEingebaut.background});
       $this.eingebaut.container.parent().css({"z-index":""});
       $this.eingebaut.setSource($this.originalEingebaut.src);
       $this.eingebaut.controller = '';
