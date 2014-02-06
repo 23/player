@@ -593,7 +593,12 @@ Player.provide('actions',
       }
       if(!v.actions||forceLoad) {
         Player.get('api').action.get(
-          {photo_id:v.photo_id, token:v.token, cb: (new Date()).getTime()},
+          {
+            photo_id:v.photo_id,
+            token:v.token,
+            player_id: Player.get("player_id"),
+            cb: (new Date()).getTime()
+          },
           function(data){
             $this.loadingActions = false;
             $this.actionsLoaded = true;
