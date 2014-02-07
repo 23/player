@@ -87,9 +87,11 @@ Player.provide('design',
               var triggerTrayTimeout = function(){
                   window.clearTimeout($this.trayTimeoutId);
                   $('#tray').show();
+                  $('body').removeClass("hide-cursor");
                   $this.trayTimeoutId = window.setTimeout(function(){
                       if(!Player.get('showSharing')&&!Player.get('browseMode')) {
                           $('#tray').hide();
+                          $('body').addClass("hide-cursor");
                       }
                   }, $this.trayTimeout);
               }
