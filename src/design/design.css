@@ -42,7 +42,9 @@ button {
     line-height:32px;
     margin-right:10px;
 }
-
+body.hide-cursor, body.hide-cursor * {
+    cursor: none;
+}
 
 
 /* ========================= GENERIC CLASSES ======================== */
