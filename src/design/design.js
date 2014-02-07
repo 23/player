@@ -86,7 +86,7 @@ Player.provide('design',
           if($this.showTray&&$this.trayTimeout>0) {
               var triggerTrayTimeout = function(){
                   window.clearTimeout($this.trayTimeoutId);
-
+                  $('body').removeClass("hide-cursor");
                   if($this._minimized) {
                       $('.tray-navigation').css({opacity:0});
                       $('#tray').removeClass('minimized');
@@ -96,6 +96,7 @@ Player.provide('design',
 
                   $this.trayTimeoutId = window.setTimeout(function(){
                       if(!Player.get('showSharing')&&!Player.get('browseMode')) {
+                        $('body').addClass("hide-cursor");
                         $('.tray-navigation').animate({opacity:0}, 300, function(){
                             $('#tray').addClass('minimized');
                             $this._minimized = true;

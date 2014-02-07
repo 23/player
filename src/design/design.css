@@ -67,7 +67,9 @@ button {
     line-height:34px;
     margin: 0;
 }
-
+body.hide-cursor, body.hide-cursor * {
+    cursor: none;
+}
 
 
 /* ========================= GENERIC CLASSES ======================== */
