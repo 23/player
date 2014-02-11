@@ -135,6 +135,7 @@ Player.provide('actions',
         $this.activeActions[action.action_id] = action;
       });
       $this.VideoHandler(actions, function(){
+        action.parent.hide(); // Hide action container when playback of video actions is done
         $this.dispatcherActive = true;
       }, action);
       return false;
@@ -147,6 +148,7 @@ Player.provide('actions',
         $this.activeActions[action.action_id] = action;
       });
       $this.VideoHandler(actions, function(){
+        action.parent.hide(); // Hide action container when playback of video actions is done
         $this.dispatcherActive = true;
       }, action);
       return false;
