@@ -41,6 +41,7 @@ Player.provide('actions',
       PlayerUtilities.mergeSettings($this, ['identityCountdown', 'identityAllowClose', 'identityCountdownTextSingular', 'identityCountdownTextPlural']);
     });
 
+    // Hide actions when necessary for clicking the fullscreen prompt in the Flash object in IE 7-10
     Player.bind('player:video:fullscreenprompt', function(e){
       $this.container.hide();
     });
@@ -89,10 +90,11 @@ Player.provide('actions',
     }
     // HANDLER: IMAGE
     $this.showHandlers['image'] = function(action){
-      // TODO: Write `image` show handle making sure image is displayed correctly in the correct aspect ratio
+      // Create image element and a table to display it in
       var img = $(document.createElement('img'));
       var table = $("<table><tr><td></td></tr></table>");
       var cell = table.find("td");
+      // Set alignments of cell content
       if(action.valign && action.valign != "center"){
         cell.css({"vertical-align": action.valign});
       }
@@ -102,7 +104,7 @@ Player.provide('actions',
       cell.append(img);
       action.container.append(table);
       img.load(function(){
-        //_resize();
+        // When image is loaded, save the original dimensions for use when scaling
         action.image_width = img.width();
         action.image_height = img.height();
         action.aspect_ratio = action.image_width / action.image_height;
@@ -121,6 +123,10 @@ Player.provide('actions',
         }
       }).attr('src', Player.get("url")+action.image);
     }
+    // Handlers for video and video ad actions does the same basic thing:
+    // Disable the dispatcher, gathers all video actions to be shown at this actionsPosition,
+    // and let the VideoHandler-method take care of playback flow. Afterwards, control is
+    // handed back to the dispatcher.
     // HANDLER: VIDEO
     $this.showHandlers['video'] = function(action){
       $this.dispatcherActive = false;
@@ -147,6 +153,8 @@ Player.provide('actions',
     }
 
     // HANDLER: BANNER
+    // This handler mimics the showHandler for action type "image" expect it makes sure that the VAST feed
+    // has been loaded and parsed, before creating the image element and its container
     $this.showHandlers['banner'] = function(action){
       if(action.parsed){
         action.reportedEvents = [];
@@ -184,10 +192,12 @@ Player.provide('actions',
           }
         }).attr('src', action.image_url);
         $this.reportEvent("impression", true, action);
+        action.parsed = false // Force reload of the ad, if the action is shown again
       }else{
         if(typeof action.ad_url=="undefined"||action.ad_url=="") return;
+        action.ad_url_replaced = action.ad_url.replace(/\[timestamp\]/g, (new Date()).getTime()).replace(/\[referrer\]/g, document.referrer);
         $.ajax({
-          url: action.ad_url,
+          url: action.ad_url_replaced,
           method: "GET",
           dataType: "xml",
           cache: false,
@@ -235,14 +245,18 @@ Player.provide('actions',
 
     // HANDLER: PRODUCT
     $this.showHandlers['product'] = function(action){
+      // All product actions are placed inside the same parent element to allow stacking
+      // Create the parent element, if it does not already exist
       var productParent = $(".product-parent");
       if(productParent.length<1){
         productParent = $("<div></div>").addClass("product-parent").appendTo($this.container);
       }
+      // Place product image inside the action container
       if(typeof action.image!='undefined' && action.image!=''){
         var img = $(document.createElement('img')).attr({'src': Player.get("url")+action.image});
         img.appendTo(action.container);
       }
+      // Append product name and description
       if(typeof action.product_name!='undefined' && action.product_name!=''){
         var productName = $("<table><tr><td><div class='product-wrap'></div></td></tr></table>").addClass("product-info").appendTo(action.container);
         var wrap = productName.find(".product-wrap");
@@ -257,8 +271,11 @@ Player.provide('actions',
       action.parent.slideDown(200);
     };
     $this.hideHandlers['product'] = function(action){
+      // Hide the acition with an animation
       action.parent.stop().slideUp(200, function(){
+        // Remove the action completely
         $(this).remove();
+        // Remove the parent element, if it is empty
         var productParent = $(".product-parent");
         if(productParent.find(".action").length<1){
           productParent.remove();
@@ -267,6 +284,8 @@ Player.provide('actions',
         delete action.container;
         delete action.parent;
       });
+      // Return true, so the dispatcher knows that this hideHandler is in charge of removing
+      // the action and its containers
       return true;
     };
     
@@ -294,9 +313,11 @@ Player.provide('actions',
       // Normalize actionsPosition
       switch(event){
         // In the beginning of a video, 'beforeplay' should trigger playback of prerolls
+        // After playback has ended, 'beforeplayer' indicates replay of the video, so show prerolls again
         case 'player:video:beforeplay':
-          if((ct==0&&(startTime==false||startTime==0))||!$this.beforeplayHandled){
+          if(!$this.beforeplayHandled||$this.videoEnded){
             $this.beforeplayHandled = true;
+            $this.videoEnded = false;
             $this.normalizedActionsPosition = -1; // "before"
           }else{
             $this.normalizedActionsPosition = ct / d;
@@ -305,12 +326,13 @@ Player.provide('actions',
         // 'ended' triggers postrolls
         case 'player:video:ended':
           $this.normalizedActionsPosition = 2; // "after"
-          $this.beforeplayHandled = false;
+          $this.videoEnded = true;
           break;
         default:
           // If currentTime is bigger than 0 (or we receive an event confirming that playback has started),
           // make sure that prerolls have been handled, and set actionsPosition between 0 and 1
-          if(ct!=0||event=="player:video:playing"||event=="player:video:play"){
+          // If $this.videoEnded, set actionsPosition to 2 (until next beforeplay event)
+          if((ct!=0||(startTime!=false&&startTime!=0)||event=="player:video:playing"||event=="player:video:play")&&!$this.videoEnded){
             if($this.beforeplayHandled){
               try {
                 if (ct/d != 1) {
@@ -325,9 +347,14 @@ Player.provide('actions',
               $this.beforeplayHandled = true;
             }
           }else{
-            // if playback has not yet started, so relevant static actions, but don't play prerolls just yet
-            $this.normalizedActionsPosition = -1;
-            $this.ignoreVideoActions = true;
+            if(!$this.videoEnded){
+              // if playback has not yet started, show relevant static actions, but don't play prerolls just yet
+              $this.normalizedActionsPosition = -1;
+              $this.ignoreVideoActions = true;
+            }else{
+              // If playback has ended, keep actionsPosition at 2, even though currentTime may be 0
+              $this.normalizedActionsPosition = 2;
+            }
           }
       }
       $this.dummyElement = $(document.createElement('div')).css({backgroundColor:'rgba(0,0,0,.666)'});
@@ -461,16 +488,22 @@ Player.provide('actions',
       return true;
     }
 
+    // When a video is loaded, load the relevant actions and reset state variables
     Player.bind('player:video:loaded', function(e,v){
       _resize();
-      $this.beforeplayHandled = false;
-      $this.actionsLoaded = false;
-      Player.set("loadActions", true);
+      if(!$this.currentVideoId||$this.currentVideoId!=(v.type=="clip"?v.photo_id:v.live_id)){
+        $this.currentVideoId = (v.type=="clip"?v.photo_id:v.live_id);
+        $this.beforeplayHandled = false;
+        $this.actionsLoaded = false;
+        $this.videoEnded = false;
+        Player.set("loadActions", true);
+      }
     });
 
     // EVENTS TO DISPATCHER
     Player.bind('player:video:beforeplay player:video:play player:video:playing player:video:timeupdate player:video:ended player:video:pause', _dispatcher);
     
+    // Return an array of video and video ad actions that are active at the current actionsPosition
     var getOverlappingActions = function(action){
       var actions = [];
       $.each(Player.get('videoActions'), function(i,action){
@@ -481,40 +514,47 @@ Player.provide('actions',
     };
     mod = $this;
     
+    // Handle resizing of actions and the module action
     var _resize = function(){
       var v = Player.get("video");
       if(typeof v != "undefined"){
+        // Calculate aspect ratio of the video, so we can resize and position the module container on top of it
         var w = $(window);
-        var wr = w.width()/w.height();
+        var wh = w.height();
+        var ww = w.width();
+        var wr = ww/wh;
         var vr = v.video_medium_width / v.video_medium_height;
         if(vr>wr){
           $this.container.css({
-            "width":""+w.width()+"px",
-            "height":""+(w.width()/vr)+"px",
-            "margin-top":""+(w.height()-w.width()/vr)/2+"px",
+            "width":""+ww+"px",
+            "height":""+(ww/vr)+"px",
+            "margin-top":""+(wh-ww/vr)/2+"px",
             "margin-left":0
           });
         }else{
           $this.container.css({
-            "height":""+w.height()+"px",
-            "width":""+(w.height()*vr)+"px",
+            "height":""+wh+"px",
+            "width":""+(wh*vr)+"px",
             "margin-top":0,
-            "margin-left":""+(w.width()-w.height()*vr)/2+"px"
+            "margin-left":""+(ww-wh*vr)/2+"px"
           });
         }
       }
+      // Adjust sizing of active text, image and banner actions
       $.each($this.activeActions||{}, function(i, action){
         if(action.type=="image"||action.type=="banner"){
           var img = action.container.find("img");
-          if(action.aspect_ratio>action.container.width()/action.container.height()){
+          var apw = action.parent.width();
+          var aph = action.parent.height();
+          if(action.aspect_ratio>apw/aph){
             img.css({
-              width: Math.min(action.container.width(), action.image_width),
+              width: Math.min(apw, action.image_width),
               height: "auto"
             });
           }else{
             img.css({
               width: "auto",
-              height: Math.min(action.container.height(), action.image_height)
+              height: Math.min(aph, action.image_height)
             });
           }
         }
@@ -572,9 +612,8 @@ Player.provide('actions',
       return shown;
     });
 
-    // VERIFY AND RETRIEVE ACTIONS DATA
-    // When a video is loaded, reset the state of the Actions
-    // Also this, is where we may need to populate the `actions` property of the video object
+    // LOAD ACTIONS DATA
+    // forceLoad forces reloading of actions even they have already been loaded once for the current video
     Player.setter("loadActions", function(forceLoad){
       if($this.loadingActions) return;
       $this.loadingActions = true;
@@ -698,6 +737,7 @@ Player.provide('actions',
             action.reportedEvents = [];
             $this.eingebaut.setSource(action.adVideoUrl);
             Player.set("playing", true);
+            action.adLoaded = false; // Force reload of ad, if the action is shown again
           }else{
             $this.loadAd(action);
           }
@@ -718,8 +758,9 @@ Player.provide('actions',
     
     $this.loadAd = function(action){
       Player.set("playing", false);
+      action.ad_url_replaced = action.ad_url.replace(/\[timestamp\]/g, (new Date()).getTime()).replace(/\[referrer\]/g, document.referrer);
       $.ajax({
-        url: action.ad_url||"fail",
+        url: action.ad_url_replaced||"fail",
         method: "GET",
         dataType: "xml",
         cache: false,
