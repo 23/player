@@ -71,7 +71,7 @@ Player.provide('subtitles',
               $this.enableSubtitles = true;
           } else {
               $this.subtitleLocale = '';
-              $this.enableSubtitles = false;
+              $this.subtitles = [];
               $this.render();
           }
           Player.fire('player:subtitlechange');
