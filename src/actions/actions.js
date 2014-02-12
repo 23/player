@@ -105,19 +105,19 @@ Player.provide('actions',
       action.container.append(table);
       img.load(function(){
         // When image is loaded, save the original dimensions for use when scaling
-        action.image_width = img.width();
-        action.image_height = img.height();
+        action.image_width = img.get(0).clientWidth;
+        action.image_height = img.get(0).clientHeight;
         action.aspect_ratio = action.image_width / action.image_height;
-        if(action.aspect_ratio>action.container.width()/action.container.height()){
+        if(action.aspect_ratio>action.container.get(0).clientWidth/action.container.get(0).clientHeight){
           img.css({
-            width: Math.min(action.container.width(), action.image_width),
+            width: Math.min(action.container.get(0).clientWidth, action.image_width),
             height: "auto",
             visibility: "visible"
           });
         }else{
           img.css({
             width: "auto",
-            height: Math.min(action.container.height(), action.image_height),
+            height: Math.min(action.container.get(0).clientHeight, action.image_height),
             visibility: "visible"
           });
         }
@@ -176,19 +176,19 @@ Player.provide('actions',
         }
         action.container.append(table);
         img.load(function(){
-          action.image_width = img.width();
-          action.image_height = img.height();
+          action.image_width = img.get(0).clientWidth;
+          action.image_height = img.get(0).clientHeight;
           action.aspect_ratio = action.image_width / action.image_height;
-          if(action.aspect_ratio>action.container.width()/action.container.height()){
+          if(action.aspect_ratio>action.container.get(0).clientWidth/action.container.get(0).clientHeight){
             img.css({
-              width: Math.min(action.container.width(), action.image_width),
+              width: Math.min(action.container.get(0).clientWidth, action.image_width),
               height: "auto",
               visibility: "visible"
             });
           }else{
             img.css({
               width: "auto",
-              height: Math.min(action.container.height(), action.image_height),
+              height: Math.min(action.container.get(0).clientHeight, action.image_height),
               visibility: "visible"
             });
           }
@@ -546,8 +546,8 @@ Player.provide('actions',
       $.each($this.activeActions||{}, function(i, action){
         if(action.type=="image"||action.type=="banner"){
           var img = action.container.find("img");
-          var apw = action.parent.width();
-          var aph = action.parent.height();
+          var apw = action.parent.get(0).clientWidth;
+          var aph = action.parent.get(0).clientHeight;
           if(action.aspect_ratio>apw/aph){
             img.css({
               width: Math.min(apw, action.image_width),
@@ -562,12 +562,12 @@ Player.provide('actions',
         }
         if(action.type=="text"&&/MSIE 7/.test(navigator.userAgent)){
           window.setTimeout(function(){
-            action.container.outerHeight(action.parent.height());
+            action.container.outerHeight(action.parent.get(0).clientHeight);
           },10);
         }
       });
       window.setTimeout(function(){
-        $(".action-text .action-content").css({fontSize:($this.container.width()/640*100)+'%'});
+        $(".action-text .action-content").css({fontSize:($this.container.get(0).clientWidth/640*100)+'%'});
       },10);
     };
     $(window).resize(_resize);
