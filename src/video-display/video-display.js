@@ -108,6 +108,14 @@ Player.provide('video-display',
             // Fire the player event
             Player.fire('player:video:' + e);
           };
+
+          // Safari 6.1+ should just go with HTML5
+          try {
+            var m = navigator.appVersion.match(/Version\/(\d+\.\d+(\.\d+)?) Safari/);
+            if(m && parseFloat(m[1])>=6.1) $this.displayDevice = 'html5';
+          }catch(e){}
+          console.log($this.displayDevice);
+          
           $this.canvas.html('');
           $this.video = new Eingebaut($this.canvas, $this.displayDevice, '', callback);
           $this.video.load();
