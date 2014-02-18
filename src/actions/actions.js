@@ -617,19 +617,20 @@ Player.provide('actions',
     // LOAD ACTIONS DATA
     // forceLoad forces reloading of actions even they have already been loaded once for the current video
     Player.setter("loadActions", function(forceLoad){
-      if($this.loadingActions) return;
+      if($this.loadingActions || !$this.dispatcherActive) return;
       $this.loadingActions = true;
       $this.actionsLoaded = false;
       $this.container.html("");
       $this.activeActions={};
       var v = Player.get("video");
-      if(!$this.dispatcherActive||v.type=="stream"){
+      if(v.type=="stream"){
         $this.actionsLoaded = true;
         $this.loadingActions = false;
         if($this.queuePlay){
           $this.queuePlay = false;
           Player.set("playing", true);
         }
+        Player.fire("player:action:loaded");
         return;
       }
       if(!v.actions||forceLoad) {
