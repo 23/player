@@ -135,7 +135,7 @@ Player.provide('video-display',
         $this.container.click(_togglePlayback);
         // Handle keyboard events
         $(document).keypress(function(e){
-            try {if(Player.get('actionsActive')) return;} catch(e){}
+            try {if(Player.get('videoActionPlaying')) return;} catch(e){}
             if(!e.ctrlKey && !e.altKey && !e.metaKey) {
               var matched = false;
               // Toogle playback on space/enter press
@@ -158,7 +158,7 @@ Player.provide('video-display',
             }
           });
         $(document).keydown(function(e){
-            try {if(Player.get('actionsActive')) return;} catch(e){}
+            try {if(Player.get('videoActionPlaying')) return;} catch(e){}
             if(!e.ctrlKey && !e.altKey && !e.metaKey) {
               var matched = false;
               // Increase volume on +/up
