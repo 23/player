@@ -114,7 +114,6 @@ Player.provide('video-display',
             var m = navigator.appVersion.match(/Version\/(\d+\.\d+(\.\d+)?) Safari/);
             if(m && parseFloat(m[1])>=6.1) $this.displayDevice = 'html5';
           }catch(e){}
-          console.log($this.displayDevice);
           
           $this.canvas.html('');
           $this.video = new Eingebaut($this.canvas, $this.displayDevice, '', callback);
