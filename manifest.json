@@ -35,6 +35,7 @@
         "quality-button",
         "info-button",
         "info",
-        "actions"
+        "actions",
+        "download-button"
     ]
 }
