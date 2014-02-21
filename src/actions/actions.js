@@ -514,7 +514,6 @@ Player.provide('actions',
       });
       return actions;
     };
-    mod = $this;
     
     // Handle resizing of actions and the module action
     var _resize = function(){
@@ -746,6 +745,7 @@ Player.provide('actions',
           }
         }
       }else{
+        Player.set("videoActionPlaying", false);
         // No more videos, continue to content video
         if($this.activeVideoActions[0].normalizedStartTime==-1){
           $this.restoreEingebaut();
@@ -910,7 +910,7 @@ Player.provide('actions',
         $this.currentVideoActionIndex -= 1;
         $this.playNextVideoAction();
       }
-      if(e=="ended"){
+      if(e=="ended" || e=="error"){
         $this.playNextVideoAction();
       }
     };

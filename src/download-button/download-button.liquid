@@ -1,0 +1,13 @@
+{% if showDownload %}
+<div class="tray-button button button-bulletless download-button">
+  <!--Download-->
+
+  <ul>
+    {% for q in downloadQualities %} 
+    <li onclick="location.href = '{{q.link}}';">
+      Download {{q.displayName}}
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+{% endif %}
