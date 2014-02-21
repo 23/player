@@ -114,7 +114,6 @@ Player.provide('video-display',
             var m = navigator.appVersion.match(/Version\/(\d+\.\d+(\.\d+)?) Safari/);
             if(m && parseFloat(m[1])>=6.1) $this.displayDevice = 'html5';
           }catch(e){}
-          console.log($this.displayDevice);
           
           $this.canvas.html('');
           $this.video = new Eingebaut($this.canvas, $this.displayDevice, '', callback);
@@ -136,7 +135,7 @@ Player.provide('video-display',
         $this.container.click(_togglePlayback);
         // Handle keyboard events
         $(document).keypress(function(e){
-            try {if(Player.get('actionsActive')) return;} catch(e){}
+            try {if(Player.get('videoActionPlaying')) return;} catch(e){}
             if(!e.ctrlKey && !e.altKey && !e.metaKey) {
               var matched = false;
               // Toogle playback on space/enter press
@@ -159,7 +158,7 @@ Player.provide('video-display',
             }
           });
         $(document).keydown(function(e){
-            try {if(Player.get('actionsActive')) return;} catch(e){}
+            try {if(Player.get('videoActionPlaying')) return;} catch(e){}
             if(!e.ctrlKey && !e.altKey && !e.metaKey) {
               var matched = false;
               // Increase volume on +/up
@@ -237,7 +236,7 @@ Player.provide('video-display',
               $this.qualities['auto'] = {format:'video_hls', codec:'hls', displayName:'Auto', displayQuality:'Auto', source:Player.get('url') + v.video_hls_download};
             }
             // H.264
-            if (typeof(v.video_1080p_download)!='undefined' && v.video_1080p_download.length>0 && v.video_1080p_size>0)
+            if (typeof(v.video_1080p_download)!='undefined' && v.video_1080p_download.length>0 && v.video_1080p_size>0 && !/iPhone|Android/.test(navigator.userAgent))
               $this.qualities['fullhd'] = {format:'video_1080p', codec:'h264', displayName:'Full HD', displayQuality:'1080p', source:Player.get('url') + v.video_1080p_download};
             if (typeof(v.video_hd_download)!='undefined' && v.video_hd_download.length>0)
               $this.qualities['hd'] = {format:'video_hd', codec:'h264', displayName:'HD', displayQuality:'720p', source:Player.get('url') + v.video_hd_download};
@@ -324,10 +323,20 @@ Player.provide('video-display',
 
       // In some cases, we want to switch up the quality when going to full screen
       Player.bind('player:video:enterfullscreen', function(e){
-        if($this.fullscreenQuality.length && $this.qualities[$this.fullscreenQuality]) {
-          var q = Player.get('quality');
-          if(q!=$this.fullscreenQuality) {
-            Player.set('quality', $this.fullscreenQuality);
+        var newQuality = $this.fullscreenQuality;
+        if(newQuality.length){
+          // Choose best alternative if selected fullscreen quality is not available
+          if(newQuality=='fullhd' && !$this.qualities['fullhd']) {newQuality = 'hd';}
+          if(newQuality=='hd' && !$this.qualities['hd']) {newQuality = 'standard';}
+          var currentQuality = Player.get('quality');
+          // Don't change if current quality is the same as the new one
+          if(currentQuality!=newQuality) {
+            // Never change to a lower quality than the current
+            if( newQuality=='fullhd' || 
+                (newQuality=='hd' && currentQuality!='fullhd') ||
+                (newQuality=='standard' && currentQuality!='hd' && currentQuality!='fullhd') ){
+              Player.set('quality', newQuality);
+            }
           }
         }
       });
