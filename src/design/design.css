@@ -140,7 +140,7 @@ div.button ul li:last-child {
 }
 div.button-bulletless ul li {
     background:none !important;
-    padding-left:0;
+    padding-left:10px;
 }
 div.button ul li.hover { /* menu item hover */
 }
