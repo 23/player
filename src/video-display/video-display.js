@@ -323,10 +323,20 @@ Player.provide('video-display',
 
       // In some cases, we want to switch up the quality when going to full screen
       Player.bind('player:video:enterfullscreen', function(e){
-        if($this.fullscreenQuality.length && $this.qualities[$this.fullscreenQuality]) {
-          var q = Player.get('quality');
-          if(q!=$this.fullscreenQuality) {
-            Player.set('quality', $this.fullscreenQuality);
+        var newQuality = $this.fullscreenQuality;
+        if(newQuality.length){
+          // Choose best alternative if selected fullscreen quality is not available
+          if(newQuality=='fullhd' && !$this.qualities['fullhd']) {newQuality = 'hd';}
+          if(newQuality=='hd' && !$this.qualities['hd']) {newQuality = 'standard';}
+          var currentQuality = Player.get('quality');
+          // Don't change if current quality is the same as the new one
+          if(currentQuality!=newQuality) {
+            // Never change to a lower quality than the current
+            if( newQuality=='fullhd' || 
+                (newQuality=='hd' && currentQuality!='fullhd') ||
+                (newQuality=='standard' && currentQuality!='hd' && currentQuality!='fullhd') ){
+              Player.set('quality', newQuality);
+            }
           }
         }
       });
