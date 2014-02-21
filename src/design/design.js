@@ -35,9 +35,8 @@ Player.provide('design',
       // Handle button clicks
       Player.bind('glue:render', function(e, container){
           $(container).find('div.button:has(ul)').each(function(i,div){
-              $(div).click(function(e){
+              $(div).off("click.button-menu").on("click.button-menu", function(e){
                   if(e&&e.target&& ($(e.target).hasClass('volume-track') || $(e.target).hasClass('volume-filled'))) return;
-
                   if($(div).hasClass('activebutton')) {
                       $(div).removeClass('activebutton');
                   } else {
