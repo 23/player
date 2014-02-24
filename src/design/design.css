@@ -108,7 +108,7 @@ div.button ul li { /* menu items */
     padding-left:14px;
 }
 div.button-bulletless ul li {
-    background:none !important;
+    background-image:none !important;
     padding-left:0;
 }
 div.button ul li.hover { /* menu item hover */
