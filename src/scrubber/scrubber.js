@@ -135,7 +135,8 @@ Player.provide('scrubber',
           if(isNaN(duration)||duration<=0) return;
 
           // Update time labels
-          $this.handleContainer.html( formatTime(Player.get("scrubberTime")?Player.get("scrubberTime"):Player.get("currentTime")) );
+          var time = (Player.get("scrubberTime")==0&&Player.get("currentTime")==0)?duration:(Player.get("scrubberTime")?Player.get("scrubberTime"):Player.get("currentTime"));
+          $this.timeContainer.html( formatTime(time) );
 
           // Update buffer and play progress
           try {
