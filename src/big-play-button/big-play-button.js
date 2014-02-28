@@ -21,8 +21,21 @@ Player.provide('big-play-button',
     var $this = this;
     $.extend($this, opts);
     $this.showAnimation = [{opacity:'show'}, 300];
-    $this.hideAnimation = [{opacity:'hide'}, 150];
-    $this.render(_resize);
+
+    $this.bigPlayShown = false;
+    $this.possiblyRender = function(){
+      if(Player.get("showBigPlay")&&!Player.get("playing")&&Player.get("video_playable")&&!Player.get("actionsShown")){
+        if(!$this.bigPlayShown){
+          $this.render(_resize);
+          $this.bigPlayShown = true;
+        }
+      }else{
+        if($this.bigPlayShown){
+          $this.container.html("");
+          $this.bigPlayShown = false;
+        }
+      }
+    };
 
     // Get relevant settings
     Player.bind('player:settings', function(e,settings){
@@ -30,13 +43,13 @@ Player.provide('big-play-button',
         if($this.bigPlaySource.length>0 && !/\/\//.test($this.bigPlaySource)){
             $this.bigPlaySource = Player.get('url')+$this.bigPlaySource;
         }
-        $this.render(_resize);
+        $this.possiblyRender();
       });
 
     // Update element on play, pause and more
     Player.bind('player:video:loaded player:video:play player:video:seeked player:video:pause player:video:ended player:action:loaded player:action:dispatched', function(e){
-        $this.render(_resize);
-      });
+      $this.possiblyRender();
+    });
 
     /* GETTERS */
     Player.getter('showBigPlay', function(){
@@ -48,7 +61,7 @@ Player.provide('big-play-button',
     /* SETTERS */
     Player.setter('showBigPlay', function(sbp){
         $this.showBigPlay = sbp;
-        $this.render(_resize);
+        $this.possiblyRender();
       });
 
     var _resize = function(){

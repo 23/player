@@ -1,15 +1,13 @@
-{% if showBigPlay == true and playing == false and video_playable == true and actionsShown != true %}
-  <div class="big-play-container">
-    <table width="100%" height="100%"><tr><td width="100%" height="100%" valign="middle" align="center">
-      {% if bigPlaySource == empty or bigPlaySource == "" %}
-        <div class="tray-button button big play-button big-play-button" click="$set:playing:true">
-          <!--Play-->
-        </div>
-      {% else %}
-        <div class="tray-button big play-button-custom big-play-button-custom" click="$set:playing:true">
-          <img src="{{bigPlaySource}}" />
-        </div>
-      {% endif %}
-    </td></tr></table>
-  </div>
-{% endif %}
+<div class="big-play-container">
+  <table width="100%" height="100%"><tr><td width="100%" height="100%" valign="middle" align="center">
+    {% if bigPlaySource == empty or bigPlaySource == "" %}
+      <div class="tray-button button big play-button big-play-button" click="$set:playing:true">
+        <!--Play-->
+      </div>
+    {% else %}
+      <div class="tray-button big play-button-custom big-play-button-custom" click="$set:playing:true">
+        <img src="{{bigPlaySource}}" />
+      </div>
+    {% endif %}
+  </td></tr></table>
+</div>
