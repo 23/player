@@ -290,6 +290,10 @@ Player.provide('actions',
       // the action and its containers
       return true;
     };
+
+    // Dummy element for testing support for background-opacity
+    $this.dummyElement = $(document.createElement('div')).css({backgroundColor:'rgba(0,0,0,.666)'});
+    $this.rgbaSupport = /^rgba/.test($this.dummyElement.css('backgroundColor'));
     
     // CONTROLLER LISTENING TO PLAYBACK STATE AND DISPATCHING ACTIONS
     var _dispatcher = function(event){
@@ -358,8 +362,7 @@ Player.provide('actions',
               $this.normalizedActionsPosition = 2;
             }
           }
-      }
-      $this.dummyElement = $(document.createElement('div')).css({backgroundColor:'rgba(0,0,0,.666)'});
+      }      
 
       // Dispatch actions
       $.each(Player.get('videoActions'), function(i,action){
@@ -418,9 +421,8 @@ Player.provide('actions',
           }
           // Set background color and opacity
           if(typeof(action.background_color)!='undefined' && action.background_color!='' && action.background_color != "transparent" && action.background_opacity != "0") {
-            var rgbaSupport = /^rgba/.test($this.dummyElement.css('backgroundColor'));
             var alpha = action.background_opacity || 0.8;
-            if(rgbaSupport) { // We can do regular rgba coloring of the background
+            if(alpha < 1 && $this.rgbaSupport) { // We can do regular rgba coloring of the background
               var colorTest = action.background_color.match(/^\#(..)(..)(..)$/);
               if(colorTest && colorTest.length==4) {
                 var r = parseInt(colorTest[1], 16);
@@ -432,7 +434,7 @@ Player.provide('actions',
                 parent.css({"background-color":action.background_color});
               }
             }else{ // old browser. luckily, Microsoft's got us covered with filters
-              if(/MSIE/.test(navigator.userAgent)){
+              if(alpha < 1 && /MSIE/.test(navigator.userAgent)){
                 var hexTransparency = Math.floor(alpha*255).toString(16).substr(0,2);
                 var rawColor = action.background_color.substr(1);
                 var grad = "#"+hexTransparency+rawColor;
