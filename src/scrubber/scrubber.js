@@ -134,8 +134,7 @@ Player.provide('scrubber',
           if(isNaN(duration)||duration<=0) return;
 
           // Update time labels
-          $this.render(function(){}, 'scrubber/scrubber-time.liquid', $this.timeContainer);
-          $this.render(function(){}, 'scrubber/scrubber-handle.liquid', $this.handleContainer);
+          $this.handleContainer.html( formatTime(Player.get("scrubberTime")?Player.get("scrubberTime"):Player.get("currentTime")) );
 
           // Update buffer and play progress
           try {
