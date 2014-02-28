@@ -54,8 +54,16 @@ Player.provide('status-display',
 
     /* Seeking or stalled */
     Player.bind('player:video:progress player:video:timeupdate player:video:flashloaded player:video:seeking player:video:seeked player:video:stalled player:video:play player:video:pause player:video:playing', function(e){
+      if(Player.get('showSeeking')||Player.get('displayDevice')=='none'||(Player.get('error')&&Player.get('error')!='')||Player.get('loading')){
         $this.render();
-      });
+        $this.rendered = true;
+      }else{
+        if($this.rendered){
+          $this.container.html("");
+          $this.rendered = false;
+        }
+      }
+    });
     Player.getter('showSeeking', function(){
         return Player.get('video_playable') && (Player.get('seeking') || Player.get('stalled'))
       });
