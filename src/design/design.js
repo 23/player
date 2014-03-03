@@ -5,7 +5,7 @@
 Player.provide('design',
   {
     showTray: true,
-    trayTimeout: 10000,
+    trayTimeout: 5000,
     verticalPadding:0,
     horizontalPadding:0,
     trayAlpha:0.85,
@@ -84,28 +84,36 @@ Player.provide('design',
           // Honour `trayTimeout`
           $this._minimized = false;
           if($this.showTray&&$this.trayTimeout>0) {
-              var triggerTrayTimeout = function(){
+              var trayAnimatingIn = false;
+              var triggerTrayTimeout = function(e){
                   window.clearTimeout($this.trayTimeoutId);
-                  $('body').removeClass("hide-cursor");
-                  if($this._minimized) {
-                      $('.tray-navigation').css({opacity:0});
-                      $('#tray').removeClass('minimized');
-                      $this._minimized = false;
-                      $('.tray-navigation').animate({opacity:1}, 800);
+                  if(e&&e.hideNow){
+                    if(!Player.get('showSharing')&&!Player.get('browseMode')&&$("#tray").find(".activebutton").length==0) {
+                      trayAnimatingIn = false;
+                      $('.tray-navigation').stop().animate({opacity:0}, 300, function(){
+                        $('#tray').addClass('minimized');
+                        $this._minimized = true;
+                        $('.tray-navigation').css({opacity:1});
+                      });
+                      $('body').addClass("hide-cursor");
+                    }
+                    return;
                   }
-
+                  $('body').removeClass("hide-cursor");
+                  if(!trayAnimatingIn&&$this._minimized){
+                    $('.tray-navigation').css({opacity:0});
+                    $('#tray').removeClass('minimized');
+                    $('.tray-navigation').animate({opacity:1}, 800, function(){trayAnimatingIn=false;});
+                    $this._minimized = false;
+                    trayAnimatingIn = true;
+                  }
                   $this.trayTimeoutId = window.setTimeout(function(){
-                      if(!Player.get('showSharing')&&!Player.get('browseMode')) {
-                        $('body').addClass("hide-cursor");
-                        $('.tray-navigation').animate({opacity:0}, 300, function(){
-                            $('#tray').addClass('minimized');
-                            $this._minimized = true;
-                            $('.tray-navigation').css({opacity:1});
-                          });
-                      }
+                    triggerTrayTimeout({hideNow:true});
                   }, $this.trayTimeout);
               }
               $(document).mousemove(triggerTrayTimeout);
+              $(document).mouseleave(function(){triggerTrayTimeout({hideNow:true});});
+              Player.bind('player:browse:updated player:sharing:shareengaged', triggerTrayTimeout);
               triggerTrayTimeout();
           }
       });
