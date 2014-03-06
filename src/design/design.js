@@ -142,8 +142,10 @@ Player.provide('design',
           $(document).on("touchstart", function(e){
               if (e.originalEvent.touches.length == 1) {
 		              try {$(e.target).mousemove();}catch(e){}
-                  $(e.target).trigger("click", e.originalEvent);
-                  e.stopPropagation();
+                  if( $(e.target).prop("tagName")!="A" ){
+                    $(e.target).trigger("click", e.originalEvent);
+                    e.preventDefault();
+                  }
               }
           });
       }

@@ -57,9 +57,9 @@ Player.provide('actions',
       e.stopPropagation();
       e.preventDefault();
     });
-    $this.container.on("touchstart", function(e){
-      e.stopPropagation();
-    });
+    //$this.container.on("touchstart", function(e){
+    //  e.stopPropagation();
+    //});
 
     // HANDLERS FOR ACTION TYPES
     // HANDLER: TEXT
@@ -405,7 +405,7 @@ Player.provide('actions',
                 e.preventDefault();
               });
             }else{ // Open link with relevant target
-              screen.attr({href:action.link, target:action.link_target||'_new'}).click(function(){
+              screen.attr({href:action.link, target:action.link_target||'_new'}).on("click", function(){
                 Player.fire("player:action:click", action);
               });
             }
