@@ -517,6 +517,8 @@ Player.provide('actions',
       return actions;
     };
     
+    var lastWidth = 0;
+    var lastHeight = 0;
     // Handle resizing of actions and the module action
     var _resize = function(){
       var v = Player.get("video");
@@ -525,22 +527,27 @@ Player.provide('actions',
         var w = $(window);
         var wh = w.height();
         var ww = w.width();
-        var wr = ww/wh;
-        var vr = v.video_medium_width / v.video_medium_height;
-        if(vr>wr){
-          $this.container.css({
-            "width":""+ww+"px",
-            "height":""+(ww/vr)+"px",
-            "margin-top":""+(wh-ww/vr)/2+"px",
-            "margin-left":0
-          });
-        }else{
-          $this.container.css({
-            "height":""+wh+"px",
-            "width":""+(wh*vr)+"px",
-            "margin-top":0,
-            "margin-left":""+(ww-wh*vr)/2+"px"
-          });
+        // Check if window dimensions have in fact changed
+        if (lastWidth != ww || lastHeight != wh) {
+          lastWidth = ww;
+          lastHeight = wh;
+          var wr = ww/wh;
+          var vr = v.video_medium_width / v.video_medium_height;
+          if(vr>wr){
+            $this.container.css({
+              "width":""+ww+"px",
+              "height":""+(ww/vr)+"px",
+              "margin-top":""+(wh-ww/vr)/2+"px",
+              "margin-left":0
+            });
+          }else{
+            $this.container.css({
+              "height":""+wh+"px",
+              "width":""+(wh*vr)+"px",
+              "margin-top":0,
+              "margin-left":""+(ww-wh*vr)/2+"px"
+            });
+          }
         }
       }
       // Adjust sizing of active text, image and banner actions
