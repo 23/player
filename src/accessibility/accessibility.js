@@ -9,6 +9,7 @@
 
 Player.provide('accessibility', 
   {
+    scrubberColor:'#666666'
   },
   function(Player,$,opts){
     var $this = this;
@@ -84,6 +85,10 @@ Player.provide('accessibility',
             Player.set('showTray', true);
             Player.set('trayTimeout', 0);
           }
+          if(e.keyCode==27) {
+            // Destroy menus
+            $('.activebutton').removeClass('activebutton');
+          }
 
           if(matched) e.preventDefault();
         }
@@ -115,6 +120,14 @@ Player.provide('accessibility',
       }
     });
 
+
+    // Modify highlight color to match the player scrubber
+    Player.bind('player:settings', function(e){
+      PlayerUtilities.mergeSettings($this, ['scrubberColor']);
+      if($this.scrubberColor.length>0) {
+        $('head').append('<style>body.tabbed [tabindex]:focus {outline: 1px solid '+$this.scrubberColor+' !important;}</style>');
+      }
+    });
 
     $this.loadShortcuts();
     return $this;
