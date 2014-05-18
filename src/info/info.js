@@ -58,7 +58,9 @@ Player.provide('info',
           if(sd && $this.infoTimeout>0){
             if($this.infoTimeoutId) window.clearTimeout($this.infoTimeoutId);
             $this.infoTimeoutId = window.setTimeout(function(){
-              Player.set('showDescriptions', false);
+              if($this.infoTimeout>0) {
+                Player.set('showDescriptions', false);
+              }
             }, $this.infoTimeout);
           }
 
