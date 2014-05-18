@@ -125,7 +125,7 @@ Player.provide('accessibility',
     Player.bind('player:settings', function(e){
       PlayerUtilities.mergeSettings($this, ['scrubberColor']);
       if($this.scrubberColor.length>0) {
-        //$('head').append('<style>body.tabbed [tabindex]:focus {outline: 2px solid '+$this.scrubberColor+' !important;}</style>');
+        $('head').append('<style>body.tabbed [tabindex]:focus {outline: 2px solid '+$this.scrubberColor+' !important;}</style>');
       }
     });
 
