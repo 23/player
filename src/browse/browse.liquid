@@ -6,7 +6,7 @@
     <table class="browse-recommendations"><tr>
       {% for stream in streams %}
         {% if stream.live_id != video_live_id %}
-          <td class="browse-recommendation browse-live-recommendation-{{forloop.index0}}" click="$set:browse_live_id:{{stream.live_id}}">
+          <td class="browse-recommendation browse-live-recommendation-{{forloop.index0}}" click="$set:browse_live_id:{{stream.live_id}}" aria-label="{{clip.title}}" label="{{clip.title}}" role="button" tabindex="1101">
             <img src="{{url}}{{stream.browseThumbnailUrl}}" />
             <div>Live: {{stream.name}}</div>
           </td>
@@ -14,7 +14,7 @@
       {% endfor %}
       {% for clip in clips %}
         {% if clip.photo_id != video_photo_id %}
-          <td class="browse-recommendation browse-ondemand-recommendation-{{forloop.index0}}" click="$set:browse_photo_id:{{clip.photo_id}}">
+          <td class="browse-recommendation browse-ondemand-recommendation-{{forloop.index0}}" click="$set:browse_photo_id:{{clip.photo_id}}" aria-label="{{clip.title}}" label="{{clip.title}}" role="button" tabindex="1102">
             <img src="{{url}}{{clip.browseThumbnailUrl}}" />
             <div>{{clip.title}}</div>
           </td>

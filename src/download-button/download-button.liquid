@@ -1,10 +1,10 @@
 {% if showDownload %}
-<div class="tray-button button button-bulletless download-button">
+<div class="tray-button button button-bulletless download-button" aria-controls="downloadOptions" aria-label="Download video" label="Download video" role="button" tabindex="1500">
   <!--Download-->
 
-  <ul>
+  <ul id="downloadOptions">
     {% for q in downloadQualities %} 
-    <li onclick="location.href = '{{q.link}}';">
+    <li onclick="location.href = '{{q.link}}';" aria-label="Download {{q.displayName}}" label="Download {{q.displayName}}" role="button" tabindex="1501">
       Download {{q.displayName}}
     </li>
     {% endfor %}

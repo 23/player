@@ -1,5 +1,5 @@
 {% if supportsFullscreen %}
-  <div class="tray-button button fullscreen-button {% if fullscreen %}fullscreen-button-off{% else %}fullscreen-button-on{% endif %}" click="$toggle:fullscreen">
+  <div class="tray-button button fullscreen-button {% if fullscreen %}fullscreen-button-off{% else %}fullscreen-button-on{% endif %}" click="$toggle:fullscreen" aria-label="Toogle fullscreen" label="Toogle fullscreen" role="button" tabindex="1800">
     {% if fullscreen == true %}
     <!--Not full screen-->
     {% else %}

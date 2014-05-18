@@ -1,5 +1,5 @@
 {% if showBrowse and hasRecommendations %}
-<div class="tray-button button browse-button {% if browseMode %}browse-button-off highlight-button{% else %}browse-button-on{% endif %}" click="$toggle:browseMode">
+<div class="tray-button button browse-button {% if browseMode %}browse-button-off highlight-button{% else %}browse-button-on{% endif %}" click="$toggle:browseMode" aria-controls="browse" aria-label="Recommendations" label="Recommendations" role="button" tabindex="1100">
   <!--Browse-->
 </div>
 {% endif %}

@@ -38,7 +38,11 @@ Player.provide('info',
       });
       Player.bind('player:settings player:video:loaded', function(e,video){
           if($this.infoTimeout>0) {
-            setTimeout(function(){Player.set('showDescriptions', false);}, $this.infoTimeout);
+            setTimeout(function(){
+              if($this.infoTimeout>0) {
+                Player.set('showDescriptions', false);
+              }
+            }, $this.infoTimeout);
           }
           Player.fire('player:infoengaged');
         });
