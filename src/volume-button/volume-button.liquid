@@ -1,5 +1,5 @@
 {% if supportsVolumeChange %}
-<div class="tray-button button volume-button {% if volumeMuted %}volume-button-on{% else %}volume-button-off{% endif %}" click="$fire:player:volume-engaged">
+<div class="tray-button button volume-button {% if volumeMuted %}volume-button-on{% else %}volume-button-off{% endif %}" click="$fire:player:volume-engaged" aria-label="Toogle volume" label="Toogle volume" role="button" tabindex="1700">
   {% if volumeMuted %}
   <!--Sound-->
   {% else %}

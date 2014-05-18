@@ -1,10 +1,10 @@
 {% if hasQualitySwitching %}
-<div class="tray-button button quality-button">
+<div class="tray-button button quality-button" aria-controls="qualityOptions" aria-label="Quality" label="Quality" role="button" tabindex="1400">
   <!--Quality-->
 
-  <ul>
+  <ul id="qualityOptions">
     {% for q in qualitiesArray %} 
-    <li {% if q.quality == quality %}class="selected"{% endif %} click="$set:quality:{{q.quality}}; $set:playing:true">
+    <li {% if q.quality == quality %}class="selected"{% endif %} click="$set:quality:{{q.quality}}; $set:playing:true"  tabindex="1400" aria-label="{{q.quality}} quality" label="{{q.quality}} quality" role="button" tabindex="1401">
       {{q.displayName}}
     </li>
     {% endfor %}
