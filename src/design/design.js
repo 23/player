@@ -84,6 +84,7 @@ Player.provide('design',
           if($this.showTray&&$this.trayTimeout>0) {
               var trayAnimatingIn = false;
               var triggerTrayTimeout = function(e){
+                  if($this.trayTimeout<=0) return;
                   window.clearTimeout($this.trayTimeoutId);
                   if(e&&e.hideNow){
                     if(!Player.get('showSharing')&&!Player.get('browseMode')&&$("#tray").find(".activebutton").length==0) {
@@ -108,6 +109,7 @@ Player.provide('design',
               triggerTrayTimeout();
           }
       });
+
 
       $this.dummyElement = $(document.createElement('div')).css({backgroundColor:'rgba(0,0,0,.666)'});
       $this.applyDesignPreferences = function(){
@@ -171,6 +173,17 @@ Player.provide('design',
       Player.bind('glue:render', function(){
           _resize();
           $this.applyDesignPreferences();
+      });
+
+      // Simple setters to help control the tray and its timeout
+      Player.setter('showTray', function(st){
+        $this.showTray = st;
+        $('#tray').toggle($this.showTray);
+        $('body').removeClass("hide-cursor");
+      });
+      Player.setter('trayTimeout', function(tt){
+        $this.trayTimeout = tt;
+        if($this.trayTimeout<=0) window.clearTimeout($this.trayTimeoutId);
       });
 
       // Return a reference

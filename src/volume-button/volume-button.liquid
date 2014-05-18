@@ -1,5 +1,5 @@
 {% if supportsVolumeChange %}
-<div class="tray-button button volume-button {% if volumeMuted %}volume-button-on highlight-button{% else %}volume-button-off{% endif %}" click="$toggle:volumeMuted">
+<div class="tray-button button volume-button {% if volumeMuted %}volume-button-on highlight-button{% else %}volume-button-off{% endif %}" click="$toggle:volumeMuted" aria-label="Toogle volume" label="Toogle volume" role="button" tabindex="1700">
   {% if volumeMuted %}
   <!--Sound-->
   {% else %}

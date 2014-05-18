@@ -1,0 +1,7 @@
+[tabindex]:focus {
+   outline: none !important;
+}
+body.tabbed [tabindex]:focus {
+   outline: auto 4px #CE5800 !important;
+   outline-offset:-4px;
+}
