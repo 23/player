@@ -177,6 +177,17 @@ Player.provide('design',
           _resize();
           $this.applyDesignPreferences();
       });
+      // Force IE 7,8,9 to constantly check for window resize
+      // Needed when iframe is not visible when it loads
+      if(/IE (7|8|9)/.test(navigator.userAgent)){
+          $this.windowWidth = -1;
+          window.setInterval(function(){
+              if($this.windowWidth != $(window).width()){
+                  $this.windowWidth = $(window).width();
+                  $(window).resize();
+              }
+          },1000);
+      }
 
       // Simple setters to help control the tray and its timeout
       Player.setter('showTray', function(st){
