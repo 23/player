@@ -37,6 +37,7 @@
         "info",
         "actions",
         "download-button",
-        "accessibility"
+        "accessibility",
+        "protection"
     ]
 }
