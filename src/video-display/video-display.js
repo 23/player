@@ -339,6 +339,9 @@ Player.provide('video-display',
       Player.setter('start', function(s){
           $this.start = s;
       });
+      Player.setter('autoPlay', function(ap){
+        $this.autoPlay = ap;
+      });
 
       /* GETTERS */
       Player.getter('seekedTime', function(){
@@ -412,6 +415,9 @@ Player.provide('video-display',
       });
       Player.getter('eingebautConstructor', function(){
           return $this.loadEingebaut;
+      });
+      Player.getter('autoPlay', function(){
+          return $this.autoPlay;
       });
 
       return $this;
