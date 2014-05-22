@@ -88,7 +88,10 @@ var PlayerVideo = function(Player,$,type,data){
       fail = fail||Player.fail;
       var method = ($v.type=='clip' ? '/api/photo/list' : '/api/live/list');
       var query = ($v.type=='clip' ? {photo_id:$v.photo_id, token:$v.token} : {live_id:$v.live_id, token:$v.token});
-      var object =($v.type=='clip' ? 'photos' : 'live');
+      var object = ($v.type=='clip' ? 'photos' : 'live');
+      if(object=='live' && typeof(Player.parameters['stream_preview_p'])!='undefined') {
+        query['stream_preview_p'] = Player.parameters['stream_preview_p'];
+      }
       Player.get('api')[method](
         query,
         function(data){
@@ -189,7 +192,11 @@ Player.provide('core',
               callback: function(data){
                   if(data.status=='ok') {
                       $.each(data.live, function(i,stream){
-                          $this.streams.push(new PlayerVideo(Player,$,'stream',stream));
+                          var v = new PlayerVideo(Player,$,'stream',stream);
+                          $this.streams.push(v);
+                          if (!v.broadcasting_p && typeof(Player.parameters['stream_preview_p'])!='undefined' && Player.parameters['stream_preview_p']) {
+                            v.reload();
+                          }
                       });
                   }
               }
