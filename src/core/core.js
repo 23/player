@@ -81,10 +81,11 @@ var PlayerVideo = function(Player,$,type,data){
         $v.populated = true;
         callback($v);
     }
-
+  
     // Reload the clip/meta from API
-    $v.reload = function(callback){
+    $v.reload = function(callback, fail){
       callback = callback||function(){};
+      fail = fail||Player.fail;
       var method = ($v.type=='clip' ? '/api/photo/list' : '/api/live/list');
       var query = ($v.type=='clip' ? {photo_id:$v.photo_id, token:$v.token} : {live_id:$v.live_id, token:$v.token});
       var object =($v.type=='clip' ? 'photos' : 'live');
@@ -97,11 +98,13 @@ var PlayerVideo = function(Player,$,type,data){
               Player.set('video', $v);
               Player.fire('player:video:loaded', $v);
               Player.set('video', $v);
-              callback($v);              
+              callback($v);
             });
-          } 
+          } else {
+            fail = fail||Player.fail;
+          }
         },
-        Player.fail
+        fail
       );
     }
     
