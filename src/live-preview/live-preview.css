@@ -39,3 +39,20 @@
   background-color:black; 
   padding:3px;
 }
+
+.preview-notlive {
+  position:absolute; 
+  text-align:center;
+  top:10px; 
+  right:10px; 
+  background-color:white; 
+  color:black;
+  padding:5px 10px;
+  font-size:15px;
+  line-height:16px;
+  border-radius:4px;
+}
+.preview-notlive span {
+  display:block;
+  font-size:11px;
+}
