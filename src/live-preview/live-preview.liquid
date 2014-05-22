@@ -1,3 +1,10 @@
+{% if showStreamNotLive %}
+  <div class="preview-notlive">
+    Stream preview
+    <span>Not being broadcast live</span>
+  </div>
+{% endif %}
+
 {% if showLivePreview %}
   <div class="preview-container">
     <div class="preview-thumbnail"></div>

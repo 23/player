@@ -23,6 +23,7 @@ Player.provide('live-preview',
       $this.nextStartTime = '';
       $this.showLivePreview = false;
       $this.showLiveCountdown = false;
+      $this.showStreamNotLive = false;
     
       var onRender = function(){
         $this.container.find('.preview-thumbnail').css({backgroundImage:'url(' + Player.get('url') + Player.get('video').preview_large_download + ')'});
@@ -58,9 +59,17 @@ Player.provide('live-preview',
           $this.render(onRender);
       });
       Player.bind('player:video:loaded', function(e, video){
-          $this.showLivePreview = (video.type=='stream' && video.streaming_p=='0');
-          $this.showLiveCountdown = (video.type=='stream' && $this.showLivePreview && video.next_start_time.length && video.show_countdown_p=='1');
-          $this.nextStartTime = (video.type=='stream' && video.next_start_time_epoch.length ? new Date(parseInt(video.next_start_time_epoch*1000)) : '');
+          if(video.streaming_p=='1' && video.broadcasting_p=='0') {
+            $this.showStreamNotLive = true;
+            $this.showLivePreview = false;
+            $this.showLiveCountdown = false;
+            $this.nextStartTime = "";
+          } else {
+            $this.showStreamNotLive = false;
+            $this.showLivePreview = (video.type=='stream' && video.broadcasting_p=='0');
+            $this.showLiveCountdown = (video.type=='stream' && $this.showLivePreview && video.next_start_time.length && video.show_countdown_p=='1');
+            $this.nextStartTime = (video.type=='stream' && video.next_start_time_epoch.length ? new Date(parseInt(video.next_start_time_epoch*1000)) : '');
+          }
           $this.render(onRender);
       });
 
@@ -74,6 +83,11 @@ Player.provide('live-preview',
       Player.getter('nextStartTime', function(){
           return $this.nextStartTime;
         });
+      Player.getter('showStreamNotLive', function(){
+          return $this.showStreamNotLive;
+        });
+
+
 
       /* Reload the stream every now an then to see if it has gone live */
       var reloadStream = function(){
