@@ -89,7 +89,6 @@ Player.provide('protection',
         // (b)
         // Get the necessary context information to verify access
         getVerificationData($this.method, v, function(verificationData){
-
           // (c)
           // Verify access
           var data = {
@@ -103,34 +102,18 @@ Player.provide('protection',
               updateState(v, 'denied', v.protection_method);
               return;
             }
-
             // (d)
             // We got a protected token for the resource, reload it using that information
-            if(v.type == 'clip') {
-              var method = '/api/photo/list';
-              var data = {photo_id:r.protectedtoken.object_id, token:r.protectedtoken.protected_token};
-              var objName = 'photos';
-            } else {
-              var method = '/api/live/list';
-              var data = {live_id:r.protectedtoken.object_id, token:r.protectedtoken.protected_token};
-              var objName = 'live';
-            }
-            Player.get('api').call(method, data, function(r){
-              if(!r || !r[objName] || !r[objName].length) {
-                console.debug('Protection error', 'Received empty reply for ressource when using using protected_token', r);
-                updateState(v, 'denied', v.protection_method);
-              } else {
-                // (e)
-                // We got the actual video, ready to play. 
-                // Switch in the object
-                var $v = new PlayerVideo(Player,$,v.type,r[objName][0]);
-                Player.set('video', $v);
-                updateState($v, 'verified', v.protection_method);
-                $v.switchTo();
-                Player.set('playing', Player.get('autoPlay'));
-              }
-            }, function(errorMessage){
-              console.debug('Protection error', 'Received error for ressource when using using protected_token', errorMessage);
+            v.token = r.protectedtoken.protected_token;
+            v.reload(function(){
+              // (e)
+              // We got the actual video, ready to play. 
+              // Switch in the object
+              updateState(v, 'verified', v.protection_method);
+              v.switchTo();
+              Player.set('playing', Player.get('autoPlay'));
+            }, function(data){
+              console.debug('Protection error', 'Received error for ressource when using using protected_token', data);
               updateState(v, 'denied', v.protection_method);
             });
           }, function(errorMessage){
