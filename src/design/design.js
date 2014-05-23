@@ -134,7 +134,7 @@ Player.provide('design',
           $('video-display').css({bottom:$this.verticalPadding+'px', left:$this.horizontalPadding+'px'})
       }
 
-      if ('ontouchstart' in document.documentElement) {
+      if (!/Android/.test(navigator.userAgent) && 'ontouchstart' in document.documentElement) {
           // Fullscreen on pinch to zoom
           $(document).on("gesturechange", function(e){
               if (e.originalEvent.scale > 1) {
