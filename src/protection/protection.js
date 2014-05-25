@@ -25,6 +25,7 @@ Player.provide('protection',
   function(Player,$,opts){
     var $this = this;
     $.extend($this, opts);
+    $this.showAnimation = [{opacity:'show'}, 500];
 
     // Internal methods for handling status
     $this.status = 'unknown';
