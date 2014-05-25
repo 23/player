@@ -21,6 +21,7 @@ Player.provide('accessibility',
       // Handle keyboard events
       $(document).keypress(function(e){
         try {if(Player.get('videoActionPlaying')) return;} catch(e){}
+        if($(document.activeElement).parent('form').length) return;
         if(!e.ctrlKey && !e.altKey && !e.metaKey) {
           var matched = false;
 

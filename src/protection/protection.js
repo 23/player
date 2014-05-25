@@ -25,12 +25,14 @@ Player.provide('protection',
   function(Player,$,opts){
     var $this = this;
     $.extend($this, opts);
+    $this.showAnimation = [{opacity:'show'}, 500];
 
     // Internal methods for handling status
     $this.status = 'unknown';
     $this.method = 'unknown';
     $this.maxRetries = 1;
     $this.retryNumber = 0;
+    $this.errorMessage = "Unfortunately, you don't have access to watch this video.";
     var updateState = function(video, status, method) {
       $this.status = status;
       $this.method = method;
@@ -54,7 +56,13 @@ Player.provide('protection',
       case 'password':
         Player.set('autoPlay', true);
         $this.maxRetries = 3;
-        callback(prompt($this.retryNumber == 1 ? 'This video is protected. Please enter the correct password:' : 'The password was incorrect, please try again'));
+        $this.verifyCallback = callback;
+        $this.render(function(){
+          $this.container.find('form').submit(function(e){
+            callback($this.container.find('input[type=password]').val());
+            return false;
+          });
+        });
         break;
       case 'geoblocking':
         $this.maxRetries = 1;
@@ -77,7 +85,7 @@ Player.provide('protection',
       e) If everything went according to plan, we now `.switchTo()` to newly resolved and verified clip.
     */
     var verifyAccess = function(e,v,retryNumber){
-      $this.retryNumber = retryNumber||1;
+      $this.retryNumber = retryNumber||1;      
 
       // (a)
       // Check if protection verification is needed
@@ -89,11 +97,13 @@ Player.provide('protection',
         // (b)
         // Get the necessary context information to verify access
         getVerificationData($this.method, v, function(verificationData){
+          $this.container.html('');
           // (c)
           // Verify access
           var data = {
             protection_method:$this.method, 
             object_id:(v.type=='clip' ? v.photo_id : v.live_id),
+            object_type:(v.type=='clip' ? 'photo' : 'live'),
             verification_data:verificationData
           };
           Player.get('api').call('/api/protection/verify', data, function(r){
@@ -117,6 +127,7 @@ Player.provide('protection',
               updateState(v, 'denied', v.protection_method);
             });
           }, function(errorMessage){
+            if(errorMessage.length>0) $this.errorMessage = errorMessage;
             console.debug('Protection error', 'Received error while verifying and looking up protected token', errorMessage);
             updateState(v, 'denied', v.protection_method);
           });
@@ -136,7 +147,7 @@ Player.provide('protection',
       if($this.retryNumber<$this.maxRetries) {
         verifyAccess(event, video, ++$this.retryNumber);
       } else {
-        Player.set('error', "Unfortunately, you don't have access to watch this video.");
+        Player.set('error', $this.errorMessage);
       }
     });
 
@@ -155,7 +166,6 @@ Player.provide('protection',
     Player.getter('protectionMethod', function(){
       return $this.method;
     });
-
 
     return $this;
   }
