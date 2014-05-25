@@ -53,8 +53,8 @@ p {
     line-height:1.5em;
     letter-spacing:.3px;
 }
-button {
-    /*background-color:#3B3B3C;*/
+button, .submitbutton {
+    background-color:#3B3B3C;
     color:white; /*updated in js via player settings */
     font-size:11px;
     padding:0 2px;
@@ -66,6 +66,10 @@ button {
     width: 34px;
     line-height:34px;
     margin: 0;
+}
+.submitbutton {
+    padding-left:5px;
+    font-size:14px;
 }
 body.hide-cursor, body.hide-cursor * {
     cursor: none;
