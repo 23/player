@@ -689,9 +689,16 @@ Player.provide('actions',
     Player.setter('clickAction', function(){
       var action = $this.activeVideoActions[$this.currentVideoActionIndex];
       if(typeof action.link != 'undefined' && action.link != ""){
-        Player.fire("player:action:click", action);
-        window.open(action.link, (typeof action.link_target != "undefined" ? action.link_target : "_blank"));
-        $this.reportEvent("ClickTracking");
+        if(typeof action.clicked == "undefined" || !action.clicked) {
+          Player.fire("player:action:click", action);
+          window.open(action.link, (typeof action.link_target != "undefined" ? action.link_target : "_blank"));
+          $this.reportEvent("ClickTracking");
+          Player.set("playing", false);
+          action.clicked = true;
+        }else{
+          Player.set("playing", true);
+          action.clicked = false;
+        }
       }
     });
     Player.setter('closeIdentity', function(){
