@@ -173,6 +173,11 @@ Player.provide('protection',
       return $this.method;
     });
 
+    // Cancel bubbling of mousemove, so that trayTimeout is not triggered on iOS
+    $this.container.mousemove(function(e){
+        e.stopPropagation();
+    });
+
     return $this;
   }
 );
