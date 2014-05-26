@@ -189,7 +189,7 @@ Player.provide('design',
       // Simple setters to help control the tray and its timeout
       Player.setter('showTray', function(st){
         $this.showTray = st;
-        $('#tray').toggle($this.showTray);
+        $('#tray').toggle($this.showTray).removeClass("minimized");
         $('body').removeClass("hide-cursor");
       });
       Player.setter('trayTimeout', function(tt){
