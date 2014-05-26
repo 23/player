@@ -197,7 +197,7 @@ Player.provide('actions',
         action.parsed = false // Force reload of the ad, if the action is shown again
       }else{
         if(typeof action.ad_url=="undefined"||action.ad_url=="") return;
-        action.ad_url_replaced = action.ad_url.replace(/\[timestamp\]/g, (new Date()).getTime()).replace(/\[referrer\]/g, document.referrer);
+        action.ad_url_replaced = action.ad_url.replace(/\[timestamp\]|\[random\]/g, (new Date()).getTime()).replace(/\[referrer\]/g, document.referrer);
         $.ajax({
           url: action.ad_url_replaced,
           method: "GET",
@@ -689,8 +689,16 @@ Player.provide('actions',
     Player.setter('clickAction', function(){
       var action = $this.activeVideoActions[$this.currentVideoActionIndex];
       if(typeof action.link != 'undefined' && action.link != ""){
-        Player.fire("player:action:click", action);
-        window.open(action.link, (typeof action.link_target != "undefined" ? action.link_target : "_blank"));
+        if(typeof action.clicked == "undefined" || !action.clicked) {
+          Player.fire("player:action:click", action);
+          window.open(action.link, (typeof action.link_target != "undefined" ? action.link_target : "_blank"));
+          $this.reportEvent("ClickTracking");
+          Player.set("playing", false);
+          action.clicked = true;
+        }else{
+          Player.set("playing", true);
+          action.clicked = false;
+        }
       }
     });
     Player.setter('closeIdentity', function(){
@@ -767,10 +775,10 @@ Player.provide('actions',
         }
       }
     };
-    
+
     $this.loadAd = function(action){
       Player.set("playing", false);
-      action.ad_url_replaced = action.ad_url.replace(/\[timestamp\]/g, (new Date()).getTime()).replace(/\[referrer\]/g, document.referrer);
+      action.ad_url_replaced = action.ad_url.replace(/\[timestamp\]|\[random\]/g, (new Date()).getTime()).replace(/\[referrer\]/g, document.referrer);
       $.ajax({
         url: action.ad_url_replaced||"fail",
         method: "GET",
@@ -784,48 +792,87 @@ Player.provide('actions',
         }
       });
     };
-    
+
     $this.parseVastResponse = function(data, action){
       // Check for correct version of VAST
       var VAST = $(data).find("VAST");
       if (VAST.length < 1 || (VAST.attr("version") != "2.0" && VAST.attr("version") != "2.0.1")) return $this.playNextVideoAction();
-      
+
       // Check if feed contains an ad
-      var ad = VAST.find("Ad InLine").eq(0);
+      var ad = VAST.find("Ad").eq(0);
+      var inline = ad.find("InLine").eq(0);
       if (ad.length < 1) return $this.playNextVideoAction();
-      
-      // Check if ad contains a video of type 'video/mp4'
-      var adVideoUrl = ad.find("Creative Linear MediaFile[type='video/mp4']").eq(0);
-      if (adVideoUrl.length < 1) return $this.playNextVideoAction();
-      action.adVideoUrl = adVideoUrl.text();
-      
+
+      // Check if feed is a wrapper
+      var wrapper = ad.find("Wrapper VASTAdTagURI").eq(0);
+      var isWrapper = false;
+      if (wrapper.length > 0) {
+        isWrapper = true;
+      }else {
+        // Check if ad contains a video of type 'video/mp4'
+        var adVideoUrl = inline.find("Creative Linear MediaFile[type='video/mp4']").eq(0);
+        if (adVideoUrl.length < 1) return $this.playNextVideoAction();
+        action.adVideoUrl = adVideoUrl.text();
+      }
+
       // Playback events to be tracked and reported
-      action.events = [];
+      if (typeof action.events == "undefined") action.events = [];
       var impressions = ad.find("Impression");
       $.each(impressions, function(i,impression){
-        action.events.push({
-          "name": "impression",
-          "url": $(impression).text()
-        });
+        if($(impression).text()!=""){
+          action.events.push({
+            "name": "impression",
+            "url": $(impression).text()
+          });
+        }
       });
       var trackingevents = ad.find("Creative Linear").eq(0).find("TrackingEvents Tracking");
       $.each(trackingevents, function(i, event){
         var $event = $(event);
-        action.events.push({
-          "name": $event.attr("event"),
-          "url": $event.text()
-        });
+        if ($event.text()!=""){
+          action.events.push({
+            "name": $event.attr("event"),
+            "url": $event.text()
+          });
+        }
       });
-      
+
       var clickthrough = ad.find("Creative Linear").eq(0).find("VideoClicks ClickThrough").eq(0);
       if(clickthrough.length>0) action.link = clickthrough.text();
-    
-      // The ad is loaded, initiate playback for it again
-      action.adLoaded = true;
-      $this.currentVideoActionIndex -= 1;
-      $this.playNextVideoAction();
+
+      var clicktracking = ad.find("Creative Linear").eq(0).find("VideoClicks ClickTracking");
+      $.each(clicktracking,function(i, trackinguri){
+          var $trackinguri = $(trackinguri);
+          if($trackinguri.text()!=""){
+              action.events.push({
+                  "name": "ClickTracking",
+                  "url": $trackinguri.text()
+              });
+          }
+      });
+
+      // If this is a wrapper, request next url
+      if (isWrapper) {
+        $.ajax({
+          url: wrapper.text(),
+          method: "GET",
+          dataType: "xml",
+          cache: false,
+          success: function(data){
+            $this.parseVastResponse(data, action);
+          },
+          error: function(data){
+            $this.playNextVideoAction();
+          }
+        });
+      } else {
+        // The ad is loaded, initiate playback for it again
+        action.adLoaded = true;
+        $this.currentVideoActionIndex -= 1;
+        $this.playNextVideoAction();
+      }
     };
-        
+
     $this.reportEvent = function(event, once, a){
       var action = a||$this.activeVideoActions[$this.currentVideoActionIndex];
       if(!action.events) return;
