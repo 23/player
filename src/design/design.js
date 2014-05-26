@@ -146,18 +146,31 @@ Player.provide('design',
           // Fullscreen on pinch to zoom
           $(document).on("gesturechange", function(e){
               if (e.originalEvent.scale > 1) {
-		            Player.set("fullscreen", true);
+                  Player.set("fullscreen", true);
               }
           });
           // Quicker response on tap
           $(document).on("touchstart", function(e){
               if (e.originalEvent.touches.length == 1) {
-		              try {$(e.target).mousemove();}catch(e){}
-                  if( $(e.target).prop("tagName")!="A" ){
-                    $(e.target).trigger("click", e.originalEvent);
-                    e.preventDefault();
+                  if( $(e.target).prop("tagName")!="A" && $(e.target).prop("tagName")!="INPUT" ){
+                    $this.touchResponse = true;
+                    $this.touchEvent = e.originalEvent;
                   }
               }
+          });
+          $(document).on("touchmove", function(e){
+              if (e.originalEvent.touches.length == 1) {
+                $this.touchResponse = false;
+              }
+          });
+          $(document).on("touchend", function(e){
+              if ($this.touchResponse) {
+                try {$(e.target).mousemove();}catch(e){}
+                $(e.target).trigger("click", $this.touchEvent);
+                $this.touchEvent.preventDefault();
+                e.preventDefault();
+              }
+              $this.touchResponse = false;
           });
       }
 
