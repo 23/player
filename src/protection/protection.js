@@ -168,9 +168,11 @@ Player.provide('protection',
     });
 
     // Cancel bubbling of mousemove, so that trayTimeout is not triggered on iOS
-    $this.container.mousemove(function(e){
+    if(/iPhone|iPad/.test(navigator.userAgent)){
+      $this.container.mousemove(function(e){
         e.stopPropagation();
-    });
+      });
+    }
 
     return $this;
   }
