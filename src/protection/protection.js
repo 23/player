@@ -64,6 +64,7 @@ Player.provide('protection',
           });
         });
         break;
+      case 'custom':
       case 'geoblocking':
         $this.maxRetries = 1;
         callback('');
@@ -106,7 +107,12 @@ Player.provide('protection',
             object_type:(v.type=='clip' ? 'photo' : 'live'),
             verification_data:verificationData
           };
-          Player.get('api').call('/api/protection/verify', data, function(r){
+          if(v.protection_method == 'custom') {
+            var endpoint = v.protection_endpoint;
+          } else {
+            var endpoint = '/api/protection/verify';
+          }
+          Player.get('api').call(endpoint, data, function(r){
             if(!r || !r.protectedtoken) {
               console.debug('Protection error', 'Could not resolve protection token for the ressource', r);
               updateState(v, 'denied', v.protection_method);
