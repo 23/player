@@ -203,6 +203,9 @@ Player.provide('actions',
           method: "GET",
           dataType: "xml",
           cache: false,
+          xhrFields: {
+            withCredentials: true
+          },
           success: function(data){
             var ad = $(data).find("VAST Ad InLine").eq(0);
             if(ad.length < 1){
@@ -784,6 +787,9 @@ Player.provide('actions',
         method: "GET",
         dataType: "xml",
         cache: false,
+        xhrFields: {
+          withCredentials: true
+        },
         success: function(data){
           $this.parseVastResponse(data, action);
         },
@@ -858,6 +864,9 @@ Player.provide('actions',
           method: "GET",
           dataType: "xml",
           cache: false,
+          xhrFields: {
+            withCredentials: true
+          },
           success: function(data){
             $this.parseVastResponse(data, action);
           },
@@ -902,7 +911,10 @@ Player.provide('actions',
     $this.ajaxReport = function(url){
       $.ajax({
         url: url,
-        dataType: "eventReport"
+        dataType: "eventReport",
+        xhrFields: {
+          withCredentials: true
+        }
       });
     };
         
