@@ -399,3 +399,25 @@ var Cookie = {
     erase: function(name) {var cookie = Cookie.get(name) || true; Cookie.set(name, '', -1); return cookie;},
     accept: function() {if (typeof(navigator.cookieEnabled)=='boolean') {return navigator.cookieEnabled;} Cookie.set('_test', '1'); return (Cookie.erase('_test')=='1');}
 };
+// Avoid 'console' errors in browsers that lack a console.
+(function() {
+    var method;
+    var noop = function () {};
+    var methods = [
+        'assert', 'clear', 'count', 'debug', 'dir', 'dirxml', 'error',
+        'exception', 'group', 'groupCollapsed', 'groupEnd', 'info', 'log',
+        'markTimeline', 'profile', 'profileEnd', 'table', 'time', 'timeEnd',
+        'timeStamp', 'trace', 'warn'
+    ];
+    var length = methods.length;
+    var console = (window.console = window.console || {});
+
+    while (length--) {
+        method = methods[length];
+
+        // Only stub undefined methods.
+        if (!console[method]) {
+            console[method] = noop;
+        }
+    }
+}());
