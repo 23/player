@@ -1,3 +1,4 @@
+{% if video_type == "clip" %}
 <div class="scrubber-container">
   <div class="scrubber">
     <div class="scrubber-track"></div>
@@ -7,3 +8,4 @@
     {% if isTouchDevice != true %}<div class="scrubber-thumbnail"><div class="scrubber-thumbnail-sub"></div></div>{% endif %}
   </div>
 </div>
+{% endif %}
