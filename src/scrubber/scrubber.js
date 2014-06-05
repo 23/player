@@ -25,6 +25,7 @@ Player.provide('scrubber',
       $this.onRender = function(){
           // Find the relavant elements in the template
           $this.scrubber = $($this.container).find('.scrubber');
+          if($this.scrubber.length==0) return;
           $this.scrubberContainer = $($this.container).find('.scrubber-container');
           $this.bufferContainer = $($this.container).find('.scrubber-buffer');
           $this.playContainer = $($this.container).find('.scrubber-play');
