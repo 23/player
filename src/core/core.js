@@ -241,12 +241,12 @@ Player.provide('core',
               }
             });
         });
-      Player.setter('open_photo_id', function(opi){
+      Player.setter('open_photo_id', function(openObj){
           $.each($this.clips, function(i,c){
-              if(c.photo_id==opi) {
+              if(c.photo_id==openObj.pi) {
                 Player.set('playing', false);
-                window.open(Player.get('url') + c.one);
-                return;
+                window.open(Player.get('url') + c.one, openObj.target);
+                return false;
               }
             });
         });
@@ -258,11 +258,11 @@ Player.provide('core',
               }
             });
         });
-      Player.setter('open_live_id', function(oli){
+      Player.setter('open_live_id', function(openObj){
           $.each($this.streams, function(i,s){
-              if(s.live_id==oli) {
+              if(s.live_id==openObj.li) {
                 Player.set('playing', false);
-                window.open(Player.get('url') + s.link);
+                window.open(Player.get('url') + s.link, openObj.target);
                 return;
               }
             });
