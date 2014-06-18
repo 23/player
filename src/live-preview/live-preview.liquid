@@ -8,14 +8,20 @@
 {% if showLivePreview %}
   <div class="preview-container">
     <div class="preview-thumbnail"></div>
-    {% if showLiveCountdown %}
-      <table class="preview-countdown"><tr><td>
-        <span></span> 
-        <br/>
-        to {{video_title}}
-      </td></tr></table>
-    {% else %}
-      <div class="preview-offline">{{video_title}} is not live right now</div>
-    {% endif %}
+    <div class="preview-background"></div>
+    <table class="preview-info"><tr><td>
+      <span class="event-title">{{video_title}}</span>
+      <br/>
+      {% if showLiveTime %}
+        <span class="event-time"><img src="{{module.path}}player-time-icon-{{previewColor}}.png" /> Live on {% if showLocalTime != true %}{{nextStartTime}}{% else %}{{nextStartTimeLocale}}{% endif %}</span>{% if showLocalTime != true %} <span class="show-local" click="$set:showLocalTime:true">(Show my local time)</span>{% endif %}
+        <br />
+      {% else %}
+        <span class="event-time"><img src="{{module.path}}player-time-icon-{{previewColor}}.png" /> This event is not live right now</span>
+        <br />
+      {% endif %}
+      {% if streamLocation != '' %}
+        <span class="event-location"><img src="{{module.path}}player-location-icon-{{previewColor}}.png" /> {{streamLocation}}</span>
+      {% endif %}
+    </td></tr></table>
   </div>
 {% endif %}
