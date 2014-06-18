@@ -154,7 +154,9 @@ Player.provide('core',
           if(p) $this.settings.player_id = p[1];
       }
       $this.url = $this.protocol + '://' + $this.domain;
-      $this.api = new Visualplatform($this.domain);
+      $this.api = new Visualplatform($this.domain,[
+          "/api/deck/timeline/list-slides"
+      ]);
       $this.api.protocol = $this.protocol;
       $this.video = null;
       $this.streams = [];
@@ -241,12 +243,12 @@ Player.provide('core',
               }
             });
         });
-      Player.setter('open_photo_id', function(opi){
+      Player.setter('open_photo_id', function(openObj){
           $.each($this.clips, function(i,c){
-              if(c.photo_id==opi) {
+              if(c.photo_id==openObj.pi) {
                 Player.set('playing', false);
-                window.open(Player.get('url') + c.one);
-                return;
+                window.open(Player.get('url') + c.one, openObj.target);
+                return false;
               }
             });
         });
@@ -258,11 +260,11 @@ Player.provide('core',
               }
             });
         });
-      Player.setter('open_live_id', function(oli){
+      Player.setter('open_live_id', function(openObj){
           $.each($this.streams, function(i,s){
-              if(s.live_id==oli) {
+              if(s.live_id==openObj.li) {
                 Player.set('playing', false);
-                window.open(Player.get('url') + s.link);
+                window.open(Player.get('url') + s.link, openObj.target);
                 return;
               }
             });
@@ -303,10 +305,19 @@ Player.provide('core',
       });
       Player.getter('video_aspect_ratio', function(){return ($this.video.video_medium_width||1) / ($this.video.video_medium_height||1);});
       Player.getter('video_sharable', function(){
-        try {
-          return ($this.video && $this.video.album_id.length>0 && $this.video.published_p && !$this.video.album_hide_p);
-        }catch(e){
-          return false;
+        if(!$this.video) return false;
+        if($this.video.type == "clip"){
+          try {
+            return ($this.video.album_id.length>0 && $this.video.published_p && !$this.video.album_hide_p);
+          }catch(e){
+            return false;
+          }
+        }else{
+          try {
+              return !$this.video.private_p;
+          }catch(e){
+              return false;
+          }
         }
       });
       Player.getter('video_playable', function(){return $this.video&&$this.video.playable_p;});
