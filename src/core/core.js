@@ -303,10 +303,19 @@ Player.provide('core',
       });
       Player.getter('video_aspect_ratio', function(){return ($this.video.video_medium_width||1) / ($this.video.video_medium_height||1);});
       Player.getter('video_sharable', function(){
-        try {
-          return ($this.video && $this.video.album_id.length>0 && $this.video.published_p && !$this.video.album_hide_p);
-        }catch(e){
-          return false;
+        if(!$this.video) return false;
+        if($this.video.type == "clip"){
+          try {
+            return ($this.video.album_id.length>0 && $this.video.published_p && !$this.video.album_hide_p);
+          }catch(e){
+            return false;
+          }
+        }else{
+          try {
+              return !$this.video.private_p;
+          }catch(e){
+              return false;
+          }
         }
       });
       Player.getter('video_playable', function(){return $this.video&&$this.video.playable_p;});
