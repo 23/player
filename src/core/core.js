@@ -154,7 +154,9 @@ Player.provide('core',
           if(p) $this.settings.player_id = p[1];
       }
       $this.url = $this.protocol + '://' + $this.domain;
-      $this.api = new Visualplatform($this.domain);
+      $this.api = new Visualplatform($this.domain,[
+          "/api/deck/timeline/list-slides"
+      ]);
       $this.api.protocol = $this.protocol;
       $this.video = null;
       $this.streams = [];
