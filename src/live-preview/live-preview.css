@@ -20,27 +20,27 @@
 .preview-info td {
   text-align:center;
   vertical-align:middle;
-  font-size:30px;
+  font-size:20px;
   line-height:1.3em;
   padding:0 10%;
   text-shadow: 1px 1px #666;
 }
 .size-small .preview-info td {
-  font-size:22px;
+  font-size:16px;
 }
 .size-tiny .preview-info td {
-  font-size:18px;
+  font-size:14px;
 }
 
 .preview-info .event-title {
-    font-size: 50px;
+    font-size: 40px;
     line-height: 1.5em;
 }
 .size-small .preview-info .event-title {
-    font-size: 36px;
+    font-size: 32px;
 }
 .size-tiny .preview-info .event-title {
-    font-size: 30px;
+    font-size: 28px;
 }
 
 .event-time img, .event-location img {
@@ -51,9 +51,16 @@
 .preview-info .show-local {
     text-decoration: underline;
     cursor: pointer;
+    font-size: 14px;
 }
 .preview-info .show-local:hover {
     opacity: 0.8;
+}
+.size-smail .preview-info .show-local {
+    font-size: 12px;
+}
+.size-tiny .preview-info .show-local {
+    font-size: 10px;
 }
 
 .preview-notlive {
