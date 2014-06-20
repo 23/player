@@ -5,19 +5,18 @@
 {% if displayDevice == 'none' %}
   <div class="error-display">
     <p>
-      Your browser does not support video playback.<br/>
-      To view this content, either upgrade your browser or <a href="http://get.adobe.com/flashplayer/" target="_top">install Adobe Flash</a>.
+      {{"browser_does_not_support"|translate}}<br/>
+      {{"to_view_this_content"|translate}}
     </p>
   </div
 {% endif %}
 
 {% if error != empty %}
   <div class="error-display">
-    <p>{{error}}</p>
+    <p>{{error|translate}}</p>
   </div>
 {% endif %}
 
 {% if displayDevice != 'none' and error == empty and loading == true %}
   <div class="loading-indicator"></div>
 {% endif %}
-

@@ -181,6 +181,7 @@ Player.provide('core',
                           if(v=='t'||v=='true') $this.settings[i]=true;
                           if(!isNaN(v)) $this.settings[i]=new Number(v)+0;
                       });
+                      Player.setDefaultLocale(data.settings.locale);
                       Player.fire('player:settings', $this.settings)
                   }
               }

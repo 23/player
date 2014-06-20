@@ -21,3 +21,8 @@ Player.provide('info-button',
   }
           
 );
+
+/* Translations for this module */
+Player.translate("video_information",{
+    en: "Video information"
+});

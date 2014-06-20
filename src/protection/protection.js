@@ -183,3 +183,8 @@ Player.provide('protection',
     return $this;
   }
 );
+
+/* Translations for this module */
+Player.translate("password_required",{
+    en: "Password required"
+});

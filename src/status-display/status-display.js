@@ -72,3 +72,11 @@ Player.provide('status-display',
   }
           
 );
+
+/* Translations for this module */
+Player.translate("browser_does_not_support",{
+    en: "Your browser does not support video playback."
+});
+Player.translate("to_view_this_content",{
+    en: "To view this content, either upgrade your browser or <a href=\"http://get.adobe.com/flashplayer/\" target=\"_top\">install Adobe Flash</a>."
+});

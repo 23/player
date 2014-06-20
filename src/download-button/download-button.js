@@ -45,3 +45,10 @@ Player.provide('download-button',
           
 );
 
+/* Translations for this module */
+Player.translate("download_video",{
+    en: "Download video"
+});
+Player.translate("download",{
+    en: "Download"
+});
