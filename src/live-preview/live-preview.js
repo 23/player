@@ -125,3 +125,20 @@ Player.provide('live-preview',
       return $this;
   }
 );
+
+/* Translations for this module */
+Player.translate("stream_preview",{
+    en: "Stream preview"
+});
+Player.translate("not_being_broadcast",{
+    en: "Not being broadcast live"
+});
+Player.translate("live_on",{
+    en: "Live on"
+});
+Player.translate("show_my_local",{
+    en: "Show my local time"
+});
+Player.translate("this_event_is_not",{
+    en: "This event is not live right now"
+});
