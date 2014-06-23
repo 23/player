@@ -88,7 +88,7 @@ Player.provide('video-display',
           var callback = callback || function(e){
             // Error if no display device is available
             if(e=='loaded'&&$this.video.displayDevice=='none') {
-              Player.set('error', 'This player requires a modern web browser or a recent version of Adobe Flash.');
+              Player.set('error', "this_player_requires");
             }
             // If this loads after the content (i.e. if we're switching display device, fire an event that we're ready)
             if(e=='loaded') {
@@ -198,7 +198,7 @@ Player.provide('video-display',
             $this.displayDevice = 'flash';
             $this.loadEingebaut();
             if($this.displayDevice!='flash') {
-                Player.set('error', "This clip required Adobe Flash to be installed.");
+                Player.set('error', "this_clip_requires");
             }
           }
           // Handle quality defaults
@@ -221,7 +221,7 @@ Player.provide('video-display',
             $this.displayDevice = 'flash';
             $this.loadEingebaut();
             if($this.displayDevice!='flash') {
-                Player.set('error', "Live streaming requires a browser with support for HTTP Live Streaming or with Adobe Flash installed.");
+                Player.set('error', "live_streaming_requires");
             }
           }
         } else {
@@ -435,3 +435,14 @@ var formatTime = function(time) {
 Liquid.Template.registerFilter({
     formatTime: formatTime
   });
+
+/* Translations for this module */
+Player.translate("this_player_requires",{
+    en: "This player requires a modern web browser or a recent version of Adobe Flash. <a href=\"http://get.adobe.com/flashplayer/\" target=\"_top\">Install Adobe Flash</a>."
+});
+Player.translate("this_clip_requires",{
+    en: "This clip required Adobe Flash to be installed. <a href=\"http://get.adobe.com/flashplayer/\" target=\"_top\">Install Adobe Flash</a>."
+});
+Player.translate("live_streaming_requires",{
+    en: "Live streaming requires a browser with support for HTTP Live Streaming or with Adobe Flash installed. <a href=\"http://get.adobe.com/flashplayer/\" target=\"_top\">Install Adobe Flash</a>."
+});

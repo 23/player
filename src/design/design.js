@@ -35,15 +35,15 @@ Player.provide('design',
       // BUTTON MENUS
       // Handle button clicks
       Player.bind('glue:render', function(e, container){
-          $(container).find('div.button:has(ul)').each(function(i,div){
-              $(div).off("click.button-menu").on("click.button-menu", function(e){
-                  if($(div).hasClass('activebutton')) {
-                      $(div).removeClass('activebutton');
+          $(container).find('.button:has(ul)').each(function(i,button){
+              $(button).off("click.button-menu").on("click.button-menu", function(e){
+                  if($(button).hasClass('activebutton')) {
+                      $(button).removeClass('activebutton').attr("aria-expanded", "false");
                   } else {
-                      $('.activebutton').removeClass('activebutton');
+                      $('.activebutton').removeClass('activebutton').attr("aria-expanded", "false");
                       Player.set('browseMode', false);
                       Player.set('showSharing', false);
-                      $(div).addClass('activebutton');
+                      $(button).addClass('activebutton').attr("aria-expanded", "true");
                       e.stopPropagation();
                   }
               });
@@ -53,10 +53,14 @@ Player.provide('design',
       $('body').click(function(e){
           $('.activebutton').each(function(i,el){
               el = $(el);
-              if(!el.is(e.target)) el.removeClass('activebutton');
+              if(!el.is(e.target)) el.removeClass('activebutton').attr("aria-expanded", "false");
           });
       });
 
+      // Set .touch-class on body, if we're on iDevice or Android
+      if(/iPad|iPhone|Android/.test(navigator.userAgent)){
+          $("body").addClass("touch");
+      }
 
       // SHOW TRAY AND TIME IT OUT
       // Handle settings
@@ -133,10 +137,10 @@ Player.provide('design',
 
           $this.rgbaSupport = /^rgba/.test($this.dummyElement.css('backgroundColor'));
           if($this.rgbaSupport) {
-              $('.big-play-button, .tray-navigation, .scrubber-container, .sharing-container, div.button ul, .player-browse #browse').css({backgroundColor:$this.trayBackgroundColorRGBA});
+              $('.big-play-button, .tray-navigation, .scrubber-container, .sharing-container, .button ul, .player-browse #browse').css({backgroundColor:$this.trayBackgroundColorRGBA});
           } else {
               // (fall back to background color + opacity if RGBa is not supported
-              $('.big-play-button, .tray-navigation, .scrubber-container, .sharing-container, div.button ul, .player-browse #browse').css({backgroundColor:$this.trayBackgroundColor, opacity:$this.trayAlpha});
+              $('.big-play-button, .tray-navigation, .scrubber-container, .sharing-container, .button ul, .player-browse #browse').css({backgroundColor:$this.trayBackgroundColor, opacity:$this.trayAlpha});
           }
           // Vertical and horisontal padding
           $('video-display').css({bottom:$this.verticalPadding+'px', left:$this.horizontalPadding+'px'})

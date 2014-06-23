@@ -1,5 +1,5 @@
 /* ========================= BROWSER RESET ======================== */
-body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td{margin:0;padding:0;}table{border-collapse:collapse;border-spacing:0;}fieldset,img{border:0;}address,caption,cite,code,dfn,em,strong,th,var{font-style:normal;font-weight:normal;}ol,ul {list-style:none;}caption,th {text-align:left;}h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:normal;}q:before,q:after{content:'';}abbr,acronym {border:0;}* focus, video, object, player, embed {outline:none} *{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;-o-user-select:none;user-select:none;}iframe{border:0} input,textarea{-webkit-user-select:text;-moz-user-select:text;-ms-user-select:text;-o-user-select:text;user-select:text;}iframe{border:0}
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td,button{margin:0;padding:0;}table{border-collapse:collapse;border-spacing:0;}fieldset,img,button{border:0;}address,caption,cite,code,dfn,em,strong,th,var{font-style:normal;font-weight:normal;}ol,ul {list-style:none;}caption,th {text-align:left;}h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:normal;}q:before,q:after{content:'';}abbr,acronym {border:0;}* focus, video, object, player, embed {outline:none} *{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;-o-user-select:none;user-select:none;}iframe{border:0} input,textarea{-webkit-user-select:text;-moz-user-select:text;-ms-user-select:text;-o-user-select:text;user-select:text;}iframe{border:0}button{background-color:transparent;}
 
 
 @font-face {
@@ -53,7 +53,7 @@ p {
     line-height:1.5em;
     letter-spacing:.3px;
 }
-button, .submitbutton {
+.share-buttons button, .submitbutton {
     background-color:#3B3B3C;
     color:white; /*updated in js via player settings */
     font-size:11px;
@@ -67,6 +67,10 @@ button, .submitbutton {
     line-height:34px;
     margin: 0;
 }
+.touch .share-buttons button, .touch .submitbutton {
+    width: 44px;
+    height: 44px;
+}
 .submitbutton {
     padding-left:5px;
     font-size:14px;
@@ -79,7 +83,8 @@ body.hide-cursor, body.hide-cursor * {
 /* ========================= GENERIC CLASSES ======================== */
 
 /* === buttons === */
-div.button { /* standard button design */
+.button { /* standard button design */
+    display:block;
     position:relative;
     height:34px;
     width:34px;
@@ -87,21 +92,30 @@ div.button { /* standard button design */
     background-repeat:no-repeat;
     cursor:pointer;
     font-size:0;
+    box-sizing: content-box;
 }
-div.highlight-button {
+.touch .button {
+    height: 44px;
+    width: 44px;
+}
+.highlight-button {
     opacity:1 !important;
     background-color: #ccc;
     background-color: rgba(120,120,120,0.3);
 }
-div.button:hover, div.activebutton {
+.button:hover, .activebutton {
     opacity:1;
 }
-div.button.big { /* big version of same button */
+.button.big { /* big version of same button */
     height:50px;
     width:50px;
     border-radius:2px;
 }
-div.button ul { /* button menus */
+.touch .button.big {
+    height: 80px;
+    width: 80px;
+}
+.button ul { /* button menus */
     display:none;
     opacity:0;
     position:absolute;
@@ -112,13 +126,21 @@ div.button ul { /* button menus */
     line-height:25px;
     text-align:left;
 }
-div.activebutton {
+.touch .button ul {
+    bottom: 44px;
+}
+.activebutton {
     filter: alpha(enabled=false) !important; /* IE alpha overflow hidden bug, http://labs.thesedays.com/blog/2011/06/02/ie-alpha-overflow-hidden-bug/ */
     background-color: #ccc;
     background-color: rgba(120,120,120,0.3);
+    overflow: visible;
+}
+.hide-visually {
+    position: absolute;
+    text-indent: -9999px;
 }
 
-div.activebutton ul { /* active button menus */
+.activebutton ul { /* active button menus */
     display:block;
     font-size:11px;
     line-height:22px;
@@ -128,7 +150,7 @@ div.activebutton ul { /* active button menus */
     -moz-animation: menuSlideIn 250ms;
     animation: menuSlideIn 250ms;
 }
-div.button ul li { /* menu items */
+.button ul li { /* menu items */
     white-space:nowrap;
     background:url('not-selected-icon.png') -2px -3px no-repeat;
     padding:1px 10px 1px 24px;
@@ -142,13 +164,13 @@ div.button ul li:first-child {
 div.button ul li:last-child {
     padding-bottom:6px;
 }
-div.button-bulletless ul li {
+.button-bulletless ul li {
     background-image:none !important;
     padding-left:10px;
 }
-div.button ul li.hover { /* menu item hover */
+.button ul li.hover { /* menu item hover */
 }
-div.button ul li.selected { /* menu item selected */
+.button ul li.selected { /* menu item selected */
     background-image:url('selected-icon.png');
 }
 a.button { /* standard button design as a straight link */
@@ -272,6 +294,9 @@ a.button { /* standard button design as a straight link */
     border:2px solid #ccc;
     display:none;
 }
+.touch .scrubber-thumbnail {
+    bottom: 47px;
+}
 .scrubber-thumbnail-sub {
     background-repeat: 'no-repeat';
     width:100%;
@@ -337,6 +362,10 @@ a.button { /* standard button design as a straight link */
     right: 0;
     bottom: 44px;
 }
+.touch .player-sharing {
+    width: 48px;
+    bottom: 54px;
+}
 .share-embed {
     padding-bottom:10px;
 }
@@ -385,6 +414,9 @@ a.button { /* standard button design as a straight link */
     background-color: rgb(200,200,200);
     background-color: rgba(200,200,200,0.6);
     bottom: 44px;
+}
+.touch .player-browse #browse {
+    bottom: 54px;
 }
 .player-browse #browsesub {
     bottom: 0;
@@ -514,8 +546,8 @@ table.browse-recommendations div {
     .subtitle-button {background-image:url('subtitle-icon@2x.png'); background-size:30px;}
     .download-button {background-image:url('download-icon@2x.png'); background-size:30px;}
 
-    div.button ul li {background-image:url('not-selected-icon@2x.png'); background-size:30px;}
-    div.button ul li.selected {background-image:url('selected-icon@2x.png'); background-size:30px;}
+    .button ul li {background-image:url('not-selected-icon@2x.png'); background-size:30px;}
+    .button ul li.selected {background-image:url('selected-icon@2x.png'); background-size:30px;}
     .share-embed-label {background-image:url('embed-icon@2x.png'); background-size:30px;}
     .browse-left {background-image:url('prev-icon@2x.png'); background-size:30px;}
     .browse-right {background-image:url('next-icon@2x.png'); background-size:30px;}
