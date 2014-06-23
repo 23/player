@@ -105,8 +105,12 @@ body.hide-cursor, body.hide-cursor * {
     overflow: visible;
 }
 .button .hide-visually {
-    position: absolute;
     text-indent: -9999px;
+    position: absolute !important;
+    height: 1px; width: 1px;
+    overflow: hidden;
+    clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
+    clip: rect(1px, 1px, 1px, 1px);
 }
 
 .activebutton ul { /* active button menus */
