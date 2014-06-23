@@ -112,9 +112,13 @@ body.hide-cursor, body.hide-cursor * {
     filter: alpha(enabled=false) !important; /* IE alpha overflow hidden bug, http://labs.thesedays.com/blog/2011/06/02/ie-alpha-overflow-hidden-bug/ */
     overflow: visible;
 }
-button .hide-visually {
-    position: absolute;
+.hide-visually {
     text-indent: -9999px;
+    position: absolute !important;
+    height: 1px; width: 1px;
+    overflow: hidden;
+    clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
+    clip: rect(1px, 1px, 1px, 1px);
 }
 
 .activebutton ul { /* active button menus */
