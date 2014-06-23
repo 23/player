@@ -1,13 +1,18 @@
 <div class="big-play-container">
   <table width="100%" height="100%"><tr><td width="100%" height="100%" valign="middle" align="center">
     {% if bigPlaySource == empty or bigPlaySource == "" %}
-      <div class="tray-button button big play-button big-play-button" click="$set:playing:true">
-        <!--Play-->
-      </div>
+      <button class="tray-button button big play-button big-play-button" click="$set:playing:true" aria-label="{{"play_video"|translate}}" label="{{"play_video"|translate}}">
+        <span class="hide-visually">
+            {{"play_video"|translate}}
+        </span>
+      </button>
     {% else %}
-      <div class="tray-button big play-button-custom big-play-button-custom" click="$set:playing:true">
-        <img src="{{bigPlaySource}}" />
-      </div>
+      <button class="tray-button big play-button-custom big-play-button-custom" click="$set:playing:true" aria-label="{{"play_video"|translate}}" label="{{"play_video"|translate}}">
+        <img src="{{bigPlaySource}}" alt="" />
+        <span class="hide-visually">
+            {{"play_video"|translate}}
+        </span>
+      </button>
     {% endif %}
   </td></tr></table>
 </div>

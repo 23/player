@@ -1,5 +1,5 @@
 /* ========================= BROWSER RESET ======================== */
-body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td{margin:0;padding:0;}table{border-collapse:collapse;border-spacing:0;}fieldset,img{border:0;}address,caption,cite,code,dfn,em,strong,th,var{font-style:normal;font-weight:normal;}ol,ul {list-style:none;}caption,th {text-align:left;}h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:normal;}q:before,q:after{content:'';}abbr,acronym {border:0;}* focus, video, object, player, embed {outline:none} *{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;-o-user-select:none;user-select:none;}iframe{border:0} input,textarea{-webkit-user-select:text;-moz-user-select:text;-ms-user-select:text;-o-user-select:text;user-select:text;}iframe{border:0}
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td,button{margin:0;padding:0;}table{border-collapse:collapse;border-spacing:0;}fieldset,img,button{border:0;}address,caption,cite,code,dfn,em,strong,th,var{font-style:normal;font-weight:normal;}ol,ul {list-style:none;}caption,th {text-align:left;}h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:normal;}q:before,q:after{content:'';}abbr,acronym {border:0;}* focus, video, object, player, embed {outline:none} *{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;-o-user-select:none;user-select:none;}iframe{border:0} input,textarea{-webkit-user-select:text;-moz-user-select:text;-ms-user-select:text;-o-user-select:text;user-select:text;}iframe{border:0}
 
 
 
@@ -29,7 +29,7 @@ p {
     line-height:1.5em;
     letter-spacing:.3px;
 }
-button, .submitbutton {
+.share-buttons button, .submitbutton {
     background-color:#3B3B3C;
     color:white; /*updated in js via player settings */
     font-size:11px;
@@ -38,7 +38,7 @@ button, .submitbutton {
     background-repeat:no-repeat;
     background-position:left center;
     cursor:pointer;
-    height:30px; 
+    height:30px;
     line-height:32px;
     margin-right:10px;
 }
@@ -54,37 +54,48 @@ body.hide-cursor, body.hide-cursor * {
 /* ========================= GENERIC CLASSES ======================== */
 
 /* === buttons === */
-div.button { /* standard button design */
+.button { /* standard button design */
     position:relative;
-    height:22px;
-    width:23px;
     background-position:center center;
     background-repeat:no-repeat;
     cursor:pointer;
     font-size:0;
 }
-
-.tray-left div.button {
+.tray-right .button {
+    height: 22px;
+    width: 23px;
+}
+.touch .tray-right .button {
+    height: 30px;
+    width: 30px;
+}
+.tray-left .button {
     height: 50px;
     width: 60px;
     background-color:black;
 }
-
-div.highlight-button {
+.touch .tray-left .button {
+    height: 58px;
+}
+.highlight-button {
     opacity:1 !important;
 }
-div.button:hover {
+.button:hover {
     opacity:1;
 }
-div.button.big { /* big version of same button */
+.button.big { /* big version of same button */
     height:60px;
     width:60px;
 }
-div.button ul { /* button menus */
+.touch .button.big {
+    height: 80px;
+    width: 80px;
+}
+.button ul { /* button menus */
     display:none;
     opacity:0;
     position:absolute;
-    bottom:30px; 
+    bottom:30px;
     right:0;
     background:rgb(0,0,0); /*fallback for browser with no RGBa support */
     background:rgba(0,0,0,.8); /*updated in js via player settings */
@@ -92,11 +103,19 @@ div.button ul { /* button menus */
     padding:2px 10px;
     text-align:left;
 }
-div.activebutton {
-    filter: alpha(enabled=false) !important; /* IE alpha overflow hidden bug, http://labs.thesedays.com/blog/2011/06/02/ie-alpha-overflow-hidden-bug/ */
+.touch .button ul {
+    bottom: 42px;
 }
-div.activebutton {opacity: 1;}
-div.activebutton ul { /* active button menus */
+.activebutton {
+    filter: alpha(enabled=false) !important; /* IE alpha overflow hidden bug, http://labs.thesedays.com/blog/2011/06/02/ie-alpha-overflow-hidden-bug/ */
+    overflow: visible;
+}
+.button .hide-visually {
+    position: absolute;
+    text-indent: -9999px;
+}
+.activebutton {opacity: 1;}
+.activebutton ul { /* active button menus */
     display:block;
     font-size:11px;
     line-height:22px;
@@ -106,24 +125,24 @@ div.activebutton ul { /* active button menus */
     -moz-animation: menuSlideIn 400ms;
     animation: menuSlideIn 400ms;
 }
-div.button ul li { /* menu items */
+.button ul li { /* menu items */
     white-space:nowrap;
     background:url('not-selected-icon.png') -10px -5px no-repeat;
     padding-left:14px;
 }
-div.button-bulletless ul li {
+.button-bulletless ul li {
     background-image:none !important;
     padding-left:0;
 }
-div.button ul li.hover { /* menu item hover */
+.button ul li.hover { /* menu item hover */
 }
-div.button ul li.selected { /* menu item selected */
+.button ul li.selected { /* menu item selected */
     background-image:url('selected-icon.png');
 }
 a.button { /* standard button design as a straight link */
-    display:inline-block; 
-    *display:inline; 
-    *zoom:1; 
+    display:inline-block;
+    *display:inline;
+    *zoom:1;
     border:1px solid #333;
     height:30px;
     width:30px;
@@ -159,6 +178,9 @@ a.button { /* standard button design as a straight link */
 }
 .tray-left, .tray-right-container {
     height:50px;
+}
+.touch .tray-left, .touch .tray-right-container {
+    height:58px;
 }
 .tray-right{
     margin: 7px 5px 0 0;
@@ -202,7 +224,7 @@ a.button { /* standard button design as a straight link */
     filter: alpha(enabled=false) !important; /* IE alpha overflow hidden bug, http://labs.thesedays.com/blog/2011/06/02/ie-alpha-overflow-hidden-bug/ */
 }
 .scrubber {
-    position:absolute; 
+    position:absolute;
     top:0px;
     left:10px;
     right:50px;
@@ -210,7 +232,7 @@ a.button { /* standard button design as a straight link */
     cursor:pointer;
 }
 .scrubber-track, .scrubber-buffer, .scrubber-play {
-    position:absolute; 
+    position:absolute;
     top:6px;
     left:0;
     height:6px;
@@ -239,11 +261,14 @@ a.button { /* standard button design as a straight link */
     padding:4px 4px 2px 4px;
     z-index:10;
 }
+.touch .scrubber-handle {
+    top: 12px;
+}
 .scrubber-container-hover .scrubber-handle {
     /*display:block;*/
 }
 .scrubber-time {
-    position:absolute; 
+    position:absolute;
     top: 3px;
     right: 8px;
     opacity:.5;
@@ -255,6 +280,9 @@ a.button { /* standard button design as a straight link */
     background-color:#999;
     display:none;
 }
+.touch .scrubber-thumbnail {
+    bottom: 47px;
+}
 .scrubber-thumbnail-sub {
     background-repeat: 'no-repeat';
     width:100%;
@@ -264,17 +292,17 @@ a.button { /* standard button design as a straight link */
 
 /* === Module: Sections === */
 .sections {
-    position:absolute; 
+    position:absolute;
     top:4px;
     left:10px;
     right:50px;
     height:0; /* for ie7's sake, otherwise this element covers the scrubber  */
 }
 .section {
-    position:absolute; 
+    position:absolute;
     top:0;
     width:8px;
-    height:8px; 
+    height:8px;
     margin:0px 0 0 -4px;
     border:1px solid black;
     background-color:#ccc;
@@ -345,8 +373,8 @@ a.button { /* standard button design as a straight link */
 }
 .share-embed-label {
     float:left;
-    font-size:14px; 
-    padding:0 23px 0 32px; 
+    font-size:14px;
+    padding:0 23px 0 32px;
     font-weight:bold;
     line-height:26px;
     background:url('embed-icon.png') left center no-repeat;
@@ -392,7 +420,7 @@ a.button { /* standard button design as a straight link */
     position:relative;
     margin:0 30px;
 }
-/* Thumbnails in a fully standard table, 
+/* Thumbnails in a fully standard table,
    makes sure we don't need to handle breaking
    or explicitly set the width */
 table.browse-recommendations {
@@ -455,7 +483,7 @@ table.browse-recommendations div {
 .google-button:hover {background-color: #dd4b38;}
 
 /* Hide a number of elements in very small players */
-.size-tiny .info-button, 
+.size-tiny .info-button,
 .size-tiny .share-button,
 .size-tiny .browse-button-on,
 .size-tiny .browse-button-off,
@@ -473,18 +501,18 @@ table.browse-recommendations div {
 /* Hide some elements in slightly small players */
 .size-small .info-description,
 .size-small .subtitle-button,
-.size-small .info-button, 
+.size-small .info-button,
 .size-small .browse-button-on,
 .size-small .browse-button-off,
-.size-small .sharing-container 
+.size-small .sharing-container
 .size-small .player-browse #browse {
     display:none;
 }
 
 /* All graphics in retina version */
-@media 
-(-webkit-min-device-pixel-ratio: 2), 
-(min-resolution: 192dpi) { 
+@media
+(-webkit-min-device-pixel-ratio: 2),
+(min-resolution: 192dpi) {
     .play-button {background-image:url('big-play-icon@2x.png'); background-size:60px;}
     .big-play-button {background-image:url('big-play-icon@2x.png'); background-size:60px;}
     .pause-button {background-image:url('pause-icon@2x.png'); background-size:60px;}
@@ -505,8 +533,8 @@ table.browse-recommendations div {
     .subtitle-button {background-image:url('subtitle-icon@2x.png'); background-size:30px;}
     .download-button {background-image:url('download-icon@2x.png'); background-size:30px;}
 
-    div.button ul li {background-image:url('not-selected-icon@2x.png'); background-size:30px;}
-    div.button ul li.selected {background-image:url('selected-icon@2x.png'); background-size:30px;}
+    .button ul li {background-image:url('not-selected-icon@2x.png'); background-size:30px;}
+    .button ul li.selected {background-image:url('selected-icon@2x.png'); background-size:30px;}
     .share-embed-label {background-image:url('embed-icon@2x.png'); background-size:30px;}
     .browse-left {background-image:url('prev-icon@2x.png'); background-size:30px;}
     .browse-right {background-image:url('next-icon@2x.png'); background-size:30px;}
