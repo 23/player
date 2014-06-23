@@ -50,7 +50,7 @@ Player.provide('slides',{
         if ($this.showSlides){
             if(v.type=="clip"){
                 $this.loadSlides();
-            }else if(v.type=="stream"){
+            }else if(v.type=="stream"&&v.has_deck_p){
                 $this.loadSlides();
                 $this.slideUpdateIntervalId = window.setInterval(function(){
                     $this.loadSlides();
@@ -128,7 +128,7 @@ Player.provide('slides',{
         }).attr("src", Player.get("url")+$this.currentSlide.slide_url).prependTo($this.container.find(".slide-container"));
     }
 
-    resetOffset = $this.calculateStreamOffset = function(){
+    $this.calculateStreamOffset = function(){
         if($this.slides.length==0||Player.get("currentTime")==0) return "canceling";
         var streamStartEpoch = parseInt($this.slides[0].absolute_time_epoch) - parseInt($this.slides[0].second);
         var zeroEpoch = ((new Date()).getTime() / 1000) - Player.get("currentTime") - 22;

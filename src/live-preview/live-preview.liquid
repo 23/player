@@ -1,7 +1,7 @@
 {% if showStreamNotLive %}
   <div class="preview-notlive">
-    Stream preview
-    <span>Not being broadcast live</span>
+    {{"stream_preview"|translate}}
+    <span>{{"not_being_broadcast"|translate}}</span>
   </div>
 {% endif %}
 
@@ -13,10 +13,10 @@
       <span class="event-title">{{video_title}}</span>
       <br/>
       {% if showLiveTime %}
-        <span class="event-time"><img src="{{module.path}}player-time-icon-{{previewColor}}.png" /> Live on {% if showLocalTime != true %}{{nextStartTime}}{% else %}{{nextStartTimeLocale}}{% endif %}</span>{% if showLocalTime != true %} <span class="show-local" click="$set:showLocalTime:true">(Show my local time)</span>{% endif %}
+        <span class="event-time"><img src="{{module.path}}player-time-icon-{{previewColor}}.png" /> {{"live_on"|translate}} {% if showLocalTime != true %}{{nextStartTime}}{% else %}{{nextStartTimeLocale}}{% endif %}</span>{% if showLocalTime != true %} <span class="show-local" click="$set:showLocalTime:true">({{"show_my_local"|translate}})</span>{% endif %}
         <br />
       {% else %}
-        <span class="event-time"><img src="{{module.path}}player-time-icon-{{previewColor}}.png" /> This event is not live right now</span>
+        <span class="event-time"><img src="{{module.path}}player-time-icon-{{previewColor}}.png" /> {{"this_event_is_not"|translate}}</span>
         <br />
       {% endif %}
       {% if streamLocation != '' %}
