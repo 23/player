@@ -1,5 +1,7 @@
 {% if socialSharing %}
-<div class="tray-button button share-button {% if showSharing %}highlight-button{% endif %}" click="$toggle:showSharing" aria-controls="sharing"  aria-label="{{"share_video"|translate}}" label="{{"share_video"|translate}}" role="button" tabindex="1300">
-  <!--Share-->
-</div>
+<button class="tray-button button share-button {% if showSharing %}highlight-button{% endif %}" click="$toggle:showSharing" aria-controls="sharing"  aria-label="{{"share_video"|translate}}" label="{{"share_video"|translate}}" aria-expanded="{% if showSharing %}true{% else %}false{% endif %}" tabindex="1300">
+  <span class="hide-visually">
+    {{"share_video"|translate}}
+  </span>
+</button>
 {% endif %}

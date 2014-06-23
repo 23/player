@@ -1,6 +1,8 @@
 {% if showDownload && video_type == "clip" %}
-<div class="tray-button button button-bulletless download-button" aria-controls="downloadOptions" aria-label="{{"download_video"|translate}}" label="{{"download_video"|translate}}" role="button" tabindex="1500">
-  <!--Download-->
+<button class="tray-button button button-bulletless download-button" aria-controls="downloadOptions" aria-label="{{"download_video"|translate}}" label="{{"download_video"|translate}}" tabindex="1500">
+  <span class="hide-visually">
+    {{"download_video"|translate}}
+  </span>
 
   <ul id="downloadOptions">
     {% for q in downloadQualities %}
@@ -9,5 +11,5 @@
     </li>
     {% endfor %}
   </ul>
-</div>
+</button>
 {% endif %}

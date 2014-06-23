@@ -1,6 +1,8 @@
 {% if hasQualitySwitching %}
-<div class="tray-button button quality-button" aria-controls="qualityOptions" aria-label="{{"quality"|translate}}" label="{{"quality"|translate}}" role="button" tabindex="1400">
-  <!--Quality-->
+<button class="tray-button button quality-button" aria-controls="qualityOptions" aria-label="{{"quality"|translate}}" label="{{"quality"|translate}}" tabindex="1400">
+  <span class="hide-visually">
+    {{"quality"|translate}}
+  </span>
 
   <ul id="qualityOptions">
     {% for q in qualitiesArray %}
@@ -9,5 +11,5 @@
     </li>
     {% endfor %}
   </ul>
-</div>
+</button>
 {% endif %}

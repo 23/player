@@ -1,6 +1,8 @@
 {% if hasSubtitles and enableSubtitles %}
-<div class="tray-button button subtitle-button" aria-controls="subtitleOptions" aria-label="{{"closed_captioning"|translate}}" label="{{"closed_captioning"|translate}}" role="button" tabindex="1600">
-  <!--Subs-->
+<button class="tray-button button subtitle-button" aria-controls="subtitleOptions" aria-label="{{"closed_captioning"|translate}}" label="{{"closed_captioning"|translate}}" tabindex="1600">
+  <span class="hide-visually">
+    {{"closed_captioning"|translate}}
+  </span>
 
   <ul id="subtitleOptions">
     {% for l in localesArray %}
@@ -12,5 +14,5 @@
       {{"none"|translate}}
     </li>
   </ul>
-</div>
+</button>
 {% endif %}

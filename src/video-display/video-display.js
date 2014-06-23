@@ -438,11 +438,11 @@ Liquid.Template.registerFilter({
 
 /* Translations for this module */
 Player.translate("this_player_requires",{
-    en: "This player requires a modern web browser or a recent version of Adobe Flash."
+    en: "This player requires a modern web browser or a recent version of Adobe Flash. <a href=\"http://get.adobe.com/flashplayer/\" target=\"_top\">Install Adobe Flash</a>."
 });
 Player.translate("this_clip_requires",{
-    en: "This clip required Adobe Flash to be installed."
+    en: "This clip required Adobe Flash to be installed. <a href=\"http://get.adobe.com/flashplayer/\" target=\"_top\">Install Adobe Flash</a>."
 });
 Player.translate("live_streaming_requires",{
-    en: "Live streaming requires a browser with support for HTTP Live Streaming or with Adobe Flash installed."
+    en: "Live streaming requires a browser with support for HTTP Live Streaming or with Adobe Flash installed. <a href=\"http://get.adobe.com/flashplayer/\" target=\"_top\">Install Adobe Flash</a>."
 });

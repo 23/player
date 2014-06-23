@@ -1,24 +1,24 @@
 {% if showSharing %}
   <div id="sharing" class="sharing-container">
     <div class="share-embed">
-      <div class="share-embed-label">{{"embed"|translate}}</div>
-      <input type="text" value="{{embedCode|escape}}" onclick="$(this).select();" click="$fire:player:sharing:embedengaged" aria-label="{{"copy_embed"|translate}}" label="{{"copy_embed"|translate}}" role="button" tabindex="1301"/>
+      <label for="embed-code" class="share-embed-label">{{"embed"|translate}}</label>
+      <input name="embed-code" type="text" value="{{embedCode|escape}}" onclick="$(this).select();" click="$fire:player:sharing:embedengaged" aria-label="{{"copy_embed"|translate}}" label="{{"copy_embed"|translate}}" tabindex="1301"/>
     </div>
 
     <div class="share-buttons">
-      <button click="$set:shareTo:site" class="site-button" aria-label="{{"see_on_site"|translate}}" label="{{"see_on_site"|translate}}" role="button" tabindex="1302">
+      <button click="$set:shareTo:site" class="site-button" aria-label="{{"see_on_site"|translate}}" label="{{"see_on_site"|translate}}" tabindex="1302">
         {{"see_on_site"|translate}}
       </button>
-      <button click="$set:shareTo:facebook" class="facebook-button" aria-label="{{"share_on_facebook"|translate}}" label="{{"share_on_facebook"|translate}}" role="button" tabindex="1303">
+      <button click="$set:shareTo:facebook" class="facebook-button" aria-label="{{"share_on_facebook"|translate}}" label="{{"share_on_facebook"|translate}}" tabindex="1303">
         {{"share_on_facebook"|translate}}
       </button>
-      <button click="$set:shareTo:twitter" class="twitter-button" aria-label="{{"tweet_this_video"|translate}}" label="{{"tweet_this_video"|translate}}" role="button" tabindex="1304">
+      <button click="$set:shareTo:twitter" class="twitter-button" aria-label="{{"tweet_this_video"|translate}}" label="{{"tweet_this_video"|translate}}" tabindex="1304">
         {{"tweet_this_video"|translate}}
       </button>
-      <button click="$set:shareTo:google" class="google-button" aria-label="{{"plus_one_google"|translate}}" label="{{"plus_one_google"|translate}}" role="button" tabindex="1305">
+      <button click="$set:shareTo:google" class="google-button" aria-label="{{"plus_one_google"|translate}}" label="{{"plus_one_google"|translate}}" tabindex="1305">
         {{"plus_one_google"|translate}}
       </button>
-      <button click="$set:shareTo:mail" class="mail-button" aria-label="{{"mail_video"|translate}}" label="{{"mail_video"|translate}}" role="button" tabindex="1306">
+      <button click="$set:shareTo:mail" class="mail-button" aria-label="{{"mail_video"|translate}}" label="{{"mail_video"|translate}}" tabindex="1306">
         {{"mail_video"|translate}}
       </button>
     </div>
