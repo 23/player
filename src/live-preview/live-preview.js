@@ -30,8 +30,10 @@ Player.provide('live-preview',
       $this.showLocalTime = false;
 
       var onRender = function(){
-        $this.container.find('.preview-thumbnail').css({backgroundImage:'url(' + Player.get('url') + Player.get('video').preview_large_download + ')'});
-        $this.container.find('.preview-background').css({backgroundColor: $this.scrubberColor, opacity: 0.8});
+        if(Player.get("video")){
+          $this.container.find('.preview-thumbnail').css({backgroundImage:'url(' + Player.get('url') + Player.get('video').preview_large_download + ')'});
+          $this.container.find('.preview-background').css({backgroundColor: $this.scrubberColor, opacity: 0.8});
+        }
       }
 
       // Bind to events
