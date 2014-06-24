@@ -14,6 +14,7 @@ Player.provide('subtitle-button',
 
     // Update UI when subtitle changes
     Player.bind('player:subtitlechange', function(e){
+        $this.container.removeClass("activebutton-container");
         $this.render();
       });
       
