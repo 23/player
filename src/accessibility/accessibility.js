@@ -88,7 +88,7 @@ Player.provide('accessibility',
           }
           if(e.keyCode==27) {
             // Destroy menus
-            $('.activebutton').removeClass('activebutton');
+            $('.activebutton').removeClass('activebutton').parent().removeClass('activebutton-container');
           }
 
           if(matched) e.preventDefault();
