@@ -1,20 +1,20 @@
-/* 
+/*
    MODULE: INFO
    Show title and description for the video
-   
+
    Listens for:
    - player:settings: The app was loaded, time to show the info pane
    - player:video:loaded: New title and description to show
 
    Listens for:
    - player:infoengaged: Info pane was toggles somehow
-   
+
    Answers properties:
    - showDescriptions [get/set]
    - infoTimeout [get]
 */
 
-Player.provide('info', 
+Player.provide('info',
   {
     showDescriptions: true,
     infoTimeout: 5000
@@ -24,7 +24,7 @@ Player.provide('info',
       $.extend($this, opts);
       $this.showAnimation = [{opacity:'show'}, 600];
       $this.hideAnimation = [{opacity:'hide'}, 400];
-      
+
       // Listen to find if we show show info
       Player.bind('player:settings', function(e,settings){
           PlayerUtilities.mergeSettings($this, ['showDescriptions', 'infoTimeout']);
@@ -49,7 +49,7 @@ Player.provide('info',
       Player.getter('infoTimeout', function(){
           return $this.infoTimeout;
         });
-     
+
       /* SETTERS */
       $this.infoTimeoutId = null;
       Player.setter('showDescriptions', function(sd){

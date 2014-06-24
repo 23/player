@@ -15,6 +15,7 @@ Player.provide('quality-button',
     // Update UI when subtitle changes
     Player.bind('player:video:qualitychange', function(e){
         $this.render();
+        $this.container.removeClass("activebutton-container");
       });
 
     // Only show the button with more than a single element
