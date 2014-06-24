@@ -550,8 +550,8 @@ table.browse-recommendations div {
     .subtitle-button {background-image:url('subtitle-icon@2x.png'); background-size:30px;}
     .download-button {background-image:url('download-icon@2x.png'); background-size:30px;}
 
-    .button ul li {background-image:url('not-selected-icon@2x.png'); background-size:30px;}
-    .button ul li.selected {background-image:url('selected-icon@2x.png'); background-size:30px;}
+    ul.button-list li {background-image:url('not-selected-icon@2x.png'); background-size:30px;}
+    ul.button-list li.selected {background-image:url('selected-icon@2x.png'); background-size:30px;}
     .share-embed-label {background-image:url('embed-icon@2x.png'); background-size:30px;}
     .browse-left {background-image:url('prev-icon@2x.png'); background-size:30px;}
     .browse-right {background-image:url('next-icon@2x.png'); background-size:30px;}
