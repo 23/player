@@ -85,24 +85,31 @@ body.hide-cursor, body.hide-cursor * {
     height: 80px;
     width: 80px;
 }
-.button ul { /* button menus */
-    display:none;
-    opacity:0;
-    position:absolute;
-    bottom:32px; 
-    right:0;
+
+ul.button-list {
+    display: none;
+    position: absolute;
+    bottom: 32px;
+    right: 0px;
+    opacity: 0;
     background:rgb(0,0,0); /*fallback for browser with no RGBa support */
     background:rgba(0,0,0,.8); /*updated in js via player settings */
     line-height:25px;
     padding:2px 10px;
     text-align:left;
 }
-.touch .button ul {
-    bottom: 42px;
+.activebutton-container ul.button-list {
+    display: block;
+    font-size:11px;
+    line-height:22px;
+    opacity: 1;
+    -webkit-animation: menuSlideIn 400ms;
+    -moz-animation: menuSlideIn 400ms;
+    animation: menuSlideIn 400ms;
 }
-.activebutton {
-    filter: alpha(enabled=false) !important; /* IE alpha overflow hidden bug, http://labs.thesedays.com/blog/2011/06/02/ie-alpha-overflow-hidden-bug/ */
-    overflow: visible;
+
+.touch ul.button-list {
+    bottom: 42px;
 }
 .button .hide-visually {
     text-indent: -9999px;
@@ -113,28 +120,19 @@ body.hide-cursor, body.hide-cursor * {
     clip: rect(1px, 1px, 1px, 1px);
 }
 
-.activebutton ul { /* active button menus */
-    display:block;
-    font-size:11px;
-    line-height:22px;
-    opacity:1;
-
-    -webkit-animation: menuSlideIn 400ms;
-    -moz-animation: menuSlideIn 400ms;
-    animation: menuSlideIn 400ms;
-}
-.button ul li { /* menu items */
+.button-list li { /* menu items */
     white-space:nowrap;
     background:url('not-selected-icon.png') -10px -5px no-repeat;
     padding-left:14px;
+    cursor: pointer;
 }
-.button-bulletless ul li {
+.button-bulletless li {
     background-image:none !important;
     padding-left:0;
 }
-.button ul li.hover { /* menu item hover */
+.button-list li.hover { /* menu item hover */
 }
-.button ul li.selected { /* menu item selected */
+.button-list li.selected { /* menu item selected */
     background-image:url('selected-icon.png');
 }
 a.button { /* standard button design as a straight link */

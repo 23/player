@@ -34,15 +34,18 @@ Player.provide('design',
       // BUTTON MENUS
       // Handle button clicks
       Player.bind('glue:render', function(e, container){
-          $(container).find('.button:has(ul)').each(function(i,button){
+          $(container).find('button.has-list').each(function(i,button){
               $(button).off("click.button-menu").on("click.button-menu", function(e){
                   if($(button).hasClass('activebutton')) {
-                      $(button).removeClass('activebutton').attr("aria-expanded", "false");
+                      $(button).removeClass('activebutton').attr("aria-expanded", "false").parent().removeClass('activebutton-container');
                   } else {
                       $('.activebutton').removeClass('activebutton').attr("aria-expanded", "false");
+                      $('.activebutton-container').removeClass("activebutton-container");
                       Player.set('browseMode', false);
                       Player.set('showSharing', false);
-                      $(button).addClass('activebutton').attr("aria-expanded", "true");
+                      $(button).addClass('activebutton').attr("aria-expanded", "true").parent().addClass("activebutton-container").find(".button-list").css({
+                          right: $(button).offsetParent().innerWidth()-$(button).position().left-$(button).width()-3
+                      });
                       e.stopPropagation();
                   }
               });
@@ -52,7 +55,10 @@ Player.provide('design',
       $('body').click(function(e){
           $('.activebutton').each(function(i,el){
               el = $(el);
-              if(!el.is(e.target)) el.removeClass('activebutton').attr("aria-expanded", "false");
+              if(!el.is(e.target)){
+                  el.removeClass('activebutton').attr("aria-expanded", "false");
+                  el.parent().removeClass('activebutton-container');
+              }
           });
       });
 
@@ -128,10 +134,10 @@ Player.provide('design',
           $('.scrubber-play').css({backgroundColor:$this.scrubberColor});
           $this.rgbaSupport = /^rgba/.test($this.dummyElement.css('backgroundColor'));
           if($this.rgbaSupport) {
-              $('.scrubber-container, .info-pane, .sharing-container, .player-browse #browse, .button ul').css({backgroundColor:$this.trayBackgroundColorRGBA});
+              $('.scrubber-container, .info-pane, .sharing-container, .player-browse #browse, ul.button-list').css({backgroundColor:$this.trayBackgroundColorRGBA});
           } else {
               // (fall back to background color + opacity if RGBa is not supported
-              $('.scrubber-container, .info-pane, .sharing-container, .player-browse #browse, .button ul').css({backgroundColor:$this.trayBackgroundColor, opacity:$this.trayAlpha});
+              $('.scrubber-container, .info-pane, .sharing-container, .player-browse #browse, ul.button-list').css({backgroundColor:$this.trayBackgroundColor, opacity:$this.trayAlpha});
           }
           // Vertical and horisontal padding
           $('video-display').css({bottom:$this.verticalPadding+'px', left:$this.horizontalPadding+'px'})

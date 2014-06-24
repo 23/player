@@ -206,7 +206,7 @@ Player.provide('browse',
         });
       Player.setter('browseMode', function(bm){
           if(bm) {
-              $('.activebutton').removeClass('activebutton');
+              $('.activebutton').removeClass('activebutton').parent().removeClass('activebutton-container');
               Player.set('showSharing', false);
               Player.set('showDescriptions', false);
           }
