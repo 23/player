@@ -990,7 +990,7 @@ Player.provide('actions',
       $this.originalEingebaut.src = $this.eingebaut.getSource();
       $this.originalEingebaut.background = $this.eingebaut.container.css("background-image");
       if($this.eingebaut.floatingPoster) $this.eingebaut.floatingPoster.hide();
-      $this.eingebaut.callback = $this.actionsEingebautCallback;
+      $this.eingebaut._callback = $this.actionsEingebautCallback;
       $this.eingebaut.controller = 'actions';
       $this.eingebaut.container.parent().css({ "z-index":200});
       $this.eingebaut.container.css({ "z-index":200,"background-image":"none"});
