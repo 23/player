@@ -1,13 +1,16 @@
-{% if showDownload %}
-<div class="tray-button button button-bulletless download-button" aria-controls="downloadOptions" aria-label="Download video" label="Download video" role="button" tabindex="1500">
-  <!--Download-->
-
-  <ul id="downloadOptions">
-    {% for q in downloadQualities %} 
-    <li onclick="location.href = '{{q.link}}';" aria-label="Download {{q.displayName}}" label="Download {{q.displayName}}" role="button" tabindex="1501">
-      Download {{q.displayName}}
+{% if showDownload and video_type == "clip" %}
+<button class="tray-button button download-button has-list" aria-controls="downloadOptions" aria-label="{{"download_video"|translate}}" label="{{"download_video"|translate}}" tabindex="1500">
+  <span class="hide-visually">
+    {{"download_video"|translate}}
+  </span>
+</button>
+<ul id="downloadOptions" class="button-list button-bulletless">
+  {% for q in downloadQualities %}
+    <li>
+      <button onclick="location.href = '{{q.link}}';" aria-label="{{"download"|translate}} {{q.displayName}}" label="{{"download"|translate}} {{q.displayName}}" role="button" tabindex="1501">
+        {{"download"|translate}} {{q.displayName}}
+      </button>
     </li>
-    {% endfor %}
+  {% endfor %}
   </ul>
-</div>
 {% endif %}

@@ -1,16 +1,16 @@
 {% if supportsVolumeChange %}
-<div class="tray-button button volume-button {% if volumeMuted %}volume-button-on{% else %}volume-button-off{% endif %}" click="$fire:player:volume-engaged" aria-label="Toogle volume" label="Toogle volume" role="button" tabindex="1700">
+<button class="tray-button button volume-button {% if volumeMuted %}volume-button-on{% else %}volume-button-off{% endif %} has-list" click="$fire:player:volume-engaged" aria-label="{{"toggle_volume"|translate}}" label="{{"toggle_volume"|translate}}" role="button" tabindex="1700">
   {% if volumeMuted %}
   <!--Sound-->
   {% else %}
   <!--Mute-->
   {% endif %}
-<ul>
-	<li>
-	<div class="volume-track"></div>
-	<div class="volume-filled"></div>
-	<div class="volume-handle"></div>
-	</li>
+</button>
+<ul class="button-list volume-button-list">
+  <li>
+    <div class="volume-track"></div>
+    <div class="volume-filled"></div>
+    <div class="volume-handle"></div>
+  </li>
 </ul>
-</div>
 {% endif %}

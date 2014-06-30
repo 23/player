@@ -14,6 +14,7 @@ Player.provide('download-button',
 
     Player.bind('player:settings', function(e,settings){
       PlayerUtilities.mergeSettings($this, ['showDownload']);
+      $this.container.removeClass("activebutton-container");
       $this.render();
     });
 
@@ -37,6 +38,7 @@ Player.provide('download-button',
           $this.downloadQualities.push({displayName:'Standard', link:Player.get('url') + '/attachment' + v.video_medium_download});
         }
       }
+      $this.container.removeClass("activebutton-container");
       $this.render();
     });
 
@@ -45,3 +47,10 @@ Player.provide('download-button',
           
 );
 
+/* Translations for this module */
+Player.translate("download_video",{
+    en: "Download video"
+});
+Player.translate("download",{
+    en: "Download"
+});

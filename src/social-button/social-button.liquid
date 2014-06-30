@@ -1,5 +1,7 @@
 {% if socialSharing %}
-<div class="tray-button button {{module.service}}-button" click="$set:shareTo:{{module.service}}">
-  <!--{{module.service}}-->
-</div>
+<button class="tray-button button {{module.service}}-button" click="$set:shareTo:{{module.service}}">
+  <span class="hide-visually">
+    {{module.service}}
+  </span>
+</button>
 {% endif %}

@@ -206,7 +206,7 @@ Player.provide('browse',
         });
       Player.setter('browseMode', function(bm){
           if(bm) {
-              $('.activebutton').removeClass('activebutton');
+              $('.activebutton').removeClass('activebutton').parent().removeClass('activebutton-container');
               Player.set('showSharing', false);
               Player.set('showDescriptions', false);
           }
@@ -215,7 +215,9 @@ Player.provide('browse',
         });
       Player.setter('browse_photo_id', function(id){
           if(Player.get('playlistClickMode')=='link') {
-              Player.set('open_photo_id', id);
+              Player.set('open_photo_id', {pi:id, target:"_blank"});
+          } else if(Player.get('playlistClickMode')=='top'){
+              Player.set('open_photo_id', {pi:id, target:"_top"});
           } else {
               Player.set('video_photo_id', id);
               Player.set('playing', true);
@@ -223,7 +225,9 @@ Player.provide('browse',
         });
       Player.setter('browse_live_id', function(id){
           if(Player.get('playlistClickMode')=='link') {
-              Player.set('open_live_id', id);
+              Player.set('open_live_id', {li:id,target:"_blank"});
+          } else if(Player.get('playlistClickMode')=='top'){
+              Player.set('open_live_id', {li:id,target:"_top"});
           } else {
               Player.set('video_live_id', id);
               Player.set('playing', true);

@@ -111,7 +111,7 @@ Player.provide('sharing',
           if(!Player.get('socialSharing')) return;
           $this.showSharing = ss;
           if(ss) {
-              $('.activebutton').removeClass('activebutton');
+              $('.activebutton').removeClass('activebutton').parent().removeClass('activebutton-container');
               Player.set('browseMode', false);
               Player.set('showDescriptions', false);
           }
@@ -132,3 +132,26 @@ Player.provide('sharing',
       return $this;
   }
 );
+
+/* Translations for this module */
+Player.translate("embed",{
+    en: "Embed"
+});
+Player.translate("copy_embed",{
+    en: "Copy embed code for video"
+});
+Player.translate("see_on_site",{
+    en: "See on site"
+});
+Player.translate("share_on_facebook",{
+    en: "Share on Facebook"
+});
+Player.translate("tweet_this_video",{
+    en: "Tweet this video"
+});
+Player.translate("plus_one_google",{
+    en: "+1 on Google"
+});
+Player.translate("mail_video",{
+    en: "Mail video"
+});
