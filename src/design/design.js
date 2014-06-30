@@ -69,6 +69,17 @@ Player.provide('design',
           $("body").addClass("touch");
       }
 
+      // Set classes on body to indicate video type
+      Player.bind("player:video:loaded",function(v){
+          if(typeof v == "undefined") return;
+          $("body").removeClass("video-clip").removeClass("video-stream");
+          if(v.type == "clip"){
+              $("body").addClass("video-clip");
+          }else{
+              $("body").addClass("video-stream");
+          }
+      });
+
       // SHOW TRAY AND TIME IT OUT
       // Handle settings
       $this.trayTimeoutId = null;
