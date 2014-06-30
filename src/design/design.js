@@ -69,7 +69,7 @@ Player.provide('design',
       }
 
       // Set classes on body to indicate video type
-      Player.bind("player:video:loaded",function(v){
+      Player.bind("player:video:loaded",function(e,v){
           if(typeof v == "undefined") return;
           $("body").removeClass("video-clip").removeClass("video-stream");
           if(v.type == "clip"){
