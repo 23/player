@@ -53,6 +53,9 @@ p {
     line-height:1.5em;
     letter-spacing:.3px;
 }
+.clear {
+    clear: both;
+}
 .share-buttons button, .submitbutton {
     background-color:#3B3B3C;
     color:white; /*updated in js via player settings */
