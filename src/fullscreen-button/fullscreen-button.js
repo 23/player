@@ -56,3 +56,8 @@ Player.provide('fullscreen-button',
     return $this;
   }
 );
+
+/* Translations for this module */
+Player.translate("toggle_fullscreen",{
+    en: "Toggle fullscreen"
+});

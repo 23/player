@@ -1,11 +1,21 @@
 {% if showSharing %}
-  <div class="sharing-container">    
+  <div class="sharing-container">
     <div class="share-buttons">
-      <button click="$set:shareTo:site" class="site-button" aria-label="See on site" label="See on site" role="button" tabindex="2001"></button>
-      <button click="$set:shareTo:facebook" class="facebook-button" aria-label="Share on Facebook" label="Share on Facebook" role="button" tabindex="2002"></button>
-      <button click="$set:shareTo:twitter" class="twitter-button" aria-label="Tweet this video" label="Tweet this video" role="button" tabindex="2003"></button>
-      <button click="$set:shareTo:google" class="google-button" aria-label="+1 on Google" label="+1 on Google" role="button" tabindex="2004"></button>
-      <button click="$set:shareTo:mail" class="mail-button" aria-label="Mail video" label="Mail video" role="button" tabindex="2005"></button>
+      <button click="$set:shareTo:site" class="site-button" aria-label="{{"see_on_site"|translate}}" label="{{"see_on_site"|translate}}" role="button" tabindex="2001">
+        <span class="hide-visually">{{"see_on_site"|translate}}</span>
+      </button>
+      <button click="$set:shareTo:facebook" class="facebook-button" aria-label="{{"share_on_facebook"|translate}}" label="{{"share_on_facebook"|translate}}" role="button" tabindex="2002">
+        <span class="hide-visually">{{"share_on_facebook"|translate}}</span>
+      </button>
+      <button click="$set:shareTo:twitter" class="twitter-button" aria-label="{{"tweet_this_video"|translate}}" label="{{"tweet_this_video"|translate}}" role="button" tabindex="2003">
+        <span class="hide-visually">{{"tweet_this_video"|translate}}</span>
+      </button>
+      <button click="$set:shareTo:google" class="google-button" aria-label="{{"plus_one_google"|translate}}" label="{{"plus_one_google"|translate}}" role="button" tabindex="2004">
+        <span class="hide-visually">{{"plus_one_google"|translate}}</span>
+      </button>
+      <button click="$set:shareTo:mail" class="mail-button" aria-label="{{"mail_video"|translate}}" label="{{"mail_video"|translate}}" role="button" tabindex="2005">
+        <span class="hide-visually">{{"mail_video"|translate}}</span>
+      </button>
     </div>
   </div>
 {% endif %}

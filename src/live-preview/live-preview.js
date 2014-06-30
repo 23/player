@@ -1,75 +1,73 @@
-/* 
+/*
    MODULE: LIVE PREVIEW
    A module with status and countdown to live streams with preview thumbnails.
-   
+
    Listens for:
    - player:video:loaded
    - player:video:play
    - player:video:pause
-   
+
    Answers properties:
    - showLivePreview [get]
-   - showLiveCountdown [get]
+   - showLiveTime [get]
    - nextStartTime [get]
 */
 
-Player.provide('live-preview', 
-  {},
-  function(Player,$,opts){  
+Player.provide('live-preview',
+  {
+      scrubberColor: "#eeeeee"
+  },
+  function(Player,$,opts){
       var $this = this;
       $.extend($this, opts);
       $this.showAnimation = [{opacity:'show'}, 400];
 
       $this.nextStartTime = '';
       $this.showLivePreview = false;
-      $this.showLiveCountdown = false;
+      $this.showLiveTime = false;
       $this.showStreamNotLive = false;
-    
+      $this.previewColor = "light";
+      $this.showLocalTime = false;
+
       var onRender = function(){
-        $this.container.find('.preview-thumbnail').css({backgroundImage:'url(' + Player.get('url') + Player.get('video').preview_large_download + ')'});
-        updateCountdown();
+        if(Player.get("video")){
+          $this.container.find('.preview-thumbnail').css({backgroundImage:'url(' + Player.get('url') + Player.get('video').preview_large_download + ')'});
+          $this.container.find('.preview-background').css({backgroundColor: $this.scrubberColor, opacity: 0.8});
+        }
       }
-      var updateCountdown = function(){
-        $this.container.find('.preview-countdown span').html(formatCountdown($this.nextStartTime));
-      }
-      window.setInterval(updateCountdown, 500);
-      var formatCountdown = function(d){
-        if(d=='') return('');
-        var seconds = Math.max((d-(new Date))/1000,0);
-        var ret = [];
-        $.each([
-          ['month','months', 60*60*24*30],
-          ['week','weeks', 60*60*24*7],
-          ['day','days', 60*60*24],
-          ['hour','hours', 60*60],
-          ['minutes','minutes', 60],
-          ['second', 'seconds', 1]
-        ], function(i,x){
-          var num = Math.floor(seconds/x[2]);
-          if(num>0||ret.length>0||x[2]==1) {
-            ret.push(num + ' ' + x[num==1 ? 0 : 1]);
-            seconds -= num*x[2];
-          }
-        });
-        return ret.slice(0,2).join(' ');
-      }
-    
+
       // Bind to events
       Player.bind('player:video:play player:video:pause', function(e){
           $this.render(onRender);
       });
       Player.bind('player:video:loaded', function(e, video){
-          if(video.streaming_p=='1' && video.broadcasting_p=='0') {
+          if(video.streaming_p && !video.broadcasting_p) {
             $this.showStreamNotLive = true;
             $this.showLivePreview = false;
-            $this.showLiveCountdown = false;
+            $this.showLiveTime = false;
             $this.nextStartTime = "";
+            $this.nextStartTimeLocale = "";
+            $this.location = '';
           } else {
             $this.showStreamNotLive = false;
             $this.showLivePreview = (video.type=='stream' && video.broadcasting_p=='0');
-            $this.showLiveCountdown = (video.type=='stream' && $this.showLivePreview && video.next_start_time.length && video.show_countdown_p=='1');
-            $this.nextStartTime = (video.type=='stream' && video.next_start_time_epoch.length ? new Date(parseInt(video.next_start_time_epoch*1000)) : '');
+            $this.showLiveTime = (video.type=='stream' && $this.showLivePreview && video.next_start_time.length);
+            $this.nextStartTime = (video.type=='stream' && $this.showLivePreview? video.next_start_time__date+", "+video.next_start_time__time:"");
+            $this.nextStartTimeLocale = (video.type=='stream' && video.next_start_time_epoch.length ? new Date(parseInt(video.next_start_time_epoch*1000)).toLocaleString() : '');
+            $this.location = (video.type=='stream' && video.display_location.length ? video.display_location : '');
           }
+          $this.render(onRender);
+      });
+
+      Player.bind('player:settings', function(e){
+          PlayerUtilities.mergeSettings($this, ['scrubberColor']);
+          var rgb = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec($this.scrubberColor);
+          if(parseInt(rgb[1],16)+parseInt(rgb[2],16)+parseInt(rgb[3],16)<382){
+              $this.previewColor = "light";
+          }else{
+              $this.previewColor = "dark";
+          }
+          $this.container.css({"color": ($this.previewColor=="light"?"#FFF":"#7E7B73")});
           $this.render(onRender);
       });
 
@@ -77,15 +75,38 @@ Player.provide('live-preview',
       Player.getter('showLivePreview', function(){
           return $this.showLivePreview;
         });
-      Player.getter('showLiveCountdown', function(){
-          return $this.showLiveCountdown;
+      Player.getter('showLiveTime', function(){
+          return $this.showLiveTime;
         });
       Player.getter('nextStartTime', function(){
           return $this.nextStartTime;
         });
+      Player.getter('nextStartTimeLocale', function(){
+          return $this.nextStartTimeLocale;
+      });
+
+      Player.getter('streamLocation', function(){
+          return $this.location;
+      });
+
       Player.getter('showStreamNotLive', function(){
           return $this.showStreamNotLive;
         });
+
+      Player.getter('previewColor', function(){
+          return $this.previewColor;
+      });
+      Player.getter('showLocalTime', function(){
+          return $this.showLocalTime;
+      });
+
+
+      Player.setter('showLocalTime', function(sl){
+          $this.showLocalTime = sl;
+          $this.render(onRender);
+      });
+
+
 
 
 
@@ -97,12 +118,29 @@ Player.provide('live-preview',
             if(Player.get('video_playable')) Player.set('playing', true);
           });
         }
-        
+
         // If the stream is set to go live within the next 10 minutes, we'll reload every 20 seconds. Otherwise give it a minute.
-        window.setTimeout(reloadStream, ($this.nextStartTime!='' && $this.nextStartTime-(new Date)<10*60*1000 ? 20000 : 60000));  
+        window.setTimeout(reloadStream, ($this.nextStartTime!='' && $this.nextStartTime-(new Date)<10*60*1000 ? 20000 : 60000));
       }
       window.setTimeout(reloadStream, 30);
-    
+
       return $this;
   }
 );
+
+/* Translations for this module */
+Player.translate("stream_preview",{
+    en: "Stream preview"
+});
+Player.translate("not_being_broadcast",{
+    en: "Not being broadcast live"
+});
+Player.translate("live_on",{
+    en: "Live on"
+});
+Player.translate("show_my_local",{
+    en: "Show my local time"
+});
+Player.translate("this_event_is_not",{
+    en: "This event is not live right now"
+});
