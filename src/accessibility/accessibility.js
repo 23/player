@@ -21,7 +21,7 @@ Player.provide('accessibility',
       // Handle keyboard events
       $(document).keypress(function(e){
         try {if(Player.get('videoActionPlaying')) return;} catch(e){}
-        if(!document.activeElement||$(document.activeElement).parent('form').length||document.activeElement.tagName=="BUTTON") return;
+        if(!document.activeElement||$(document.activeElement).parent('form').length) return;
         if(!e.ctrlKey && !e.altKey && !e.metaKey) {
           var matched = false;
 
@@ -35,10 +35,12 @@ Player.provide('accessibility',
               // To accomocate for this, we remember the glue container for the item
               // and reestablish focus afterwards.
               var glueParent = $(document.activeElement).parent('.glue-element');
-              $(document.activeElement).click();
+              if(!document.activeElement.tagName=="BUTTON"){
+                $(document.activeElement).click();
+              }
               window.setTimeout(function(){
                 Player.set('focus', glueParent);
-              }, 100);
+              }, 200);
             }
             matched = true;
           }
