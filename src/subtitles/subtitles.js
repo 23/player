@@ -34,13 +34,13 @@ Player.provide('subtitles',
 
       // Properties
       var _reset = function(){
-        Player.set('subtitles', '');
         $this.locales = {};
         $this.subtitleLocale = '';
         $this.subtitles = [];
         $this.subtitleText = '';
         $this.defaultLocale = '';
         $this.hasSubtitles = false;
+        Player.set('subtitles', '');
         Player.fire('player:subtitlechange');
       }
 
