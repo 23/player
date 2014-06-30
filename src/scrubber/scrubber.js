@@ -1,4 +1,4 @@
-/* 
+/*
   MODULE: SRUBBER
   Show time line for the video currently being played.
 
@@ -13,7 +13,7 @@
   - scrubberTime [get]
 */
 
-Player.provide('scrubber', 
+Player.provide('scrubber',
   {},
   function(Player,$,opts){
       var $this = this;
@@ -25,6 +25,7 @@ Player.provide('scrubber',
       $this.onRender = function(){
           // Find the relavant elements in the template
           $this.scrubber = $($this.container).find('.scrubber');
+          if($this.scrubber.length==0) return;
           $this.scrubberContainer = $($this.container).find('.scrubber-container');
           $this.bufferContainer = $($this.container).find('.scrubber-buffer');
           $this.playContainer = $($this.container).find('.scrubber-play');
@@ -95,7 +96,7 @@ Player.provide('scrubber',
           if($this.handleContainer) {
               $this.handleContainer.mousedown(function(){
                   // Enable dragging and different positioning of the scruber
-                  $this.scrubberTime = Player.get('currentTime'); 
+                  $this.scrubberTime = Player.get('currentTime');
               });
               $(document).mousemove(function(e){
                   if($this.scrubberTime!==null) {
@@ -120,7 +121,7 @@ Player.provide('scrubber',
               });
               $this.handleContainer.on('click, mousemove', function(e){
                   // Clicks on the handle shouldn't bubble to clicks on the scrubber
-                  e.stopPropagation(); 
+                  e.stopPropagation();
               });
           }
       };
@@ -134,8 +135,10 @@ Player.provide('scrubber',
           if(isNaN(duration)||duration<=0) return;
 
           // Update time labels
-          var time = (Player.get('scrubberTime')==0&&Player.get('currentTime')==0)?duration:(Player.get("scrubberTime")?Player.get("scrubberTime"):Player.get("currentTime"));
-          $this.timeContainer.html( formatTime(time) );
+	  if($this.timeContainer&&$this.timeContainer.length) {
+	      var time = (Player.get('scrubberTime')==0&&Player.get('currentTime')==0)?duration:(Player.get("scrubberTime")?Player.get("scrubberTime"):Player.get("currentTime"));
+	      $this.timeContainer.html( formatTime(time) );
+	  }
 
           // Update buffer and play progress
           try {

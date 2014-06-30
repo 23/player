@@ -21,7 +21,7 @@ Player.provide('accessibility',
       // Handle keyboard events
       $(document).keypress(function(e){
         try {if(Player.get('videoActionPlaying')) return;} catch(e){}
-        if($(document.activeElement).parent('form').length) return;
+        if(!document.activeElement||$(document.activeElement).parent('form').length) return;
         if(!e.ctrlKey && !e.altKey && !e.metaKey) {
           var matched = false;
 
@@ -35,10 +35,12 @@ Player.provide('accessibility',
               // To accomocate for this, we remember the glue container for the item
               // and reestablish focus afterwards.
               var glueParent = $(document.activeElement).parent('.glue-element');
-              $(document.activeElement).click();
+              if(!document.activeElement.tagName=="BUTTON"){
+                $(document.activeElement).click();
+              }
               window.setTimeout(function(){
                 Player.set('focus', glueParent);
-              }, 100);
+              }, 200);
             }
             matched = true;
           }
@@ -88,7 +90,7 @@ Player.provide('accessibility',
           }
           if(e.keyCode==27) {
             // Destroy menus
-            $('.activebutton').removeClass('activebutton');
+            $('.activebutton').removeClass('activebutton').parent().removeClass('activebutton-container');
           }
 
           if(matched) e.preventDefault();
@@ -126,7 +128,7 @@ Player.provide('accessibility',
     Player.bind('player:settings', function(e){
       PlayerUtilities.mergeSettings($this, ['scrubberColor']);
       if($this.scrubberColor.length>0) {
-        $('head').append('<style>body.tabbed [tabindex]:focus {outline: 2px solid '+$this.scrubberColor+' !important;}</style>');
+        $('head').append('<style>body.tabbed [tabindex]:focus {outline: 3px solid '+$this.scrubberColor+' !important;}</style>');
       }
     });
 

@@ -21,3 +21,8 @@ Player.provide('share-button',
   }
           
 );
+
+/* Translations for this module */
+Player.translate("share_video",{
+    en: "Share video"
+});
