@@ -986,11 +986,11 @@ Player.provide('actions',
       Player.set("playing", false);
       $this.originalEingebaut = {};
       $this.eingebaut = Player.get("videoElement");
-      $this.originalEingebaut.callback = $this.eingebaut.callback;
+      $this.originalEingebaut.callback = $this.eingebaut._callback;
       $this.originalEingebaut.src = $this.eingebaut.getSource();
       $this.originalEingebaut.background = $this.eingebaut.container.css("background-image");
       if($this.eingebaut.floatingPoster) $this.eingebaut.floatingPoster.hide();
-      $this.eingebaut.callback = $this.actionsEingebautCallback;
+      $this.eingebaut._callback = $this.actionsEingebautCallback;
       $this.eingebaut.controller = 'actions';
       $this.eingebaut.container.parent().css({ "z-index":200});
       $this.eingebaut.container.css({ "z-index":200,"background-image":"none"});
@@ -1003,7 +1003,7 @@ Player.provide('actions',
         $this.eingebaut = Player.get("videoElement");
         $this.switchedToFlash = false;
       }
-      $this.eingebaut.callback = $this.originalEingebaut.callback;
+      $this.eingebaut._callback = $this.originalEingebaut.callback;
       $this.eingebaut.container.css({ "z-index":"", "background-image":$this.originalEingebaut.background});
       $this.eingebaut.container.parent().css({"z-index":""});
       $this.eingebaut.setSource($this.originalEingebaut.src);
