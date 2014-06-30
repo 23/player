@@ -1,0 +1,29 @@
+.slide-container {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 25%;
+    z-index: 9999;
+}
+
+.slide-container img {
+    display: inline-block;
+    vertical-align: middle;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.slide-container img:hover {
+    opacity: 0.5;
+    cursor: pointer
+}
+
+.full-container {
+    width: 100%;
+}
+
+.full-container img:hover {
+    opacity: 1;
+}

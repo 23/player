@@ -58,7 +58,7 @@ Player.provide('info',
       /* SETTERS */
       Player.setter('showDescriptions', function(sd){
           if(sd) {
-              $('.activebutton').removeClass('activebutton');
+              $('.activebutton').removeClass('activebutton').parent().removeClass("activebutton-container");
               Player.set('browseMode', false);
               Player.set('showSharing', false);
           }

@@ -34,15 +34,18 @@ Player.provide('design',
       // BUTTON MENUS
       // Handle button clicks
       Player.bind('glue:render', function(e, container){
-          $(container).find('div.button:has(ul)').each(function(i,div){
-              $(div).off("click.button-menu").on("click.button-menu", function(e){
-                  if($(div).hasClass('activebutton')) {
-                      $(div).removeClass('activebutton');
+          $(container).find('button.has-list').each(function(i,button){
+              $(button).off("click.button-menu").on("click.button-menu", function(e){
+                  if($(button).hasClass('activebutton')) {
+                      $(button).removeClass('activebutton').attr("aria-expanded", "false").parent().removeClass('activebutton-container');
                   } else {
-                      $('.activebutton').removeClass('activebutton');
+                      $('.activebutton').removeClass('activebutton').attr("aria-expanded", "false");
+                      $('.activebutton-container').removeClass("activebutton-container");
                       Player.set('browseMode', false);
                       Player.set('showSharing', false);
-                      $(div).addClass('activebutton');
+                      $(button).addClass('activebutton').attr("aria-expanded", "true").parent().addClass("activebutton-container").find(".button-list").css({
+                          right: $(button).offsetParent().innerWidth()-$(button).position().left-$(button).width()-3
+                      });
                       e.stopPropagation();
                   }
               });
@@ -52,10 +55,17 @@ Player.provide('design',
       $('body').click(function(e){
           $('.activebutton').each(function(i,el){
               el = $(el);
-              if(!el.is(e.target)) el.removeClass('activebutton');
+              if(!el.is(e.target)){
+                  el.removeClass('activebutton').attr("aria-expanded", "false");
+                  el.parent().removeClass('activebutton-container');
+              }
           });
       });
 
+      // Set .touch-class on body, if we're on iDevice or Android
+      if(/iPad|iPhone|Android/.test(navigator.userAgent)){
+          $("body").addClass("touch");
+      }
 
       // SHOW TRAY AND TIME IT OUT
       // Handle settings
@@ -120,14 +130,14 @@ Player.provide('design',
           // Text color
           $('body,button').css({color:$this.trayTextColor});
           // Background color and opacity
-          $('div.button, a.button').css({backgroundColor:$this.trayBackgroundColor, opacity:$this.trayAlpha});
+          $('.button').css({backgroundColor:$this.trayBackgroundColor, opacity:$this.trayAlpha});
           $('.scrubber-play').css({backgroundColor:$this.scrubberColor});
           $this.rgbaSupport = /^rgba/.test($this.dummyElement.css('backgroundColor'));
           if($this.rgbaSupport) {
-              $('.scrubber-container, .info-pane, .sharing-container, .player-browse #browse, div.button ul').css({backgroundColor:$this.trayBackgroundColorRGBA});
+              $('.scrubber-container, .info-pane, .sharing-container, .player-browse #browse, ul.button-list').css({backgroundColor:$this.trayBackgroundColorRGBA});
           } else {
               // (fall back to background color + opacity if RGBa is not supported
-              $('.scrubber-container, .info-pane, .sharing-container, .player-browse #browse, div.button ul').css({backgroundColor:$this.trayBackgroundColor, opacity:$this.trayAlpha});
+              $('.scrubber-container, .info-pane, .sharing-container, .player-browse #browse, ul.button-list').css({backgroundColor:$this.trayBackgroundColor, opacity:$this.trayAlpha});
           }
           // Vertical and horisontal padding
           $('video-display').css({bottom:$this.verticalPadding+'px', left:$this.horizontalPadding+'px'})
@@ -173,8 +183,9 @@ Player.provide('design',
           $('.tray-right>div:empty, .tray-left>div:empty').hide();
           $('.tray-right>div:parent, .tray-left>div:parent').show();
 
-          var l = $('.tray-left div.tray-button:visible').length * 33;
-          var r = $('.tray-right div.tray-button:visible').length * 33;
+          var buttonWidth = $('.tray-right .tray-button:visible').width() + 3;
+          var l = $('.tray-left .tray-button:visible').length * buttonWidth;
+          var r = $('.tray-right .tray-button:visible').length * buttonWidth;
           if(l>0) {
             $('.tray-scrubber').css({marginLeft:l+'px', marginRight:r+'px', display:'block'});
             if(_resizeInterval) {

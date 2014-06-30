@@ -25,6 +25,7 @@ Player.provide('scrubber',
       $this.onRender = function(){
           // Find the relavant elements in the template
           $this.scrubber = $($this.container).find('.scrubber');
+          if($this.scrubber.length==0) return;
           $this.scrubberContainer = $($this.container).find('.scrubber-container');
           $this.bufferContainer = $($this.container).find('.scrubber-buffer');
           $this.playContainer = $($this.container).find('.scrubber-play');
@@ -134,7 +135,7 @@ Player.provide('scrubber',
           if(isNaN(duration)||duration<=0) return;
 
           // Update time labels
-          $this.handleContainer.html( formatTime(Player.get("scrubberTime")?Player.get("scrubberTime"):Player.get("currentTime")) );
+          if($this.handleContainer&&$this.handleContainer.length) $this.handleContainer.html( formatTime(Player.get("scrubberTime")?Player.get("scrubberTime"):Player.get("currentTime")) );
 
           // Update buffer and play progress
           try {

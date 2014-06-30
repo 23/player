@@ -22,3 +22,8 @@ Player.provide('browse-button',
   }
           
 );
+
+/* Translations for this module */
+Player.translate("recommendations",{
+    en: "Recommendations"
+});

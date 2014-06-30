@@ -15,11 +15,20 @@ Player.provide('quality-button',
     // Update UI when subtitle changes
     Player.bind('player:video:qualitychange', function(e){
         $this.render();
+        $this.container.removeClass("activebutton-container");
       });
 
     // Only show the button with more than a single element
     Player.getter('hasQualitySwitching', function(){return Player.get('qualitiesArray').length>1;});
-      
+
     return $this;
   }
 );
+
+/* Translations for this module */
+Player.translate("quality",{
+    en: "Quality"
+});
+Player.translate("quality_2",{
+    en: "quality"
+});
