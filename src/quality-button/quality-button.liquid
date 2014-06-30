@@ -7,8 +7,10 @@
 
 <ul id="qualityOptions" class="button-list">
     {% for q in qualitiesArray %}
-    <li {% if q.quality == quality %}class="selected"{% endif %} click="$set:quality:{{q.quality}}; $set:playing:true"  tabindex="1400" aria-label="{{q.quality}} {{"quality_2"|translate}}" label="{{q.{{"quality_2"|translate}}}} quality" role="button" tabindex="1401">
-      {{q.displayName}}
+    <li {% if q.quality == quality %}class="selected"{% endif %}>
+      <button click="$set:quality:{{q.quality}}; $set:playing:true"  tabindex="1400" aria-label="{{q.quality}} {{"quality_2"|translate}}" label="{{q.{{"quality_2"|translate}}}} quality" role="button" tabindex="1401">
+        {{q.displayName}}
+      </button>
     </li>
     {% endfor %}
   </ul>
