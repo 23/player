@@ -369,6 +369,9 @@ a.button { /* standard button design as a straight link */
     right: 0;
     bottom: 44px;
 }
+.video-stream .player-sharing {
+    bottom: 34px;
+}
 .touch .player-sharing {
     width: 48px;
     bottom: 54px;
@@ -421,6 +424,9 @@ a.button { /* standard button design as a straight link */
     background-color: rgb(200,200,200);
     background-color: rgba(200,200,200,0.6);
     bottom: 44px;
+}
+.video-stream .player-browse #browse {
+    bottom: 34px;
 }
 .touch .player-browse #browse {
     bottom: 54px;
