@@ -47,10 +47,10 @@ Player.provide('slides',{
     $this.initSlides = function(v){
         $this.streamOffset = 0;
         window.clearInterval($this.slideUpdateIntervalId);
-        if ($this.showSlides){
+        if ($this.showSlides&&v.has_deck_p){
             if(v.type=="clip"){
                 $this.loadSlides();
-            }else if(v.type=="stream"&&v.has_deck_p){
+            }else if(v.type=="stream"){
                 $this.loadSlides();
                 $this.slideUpdateIntervalId = window.setInterval(function(){
                     $this.loadSlides();
@@ -136,7 +136,9 @@ Player.provide('slides',{
     };
 
     Player.bind("player:video:loaded",function(e,v){
-        $this.initSlides(v);
+        if(typeof v != "undefined"){
+            $this.initSlides(v);
+        }
     });
 
     Player.bind("player:video:timeupdate player:slides:slidesloaded",function(){

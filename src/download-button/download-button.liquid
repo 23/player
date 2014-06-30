@@ -6,8 +6,10 @@
 </button>
 <ul id="downloadOptions" class="button-list button-bulletless">
   {% for q in downloadQualities %}
-    <li onclick="location.href = '{{q.link}}';" aria-label="{{"download"|translate}} {{q.displayName}}" label="{{"download"|translate}} {{q.displayName}}" role="button" tabindex="1501">
-      {{"download"|translate}} {{q.displayName}}
+    <li>
+      <button onclick="location.href = '{{q.link}}';" aria-label="{{"download"|translate}} {{q.displayName}}" label="{{"download"|translate}} {{q.displayName}}" role="button" tabindex="1501">
+        {{"download"|translate}} {{q.displayName}}
+      </button>
     </li>
   {% endfor %}
   </ul>
