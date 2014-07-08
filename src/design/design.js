@@ -72,11 +72,14 @@ Player.provide('design',
       // Set classes on body to indicate video type
       Player.bind("player:video:loaded",function(e,v){
           if(typeof v == "undefined") return;
-          $("body").removeClass("video-clip").removeClass("video-stream");
+          $("body").removeClass("video-clip").removeClass("video-stream").removeClass("stream-dvr");
           if(v.type == "clip"){
               $("body").addClass("video-clip");
           }else{
               $("body").addClass("video-stream");
+              if(Player.get("stream_has_dvr")){
+                  $("body").addClass("stream-dvr");
+              }
           }
       });
 
