@@ -391,7 +391,12 @@ Player.provide('video-display',
           return ($this.video ? $this.video.getPaused() : true);
       });
       Player.getter('duration', function(){
-          return ($this.video ? $this.video.getDuration()||Player.get('video_duration') : Player.get('video_duration'));
+          var dur = ($this.video ? $this.video.getDuration()||Player.get('video_duration') : Player.get('video_duration'));
+          if(isFinite(dur) && dur > 0){
+              return dur;
+          }else{
+              return $this.maxBufferTime;
+          }
       });
       Player.getter('bufferTime', function(){
           return ($this.video ? $this.video.getBufferTime() : 0);
@@ -420,6 +425,17 @@ Player.provide('video-display',
       });
       Player.getter('autoPlay', function(){
           return $this.autoPlay;
+      });
+
+      // Property used for livestreams that does not have a finite value for duration
+      $this.maxBufferTime = 0;
+      // On timeupdate, save maximum value for bufferTime
+      Player.bind("player:video:timeupdate",function(){
+          $this.maxBufferTime = Math.max($this.maxBufferTime, Player.get("bufferTime"));
+      });
+      // When new video is loaded, reset maxBufferTime
+      Player.bind("player:video:loaded",function(){
+          $this.maxBufferTime = 0;
       });
 
       return $this;

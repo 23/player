@@ -35,7 +35,7 @@ Player.provide('accessibility',
               // To accomocate for this, we remember the glue container for the item
               // and reestablish focus afterwards.
               var glueParent = $(document.activeElement).parent('.glue-element');
-              if(!document.activeElement.tagName=="BUTTON"){
+              if(!document.activeElement.tagName=="BUTTON"||e.keyCode==13||e.charCode==13){
                 $(document.activeElement).click();
               }
               window.setTimeout(function(){
