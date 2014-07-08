@@ -141,6 +141,12 @@ ul.button-list { /* button menus */
 .touch ul.button-list {
     bottom: 54px;
 }
+.touch.video-stream ul.button-list {
+    bottom: 44px;
+}
+.touch.video-stream.stream-dvr ul.button-list {
+    bottom: 54px;
+}
 .activebutton {
     filter: alpha(enabled=false) !important; /* IE alpha overflow hidden bug, http://labs.thesedays.com/blog/2011/06/02/ie-alpha-overflow-hidden-bug/ */
     background-color: #ccc;
@@ -372,8 +378,17 @@ a.button { /* standard button design as a straight link */
 .video-stream .player-sharing {
     bottom: 34px;
 }
+.video-stream.stream-dvr .player-sharing {
+    bottom: 44px;
+}
 .touch .player-sharing {
     width: 48px;
+    bottom: 54px;
+}
+.touch.video-stream .player-sharing {
+    bottom: 44px;
+}
+.touch.video-stream.stream-dvr .player-sharing {
     bottom: 54px;
 }
 .share-embed {
@@ -428,7 +443,16 @@ a.button { /* standard button design as a straight link */
 .video-stream .player-browse #browse {
     bottom: 34px;
 }
+.video-stream.stream-dvr .player-browse #browse {
+    bottom: 44px;
+}
 .touch .player-browse #browse {
+    bottom: 54px;
+}
+.touch.video-stream .player-browse #browse {
+    bottom: 44px;
+}
+.touch.video-stream.stream-dvr .player-browse #browse {
     bottom: 54px;
 }
 .player-browse #browsesub {
