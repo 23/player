@@ -287,6 +287,9 @@ Player.provide('core',
       Player.getter('video_content', function(){return ($this.video ? $this.video.content||'' : '');});
       Player.getter('video_photo_id', function(){return ($this.video ? $this.video.photo_id||'' : '');});
       Player.getter('video_live_id', function(){return ($this.video ? $this.video.live_id||'' : '');});
+      Player.getter('stream_has_dvr', function(){
+          return (Player.get("video").type=="stream"&&/playlist_DVR/.test(Player.get("video").hls_url));
+      });
       Player.getter('video_duration', function(){return ($this.video ? $this.video.video_length||'' : '');});
       Player.getter('video_type', function(){return ($this.video ? $this.video.type||'' : '');});
       Player.getter('video_tree_id', function(){return ($this.video ? $this.video.tree_id||'' : '');});
