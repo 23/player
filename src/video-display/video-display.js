@@ -438,6 +438,42 @@ Player.provide('video-display',
           $this.maxBufferTime = 0;
       });
 
+      // Reconnect for livestream
+      $this.reconnectIntervals = [3,5,8,20];
+      $this.reconnectIntervalIndex = 0;
+      $this.reconnectTimeoutId = 0;
+      $this.handleStalled = function(){
+          window.clearTimeout($this.reconnectTimeoutId);
+          var v = Player.get("video");
+          if(!v||v.type!="stream") return;
+          $this.reconnectTimeoutId = window.setTimeout(function(){
+              if(Player.get("videoElement").getStalled()){
+                  if($this.reconnectIntervalIndex <=2){
+                      Player.get("videoElement").setSource(Player.get("videoElement").getSource());
+                      if(Player.get("video_playable")){
+                          Player.set("playing",true);
+                      }
+                  }else{
+                      Player.set("playing", true);
+                      Player.get("video").reload();
+                  }
+                  if($this.reconnectIntervalIndex<$this.reconnectIntervals.length-1){
+                      $this.reconnectIntervalIndex++;
+                  }
+                  $this.handleStalled();
+              }else{
+                  $this.reconnectIntervalIndex = 0;
+              }
+          },$this.reconnectIntervals[$this.reconnectIntervalIndex]*1000);
+      };
+      Player.bind('player:video:stalled player:video:waiting',$this.handleStalled);
+      Player.bind('player:video:timeupdate',function(){
+          if(Player.get("videoElement").getStalled()&&$this.reconnectIntervalIndex==0){
+              $this.reconnectIntervalIndex = 1;
+              $this.handleStalled();
+          }
+      });
+
       return $this;
   }
 );
