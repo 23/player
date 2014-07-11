@@ -100,16 +100,23 @@ Player.provide('slides',{
             if($this.streamOffset == 0){
                 $this.calculateStreamOffset();
             }
-            var ct = $this.streamOffset + Player.get("currentTime");
+            if(Player.get("videoElement").getProgramDate()>0){
+                var cat = parseInt(Player.get("videoElement").getProgramDate()/1000);
+            }else{
+                var cat = $this.streamOffset + Player.get("currentTime");
+            }
             $.each($this.slides,function(i,slide){
-                if(slide.second<=ct){
+                if(parseInt(slide.absolute_time_epoch)<=cat){
                     slideToShow = slide;
                 }else{
                     return false;
                 }
             });
         }
-        if(slideToShow == null) return;
+        if(slideToShow == null){
+            $this.container.find("img").remove();
+            return;
+        }
         if($this.currentSlide.deck_slide_id != slideToShow.deck_slide_id){
             $this.currentSlide = slideToShow;
             $this.updateCurrentSlide();
@@ -128,15 +135,18 @@ Player.provide('slides',{
         }).attr("src", Player.get("url")+$this.currentSlide.slide_url).prependTo($this.container.find(".slide-container"));
     }
 
+    // Fallback method of syncing slides. Assumes a 22 second delay compared to real time
     $this.calculateStreamOffset = function(){
-        if($this.slides.length==0||Player.get("currentTime")==0) return "canceling";
+        if($this.slides.length==0||Player.get("currentTime")==0) return;
         var streamStartEpoch = parseInt($this.slides[0].absolute_time_epoch) - parseInt($this.slides[0].second);
         var zeroEpoch = ((new Date()).getTime() / 1000) - Player.get("currentTime") - 22;
-        $this.streamOffset = zeroEpoch - streamStartEpoch;
+        $this.streamOffset = zeroEpoch;
     };
 
     Player.bind("player:video:loaded",function(e,v){
-        if(typeof v != "undefined"){
+        $this.container.find("img").remove();
+        if(typeof v != "undefined" && typeof Player.get("videoElement") != "undefined"){
+            Player.get("videoElement").setProgramDateHandling(true);
             $this.initSlides(v);
         }
     });
