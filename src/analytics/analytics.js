@@ -30,8 +30,12 @@ Player.provide('analytics',
       // Each report should include extra data as context
       var _context = function(o){
         $.extend(o,Player.parameters);
-        o.photo_id = Player.get('video_photo_id');
         o.type = Player.get('video_type');
+        if(o.type=='clip'){
+          o.photo_id = Player.get('video_photo_id');
+        }else{
+          o.photo_id = Player.get('video_live_id');
+        }
         o.user_player_type = Player.get('displayDevice');
         o.user_player_resolution = screen.width+'x'+screen.height;
         o.user_player_version = Player.version;
@@ -47,16 +51,18 @@ Player.provide('analytics',
 
       // Bind to events for playback progress
       var _lastTimeUpdate = 0;
-      var _reportTime = 
       Player.bind('player:video:play player:video:pause player:video:end player:video:timeupdate', function(e){
-          if(Player.get('video_type')=='stream') return;
           if(e=='player:video:timeupdate') {
               // Throttle time update reports
               if(((new Date)-_lastTimeUpdate)/1000.0 < $this.timeReportRate)
                   return;
           }
           _lastTimeUpdate = new Date();
-          Player.get('api').analytics.report.play(_context({timeStart:Player.get('seekedTime'), timeEnd:Player.get('currentTime'), timeTotal:Player.get('duration')}));
+          if(Player.get('video_type')=='clip'){
+            Player.get('api').analytics.report.play(_context({timeStart:Player.get('seekedTime'), timeEnd:Player.get('currentTime'), timeTotal:Player.get('duration')}));
+          }else{
+            Player.get('api').analytics.report.play(_context({play_timestamp:Player.get("videoElement").getProgramDate()}));
+          }
       });
 
       // Bind to events for PlayFlow/VAST
@@ -77,7 +83,6 @@ Player.provide('analytics',
 
       // General method to report events
       Player.setter('analyticsEvent', function(e){
-          if(Player.get('video_type')=='stream') return;
           if(typeof(e.event)=='undefined') {
             e = {event:e};
           }
