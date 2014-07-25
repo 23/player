@@ -61,7 +61,8 @@ Player.provide('analytics',
           if(Player.get('video_type')=='clip'){
             Player.get('api').analytics.report.play(_context({timeStart:Player.get('seekedTime'), timeEnd:Player.get('currentTime'), timeTotal:Player.get('duration')}));
           }else{
-            Player.get('api').analytics.report.play(_context({play_timestamp:Player.get("videoElement").getProgramDate()}));
+            var timestamp = parseInt(Player.get("videoElement").getProgramDate()/1000, 10);
+            Player.get('api').analytics.report.play(_context({play_timestamp:timestamp}));
           }
       });
 
