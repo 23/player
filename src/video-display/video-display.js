@@ -216,7 +216,7 @@ Player.provide('video-display',
             // Flash has been loaded, so we can throw an HLS stream at the display and have it work.
             $this.qualities['standard'] = {format:'hls', codec:'unknown', displayName:'Automatic', displayQuality:'unknown', source:v.hls_stream};
           } else {
-            // Switch to a Flash dispay device for playing the stream
+            // Switch to a Flash dislpay device for playing the stream
             Player.set('loading', true);
             $this.displayDevice = 'flash';
             $this.loadEingebaut();
