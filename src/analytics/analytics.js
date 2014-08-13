@@ -51,6 +51,7 @@ Player.provide('analytics',
 
       // Bind to events for playback progress
       var _lastTimeUpdate = 0;
+      var _lastTimeReport = -1;
       Player.bind('player:video:play player:video:pause player:video:end player:video:timeupdate', function(e){
           if(e=='player:video:timeupdate') {
               // Throttle time update reports
@@ -59,10 +60,23 @@ Player.provide('analytics',
           }
           _lastTimeUpdate = new Date();
           if(Player.get('video_type')=='clip'){
-            Player.get('api').analytics.report.play(_context({timeStart:Player.get('seekedTime'), timeEnd:Player.get('currentTime'), timeTotal:Player.get('duration')}));
+            var currentTime = Player.get('currentTime');
+            var duration = Player.get('duration');
+            if(
+                !isNaN(duration)  && duration>0
+                &&
+                !isNaN(currentTime) 
+                &&
+                (_lastTimeReport<0 || Math.abs(currentTime-_lastTimeReport)>1)
+            ) {
+              Player.get('api').analytics.report.play(_context({timeStart:Player.get('seekedTime'), timeEnd:currentTime, timeTotal:Player.get('duration')}));
+              _lastTimeReport = currentTime;
+            }
           }else{
             var timestamp = parseInt(Player.get("videoElement").getProgramDate()/1000, 10);
-            Player.get('api').analytics.report.play(_context({play_timestamp:timestamp}));
+            if(!isNaN(timestamp)) {
+              Player.get('api').analytics.report.play(_context({play_timestamp:timestamp}));
+            }
           }
       });
 
