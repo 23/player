@@ -114,7 +114,7 @@ ul.button-list {
 .touch ul.button-list {
     bottom: 42px;
 }
-.button .hide-visually {
+.hide-visually {
     text-indent: -9999px;
     position: absolute !important;
     height: 1px; width: 1px;
