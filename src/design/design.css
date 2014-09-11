@@ -144,6 +144,9 @@ ul.button-list { /* button menus */
 .button-list li.selected { /* menu item selected */
     background-image:url('selected-icon.png');
 }
+.button-list button {
+    cursor: pointer;
+}
 a.button { /* standard button design as a straight link */
     display:inline-block;
     *display:inline;
