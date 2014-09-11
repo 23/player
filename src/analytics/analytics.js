@@ -19,8 +19,8 @@ Answers properties:
 
 Player.provide('analytics', 
   {
-      timeReportRate:10
-  }, 
+      timeReportRate:20
+  },
   function(Player,$,opts){
       var $this = this;
       $.extend($this, opts);
@@ -74,7 +74,7 @@ Player.provide('analytics',
             }
           }else{
             var timestamp = parseInt(Player.get("videoElement").getProgramDate()/1000, 10);
-            if(!isNaN(timestamp)) {
+            if(!isNaN(timestamp) && Player.get('playing')) {
               Player.get('api').analytics.report.play(_context({play_timestamp:timestamp}));
             }
           }
@@ -98,6 +98,7 @@ Player.provide('analytics',
 
       // General method to report events
       Player.setter('analyticsEvent', function(e){
+          if(Player.get('video_type')!='clip') return;
           if(typeof(e.event)=='undefined') {
             e = {event:e};
           }
