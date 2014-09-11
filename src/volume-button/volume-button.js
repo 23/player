@@ -81,7 +81,7 @@ Player.provide('volume-button',
 
     }
 
-    Player.bind('player:video:volumechange player:load', function(e){
+    Player.bind('player:video:volumechange player:load player:video:loaded', function(e){
         updateVolumeIcon();
         if($this.videoVolume==null) {
           updateVolume();
