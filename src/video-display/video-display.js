@@ -244,7 +244,7 @@ Player.provide('video-display',
         }
 
         // Might want to autoPlay it
-        if($this.autoPlay && !/(iPhone|iPod|iPad|Windows.Phone)/.test(navigator.userAgent)) {
+        if($this.autoPlay && !/(iPhone|iPod|iPad|Android|Windows.Phone)/.test(navigator.userAgent)) {
           // (iOS + Windows Phone 8 requires user interaction to start playback and thus won't support auto play apart from in edge cases)
           Player.set('playing', true);
         } else {
