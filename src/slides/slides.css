@@ -105,7 +105,7 @@ body.sbs-slide .video-display {
     position: absolute;
     top: 0;
     left: 0;
-    bottom: 38px;
+    bottom: 36px;
     right: 0;
 }
 .slide-overview-container {
@@ -116,9 +116,6 @@ body.sbs-slide .video-display {
 .slide-overview-container-background {
     z-index: 2000;
     background-color: #000000;
-}
-body.touch .slide-overview-container-background, body.touch .slide-overview-container {
-    bottom: 48px;
 }
 
 .slide-overview {
