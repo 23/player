@@ -39,6 +39,7 @@
         "download-button",
         "accessibility",
         "protection",
-        "slides"
+        "slides",
+        "slides-button"
     ]
 }
