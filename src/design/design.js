@@ -111,7 +111,7 @@ Player.provide('design',
                   if($this.trayTimeout<=0) return;
                   window.clearTimeout($this.trayTimeoutId);
                   if(e&&e.hideNow){
-                    if(!Player.get('showSharing')&&!Player.get('browseMode')&&$("#tray").find(".activebutton").length==0) {
+                    if(!Player.get('showSharing')&&!Player.get('browseMode')&&!Player.get('slideOverviewShown')&&$("#tray").find(".activebutton").length==0) {
                       trayAnimatingIn = false;
                       $('#tray').stop().fadeOut(150);
                       $('body').addClass("hide-cursor");

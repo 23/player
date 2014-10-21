@@ -112,6 +112,7 @@ Player.provide('sharing',
               $('.activebutton').removeClass('activebutton').parent().removeClass('activebutton-container');
               Player.set('browseMode', false);
               Player.set('showDescriptions', false);
+              Player.set('slideOverviewShown', false);
           }
           Player.set('showDescriptions', false);
           if(ss) Player.fire('player:sharing:shareengaged', {});
