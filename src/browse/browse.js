@@ -1,4 +1,4 @@
-/* 
+/*
    MODULE: BROWSE (or recomendations)
    Let users browse for recommendations.
 
@@ -11,7 +11,7 @@
    Fires:
    - player:browse:updated
    - player:browse:loaded
-   
+
    Answers properties:
    - showBrowse [get/set]
    - browseMode [get/set]
@@ -21,7 +21,7 @@
    - browse_video_id [set]
 */
 
-Player.provide('browse', 
+Player.provide('browse',
   {
     showBrowse: true,
     browseMode: false,
@@ -86,7 +86,7 @@ Player.provide('browse',
       $this.loadRecommendations = function(overwrite){
           if(typeof(overwrite)=='undefined') overwrite = false;
           if(overwrite) $this.loadedRecommendations = false;
-          if ($this.loadedRecommendations || !Player.get('showBrowse')) return; 
+          if ($this.loadedRecommendations || !Player.get('showBrowse')) return;
           if (overwrite){
             var c = Player.get('clips');
             c = [];
@@ -144,11 +144,11 @@ Player.provide('browse',
       }
       $this.playNextVideo = function(){
         Player.set('browse_photo_id', $this.getNextVideo().photo_id);
-      }      
+      }
       $this.playPreviousVideo = function(){
         Player.set('browse_photo_id', $this.getPreviousVideo().photo_id);
-      }      
-      
+      }
+
       // Bind to events
       $this.firstLoad = true;
       Player.bind('player:video:loaded', function(){
@@ -208,6 +208,7 @@ Player.provide('browse',
           if(bm) {
               $('.activebutton').removeClass('activebutton').parent().removeClass('activebutton-container');
               Player.set('showSharing', false);
+              Player.set('slideOverviewShown', false);
           }
           $this.browseMode = bm;
           Player.fire('player:browse:updated');

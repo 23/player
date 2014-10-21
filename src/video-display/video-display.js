@@ -119,6 +119,7 @@ Player.provide('video-display',
           $this.video = new Eingebaut($this.canvas, $this.displayDevice, '', callback);
           $this.video.load();
           $this.video.showPosterOnEnd = $this.showThumbnailOnEnd;
+          $this.video.setProgramDateHandling(true);
           $this.displayDevice = $this.video.displayDevice;
       };
 
