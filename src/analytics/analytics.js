@@ -19,14 +19,70 @@ Answers properties:
 
 Player.provide('analytics', 
   {
-      timeReportRate:20
+      timeReportRate:20,
+      analyticsReportServer:'',
+      analyticsReportMethod:'individual'
   },
   function(Player,$,opts){
       var $this = this;
       $.extend($this, opts);
       delete $this.container;
 
-      
+      Player.bind('player:settings', function(e){
+        PlayerUtilities.mergeSettings($this, ['timeReportRate', 'analyticsReportServer', 'analyticsReportMethod']);
+        // Minimum report rate is 10s
+        if($this.timeReportRate<10) $this.timeReportRate = 10;
+        // For the fallback case, use individual reporting
+        if($this.analyticsReportServer == '') {
+          $this.analyticsReportServer = '//' + Player.get('domain')
+          $this.analyticsReportMethod = 'individual';
+        } 
+        if($this.analyticsReportMethod == '' || typeof JSON == 'undefined' || typeof JSON.stringify == 'undefined') {
+          $this.analyticsReportMethod = 'individual';
+        } 
+        // Start sending reports
+        _queueSendReports(2+(Math.random()*5));
+      });
+    
+      // Report to analytics
+      var _queuedReports = [];
+      var _report = function(reportType, data){
+        // Queue the report
+        data.reportType = reportType;
+        data.format = 'json';
+        _queuedReports.push(_context(data));
+        // If we're reporting individually, do so now
+        if($this.analyticsReportMethod=='individual') {
+          _sendReports();
+        }
+      }
+      var _sendReports = function(){
+        if(_queuedReports.length>0) {
+          // Checkout reports
+          var _pendingReports = _queuedReports;
+          _queuedReports = [];
+
+          if($this.analyticsReportMethod=='batch') {
+            // Report every queued report in a batch
+            $.ajax({url:$this.analyticsReportServer+'/api/analytics/report/batch', timeout:1000, dataType:'jsonp', data:{data:JSON.stringify(_pendingReports)}, crossDomain:true})
+              .fail(function(){
+                // Failure handling: Queue the same report again
+                _queuedReports = $.merge(_pendingReports, _queuedReports);
+              });
+          } else {
+            // Report individually and with no queued failover
+            $.each(_pendingReports, function(i,data){
+              $.ajax({url:$this.analyticsReportServer+'/api/analytics/report/'+data.reportType, data:data, timeout:1000, dataType:'jsonp', jsonpCallback:'window.ignore', crossDomain:true});
+            });
+          }
+        }
+        if($this.analyticsReportMethod=='batch') _queueSendReports();
+      }
+      var _queueSendReports = function(delay){
+        window.setTimeout(_sendReports, (delay||$this.timeReportRate)*1000);
+      }
+    
+    
       // Each report should include extra data as context
       var _context = function(o){
         $.extend(o,Player.parameters);
@@ -52,7 +108,7 @@ Player.provide('analytics',
       // Bind to events for playback progress
       var _lastTimeUpdate = 0;
       var _lastTimeReport = -1;
-      Player.bind('player:video:play player:video:pause player:video:end player:video:timeupdate', function(e){
+      Player.bind('player:video:play player:video:pause player:video:ended player:video:timeupdate', function(e){
           if(e=='player:video:timeupdate') {
               // Throttle time update reports
               if(((new Date)-_lastTimeUpdate)/1000.0 < $this.timeReportRate)
@@ -69,13 +125,15 @@ Player.provide('analytics',
                 &&
                 (_lastTimeReport<0 || Math.abs(currentTime-_lastTimeReport)>1)
             ) {
-              Player.get('api').analytics.report.play(_context({timeStart:Player.get('seekedTime'), timeEnd:currentTime, timeTotal:Player.get('duration')}));
+              _report('play', {timeStart:Player.get('seekedTime'), timeEnd:currentTime, timeTotal:Player.get('duration')});
               _lastTimeReport = currentTime;
             }
+            // When a video stops playing, flush the report queue explicitly
+            if(e=='player:video:ended') _sendReports();
           }else{
             var timestamp = parseInt(Player.get("videoElement").getProgramDate()/1000, 10);
             if(!isNaN(timestamp) && Player.get('playing')) {
-              Player.get('api').analytics.report.play(_context({play_timestamp:timestamp}));
+              _report('play', {play_timestamp:timestamp});
             }
           }
       });
@@ -87,6 +145,8 @@ Player.provide('analytics',
         }else{
           Player.set('analyticsEvent', {event: action.normalizedStartTime==-1 ? 'preRollClick' : 'postRollClick'});
         }
+        // Flush the report queue explicitly
+        _sendReports();
       });
       // Bind to events for sharing
       Player.bind('player:sharing:embedengaged', function(e){
@@ -102,7 +162,7 @@ Player.provide('analytics',
           if(typeof(e.event)=='undefined') {
             e = {event:e};
           }
-          Player.get('api').analytics.report.event(_context({event:e.event}));
+          _report('event', {event:e.event});
         });
 
 
@@ -113,3 +173,5 @@ Player.provide('analytics',
       return $this;
   }
 );
+
+window.ignore = function(){};
