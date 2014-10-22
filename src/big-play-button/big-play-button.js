@@ -65,11 +65,12 @@ Player.provide('big-play-button',
       });
 
     var _resize = function(){
+      var bigPlay = $this.container.find(".big-play-container");
       var ww = $(window).width();
       var wh = $(window).height();
-      var left = ww / 2 - 70;
-      var top = wh / 2 - 40;
-      $this.container.find(".big-play-container").css({
+      var left = ww / 2 - bigPlay.width() / 2;
+      var top = wh / 2 - bigPlay.height() / 2;
+      bigPlay.css({
         top: top,
         left: left
       });
