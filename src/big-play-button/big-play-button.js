@@ -65,12 +65,12 @@ Player.provide('big-play-button',
       });
 
     var _resize = function(){
-      var bigPlay = $this.container.find(".big-play-container");
       var ww = $(window).width();
       var wh = $(window).height();
-      var left = ww / 2 - bigPlay.width() / 2;
-      var top = wh / 2 - bigPlay.height() / 2;
-      bigPlay.css({
+      var isTouch = $("body").hasClass("touch");
+      var left = ww / 2 - (isTouch?175:140) / 2;
+      var top = wh / 2 - (isTouch?100:80) / 2;
+      $this.container.find(".big-play-container").css({
         top: top,
         left: left
       });
