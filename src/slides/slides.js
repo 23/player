@@ -164,9 +164,12 @@ Player.provide('slides',{
     });
 
     // When a video is loaded, remove currently shown slide and init new slides
+    var last_id = 0;
     Player.bind("player:video:loaded",function(e,v){
-        $this.container.find("img").remove();
-        if(v && typeof Player.get("videoElement") != "undefined"){
+        if(v && (last_id==v.photo_id||last_id==v.live_id)){
+            $this.updateCurrentSlide();
+        }else if(v && typeof Player.get("videoElement") != "undefined"){
+            last_id = (v.photo_id?v.photo_id:v.live_id);
             $this.initSlides(v);
         }
     });
