@@ -81,7 +81,7 @@ var PlayerVideo = function(Player,$,type,data){
         $v.populated = true;
         callback($v);
     }
-  
+
     // Reload the clip/meta from API
     $v.reload = function(callback, fail){
       callback = callback||function(){};
@@ -95,7 +95,7 @@ var PlayerVideo = function(Player,$,type,data){
       Player.get('api')[method](
         query,
         function(data){
-          if(data[object].length>0) { 
+          if(data[object].length>0) {
             $v = new PlayerVideo(Player,$,$v.type,data[object][0]);
             $v.populate(function(){
               Player.set('video', $v);
@@ -110,7 +110,7 @@ var PlayerVideo = function(Player,$,type,data){
         fail
       );
     }
-    
+
     $v.switchTo = function(){
         // The first time the clip is activated, populate it
         if(!$v.populated) {
@@ -135,7 +135,7 @@ Player.provide('core',
       $.extend($this, opts);
 
       $this.protocol = (/^https/.test(location.href) ? 'https' : 'http');
-    
+
       // PROPERTIES
       $this.settings = $.extend(opts, Player.parameters);
       $.each($this.settings, function(i,v){
@@ -288,7 +288,7 @@ Player.provide('core',
       Player.getter('video_photo_id', function(){return ($this.video ? $this.video.photo_id||'' : '');});
       Player.getter('video_live_id', function(){return ($this.video ? $this.video.live_id||'' : '');});
       Player.getter('stream_has_dvr', function(){
-          return (Player.get("video").type=="stream"&&/playlist_DVR/.test(Player.get("video").hls_url));
+          return (Player.get("video").type=="stream"&&Player.get("video").hls_dvr_stream);
       });
       Player.getter('video_duration', function(){return ($this.video ? $this.video.video_length||'' : '');});
       Player.getter('video_type', function(){return ($this.video ? $this.video.type||'' : '');});
@@ -369,7 +369,7 @@ Player.provide('core',
               $.each($this.streams, function(i,s){
                 if(s.streaming_p) currentlyStreaming = true;
               });
-            
+
               if(typeof(Player.parameters.live_id)!='undefined'){
                 // If we're embedding a specific stream, show that stream under some conditions
                 loadStreamsByDefault = false;

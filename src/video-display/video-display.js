@@ -119,6 +119,7 @@ Player.provide('video-display',
           $this.video = new Eingebaut($this.canvas, $this.displayDevice, '', callback);
           $this.video.load();
           $this.video.showPosterOnEnd = $this.showThumbnailOnEnd;
+          $this.video.setProgramDateHandling(true);
           $this.displayDevice = $this.video.displayDevice;
       };
 
@@ -230,10 +231,31 @@ Player.provide('video-display',
 
         Player.fire('player:video:qualitychange');
         $this._currentTime = $this.start;
-        if($this.qualities[$this.quality]) {
-          Player.set('quality', $this.quality);
-        }else{
-          Player.set('quality', 'standard');
+
+        // Set quality
+        var newQuality = '';
+        if($this.qualities[$this.quality]) { // 1. Try quality chosen in player settings
+          newQuality = $this.quality;
+        }else if($this.qualities['standard']){ // 2. Try 'standard' quality
+          newQuality = 'standard';
+        }else if(Player.get('qualitiesArray').length>0){ // 3. Search for any available quality
+          var qa = Player.get('qualitiesArray');
+          for(var i = 0; i < qa.length; i += 1){
+            if($this.qualities[qa[i]]){
+              newQuality = qs[i];
+            }
+          }
+        }else{ // 4. If no quality available, show transcoding message
+          Player.set('error', 'this_video_is_being_prepared');
+          window.clearTimeout($this.qualityTimeoutId);
+          $this.qualityTimeoutId = window.setTimeout(function(){
+            Player.get('video').reload();
+          },30000);
+        }
+        if(newQuality!=''){
+          window.clearTimeout($this.qualityTimeoutId);
+          Player.set('error', '');
+          Player.set('quality', newQuality);
         }
 
         // Possibly load volume preference from previous session
@@ -497,4 +519,7 @@ Player.translate("this_clip_requires",{
 });
 Player.translate("live_streaming_requires",{
     en: "Live streaming requires a browser with support for HTTP Live Streaming or with Adobe Flash installed. <a href=\"http://get.adobe.com/flashplayer/\" target=\"_top\">Install Adobe Flash</a>."
+});
+Player.translate("this_video_is_being_prepared",{
+    en: "This video is currently being prepared for playback."
 });

@@ -58,6 +58,7 @@ Player.provide('info',
               $('.activebutton').removeClass('activebutton').parent().removeClass("activebutton-container");
               Player.set('browseMode', false);
               Player.set('showSharing', false);
+              Player.set('slideOverviewShown', false);
           }
           $this.showDescriptions = sd;
           $this.infoTimeout = 0; // disable fade-out when showDescription is explicitly set
