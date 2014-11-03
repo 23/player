@@ -525,7 +525,7 @@ Player.provide('actions',
     // Handle resizing of actions and the module action
     var _resize = function(){
       var v = Player.get("video");
-      if(typeof v != "undefined" && v.video_medium_width){
+      if(v && v.video_medium_width){
         // Calculate aspect ratio of the video, so we can resize and position the module container on top of it
         var w = $(window);
         var wh = w.height();

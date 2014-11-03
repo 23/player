@@ -209,6 +209,7 @@ Player.provide('browse',
               $('.activebutton').removeClass('activebutton').parent().removeClass('activebutton-container');
               Player.set('showSharing', false);
               Player.set('showDescriptions', false);
+              Player.set('slideOverviewShown', false);
           }
           $this.browseMode = bm;
           Player.fire('player:browse:updated');
