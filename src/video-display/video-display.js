@@ -247,11 +247,13 @@ Player.provide('video-display',
           }
         }else{ // 4. If no quality available, show transcoding message
           Player.set('error', 'this_video_is_being_prepared');
-          window.setTimeout(function(){
+          window.clearTimeout($this.qualityTimeoutId);
+          $this.qualityTimeoutId = window.setTimeout(function(){
             Player.get('video').reload();
           },30000);
         }
         if(newQuality!=''){
+          window.clearTimeout($this.qualityTimeoutId);
           Player.set('error', '');
           Player.set('quality', newQuality);
         }
