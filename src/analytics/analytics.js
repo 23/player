@@ -64,7 +64,7 @@ Player.provide('analytics',
 
           if($this.analyticsReportMethod=='batch') {
             // Report every queued report in a batch
-            $.ajax({url:$this.analyticsReportServer+'/api/analytics/report/batch', timeout:1000, dataType:'jsonp', jsonCallback:'window.ignore', data:{data:JSON.stringify(_pendingReports)}, crossDomain:true})
+            $.ajax({url:$this.analyticsReportServer+'/api/analytics/report/batch', timeout:1000, dataType:'jsonp', jsonpCallback:'window.ignore', data:{data:JSON.stringify(_pendingReports)}, crossDomain:true})
               .fail(function(){
                 // Failure handling: Queue the same report again
                 _queuedReports = $.merge(_pendingReports, _queuedReports);
