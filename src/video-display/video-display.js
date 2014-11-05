@@ -245,16 +245,8 @@ Player.provide('video-display',
               newQuality = qs[i];
             }
           }
-        }else if(v.type=="clip"){ // 4. If no quality is available, and the object is a clip, show transcoding message
-          Player.set('error', 'this_video_is_being_prepared');
-          window.clearTimeout($this.qualityTimeoutId);
-          $this.qualityTimeoutId = window.setTimeout(function(){
-            Player.get('video').reload();
-          },30000);
         }
         if(newQuality!=''){
-          window.clearTimeout($this.qualityTimeoutId);
-          Player.set('error', '');
           Player.set('quality', newQuality);
         }
 
