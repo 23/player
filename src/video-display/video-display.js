@@ -245,7 +245,7 @@ Player.provide('video-display',
               newQuality = qs[i];
             }
           }
-        }else{ // 4. If no quality available, show transcoding message
+        }else if(v.type=="clip"){ // 4. If no quality is available, and the object is a clip, show transcoding message
           Player.set('error', 'this_video_is_being_prepared');
           window.clearTimeout($this.qualityTimeoutId);
           $this.qualityTimeoutId = window.setTimeout(function(){
