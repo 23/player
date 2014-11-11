@@ -61,14 +61,9 @@ Player.provide('analytics',
           // Checkout reports
           var _pendingReports = _queuedReports;
           _queuedReports = [];
-
           if($this.analyticsReportMethod=='batch') {
             // Report every queued report in a batch
-            $.ajax({url:$this.analyticsReportServer+'/api/analytics/report/batch', timeout:1000, dataType:'jsonp', jsonpCallback:'window.ignore', data:{data:JSON.stringify(_pendingReports)}, crossDomain:true})
-              .fail(function(){
-                // Failure handling: Queue the same report again
-                _queuedReports = $.merge(_pendingReports, _queuedReports);
-              });
+            $.ajax({url:$this.analyticsReportServer+'/api/analytics/report/batch', timeout:1000, dataType:'jsonp', jsonpCallback:'window.ignore', data:{data:JSON.stringify(_pendingReports)}, crossDomain:true});
           } else {
             // Report individually and with no queued failover
             $.each(_pendingReports, function(i,data){
