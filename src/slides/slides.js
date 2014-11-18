@@ -25,13 +25,15 @@
 
 Player.provide('slides',{
     showSlides: true,
-    defaultSlideMode: "pip-video"
+    defaultSlideMode: "pip-video",
+    verticalPadding:0,
+    horizontalPadding:0
 },function(Player,$,opts){
     var $this = this;
     $.extend($this, opts);
 
     Player.bind('player:settings', function(){
-      PlayerUtilities.mergeSettings($this, ['showSlides', 'defaultSlideMode']);
+      PlayerUtilities.mergeSettings($this, ['showSlides', 'defaultSlideMode', 'verticalPadding', 'horizontalPadding']);
       Player.set("slideMode", $this.defaultSlideMode);
     });
 
@@ -242,11 +244,16 @@ Player.provide('slides',{
     });
 
     $this.resize = function(){
-        // Set max-height slide img manually whenever the slide has a "100%-height" container
-        var slide = $("body.sbs .slide-container img, body.pip-slide .slide-container img");
-        if(slide.size()>0){
-            slide.css("max-height", $("body").get(0).clientHeight);
-        }
+      // Set max-height slide img manually whenever the slide has a "100%-height" container
+      var slide = $("body.sbs .slide-container img, body.pip-slide .slide-container img");
+      if(slide.size()>0) {
+        slide.css("max-height", $(".slide-container table").height());
+      }
+      if($this.slideMode == "sbs-slide" || $this.slideMode == "sbs-video") {
+        $('.slide-container table td').css({paddingBottom:$this.verticalPadding+'px', paddingRight:$this.horizontalPadding+'px'})
+      } else {
+        $('.slide-container table td').css({paddingBottom:'', paddingRight:''})
+      }
     };
     $(window).resize($this.resize);
 
