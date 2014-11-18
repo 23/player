@@ -157,13 +157,19 @@ Player.provide('slides',{
         }else{
             idTokenObject = {live_id: v.live_id};
         }
-        idTokenObject['token'] = v.token;
-        Player.get('api').deck.timeline.listSlides(idTokenObject,function(res){
+        if(typeof(v.has_deck_p)!='undefined' && v.has_deck_p) {
+          idTokenObject['token'] = v.token;
+          Player.get('api').deck.timeline.listSlides(idTokenObject,function(res){
             $this.slides = res.decktimelineslides;
             Player.fire("player:slides:loaded");
-        },function(res){
+          },function(res){
+            $this.slides = [];
             Player.fire("player:slides:loaded");
-        });
+          });
+        } else {
+          $this.slides = [];
+          Player.fire("player:slides:loaded");
+        }
     };
 
     // Runs through the slides array and figures out which slide to show
