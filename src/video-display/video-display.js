@@ -476,7 +476,7 @@ Player.provide('video-display',
       });
       Player.getter('isLive', function() {
           var v = Player.get('video');
-          return (typeof(v.type)!='undefined' && v.type === 'stream' && Player.get('quality') === 'standard');
+          return (typeof(v)!='undefined' && typeof(v.type)!='undefined' && v.type === 'stream' && Player.get('quality') === 'standard');
       });
       Player.getter('maxLengthDVR', function() {
           return $this.maxLengthDVR;

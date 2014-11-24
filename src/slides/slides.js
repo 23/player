@@ -41,7 +41,7 @@ Player.provide('slides',{
     $this.slideUpdateIntervalId = 0;
     $this.slides = [];
     $this.currentSlide = {
-        deck_slide_id: 0
+        deck_slide_id: ''
     };
     $this.queuedSlideMode = "";
     $this.slideOverviewShown = false;
@@ -70,7 +70,7 @@ Player.provide('slides',{
     Player.setter("slideMode", function(mode){
         // If there is no slide to display, switch to "no-slides" and queue up the slide mode
         // The queued slide mode will be restored by updateSlides() when there is a slide to display
-        if(mode != "no-slides" && $this.currentSlide.deck_slide_id == 0){
+        if(mode != "no-slides" && $this.currentSlide.deck_slide_id == ''){
             $this.queuedSlideMode = mode;
             mode = "no-slides";
         }
@@ -197,10 +197,11 @@ Player.provide('slides',{
                 }
             });
         }
-        if(slideToShow == null){
+
+        if(slideToShow == null || slideToShow.deck_slide_id==''){
             // If we do not have a slide to show, disable slide display temporarily
             $this.container.find(".slide-container img").remove();
-            $this.currentSlide = {deck_slide_id: 0};
+            $this.currentSlide = {deck_slide_id: ''};
             Player.set("slideMode", $this.slideMode);
         }else if($this.currentSlide.deck_slide_id != slideToShow.deck_slide_id){
             // Update the current slide and possibly restore slide mode
