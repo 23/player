@@ -1,4 +1,4 @@
-{% if hasQualitySwitching %}
+{% if hasQualitySwitching and isStream == false %}
 <button class="tray-button button quality-button has-list" aria-controls="qualityOptions" aria-label="{{"quality"|translate}}" label="{{"quality"|translate}}" tabindex="1400">
   <span class="hide-visually">
     {{"quality"|translate}}
