@@ -163,7 +163,7 @@ Player.provide('design',
               $('.big-play-button, .tray-navigation, .scrubber-container, .sharing-container, ul.button-list, .player-browse #browse').css({backgroundColor:$this.trayBackgroundColor, opacity:$this.trayAlpha});
           }
           // Vertical and horisontal padding
-          $('video-display').css({bottom:$this.verticalPadding+'px', left:$this.horizontalPadding+'px'})
+          $('.video-display').css({bottom:$this.verticalPadding+'px', left:$this.horizontalPadding+'px'})
       }
 
       if (!/Android/.test(navigator.userAgent) && 'ontouchstart' in document.documentElement) {
