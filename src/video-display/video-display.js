@@ -27,6 +27,7 @@
   Answers properties:
   - playing [get/set]
   - currentTime [get/set]
+  - pendingCurrentTime [set]
   - seekedTime [get]
   - volume [get/set]
   - supportsVolumeChange [get]
@@ -37,8 +38,12 @@
   - stalled [get]
   - paused [get/set]
   - duration [get]
+  - liveDuration [get]
   - bufferTime [get]
+  - isStream [get]
   - isLive [get]
+  - maxLengthDVR [get]
+  - liveBufferRegion [get]
   - displayDevice [get]
   - verticalPadding [get]
   - horizontalPadding [get]
@@ -58,7 +63,9 @@ Player.provide('video-display',
     fullscreenQuality: '',
     start:0,
     verticalPadding:0,
-    horizontalPadding:0
+    horizontalPadding:0,
+    maxLengthDVR:10800,
+    liveBufferRegion:60
   },
   function(Player,$,opts){
       var $this = this;
@@ -114,7 +121,7 @@ Player.provide('video-display',
             var m = navigator.appVersion.match(/Version\/(\d+\.\d+(\.\d+)?) Safari/);
             if(m && parseFloat(m[1])>=6.1) $this.displayDevice = 'html5';
           }catch(e){}
-          
+
           $this.canvas.html('');
           $this.video = new Eingebaut($this.canvas, $this.displayDevice, '', callback);
           $this.video.load();
@@ -213,9 +220,15 @@ Player.provide('video-display',
           if($this.displayDevice=='html5' && $this.video.canPlayType('application/vnd.apple.mpegurl')) {
             // The current Eingebaut display is html5 and Apple HLS is supported. This feels like the future.
             $this.qualities['standard'] = {format:'hls', codec:'unknown', displayName:'Automatic', displayQuality:'unknown', source:v.hls_stream};
+            if (Player.get('stream_has_dvr')) {
+                $this.qualities['dvr'] = {format:'hls', codec:'unknown', displayName:'DVR', displayQuality:'DVR', source:v.hls_dvr_stream};
+            }
           } else if($this.displayDevice=='flash') {
             // Flash has been loaded, so we can throw an HLS stream at the display and have it work.
             $this.qualities['standard'] = {format:'hls', codec:'unknown', displayName:'Automatic', displayQuality:'unknown', source:v.hls_stream};
+            if (Player.get('stream_has_dvr')) {
+                $this.qualities['dvr'] = {format:'hls', codec:'unknown', displayName:'DVR', displayQuality:'DVR', source:v.hls_dvr_stream};
+            }
           } else {
             // Switch to a Flash dislpay device for playing the stream
             Player.set('loading', true);
@@ -288,7 +301,7 @@ Player.provide('video-display',
           // Don't change if current quality is the same as the new one
           if(currentQuality!=newQuality) {
             // Never change to a lower quality than the current
-            if( newQuality=='fullhd' || 
+            if( newQuality=='fullhd' ||
                 (newQuality=='hd' && currentQuality!='fullhd') ||
                 (newQuality=='standard' && currentQuality!='hd' && currentQuality!='fullhd') ){
               Player.set('quality', newQuality);
@@ -343,8 +356,36 @@ Player.provide('video-display',
       Player.setter('paused', function(paused){
           if($this.video) $this.video.setPaused(paused);
       });
-      Player.setter('currentTime', function(currentTime){
-          if($this.video) $this.video.setCurrentTime(currentTime);
+      Player.setter('currentTime', function(currentTime) {
+          if (Player.get('video').type !== 'stream') {
+              if ($this.video) $this.video.setCurrentTime(currentTime);
+          } else {
+              // Stream scrubber
+              if (Player.get('quality') === 'standard') {
+                  // Currently on live
+                  if (currentTime < (Player.get('duration') - Player.get('liveBufferRegion'))) {
+                      Player.set('quality', 'dvr');
+                      Player.set('pendingCurrentTime', currentTime);
+                  }
+              } else {
+                  // Currently on DVR
+                  if (currentTime > (Player.get('duration') - Player.get('liveBufferRegion'))) {
+                      Player.set('quality', 'standard');
+                  } else {
+                      if ($this.video) $this.video.setCurrentTime(currentTime);
+                  }
+              }
+          }
+      });
+      $this.pendingCurrentTime = -1;
+      Player.setter('pendingCurrentTime', function(pct) {
+          $this.pendingCurrentTime = pct;
+      });
+      Player.bind('player:video:timeupdate', function() {
+          if ($this.pendingCurrentTime >= 0) {
+              Player.set('currentTime', $this.pendingCurrentTime);
+              $this.pendingCurrentTime = -1;
+          }
       });
       Player.setter('volume', function(volume){
           if($this.video) {
@@ -404,19 +445,44 @@ Player.provide('video-display',
       Player.getter('paused', function(){
           return ($this.video ? $this.video.getPaused() : true);
       });
-      Player.getter('duration', function(){
-          var dur = ($this.video ? $this.video.getDuration()||Player.get('video_duration') : Player.get('video_duration'));
-          if(isFinite(dur) && dur > 0){
-              return dur;
-          }else{
-              return $this.maxBufferTime;
+      Player.getter('duration', function() {
+          if (!Player.get('isLive')) {
+              var dur = ($this.video ? $this.video.getDuration() || Player.get('video_duration') : Player.get('video_duration'));
+              if (isFinite(dur) && dur > 0) {
+                  return dur;
+              } else {
+                  return $this.maxBufferTime;
+              }
+          } else {
+              return Player.get('liveDuration');
           }
+      });
+      Player.getter('liveDuration', function() {
+          var now = new Date(),
+              secondsSinceStart = (now / 1000) - Player.get('video').broadcasting_start_time_epoch,
+              duration = secondsSinceStart;
+
+          if (secondsSinceStart > Player.get('maxLengthDVR')) {
+              duration = Player.get('maxLengthDVR');
+          }
+
+          return duration;
       });
       Player.getter('bufferTime', function(){
           return ($this.video ? $this.video.getBufferTime() : 0);
       });
-      Player.getter('isLive', function(){
+      Player.getter('isStream', function() {
           return (Player.get("video").type == "stream");
+      });
+      Player.getter('isLive', function() {
+          var v = Player.get('video');
+          return (typeof(v)!='undefined' && typeof(v.type)!='undefined' && v.type === 'stream' && Player.get('quality') === 'standard');
+      });
+      Player.getter('maxLengthDVR', function() {
+          return $this.maxLengthDVR;
+      });
+      Player.getter('liveBufferRegion', function() {
+          return $this.liveBufferRegion;
       });
       Player.getter('src', function(){
           return ($this.video ? $this.video.getSource() : '');

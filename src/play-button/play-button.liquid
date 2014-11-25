@@ -1,4 +1,4 @@
-<button class="tray-button button {% if playing %}{% if isLive %}stop-button{% else %}pause-button{% endif %}{% else %}play-button{% endif %}" click="$toggle:playing" aria-label="{% if playing %}{{"pause_video"|translate}}{% else %}{{"play_video"|translate}}{% endif %}" label="{% if playing %}{{"pause_video"|translate}}{% else %}{{"play_video"|translate}}{% endif %}" tabindex="1000">
+<button class="tray-button button {% if playing %}{% if isStream %}stop-button{% else %}pause-button{% endif %}{% else %}play-button{% endif %}" click="$toggle:playing" aria-label="{% if playing %}{{"pause_video"|translate}}{% else %}{{"play_video"|translate}}{% endif %}" label="{% if playing %}{{"pause_video"|translate}}{% else %}{{"play_video"|translate}}{% endif %}" tabindex="1000">
   {% if playing %}
     <span class="hide-visually">
       {{"pause_video"|translate}}

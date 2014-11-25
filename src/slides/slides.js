@@ -25,13 +25,15 @@
 
 Player.provide('slides',{
     showSlides: true,
-    defaultSlideMode: "pip-video"
+    defaultSlideMode: "pip-video",
+    verticalPadding:0,
+    horizontalPadding:0
 },function(Player,$,opts){
     var $this = this;
     $.extend($this, opts);
 
     Player.bind('player:settings', function(){
-      PlayerUtilities.mergeSettings($this, ['showSlides', 'defaultSlideMode']);
+      PlayerUtilities.mergeSettings($this, ['showSlides', 'defaultSlideMode', 'verticalPadding', 'horizontalPadding']);
       Player.set("slideMode", $this.defaultSlideMode);
     });
 
@@ -39,7 +41,7 @@ Player.provide('slides',{
     $this.slideUpdateIntervalId = 0;
     $this.slides = [];
     $this.currentSlide = {
-        deck_slide_id: 0
+        deck_slide_id: ''
     };
     $this.queuedSlideMode = "";
     $this.slideOverviewShown = false;
@@ -68,7 +70,7 @@ Player.provide('slides',{
     Player.setter("slideMode", function(mode){
         // If there is no slide to display, switch to "no-slides" and queue up the slide mode
         // The queued slide mode will be restored by updateSlides() when there is a slide to display
-        if(mode != "no-slides" && $this.currentSlide.deck_slide_id == 0){
+        if(mode != "no-slides" && $this.currentSlide.deck_slide_id == ''){
             $this.queuedSlideMode = mode;
             mode = "no-slides";
         }
@@ -157,13 +159,19 @@ Player.provide('slides',{
         }else{
             idTokenObject = {live_id: v.live_id};
         }
-        idTokenObject['token'] = v.token;
-        Player.get('api').deck.timeline.listSlides(idTokenObject,function(res){
+        if(typeof(v.has_deck_p)!='undefined' && v.has_deck_p) {
+          idTokenObject['token'] = v.token;
+          Player.get('api').deck.timeline.listSlides(idTokenObject,function(res){
             $this.slides = res.decktimelineslides;
             Player.fire("player:slides:loaded");
-        },function(res){
+          },function(res){
+            $this.slides = [];
             Player.fire("player:slides:loaded");
-        });
+          });
+        } else {
+          $this.slides = [];
+          Player.fire("player:slides:loaded");
+        }
     };
 
     // Runs through the slides array and figures out which slide to show
@@ -189,10 +197,11 @@ Player.provide('slides',{
                 }
             });
         }
-        if(slideToShow == null){
+
+        if(slideToShow == null || slideToShow.deck_slide_id==''){
             // If we do not have a slide to show, disable slide display temporarily
             $this.container.find(".slide-container img").remove();
-            $this.currentSlide = {deck_slide_id: 0};
+            $this.currentSlide = {deck_slide_id: ''};
             Player.set("slideMode", $this.slideMode);
         }else if($this.currentSlide.deck_slide_id != slideToShow.deck_slide_id){
             // Update the current slide and possibly restore slide mode
@@ -236,11 +245,16 @@ Player.provide('slides',{
     });
 
     $this.resize = function(){
-        // Set max-height slide img manually whenever the slide has a "100%-height" container
-        var slide = $("body.sbs .slide-container img, body.pip-slide .slide-container img");
-        if(slide.size()>0){
-            slide.css("max-height", $("body").get(0).clientHeight);
-        }
+      // Set max-height slide img manually whenever the slide has a "100%-height" container
+      var slide = $("body.sbs .slide-container img, body.pip-slide .slide-container img");
+      if(slide.size()>0) {
+        slide.css("max-height", $(".slide-container table").height());
+      }
+      if($this.slideMode == "sbs-slide" || $this.slideMode == "sbs-video") {
+        $('.slide-container table td').css({paddingBottom:$this.verticalPadding+'px', paddingRight:$this.horizontalPadding+'px'})
+      } else {
+        $('.slide-container table td').css({paddingBottom:'', paddingRight:''})
+      }
     };
     $(window).resize($this.resize);
 

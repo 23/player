@@ -14,7 +14,9 @@
 */
 
 Player.provide('scrubber',
-  {},
+  {
+    handleTextLive: 'Live'
+  },
   function(Player,$,opts){
       var $this = this;
       $.extend($this, opts);
@@ -48,17 +50,14 @@ Player.provide('scrubber',
 
           // Handle clicks on the time line
           $this.scrubber.on("click", function(e, oe){
-              var duration = Player.get('duration');
-              if(isNaN(duration)||duration<=0) {
-                  Player.set('playing', true);
-              } else {
-                  if (!e.pageX && oe && oe.pageX) {
-                       e = oe;
-                  }
-                  var offsetX = e.pageX - $this.trackContainer.offsetParent().offset().left;
-                  Player.set('currentTime', offsetX / $this.scrubber.get(0).clientWidth * duration);
-                  Player.set('playing', true);
-              }
+              var duration = Player.get('duration'),
+                  offsetX = e.pageX - $(e.target).offsetParent().offset().left,
+                  offsetRelative = offsetX / $this.scrubber.get(0).clientWidth,
+                  videoElement = Player.get('videoElement'),
+                  video = Player.get('video');
+
+              Player.set('currentTime', offsetX / $this.scrubber.get(0).clientWidth * duration);
+              Player.set('playing', true);
               e.stopPropagation();
           });
           $this.scrubber.on("touchmove", function(e){
@@ -132,25 +131,73 @@ Player.provide('scrubber',
       // METHODS
       // Methods to handle scrubber updates
       $this.updateScrubber = function(){
-          var duration = Player.get('duration');
-          if(isNaN(duration)||duration<=0) return;
+          var duration = Player.get('duration'),
+              newTime = Player.get("scrubberTime") ? Player.get("scrubberTime") : Player.get("currentTime"),
+              handleTime;
 
-          // Update time labels
-	  if($this.timeContainer&&$this.timeContainer.length) {
-	      var time = (Player.get("scrubberTime")==0&&Player.get("currentTime")==0)?duration:(Player.get("scrubberTime")?Player.get("scrubberTime"):Player.get("currentTime"));
-	      $this.timeContainer.html( formatTime(time) );
-	  }
+          if (!Player.get('isLive')) {
+              if (isNaN(duration) || duration <= 0) return;
+          }
+
+          // Update handle labels
+          if (Player.get('video').type === 'clip') {
+              // Normal handle
+              if ($this.handleContainer && $this.handleContainer.length) $this.handleContainer.html(formatTime(newTime));
+          } else {
+              if ((!Player.get('scrubberTime') && Player.get('quality') === 'standard') || (newTime > (duration - Player.get('liveBufferRegion')))) {
+                if ($this.handleContainer && $this.handleContainer.length) $this.handleContainer.html($this.handleTextLive);
+              } else {
+                  if (Player.get('videoElement').getProgramDate()) {
+                    handleTime = (Player.get('videoElement').getProgramDate() - (Player.get('currentTime') * 1000)) + (newTime * 1000);
+                  } else {
+                    var now = new Date();
+                    handleTime = now - ((duration - newTime) * 1000);
+                  }
+
+                  if ($this.handleContainer && $this.handleContainer.length) $this.handleContainer.html($this.clockFromEpoch(handleTime));
+              }
+          }
 
           // Update buffer and play progress
           try {
-              $this.bufferContainer.css({width:(100.0*Player.get('bufferTime')/duration)+'%'});
-          }catch(e){}
+              if (!Player.get('isLive')) {
+                  $this.bufferContainer.css({
+                      width: (100.0 * Player.get('bufferTime') / duration) + '%'
+                  });
+              } else {
+                  $this.bufferContainer.css({
+                      width: '100%'
+                  });
+              }
+          } catch (e) {}
           try {
-              $this.playContainer.css({width:(100.0*Player.get('displayPlayProgress')/duration)+'%'});
-          }catch(e){}
+              if (!Player.get('isLive')) {
+                  $this.playContainer.css({
+                      width: (100.0 * Player.get('displayPlayProgress') / duration) + '%'
+                  });
+              } else {
+                  $this.playContainer.css({
+                      width: '100%'
+                  });
+              }
+          } catch (e) {}
           try {
-              $this.handleContainer.css({left: (($this.scrubberTime||Player.get('currentTime'))/duration * $this.scrubber.get(0).clientWidth) - ($this.handleContainer.get(0).clientWidth/2) +'px'});
-          }catch(e){}
+              if (!Player.get('isLive')) {
+                  $this.handleContainer.css({
+                      left: (($this.scrubberTime || Player.get('currentTime')) / duration * $this.scrubber.get(0).clientWidth) - ($this.handleContainer.get(0).clientWidth / 2) + 'px'
+                  });
+              } else {
+                  var left = $this.scrubber.get(0).clientWidth - ($this.handleContainer.get(0).clientWidth / 2);
+
+                  if (Player.get('scrubberTime')) {
+                      left = (($this.scrubberTime || Player.get('currentTime')) / duration * $this.scrubber.get(0).clientWidth) - ($this.handleContainer.get(0).clientWidth / 2);
+                  }
+
+                  $this.handleContainer.css({
+                      left: Math.floor(left) + 'px'
+                  });
+              }
+          } catch (e) {}
       }
       $this.initFrameBackground = false;
       $this.loadedFrameBackground = false;
@@ -173,11 +220,11 @@ Player.provide('scrubber',
               });
               $("<img>").load(function(){
                   $this.loadedFrameBackground = true;
-		  $this.thumbnailContainerSub.css({
+          $this.thumbnailContainerSub.css({
                       backgroundImage:'url(' + Player.get('video_frames_src') + ')'
-		  });
+          });
                   if($this.frameBackgroundShown) $this.thumbnailContainer.show();
-	      }).attr("src",Player.get("video_frames_src"));
+          }).attr("src",Player.get("video_frames_src"));
               $this.initFrameBackground = true;
           }
           $this.thumbnailContainer.css({
@@ -189,6 +236,22 @@ Player.provide('scrubber',
               backgroundPosition: '0 -'+frameOffset+'px'
           });
       }
+
+      $this.clockFromEpoch = function(epochTime) {
+          var theDate = new Date(epochTime + (parseInt(Player.get('video').timezone_offset))*60*60*1000);
+              var hours = theDate.getUTCHours();
+              var minutes = theDate.getUTCMinutes();
+
+          if (hours < 10) {
+              hours = '0' + hours;
+          }
+
+          if (minutes < 10) {
+              minutes = '0' + minutes;
+          }
+
+          return hours + ':' + minutes;
+      };
 
 
       // EVENTS
