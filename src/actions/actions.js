@@ -23,9 +23,12 @@ Player.provide('actions',
   {
     identityCountdown: false,
     identityAllowClose: false,
+    identityAllowCloseAfterSeconds: 0,
     identityCountdownTextSingular: "This advertisement will end in % second",
-    identityCountdownTextPlural: "This advertisement will end in % seconds"
-  }, 
+    identityCountdownTextPlural: "This advertisement will end in % seconds",
+    closeCountdownTextSingular: "This advertisement can be closed in % second",
+    closeCountdownTextPlural: "This advertisement can be closed in % seconds"
+  },
   function(Player,$,opts){
     var $this = this;
     $.extend($this, opts);
@@ -38,7 +41,8 @@ Player.provide('actions',
     $this.normalizedActionsPosition = -1; // (-1 for "before", relative time from 0 to 1 during playback, 2 for "after")
     // Build default properties and merge in player settings
     Player.bind('player:settings', function(){
-      PlayerUtilities.mergeSettings($this, ['identityCountdown', 'identityAllowClose', 'identityCountdownTextSingular', 'identityCountdownTextPlural']);
+        PlayerUtilities.mergeSettings($this, ['identityCountdown', 'identityAllowClose', 'identityAllowCloseAfterSeconds', 'identityCountdownTextSingular', 'identityCountdownTextPlural', 'closeCountdownTextSingular', 'closeCountdownTextPlural']);
+        $this.identityAllowCloseAfterSeconds = parseInt($this.identityAllowCloseAfterSeconds,10);
     });
 
     // Hide actions when necessary for clicking the fullscreen prompt in the Flash object in IE 7-10
@@ -594,19 +598,32 @@ Player.provide('actions',
       return $this.actionsPosition;
     });
     Player.getter('identityCountdown', function(){return $this.identityCountdown;});
-    Player.getter('identityAllowClose', function(){return $this.identityAllowClose;});
+    Player.getter('identityAllowClose', function(){
+        return $this.identityAllowClose && Player.get('currentTime') >= $this.identityAllowCloseAfterSeconds;
+    });
     Player.getter('identityCountdownText', function(){
       // Format countdown
       try {
         var duration = $this.eingebaut.getDuration();
         var currentTime = $this.eingebaut.getCurrentTime();
-        var timeLeft = Math.round(duration-currentTime);
-        if(isNaN(timeLeft)) return '';
-        var s = (timeLeft==1 ? $this.identityCountdownTextSingular : $this.identityCountdownTextPlural);
-        return s.replace(/\%/img, timeLeft);
+        var timeLeft = 0;
+        if($this.identityAllowCloseAfterSeconds==0||!$this.identityAllowClose){
+          timeLeft = Math.round(duration-currentTime);
+          if(isNaN(timeLeft)) return '';
+          var s = (timeLeft==1 ? $this.identityCountdownTextSingular : $this.identityCountdownTextPlural);
+          return s.replace(/\%/img, timeLeft);
+        }else{
+          timeLeft = Math.round($this.identityAllowCloseAfterSeconds - currentTime);
+          if(timeLeft>0){
+            var s = (timeLeft==1 ? $this.closeCountdownTextSingular : $this.closeCountdownTextPlural);
+            return s.replace(/\%/img, timeLeft);
+          }else{
+            return '';
+          }
+        }
       }catch(e){
         return '';
-      } 
+      }
     });
     Player.getter('hasLink', function(){
       return typeof $this.activeVideoActions[$this.currentVideoActionIndex].link != 'undefined';
