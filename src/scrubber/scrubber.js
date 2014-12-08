@@ -142,10 +142,10 @@ Player.provide('scrubber',
           // Update handle labels
           if (Player.get('video').type === 'clip') {
               // Normal handle
-              if ($this.handleContainer && $this.handleContainer.length) $this.handleContainer.html(formatTime(newTime));
+              if ($this.timeContainer && $this.timeContainer.length) $this.timeContainer.html(formatTime(newTime));
           } else {
               if ((!Player.get('scrubberTime') && Player.get('quality') === 'standard') || (newTime > (duration - Player.get('liveBufferRegion')))) {
-                if ($this.handleContainer && $this.handleContainer.length) $this.handleContainer.html($this.handleTextLive);
+                if ($this.timeContainer && $this.timeContainer.length) $this.timeContainer.html($this.handleTextLive);
               } else {
                   if (Player.get('videoElement').getProgramDate()) {
                     handleTime = (Player.get('videoElement').getProgramDate() - (Player.get('currentTime') * 1000)) + (newTime * 1000);
@@ -154,7 +154,7 @@ Player.provide('scrubber',
                     handleTime = now - ((duration - newTime) * 1000);
                   }
 
-                  if ($this.handleContainer && $this.handleContainer.length) $this.handleContainer.html($this.clockFromEpoch(handleTime));
+                  if ($this.timeContainer && $this.timeContainer.length) $this.timeContainer.html($this.clockFromEpoch(handleTime));
               }
           }
 
@@ -178,23 +178,6 @@ Player.provide('scrubber',
               } else {
                   $this.playContainer.css({
                       width: '100%'
-                  });
-              }
-          } catch (e) {}
-          try {
-              if (!Player.get('isLive')) {
-                  $this.handleContainer.css({
-                      left: (($this.scrubberTime || Player.get('currentTime')) / duration * $this.scrubber.get(0).clientWidth) - ($this.handleContainer.get(0).clientWidth / 2) + 'px'
-                  });
-              } else {
-                  var left = $this.scrubber.get(0).clientWidth - ($this.handleContainer.get(0).clientWidth / 2);
-
-                  if (Player.get('scrubberTime')) {
-                      left = (($this.scrubberTime || Player.get('currentTime')) / duration * $this.scrubber.get(0).clientWidth) - ($this.handleContainer.get(0).clientWidth / 2);
-                  }
-
-                  $this.handleContainer.css({
-                      left: Math.floor(left) + 'px'
                   });
               }
           } catch (e) {}
