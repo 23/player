@@ -62,8 +62,6 @@ body.pip-slide .video-display {
     z-index: 1000;
 }
 
-
-
 /* Side-by-side - body class "sbs" */
 body.sbs .slide-container {
     top: 0;

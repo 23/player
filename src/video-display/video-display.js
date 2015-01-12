@@ -271,8 +271,7 @@ Player.provide('video-display',
         }
 
         // Might want to autoPlay it
-        if($this.autoPlay && !/(iPhone|iPod|iPad|Android|Windows.Phone)/.test(navigator.userAgent)) {
-          // (iOS + Windows Phone 8 requires user interaction to start playback and thus won't support auto play apart from in edge cases)
+        if($this.autoPlay && Player.get('videoElement').canAutoplay()) {
           Player.set('playing', true);
         } else {
           // Otherwise fire a non-event
@@ -476,7 +475,7 @@ Player.provide('video-display',
       });
       Player.getter('isLive', function() {
           var v = Player.get('video');
-          return (typeof(v)!='undefined' && typeof(v.type)!='undefined' && v.type === 'stream' && Player.get('quality') === 'standard');
+          return (v && typeof(v.type)!='undefined' && v.type === 'stream' && Player.get('quality') === 'standard');
       });
       Player.getter('maxLengthDVR', function() {
           return $this.maxLengthDVR;
