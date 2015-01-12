@@ -63,6 +63,7 @@ Player.provide('slides',{
         return ret;
     });
     Player.getter('slideOverviewShown', function(){return $this.slideOverviewShown;});
+    Player.getter('slideMode', function(){return $this.slideMode;});
 
 
     // Setter for switching between the different modes of displaying slides
@@ -80,15 +81,12 @@ Player.provide('slides',{
 
         $this.slideMode = mode;
 
+        if($this.slideModeDisabled) return;
+
         // Set correct body-classes so slides and video is sized and positioned correctly
-        $("body").removeClass("pip pip-slide pip-video sbs sbs-slide sbs-video no-slides");
-        if(mode == "sbs-slide" || mode == "sbs-video") {
-            $("body").addClass("sbs "+mode);
-        }else if(mode == "pip-slide" || mode == "pip-video") {
-            $("body").addClass("pip "+mode);
-        }else if(mode == "no-slides"){
-            $("body").addClass(mode);
-        }
+        $this.setBodyClasses(mode);
+
+
         Player.fire("player:slides:modechange", $this.slideMode);
         $this.resize();
     });
@@ -102,6 +100,15 @@ Player.provide('slides',{
             case "pip-slide":
                 Player.set("slideMode", "pip-video");
                 break;
+        }
+    });
+
+    Player.setter("slideModeDisabled", function(disabled){
+        $this.slideModeDisabled = disabled;
+        if(disabled){
+            $this.setBodyClasses("no-slides");
+        }else{
+            $this.setBodyClasses($this.slideMode);
         }
     });
 
@@ -226,6 +233,20 @@ Player.provide('slides',{
             nextImg.show();
         }).attr("src", Player.get("url")+$this.currentSlide.slide_url).prependTo($this.container.find(".slide-container td"));
     }
+
+    $this.setBodyClasses = function(mode){
+        $("body").removeClass("pip pip-slide pip-video sbs sbs-slide sbs-video no-slides");
+        if(mode == "no-slides"){
+            $("body").addClass("no-slides");
+        }else if(mode == "sbs-slide" || mode == "sbs-video") {
+            $("body").addClass("sbs "+mode);
+        }else if(mode == "pip-slide" || mode == "pip-video") {
+            $("body").addClass("pip "+mode);
+        }
+        if(/MSIE/.test(navigator.userAgent)){
+            $(".video-display").hide(0, function(){$(this).show();});
+        }
+    };
 
     Player.bind("player:video:timeupdate player:slides:loaded",function(){
         if($this.showSlides){
