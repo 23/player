@@ -120,8 +120,11 @@ Player.provide('analytics',
                 &&
                 (_lastTimeReport<0 || Math.abs(currentTime-_lastTimeReport)>1)
             ) {
-              _report('play', {timeStart:Player.get('seekedTime'), timeEnd:currentTime, timeTotal:Player.get('duration')});
-              _lastTimeReport = currentTime;
+              var reportObj = {timeStart:Player.get('seekedTime'), timeEnd:currentTime, timeTotal:Player.get('duration')};
+              if(reportObj.timeStart != reportObj.timeEnd){
+                _report('play', reportObj);
+                _lastTimeReport = currentTime;
+              }
             }
             // When a video stops playing, flush the report queue explicitly
             if(e=='player:video:ended') _sendReports();

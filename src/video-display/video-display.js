@@ -319,6 +319,7 @@ Player.provide('video-display',
           $this.quality = quality;
           $this.rawSource = $this.qualities[$this.quality].source;
           $this.rawSource += (/\?/.test($this.rawSource) ? '&' : '?') + 'uuid='+Player.get('uuid');
+          $this.rawSource += '&referer='+document.referrer;
 
           if(Player.get('video_playable')) {
             // Switch the source and jump to current spot
@@ -358,6 +359,7 @@ Player.provide('video-display',
       Player.setter('currentTime', function(currentTime) {
           if (Player.get('video').type !== 'stream') {
               if ($this.video) $this.video.setCurrentTime(currentTime);
+              $this.seekedTime = currentTime;
           } else {
               // Stream scrubber
               if (Player.get('quality') === 'standard') {
