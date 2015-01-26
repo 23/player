@@ -146,11 +146,11 @@ Player.provide('slides',{
         window.clearInterval($this.slideUpdateIntervalId);
         if ($this.showSlides){
             if(v.type=="clip"){
-                $this.loadSlides();
+                $this.loadSlides(v);
             }else if(v.type=="stream"){
-                $this.loadSlides();
+                $this.loadSlides(v);
                 $this.slideUpdateIntervalId = window.setInterval(function(){
-                    $this.loadSlides();
+                    $this.loadSlides(v);
                 },$this.slideUpdateInterval);
             }
         }
@@ -158,9 +158,9 @@ Player.provide('slides',{
     };
 
     // Fetches slide info from the api
-    $this.loadSlides = function(){
+    $this.loadSlides = function(video){
         var idTokenObject = {};
-        var v = Player.get("video");
+        var v = video||Player.get("video");
         if(v.type=="clip"){
             idTokenObject = {photo_id: v.photo_id};
         }else{
@@ -256,8 +256,8 @@ Player.provide('slides',{
 
     // When a video is loaded, init and update the display of slides
     var last_id = 0;
-    Player.bind("player:video:loaded",function(e,v){
-        if(v && (last_id==v.photo_id||last_id==v.live_id)){
+    Player.bind("player:video:loaded player:protection:verified",function(e,v){
+        if(v && (last_id==v.photo_id||last_id==v.live_id) && e!="player:protection:verified"){
             $this.updateCurrentSlide();
         }else if(v && typeof Player.get("videoElement") != "undefined"){
             last_id = (v.photo_id?v.photo_id:v.live_id);
