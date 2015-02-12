@@ -351,10 +351,10 @@ Player.provide('core',
       Player.getter('playerSize', function(){return $this.playerSize;});
 
       // Player ID for internal routing
-      $this.uuid = Cookie.get('uuid');
+      $this.uuid = Persist.get('uuid');
       if(!$this.uuid.length) {
         $this.uuid = 'xxxxxxxx-xxxx-0xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);return v.toString(16);});
-        if(window.ALLOW_TRACKING_COOKIES!==false) Cookie.set('uuid', $this.uuid, 120);
+        if(window.ALLOW_TRACKING_COOKIES!==false) Persist.set('uuid', $this.uuid, 120);
       }
       Player.getter('uuid', function(){return $this.uuid;});
 
@@ -418,12 +418,23 @@ var PlayerUtilities = {
   }
 }
 
-// Cookie object
+// Persist object
+var Persist = {
+    set: function(name, value, daysToExpire) {LocalStorage.set(name,value); Cookie.set(name,value,daysToExpire);},
+    get: function(name) {return LocalStorage.get(name)||Cookie.get(name);},
+    erase: function(name) {Cookie.erase(name); LocalStorage.erase(name);}
+}
 var Cookie = {
     set: function(name, value, daysToExpire) {var expire = ''; if (daysToExpire != undefined) {var d = new Date();d.setTime(d.getTime() + (86400000 * parseFloat(daysToExpire)));expire = '; expires=' + d.toGMTString();} var path = '; path=/'; if (value.length) value=escape(value); else value='""'; return (document.cookie = escape(name) + '=' + value + expire + path);},
     get: function(name) {var cookie = document.cookie.match(new RegExp('(^|;)\\s*' + escape(name) + '=([^;\\s]*)')); return (cookie ? unescape(cookie[2]) : '');},
     erase: function(name) {var cookie = Cookie.get(name) || true; Cookie.set(name, '', -1); return cookie;},
     accept: function() {if (typeof(navigator.cookieEnabled)=='boolean') {return navigator.cookieEnabled;} Cookie.set('_test', '1'); return (Cookie.erase('_test')=='1');}
+};
+var LocalStorage = {
+    set: function(name, value) {if(LocalStorage.accept()) localStorage.setItem(name, value);},
+    get: function(name) {if(LocalStorage.accept()) {return localStorage.getItem(name)||'';} else {return '';}},
+    erase: function(name) {if(LocalStorage.accept()) localStorage.removeItem(name);},
+    accept: function() {return (typeof(Storage)!='undefined' && typeof(localStorage)!='undefined');}
 };
 // Avoid 'console' errors in browsers that lack a console.
 (function() {

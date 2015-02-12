@@ -163,11 +163,8 @@ Player.provide('analytics',
           _report('event', {event:e.event});
         });
 
+      Cookie.set('_visual_swf_referer', document.referrer);
 
-      // Method to set a cookie
-      $this.setCookie = function(name, value, daysToExpire) {var expire = ''; if (daysToExpire != undefined) {var d = new Date();d.setTime(d.getTime() + (86400000 * parseFloat(daysToExpire)));expire = '; expires=' + d.toGMTString();} var path = '; path=/'; if (value.length) value=escape(value); else value='""'; return (document.cookie = escape(name) + '=' + value + expire + path);}
-      try {$this.setCookie('_visual_swf_referer', document.referrer);}catch(e){}
-     
       return $this;
   }
 );
