@@ -510,13 +510,27 @@ Player.provide('video-display',
 
       // Property used for livestreams that does not have a finite value for duration
       $this.maxBufferTime = 0;
-      // On timeupdate, save maximum value for bufferTime
+      // Flag used for resetting $this.seekedTime when a video replays from beginning
+      var _seekEnded = false;
+      // On timeupdate, save maximum value for bufferTime and possibly reset $this.seekedTime
       Player.bind("player:video:timeupdate",function(){
           $this.maxBufferTime = Math.max($this.maxBufferTime, Player.get("bufferTime"));
+          if(_seekEnded && Player.get("currentTime") < 1){
+              $this.seekedTime = 0;
+              _seekEnded = false;
+          }
       });
-      // When new video is loaded, reset maxBufferTime
+      // When new video is loaded, reset maxBufferTime and seekedTime
       Player.bind("player:video:loaded",function(){
           $this.maxBufferTime = 0;
+          $this.seekedTime = Player.get("currentTime");
+          _seekEnded = false;
+      });
+      Player.bind("player:video:seeked player:video:seek",function(e){
+          $this.seekedTime = Player.get("currentTime");
+      });
+      Player.bind("player:video:ended", function(){
+          _seekEnded = true;
       });
 
       // Reconnect for livestream
