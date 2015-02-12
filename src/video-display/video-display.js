@@ -265,7 +265,7 @@ Player.provide('video-display',
 
         // Possibly load volume preference from previous session
         if($this._loadVolumeCookie&&$this.video) {
-          var cookieVolume = Cookie.get('playerVolume');
+          var cookieVolume = Persist.get('playerVolume');
           if(cookieVolume.length>0) Player.set('volume', new Number(cookieVolume));
           $this._loadVolumeCookie = false;
         }
@@ -391,7 +391,7 @@ Player.provide('video-display',
       Player.setter('volume', function(volume){
           if($this.video) {
               $this.video.setVolume(volume);
-              Cookie.set('playerVolume', new String(volume));
+              Persist.set('playerVolume', new String(volume));
           }
       });
       Player.setter('start', function(s){
