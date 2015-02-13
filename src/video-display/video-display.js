@@ -318,8 +318,12 @@ Player.provide('video-display',
           // Update the global value
           $this.quality = quality;
           $this.rawSource = $this.qualities[$this.quality].source;
-          $this.rawSource += (/\?/.test($this.rawSource) ? '&' : '?') + 'uuid='+Player.get('uuid');
-          $this.rawSource += '&referer='+document.referrer;
+
+          // Add referer and uuid to source-url
+          // Referer must not be the last parameter in the query, since "Internet" on Android
+          // gets confused, if the query string ends with ".html"
+          $this.rawSource += (/\?/.test($this.rawSource) ? '&' : '?') + 'referer='+document.referrer;
+          $this.rawSource += '&uuid='+Player.get('uuid');
 
           if(Player.get('video_playable')) {
             // Switch the source and jump to current spot
