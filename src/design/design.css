@@ -34,12 +34,12 @@ html,body {
     width:100%;
     height:100%;
     background-color: #000000;
+    overflow:hidden;
 }
 body {
     margin:0;
     color:#333;  /*updated in js via player settings */
     font:11px/14px 'Open Sans', sans-serif;  /*updated in js via player settings */
-    overflow:hidden;
 
     scrollbar-base-color: #000;
     scrollbar-3dlight-color: #000;
