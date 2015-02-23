@@ -259,7 +259,7 @@ Player.provide('slides',{
     Player.bind("player:video:loaded player:protection:verified",function(e,v){
         if(v && (last_id==v.photo_id||last_id==v.live_id) && e!="player:protection:verified"){
             $this.updateCurrentSlide();
-        }else if(v && typeof Player.get("videoElement") != "undefined"){
+        }else if(v){
             last_id = (v.photo_id?v.photo_id:v.live_id);
             $this.initSlides(v);
         }
@@ -269,7 +269,7 @@ Player.provide('slides',{
       // Set max-height slide img manually whenever the slide has a "100%-height" container
       var slide = $("body.sbs .slide-container img, body.pip-slide .slide-container img");
       if(slide.size()>0) {
-        slide.css("max-height", $(".slide-container table").height());
+        slide.css("max-height", $(".slide-container").height());
       }
       if($this.slideMode == "sbs-slide" || $this.slideMode == "sbs-video") {
         $('.slide-container table td').css({paddingBottom:$this.verticalPadding+'px', paddingRight:$this.horizontalPadding+'px'})
