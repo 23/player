@@ -97,11 +97,6 @@ Player.provide('video-display',
             if(e=='loaded'&&$this.video.displayDevice=='none') {
               Player.set('error', "this_player_requires");
             }
-            // If this loads after the content (i.e. if we're switching display device, fire an event that we're ready)
-            if(e=='loaded') {
-              var _v = Player.get('video');
-              if(_v) Player.fire('player:video:loaded', _v);
-            }
             if((e=='canplay'||e=='loaded')&&$this._queuePlay) {
               try {
                 $this.video.setPlaying(true);
@@ -142,6 +137,12 @@ Player.provide('video-display',
         if($this.video&&$this.video.displayDevice!=$this.displayDevice) $this.loadEingebaut();
         $this.container.css({left:$this.horizontalPadding+'px', bottom:$this.verticalPadding+'px'});
       });
+      Player.bind('player:video:playerready', function(){
+          if($this._waiting) {
+              $this.loadContent();
+          }
+          $this._waiting = false;
+      });
 
       $this._currentTime = false;
       $this._loadVolumeCookie = true;
@@ -150,9 +151,10 @@ Player.provide('video-display',
 
         // If the display device isn't ready yet, wait for it
         if(!$this.video || !$this.video.ready) {
-          Player.bind('player:video:playerready', $this.loadContent);
+          $this._waiting = true;
           return;
         }
+
         // If no display device is supported, give up
         if($this.displayDevice=='none') return;
 
@@ -178,11 +180,12 @@ Player.provide('video-display',
           // the better choice is to play with webm when possible.
           preferWebM = (/Chrome/.test(navigator.userAgent) && v.photo_id<7626643 && typeof(v.video_webm_360p_download)!='undefined' && v.video_webm_360p_download.length>0 && $this.video.canPlayType('video/webm'));
 
+          // HTTP Live Streaming
+          if (typeof(v.video_hls_download)!='undefined' && v.video_hls_download.length>0 && v.video_hls_size>0 && ($this.video.canPlayType('application/vnd.apple.mpegURL')||swfobject.hasFlashPlayerVersion('10.1.0'))) {
+            $this.qualities['auto'] = {format:'video_hls', codec:'hls', displayName:'Auto', displayQuality:'Auto', source:Player.get('url') + v.video_hls_download};
+          }
+
           if( ($this.displayDevice!='html5' || $this.video.canPlayType('video/mp4; codecs="avc1.42E01E"')) && !preferWebM ) {
-            // HTTP Live Streaming
-            if (typeof(v.video_hls_download)!='undefined' && v.video_hls_download.length>0 && v.video_hls_size>0 && $this.video.canPlayType('application/vnd.apple.mpegURL')) {
-              $this.qualities['auto'] = {format:'video_hls', codec:'hls', displayName:'Auto', displayQuality:'Auto', source:Player.get('url') + v.video_hls_download};
-            }
             // H.264
             if (typeof(v.video_4k_download)!='undefined' && v.video_4k_download.length>0 && v.video_4k_size>0 && !/iPhone|Android/.test(navigator.userAgent))
               $this.qualities['4k'] = {format:'video_4k', codec:'h264', displayName:'4K', displayQuality:'4K', source:Player.get('url') + v.video_4k_download};
@@ -310,7 +313,7 @@ Player.provide('video-display',
       });
 
       /* SETTERS */
-      var playableSource = '';
+      var playableContext = null;
       Player.setter('quality', function(quality){
           // Sanity check
           if(!$this.qualities[quality]) return;
@@ -325,28 +328,36 @@ Player.provide('video-display',
           $this.rawSource += (/\?/.test($this.rawSource) ? '&' : '?') + 'referer='+document.referrer;
           $this.rawSource += '&uuid='+Player.get('uuid');
 
+          playableContext = {
+              source: $this.rawSource,
+              startTime: ($this._currentTime === false ? Player.get('currentTime') : $this._currentTime),
+              displayDevice: (quality!="auto"||$this.video.canPlayType('application/vnd.apple.mpegURL')?$this.video.displayDevice:"flash"),
+              callback: $this.video._callback,
+              preventBackup: true
+          };
+
           if(Player.get('video_playable')) {
             // Switch the source and jump to current spot
-            playableSource = '';
             var playing = Player.get('playing');
-            $this.video.setSource($this.rawSource, ($this._currentTime === false ? Player.get('currentTime') : $this._currentTime));
+            $this.video.setContext(playableContext);
+            playableContext = null;
             $this._currentTime = false;
             Player.fire('player:video:sourcechange');
             Player.fire('player:video:qualitychange');
             Player.set('playing', playing);
           } else {
             Player.set('playing', false);
-            playableSource = $this.rawSource;
           }
       });
 
       Player.setter('playing', function(playing){
           if(!Player.get('video_playable')) return;
-          if(playableSource!='') {
+          if(playableContext) {
             try {
-              $this.video.setSource(playableSource, 0);
+              $this.video.setContext(playableContext);
             }catch(e){};
             playableSource = '';
+            playableContext = null;
           }
           try {
               if($this.video) {
