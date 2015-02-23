@@ -213,7 +213,7 @@ Player.provide('video-display',
             }
           }
           // Handle quality defaults
-          var _fallback = 'standard' //$this.qualities['auto'] ? 'auto' : 'standard';
+          var _fallback = 'standard'; //$this.qualities['auto'] ? 'auto' : 'standard';
           $this.quality = $this.quality || s.defaultQuality || _fallback;
           if($this.quality=='high') $this.quality = 'hd';
 
