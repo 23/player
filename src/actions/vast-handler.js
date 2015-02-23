@@ -24,7 +24,7 @@ window.VastHandler = function(){
         // with actual timestamp and referrer values
         $this.action.ad_url_replaced = $this.action.ad_url.replace(/\[timestamp\]|\[random\]/g, (new Date()).getTime()).replace(/\[referrer\]/g, document.referrer);
         $.ajax({
-            url: $this.action.ad_url_replaced||"fail",
+            url: $.trim($this.action.ad_url_replaced)||"fail",
             method: "GET",
             dataType: "xml",
             cache: false,
@@ -66,13 +66,13 @@ window.VastHandler = function(){
                 if (adVideoUrl.length < 1) {
                     return $this.callback(false);
                 }
-                $this.action.video = adVideoUrl.text();
+                $this.action.video = $.trim(adVideoUrl.text());
             }else if($this.action.type == "banner"){
                 var adBannerUrl = inline.find("Creative NonLinear StaticResource").eq(0);
                 if(adBannerUrl.length < 1){
                     return $this.callback(false);
                 }
-                $this.action.image = adBannerUrl.text();
+                $this.action.image = $.trim(adBannerUrl.text());
             }
         }
 
@@ -83,7 +83,7 @@ window.VastHandler = function(){
             if($(impression).text()!=""){
                 $this.action.events.push({
                     "name": "impression",
-                    "url": $(impression).text()
+                    "url": $.trim($(impression).text())
                 });
             }
         });
@@ -97,7 +97,7 @@ window.VastHandler = function(){
             if ($event.text()!=""){
                 $this.action.events.push({
                     "name": $event.attr("event"),
-                    "url": $event.text()
+                    "url": $.trim($event.text())
                 });
             }
         });
@@ -107,7 +107,7 @@ window.VastHandler = function(){
         }else if($this.action.type == "banner"){
             var clickthrough = ad.find("Creative NonLinear").eq(0).find("NonLinearClickThrough").eq(0);
         }
-        if(clickthrough.length>0) $this.action.link = clickthrough.text();
+        if(clickthrough.length>0) $this.action.link = $.trim(clickthrough.text());
 
         if($this.action.type == "ad"){
             var clicktracking = ad.find("Creative Linear").eq(0).find("VideoClicks ClickTracking");
@@ -116,7 +116,7 @@ window.VastHandler = function(){
                 if($trackinguri.text()!=""){
                     $this.action.events.push({
                         "name": "ClickTracking",
-                        "url": $trackinguri.text()
+                        "url": $.trim($trackinguri.text())
                     });
                 }
             });
@@ -125,7 +125,7 @@ window.VastHandler = function(){
         // If this is a wrapper, request next url
         if (isWrapper) {
             $.ajax({
-                url: wrapper.text(),
+                url: $.trim(wrapper.text()),
                 method: "GET",
                 dataType: "xml",
                 cache: false,
