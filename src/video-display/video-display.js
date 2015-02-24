@@ -97,6 +97,10 @@ Player.provide('video-display',
             if(e=='loaded'&&$this.video.displayDevice=='none') {
               Player.set('error', "this_player_requires");
             }
+            if(e=='loaded') {
+              var _v = Player.get('video');
+              if(_v) Player.fire('player:video:loaded', _v);
+            }
             if((e=='canplay'||e=='loaded')&&$this._queuePlay) {
               try {
                 $this.video.setPlaying(true);
