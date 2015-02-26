@@ -423,7 +423,7 @@ var Persist = {
     set: function(name, value, daysToExpire) {LocalStorage.set(name,value); Cookie.set(name,value,daysToExpire);},
     get: function(name) {return LocalStorage.get(name)||Cookie.get(name);},
     erase: function(name) {Cookie.erase(name); LocalStorage.erase(name);}
-}
+};
 var Cookie = {
     set: function(name, value, daysToExpire) {var expire = ''; if (daysToExpire != undefined) {var d = new Date();d.setTime(d.getTime() + (86400000 * parseFloat(daysToExpire)));expire = '; expires=' + d.toGMTString();} var path = '; path=/'; if (value.length) value=escape(value); else value='""'; return (document.cookie = escape(name) + '=' + value + expire + path);},
     get: function(name) {var cookie = document.cookie.match(new RegExp('(^|;)\\s*' + escape(name) + '=([^;\\s]*)')); return (cookie ? unescape(cookie[2]) : '');},
@@ -431,7 +431,7 @@ var Cookie = {
     accept: function() {if (typeof(navigator.cookieEnabled)=='boolean') {return navigator.cookieEnabled;} Cookie.set('_test', '1'); return (Cookie.erase('_test')=='1');}
 };
 var LocalStorage = {
-    set: function(name, value) {if(LocalStorage.accept()) localStorage.setItem(name, value);},
+    set: function(name, value) {if(LocalStorage.accept()) try{localStorage.setItem(name, value);}catch(e){}},
     get: function(name) {if(LocalStorage.accept()) {return localStorage.getItem(name)||'';} else {return '';}},
     erase: function(name) {if(LocalStorage.accept()) localStorage.removeItem(name);},
     accept: function() {return (typeof(Storage)!='undefined' && typeof(localStorage)!='undefined');}
