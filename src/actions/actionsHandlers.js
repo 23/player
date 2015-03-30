@@ -83,6 +83,7 @@ var registerActionHandlers = function($this){
     // and let the VideoHandler-method take care of playback flow. Afterwards, control is
     // handed back to the dispatcher.
     // HANDLER: AD & VIDEO
+    $this.startTimeHandled = false;
     $this.showHandlers['ad'] = $this.showHandlers['video'] = function(action){
         $this.dispatcherActive = false;
         var actions = $this.getOverlappingActions(action.position);
@@ -92,10 +93,12 @@ var registerActionHandlers = function($this){
         $this.videoActionHandler = new window.VideoActionHandler(actions, action.container, $this, function(){
             $this.dispatcherActive = true;
             if(action.normalizedStartTime==-1){
+                if(!$this.startTimeHandled) Player.set("currentTime", $this.start);
                 Player.set("playing", true);
             }else if(action.normalizedStartTime==2){
                 Player.fire("player:video:ended");
             }
+            $this.startTimeHandled = true;
         });
         return false;
     }

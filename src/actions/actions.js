@@ -39,7 +39,7 @@ Player.provide('actions',
     $this.normalizedActionsPosition = -1; // (-1 for "before", relative time from 0 to 1 during playback, 2 for "after")
     // Build default properties and merge in player settings
     Player.bind('player:settings', function(){
-        PlayerUtilities.mergeSettings($this, ['identityCountdown', 'identityAllowClose', 'identityAllowCloseAfterSeconds', 'identityCountdownTextSingular', 'identityCountdownTextPlural', 'closeCountdownTextSingular', 'closeCountdownTextPlural']);
+        PlayerUtilities.mergeSettings($this, ['identityCountdown', 'identityAllowClose', 'identityAllowCloseAfterSeconds', 'identityCountdownTextSingular', 'identityCountdownTextPlural', 'closeCountdownTextSingular', 'closeCountdownTextPlural', 'start']);
         $this.identityAllowCloseAfterSeconds = parseInt($this.identityAllowCloseAfterSeconds,10);
     });
 
@@ -74,8 +74,6 @@ Player.provide('actions',
       var ct = Player.get('currentTime');
       var d = Player.get('duration');
       var playing = Player.get('playing');
-      var ve = Player.get("videoElement");
-      var startTime = (ve&&ve.getStartTime)?Player.get("videoElement").getStartTime()||false:false;
       // Is the dispatcher active and supposed to dispatch actions?
       if($this.dispatcherActive != true) {
         return true;
@@ -232,19 +230,17 @@ Player.provide('actions',
       return true;
     }
 
-    $this.normalizeEventToPosition = function(event, ct, d, startTime){
+    $this.normalizeEventToPosition = function(event, ct, d){
       var ret;
       // Normalize actionsPosition
       switch(event){
         // In the beginning of a video, 'beforeplay' should trigger playback of prerolls
-        // After playback has ended, 'beforeplayer' indicates replay of the video, so show prerolls again
+        // After playback has ended, 'beforeplay' indicates replay of the video, so show prerolls again
         case 'player:video:beforeplay':
           if(!$this.beforeplayHandled||$this.videoEnded){
             $this.beforeplayHandled = true;
             $this.videoEnded = false;
             ret = -1; // "before"
-          }else{
-            ret = ct / d;
           }
           break;
         // 'ended' triggers postrolls
@@ -252,34 +248,29 @@ Player.provide('actions',
           ret = 2; // "after"
           $this.videoEnded = true;
           break;
-        default:
-          // If currentTime is bigger than 0 (or we receive an event confirming that playback has started),
-          // make sure that prerolls have been handled, and set actionsPosition between 0 and 1
-          // If $this.videoEnded, set actionsPosition to 2 (until next beforeplay event)
-          if((ct!=0||(startTime!=false&&startTime!=0)||event=="player:video:playing"||event=="player:video:play")&&!$this.videoEnded){
-            if($this.beforeplayHandled){
-              try {
-                if (ct/d != 1) {
-                  ret = ct / d;
-                }
-              }catch(e){
-                ret = 0;
-              }
-            }else{
-              // if beforeplay has not been handled, do so now
-              ret = -1;
-              $this.beforeplayHandled = true;
-            }
-          }else{
-            if(!$this.videoEnded){
-              // if playback has not yet started, show relevant static actions, but don't play prerolls just yet
-              ret = -1;
-              $this.ignoreVideoActions = true;
-            }else{
-              // If playback has ended, keep actionsPosition at 2, even though currentTime may be 0
-              ret = 2;
-            }
+        case 'player:video:play':
+        case 'player:video:playing':
+          if(!$this.beforeplayHandled){
+            ret = -1;
+            $this.beforeplayHandled = true;
           }
+          break;
+      }
+      if(typeof ret == "undefined"){
+        if($this.beforeplayHandled&&!$this.videoEnded){
+          try {
+            ret = ct / d;
+          }catch(e){
+            ret = 0;
+          }
+        }else{
+          if($this.videoEnded){
+            ret = 2;
+          }else{
+            ret = -1;
+            $this.ignoreVideoActions = true;
+          }
+        }
       }
       return ret;
     };
