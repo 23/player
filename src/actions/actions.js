@@ -86,7 +86,7 @@ Player.provide('actions',
         return false;
       }
 
-      $this.normalizedActionsPosition = $this.normalizeEventToPosition(event, ct, d, startTime);
+      $this.normalizedActionsPosition = $this.normalizeEventToPosition(event, ct, d);
       if(!$this.normalizeEventToPosition){return;}
 
       var videoActionActive = false;
