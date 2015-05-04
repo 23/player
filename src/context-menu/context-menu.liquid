@@ -1,0 +1,32 @@
+{% if showMenu %}
+  <div class="menu-background"></div>
+  {% if showLinkBox %}
+    <div class="link-box">
+      <h3>Share this video</h3>
+      <div class="input-wrap">
+        <input type="text" value='{{linkBoxValue}}' onclick="$(this).select();" />
+      </div>
+      <span class="close-link-box" click="$set:showMenu:false">Close</span>
+      <div class="clear"></div>
+    </div>
+  {% else %}
+    <ul class="menu-list" style="left: {{menuLeft}}px; top: {{menuTop}}px;">
+      {% if socialSharing %}
+        <li><a href="#" onclick="return false;" click="$set:linkBoxValue:url">Get {% if video_type == "clip" %}video{% else %}event{% endif %} url</a></li>
+        {% if video_type != "stream" %}
+          <li><a href="#" onclick="return false;" click="$set:linkBoxValue:url-time">Get video url at current time</a></li>
+        {% endif %}
+        <li><a href="#" onclick="return false;" click="$set:linkBoxValue:embed">Get embed code</a></li>
+        {% if video_type != "stream" %}
+          <li class=""><a href="#" onclick="return false;" click="$set:linkBoxValue:embed-time">Get embed code at current time</a></li>
+        {% endif %}
+        <li class="divider"></li>
+      {% endif %}
+      <li><a href="{{url}}/debug?{{debugParameters}}" target="_new" click="$set:showMenu:false">Debug information</a></li>
+      <li><a href="http://www.23video.com/help" target="_new" click="$set:showMenu:false">Help center</a></li>
+      <li><a href="http://www.23video.com/player" target="_new" click="$set:showMenu:false">23 Video players</a></li>
+      <li><a href="http://www.23video.com/" target="_new" click="$set:showMenu:false">About 23 Video</a></li>
+    </ul>
+  {% endif %}
+{% endif %}
+
