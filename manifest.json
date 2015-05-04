@@ -40,6 +40,7 @@
         "accessibility",
         "protection",
         "slides",
-        "slides-button"
+        "slides-button",
+        "context-menu"
     ]
 }

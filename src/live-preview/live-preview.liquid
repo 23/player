@@ -6,22 +6,5 @@
 {% endif %}
 
 {% if showLivePreview %}
-  <div class="preview-container">
-    <div class="preview-thumbnail"></div>
-    <div class="preview-background"></div>
-    <table class="preview-info"><tr><td>
-      <span class="event-title">{{video_title}}</span>
-      <br/>
-      {% if showLiveTime %}
-        <span class="event-time"><img src="{{module.path}}player-time-icon-{{previewColor}}.png" /> {{"live_on"|translate}} {% if showLocalTime != true %}{{nextStartTime}}{% else %}{{nextStartTimeLocale}}{% endif %}</span>{% if showLocalTime != true %} <span class="show-local" click="$set:showLocalTime:true">({{"show_my_local"|translate}})</span>{% endif %}
-        <br />
-      {% else %}
-        <span class="event-time"><img src="{{module.path}}player-time-icon-{{previewColor}}.png" /> {{"this_event_is_not"|translate}}</span>
-        <br />
-      {% endif %}
-      {% if streamLocation != '' %}
-        <span class="event-location"><img src="{{module.path}}player-location-icon-{{previewColor}}.png" /> {{streamLocation}}</span>
-      {% endif %}
-    </td></tr></table>
-  </div>
+  <iframe class="live-banner-iframe" src="{{url}}/banner/live/{{video_live_id}}/{{video_token}}.html?size=player&forever=1" frameborder="0" border="0" scrolling="no"></iframe>
 {% endif %}

@@ -345,7 +345,7 @@ Player.provide('core',
           else $this.playerSize = 'full';
           b.removeClass('size-tiny size-small size-medium size-large size-full');
           b.addClass('size-'+$this.playerSize);
-      }
+      };
       $this.handleSize();
       $(window).resize($this.handleSize);
       Player.getter('playerSize', function(){return $this.playerSize;});
@@ -371,24 +371,13 @@ Player.provide('core',
               });
 
               if(typeof(Player.parameters.live_id)!='undefined'){
-                // If we're embedding a specific stream, show that stream under some conditions
-                loadStreamsByDefault = false;
-                if($this.streams.length > 0) {
-                  if($this.streams[0].broadcasting_p && true) {
-                    loadStreamsByDefault = true; // the stream is actually live, show it
-                  }
-                  if($this.clips.length==0) {
-                    loadStreamsByDefault = true; // there are no recordings, the stream is the best thing to show
-                  }
-                  if($this.streams[0].next_start_time__date.length>0) {
-                    loadStreamsByDefault = true; // the stream is scheduled, show it
-                  }
-                }
+                // If we're embedding a specific stream, show that stream under some conditions - possibly letting live-preview show a banner instead
+                loadStreamsByDefault = true;
               } else if (typeof(Player.parameters.photo_id)!='undefined'||typeof(Player.parameters.album_id)!='undefined'||typeof(Player.parameters.tag)!='undefined') {
                 // If we're embedding specific clips, show those
                 loadStreamsByDefault = false;
               } else {
-                // Otherwise, prioritize the stream when streaming - otherwise now.
+                // Otherwise, prioritize the stream when streaming - otherwise not.
                 loadStreamsByDefault = currentlyStreaming;
               }
               if(loadStreamsByDefault&&$this.streams.length>0) {
@@ -399,7 +388,7 @@ Player.provide('core',
                   Player.set('error', "No video to play. Make sure you're logged in and that the player is configured correctly.");
               }
           });
-      }
+      };
       $this.bootstrap();
 
       return $this;
@@ -416,7 +405,7 @@ var PlayerUtilities = {
         }
       });
   }
-}
+};
 
 // Persist object
 var Persist = {
