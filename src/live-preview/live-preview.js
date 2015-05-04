@@ -64,7 +64,7 @@ Player.provide('live-preview',
           }
           // If streaming conditions have changed, rerender module
           if(prevShowLivePreview != $this.showLivePreview || prevNextStartTime != $this.nextStartTime) {
-              $this.render();
+              $this.render($this.onRender);
           }
       });
 
