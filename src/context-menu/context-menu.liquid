@@ -2,7 +2,7 @@
   <div class="menu-background"></div>
   {% if showLinkBox %}
     <div class="link-box">
-      <h3>Share this video</h3>
+      <h3>Share this {% if video_type == "clip" %}video{% else %}event{% endif %}</h3>
       <div class="input-wrap">
         <input type="text" value='{{linkBoxValue}}' onclick="$(this).select();" />
       </div>
