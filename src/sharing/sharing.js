@@ -41,9 +41,9 @@ Player.provide('sharing',
 
       // Helper function
       var absolutize = function(u){
-        if(!/\/\//.test(u)) u = Player.get('url')+u;
+        if(!/\/\//.test(u)) u = Player.get('mainUrl')+u;
         return u;
-      }
+      };
 
       // Bind to events
       Player.bind('player:settings', function(e,settings){
@@ -89,7 +89,7 @@ Player.provide('sharing',
           return $this.videoLink;
         });
       Player.getter('siteLink', function(){
-          return Player.get('url');
+          return Player.get('mainUrl');
         });
 
       var socialLink = function(service){
