@@ -1,13 +1,13 @@
-/* 
+/*
  MODULE: VOLUME/MUTE BUTTON
  Show a mute/sound button
- 
+
  Listens for:
  - player:video:volumechange
 */
 
-Player.provide('volume-button', 
-  {}, 
+Player.provide('volume-button',
+  {},
   function(Player,$,opts){
     var $this = this;
     $.extend($this, opts);
@@ -21,7 +21,7 @@ Player.provide('volume-button',
         if($this.volumeHandle) {
           $this.volumeHandle.on('mousedown', function(e){
             // Enable dragging and different positioning of the volume handle
-            $this.videoVolume = Player.get('volume'); 
+            $this.videoVolume = Player.get('volume');
             e.stopPropagation();
           });
           $(document).mousemove(function(e){
@@ -47,7 +47,7 @@ Player.provide('volume-button',
           });
           $this.volumeHandle.on('click', function(e){
               // Clicks on the handle shouldn't bubble to clicks on the scrubber
-              e.stopPropagation(); 
+              e.stopPropagation();
           });
           $('.volume-filled, .volume-track').click(function(e){
             console.debug(e);
@@ -81,13 +81,12 @@ Player.provide('volume-button',
 
     }
 
-    Player.bind('player:video:volumechange player:load player:video:loaded', function(e){
+    Player.bind('player:video:volumechange player:video:play player:video:pause player:load player:video:loaded', function(e){
         updateVolumeIcon();
         if($this.videoVolume==null) {
           updateVolume();
         }
-
-      });
+    });
 
     Player.bind('player:video:loaded', function(e){
       // If volume change is not supported, rerender to hide volume button
@@ -104,10 +103,10 @@ Player.provide('volume-button',
     Player.setter('volumeMuted', function(vm){
         Player.set('volume', (vm ? 0 : 1));
       });
-      
+
     return $this;
   }
-          
+
 );
 
 /* Translations for this module */

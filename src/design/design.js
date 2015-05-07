@@ -105,14 +105,14 @@ Player.provide('design',
           $this.applyDesignPreferences();
 
           // Honour `showTray`
-          $('#tray').toggle($this.showTray ? true : false);
+          $('#tray').toggle($this.showTray && Player.get('video_playable') ? true : false);
           // Honour `trayTimeout`
           if($this.showTray&&$this.trayTimeout>0) {
               var trayAnimatingIn = false;
               var triggerTrayTimeout = function(e){
                   if($this.trayTimeout<=0) return;
                   window.clearTimeout($this.trayTimeoutId);
-                  if(e&&e.hideNow){
+                  if( (e&&e.hideNow) || !Player.get('video_playable') ){
                     if(!Player.get('showSharing')&&!Player.get('browseMode')&&!Player.get('slideOverviewShown')&&$("#tray").find(".activebutton").length==0) {
                       trayAnimatingIn = false;
                       $('#tray').stop().fadeOut(150);
@@ -128,10 +128,10 @@ Player.provide('design',
                   $this.trayTimeoutId = window.setTimeout(function(){
                     triggerTrayTimeout({hideNow:true});
                   }, $this.trayTimeout);
-              }
+              };
               $(document).mousemove(triggerTrayTimeout);
               $(document).mouseleave(function(){triggerTrayTimeout({hideNow:true});});
-              Player.bind('player:browse:updated player:sharing:shareengaged', triggerTrayTimeout);
+              Player.bind('player:browse:updated player:sharing:shareengaged player:video:loaded', triggerTrayTimeout);
               triggerTrayTimeout();
           }
       });
