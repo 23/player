@@ -154,6 +154,9 @@ Player.provide('core',
           if(p) $this.settings.player_id = p[1];
       }
       $this.url = $this.protocol + '://' + $this.domain;
+      // mainUrl includes the default domain of the site - may differ from the one currently being
+      // used for embedding the player. Updated on first request to the API
+      $this.mainUrl = $this.url;
       $this.api = new Visualplatform($this.domain,[
           "/api/deck/timeline/list-slides"
       ]);
@@ -181,8 +184,9 @@ Player.provide('core',
                           if(v=='t'||v=='true') $this.settings[i]=true;
                           if(!isNaN(v)) $this.settings[i]=new Number(v)+0;
                       });
+                      $this.mainUrl = "http://"+data.site.domain;
                       Player.setDefaultLocale(data.settings.locale);
-                      Player.fire('player:settings', $this.settings)
+                      Player.fire('player:settings', $this.settings);
                   }
               }
           });
@@ -221,7 +225,7 @@ Player.provide('core',
 
           // Call the API
           $this.api.concatenate(methods, callback, function(){});
-      }
+      };
 
 
       /* SETTERS */
@@ -248,19 +252,19 @@ Player.provide('core',
           $.each($this.clips, function(i,c){
               if(c.photo_id==openObj.pi) {
                 Player.set('playing', false);
-                window.open(Player.get('url') + c.one, openObj.target);
+                window.open(Player.get('mainUrl') + c.one, openObj.target);
                 return false;
               }
-            });
-        });
+          });
+      });
       Player.setter('video_live_id', function(vli){
           $.each($this.streams, function(i,s){
               if(s.live_id==vli) {
                 s.switchTo();
                 return;
               }
-            });
-        });
+          });
+      });
       Player.setter('open_live_id', function(openObj){
           $.each($this.streams, function(i,s){
               if(s.live_id==openObj.li) {
@@ -268,13 +272,14 @@ Player.provide('core',
                 window.open(Player.get('url') + s.link, openObj.target);
                 return;
               }
-            });
-        });
+          });
+      });
 
       /* GETTERS */
       Player.getter('player_id', function(){return $this.settings.player_id;});
       Player.getter('domain', function(){return $this.domain;});
       Player.getter('url', function(){return $this.url;});
+      Player.getter('mainUrl', function(){return $this.mainUrl;});
       Player.getter('protocol', function(){return $this.protocol;});
       Player.getter('api', function(){return $this.api;});
       Player.getter('video', function(){return $this.video;});
