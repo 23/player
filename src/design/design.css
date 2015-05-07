@@ -183,6 +183,7 @@ a.button { /* standard button design as a straight link */
     bottom:0;
     left:0;
     width:100%;
+    display: none;
 }
 .tray-navigation {
     *filter: alpha(enabled=false) !important; /* IE alpha overflow hidden bug, http://labs.thesedays.com/blog/2011/06/02/ie-alpha-overflow-hidden-bug/ */

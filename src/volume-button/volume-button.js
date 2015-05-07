@@ -12,10 +12,10 @@ Player.provide('volume-button',
     var $this = this;
     $.extend($this, opts);
     $this.render();
-    
-    Player.bind('player:video:volumechange', function(e){
+
+    Player.bind('player:video:volumechange player:video:play player:video:pause player:video:loaded', function(e){
         $this.render();
-      });
+    });
 
     /* GETTERS */
     Player.getter('volumeMuted', function(){return (Player.get('volume')==0);});
