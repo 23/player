@@ -104,9 +104,14 @@ Player.provide('design',
           $this.applyDesignPreferences();
 
           // Honour `showTray`
-          $('#tray').toggle($this.showTray && Player.get('video_playable') ? true : false);
+          $('#tray').toggle($this.showTray ? true : false);
           // Honour `trayTimeout`
-          $this._minimized = false;
+          if(!Player.get('video_playable')){
+              $this._minimized = true;
+              $("#tray").addClass("minimized");
+          }else{
+              $this._minimized = false;
+          }
           if($this.showTray&&$this.trayTimeout>0) {
               var trayAnimatingIn = false;
               var triggerTrayTimeout = function(e){
