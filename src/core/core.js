@@ -420,7 +420,7 @@ var Persist = {
 };
 var Cookie = {
     set: function(name, value, daysToExpire) {var expire = ''; if (daysToExpire != undefined) {var d = new Date();d.setTime(d.getTime() + (86400000 * parseFloat(daysToExpire)));expire = '; expires=' + d.toGMTString();} var path = '; path=/'; if (value.length) value=escape(value); else value='""'; return (document.cookie = escape(name) + '=' + value + expire + path);},
-    get: function(name) {var cookie = document.cookie.match(new RegExp('(^|;)\\s*' + escape(name) + '=([^;\\s]*)')); return (cookie ? unescape(cookie[2]) : '');},
+    get: function(name) {name = name.toLowerCase(); var oCrumbles = document.cookie.split(';'); for(var i=0; i<oCrumbles.length;i++) {var oPair= oCrumbles[i].split('='); var sKey = decodeURIComponent(oPair[0].trim().toLowerCase()); var sValue = oPair.length>1?oPair[1]:''; if(sKey == name) {return decodeURIComponent(sValue);}} return '';},
     erase: function(name) {var cookie = Cookie.get(name) || true; Cookie.set(name, '', -1); return cookie;},
     accept: function() {if (typeof(navigator.cookieEnabled)=='boolean') {return navigator.cookieEnabled;} Cookie.set('_test', '1'); return (Cookie.erase('_test')=='1');}
 };
