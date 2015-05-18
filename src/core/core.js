@@ -286,6 +286,7 @@ Player.provide('core',
       Player.getter('clips', function(){return $this.clips;});
       Player.getter('streams', function(){return $this.streams;});
       Player.getter('settings', function(){return $this.settings;});
+      Player.getter('source', function(){return Player.parameters.source ? Player.parameters.source : "";});
 
       // Information about the current video
       Player.getter('video_title', function(){return ($this.video ? $this.video.title||'' : '');});
