@@ -232,7 +232,7 @@ Player.provide('slides',{
             }
             nextImg.show();
         }).attr("src", Player.get("url")+$this.currentSlide.slide_url).prependTo($this.container.find(".slide-container td"));
-    }
+    };
 
     $this.setBodyClasses = function(mode){
         $("body").removeClass("pip pip-slide pip-video sbs sbs-slide sbs-video no-slides");
@@ -269,12 +269,12 @@ Player.provide('slides',{
       // Set max-height slide img manually whenever the slide has a "100%-height" container
       var slide = $("body.sbs .slide-container img, body.pip-slide .slide-container img");
       if(slide.size()>0) {
-        slide.css("max-height", $(".slide-container").height());
+        slide.css("max-height", $(".slide-container").get(0).clientHeight);
       }
       if($this.slideMode == "sbs-slide" || $this.slideMode == "sbs-video") {
-        $('.slide-container table td').css({paddingBottom:$this.verticalPadding+'px', paddingRight:$this.horizontalPadding+'px'})
+        $('.slide-container table td').css({paddingBottom:$this.verticalPadding+'px', paddingRight:$this.horizontalPadding+'px'});
       } else {
-        $('.slide-container table td').css({paddingBottom:'', paddingRight:''})
+        $('.slide-container table td').css({paddingBottom:'', paddingRight:''});
       }
     };
     $(window).resize($this.resize);

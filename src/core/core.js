@@ -377,8 +377,19 @@ Player.provide('core',
               });
 
               if(typeof(Player.parameters.live_id)!='undefined'){
-                // If we're embedding a specific stream, show that stream under some conditions - possibly letting live-preview show a banner instead
-                loadStreamsByDefault = true;
+                // If we're embedding a specific stream, show that stream under some conditions
+                loadStreamsByDefault = false;
+                if($this.streams.length > 0) {
+                  if($this.streams[0].broadcasting_p && true) {
+                    loadStreamsByDefault = true; // the stream is actually live, show it
+                  }
+                  if($this.clips.length==0) {
+                    loadStreamsByDefault = true; // there are no recordings, the stream is the best thing to show
+                  }
+                  if(Player.get("source")!="site"){
+                    loadStreamsByDefault = true; // if player is embedded outside of the video site, let the live banner handle display
+                  }
+                }
               } else if (typeof(Player.parameters.photo_id)!='undefined'||typeof(Player.parameters.album_id)!='undefined'||typeof(Player.parameters.tag)!='undefined') {
                 // If we're embedding specific clips, show those
                 loadStreamsByDefault = false;
