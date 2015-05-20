@@ -269,7 +269,7 @@ Player.provide('slides',{
       // Set max-height slide img manually whenever the slide has a "100%-height" container
       var slide = $("body.sbs .slide-container img, body.pip-slide .slide-container img");
       if(slide.size()>0) {
-        slide.css("max-height", $(".slide-container").height());
+        slide.css("max-height", $(".slide-container").get(0).clientHeight);
       }
       if($this.slideMode == "sbs-slide" || $this.slideMode == "sbs-video") {
         $('.slide-container table td').css({paddingBottom:$this.verticalPadding+'px', paddingRight:$this.horizontalPadding+'px'})
