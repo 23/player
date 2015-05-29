@@ -329,7 +329,7 @@ Player.provide('video-display',
           // Add referer and uuid to source-url
           // Referer must not be the last parameter in the query, since "Internet" on Android
           // gets confused, if the query string ends with ".html"
-          $this.rawSource += (/\?/.test($this.rawSource) ? '&' : '?') + 'referer='+document.referrer;
+          $this.rawSource += (/\?/.test($this.rawSource) ? '&' : '?') + 'referer='+encodeURIComponent(document.referrer);
           $this.rawSource += '&uuid='+Player.get('uuid');
 
           playableContext = {
