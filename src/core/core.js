@@ -161,6 +161,7 @@ Player.provide('core',
           "/api/deck/timeline/list-slides"
       ]);
       $this.api.protocol = $this.protocol;
+      $this.permission_level = "none"; // Will be overwritten when player settings are loaded
       $this.video = null;
       $this.streams = [];
       $this.clips = [];
@@ -175,6 +176,8 @@ Player.provide('core',
               data:{player_id:$this.settings.player_id, parameters:Player.parametersString},
               callback: function(data){
                   if(data.status=='ok') {
+                      // Save the user's permission level
+                      $this.permission_level = data.permission_level;
                       // Merge in settings API, then from player parameter
                       $.extend($this.settings, data.settings);
                       $this.settings = $.extend(opts, Player.parameters);
@@ -282,6 +285,7 @@ Player.provide('core',
       Player.getter('mainUrl', function(){return $this.mainUrl;});
       Player.getter('protocol', function(){return $this.protocol;});
       Player.getter('api', function(){return $this.api;});
+      Player.getter('permission_level', function(){return $this.permission_level;});
       Player.getter('video', function(){return $this.video;});
       Player.getter('clips', function(){return $this.clips;});
       Player.getter('streams', function(){return $this.streams;});
