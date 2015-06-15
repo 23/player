@@ -214,9 +214,9 @@ Player.provide('browse',
           Player.fire('player:browse:updated');
         });
       Player.setter('browse_photo_id', function(id){
-          if(Player.get('playlistClickMode')=='link') {
+          if(Player.get('playlistClickMode')=='link' && Player.get('permission_level')!='none') {
               Player.set('open_photo_id', {pi:id, target:"_blank"});
-          } else if(Player.get('playlistClickMode')=='top'){
+          } else if(Player.get('playlistClickMode')=='top' && Player.get('permission_level')!='none'){
               Player.set('open_photo_id', {pi:id, target:"_top"});
           } else {
               Player.set('video_photo_id', id);
