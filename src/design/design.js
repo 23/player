@@ -115,13 +115,13 @@ Player.provide('design',
                   if( (e&&e.hideNow) || !Player.get('video_playable') ){
                     if(!Player.get('showSharing')&&!Player.get('browseMode')&&!Player.get('slideOverviewShown')&&$("#tray").find(".activebutton").length==0) {
                       trayAnimatingIn = false;
-                      $('#tray').stop().fadeOut(150);
+                      $('#tray').stop().animate({"opacity": 0}, 150);
                       $('body').addClass("hide-cursor");
                     }
                     return;
                   }
                   if(!trayAnimatingIn){
-                    $('#tray').stop().fadeIn(150, function(){trayAnimatingIn=false;});
+                    $('#tray').stop().css({"display": "block"}).animate({"opacity": 1}, 150, function(){trayAnimatingIn=false;});
                     trayAnimatingIn = true;
                   }
                   $('body').removeClass("hide-cursor");
