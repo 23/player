@@ -130,7 +130,7 @@ Player.provide('analytics',
             if(e=='player:video:ended') _sendReports();
           }else{
             var timestamp = parseInt(Player.get("videoElement").getProgramDate()/1000, 10);
-            if(!isNaN(timestamp) && Player.get('playing')) {
+            if(!isNaN(timestamp) && Player.get('playing') && timestamp >= 0) {
               _report('play', {play_timestamp:timestamp});
             }
           }
