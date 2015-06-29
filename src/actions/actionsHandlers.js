@@ -88,7 +88,9 @@ var registerActionHandlers = function($this){
         $this.dispatcherActive = false;
         var actions = $this.getOverlappingActions(action.position);
         $.each(actions, function(i,a){
-            $this.activeActions[a.action_id] = a;
+            if(a.type == "video" || a.type == "ad"){
+                $this.activeActions[a.action_id] = a;
+            }
         });
         $this.videoActionHandler = new window.VideoActionHandler(actions, action.container, $this, function(){
             $this.dispatcherActive = true;
@@ -101,7 +103,7 @@ var registerActionHandlers = function($this){
             $this.startTimeHandled = true;
         });
         return false;
-    }
+    };
 
     // HANDLER: BANNER
     // This handler mimics the showHandler for action type "image" expect it makes sure that the VAST feed
