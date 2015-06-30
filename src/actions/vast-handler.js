@@ -1,4 +1,4 @@
-window.VastHandler = function(){
+window.VastHandler = function(videoActionHandler){
 
     $this = this;
 
@@ -16,7 +16,13 @@ window.VastHandler = function(){
             return;
         }
 
-        $this.loadAd();
+        if(typeof $this.action.pendingData != "undefined"){
+            var data = $this.action.pendingData;
+            delete $this.action.pendingData;
+            $this.parseVastResponse(data);
+        }else{
+            $this.loadAd();
+        }
     };
 
     $this.loadAd = function(){
@@ -48,11 +54,23 @@ window.VastHandler = function(){
         }
 
         // Check if feed contains an ad
-        var ad = VAST.find("Ad").eq(0);
-        var inline = ad.find("InLine").eq(0);
-        if (ad.length < 1) {
+        var ads = VAST.find("Ad");
+        var adIndex = $this.action.adIndex || 0;
+        if (ads.eq(adIndex).length < 1) {
             return $this.callback(false);
         }
+
+        // Possibly queue up the next ad
+        if (ads.eq(adIndex+1).length > 0) {
+            videoActionHandler.insertAction($.extend({
+                "pendingData": data,
+                "adIndex": adIndex+1
+            }, $this.action));
+        }
+
+        // Select ad to display
+        var ad = ads.eq(adIndex);
+        var inline = ad.find("InLine").eq(0);
 
         // Check if feed is a wrapper
         var wrapper = ad.find("Wrapper VASTAdTagURI").eq(0);

@@ -3,13 +3,17 @@ window.VideoActionHandler = function(actions, container, module, callback){
 
     var $this = this;
     $this.currentActionIndex = -1;
-    $this.vastHandler = new window.VastHandler();
+    $this.vastHandler = new window.VastHandler($this);
 
     if(actions.length < 1){
         return callback();
     }
 
     $this.eingebaut = Player.get("videoElement");
+
+    $this.insertAction = function(action){
+        actions.splice($this.currentActionIndex+1, 0, action);
+    };
 
     $this.playNextAction = function(){
 
@@ -39,7 +43,7 @@ window.VideoActionHandler = function(actions, container, module, callback){
         }
 
         if($this.currentAction.type == "ad"){
-            if(!$this.currentAction.adLoaded){
+            if(!$this.currentAction.adLoaded || typeof $this.currentAction.pendingData != "undefined"){
                 return $this.vastHandler.initAd($this.currentAction, function(success){
                     if(success){
                         $this.currentAction.adLoaded = true;
