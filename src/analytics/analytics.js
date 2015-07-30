@@ -153,6 +153,10 @@ Player.provide('analytics',
       Player.bind('player:sharing:shareengaged', function(e){
           Player.set('analyticsEvent', {event:'shareEngaged'});
         });
+      // Listen for subtitles being activated
+      Player.bind('player:subtitlesactivated', function(e){
+          Player.set('analyticsEvent', {event:'subtitlesActivated'});
+      });
 
       // General method to report events
       Player.setter('analyticsEvent', function(e){

@@ -69,6 +69,7 @@ Player.provide('subtitles',
               _loadSubtitleLocale(sl);
               $this.subtitleLocale = sl;
               $this.enableSubtitles = true;
+              Player.fire("player:subtitlesactivated");
           } else {
               $this.subtitleLocale = '';
               $this.subtitles = [];
