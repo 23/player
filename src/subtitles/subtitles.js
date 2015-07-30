@@ -42,7 +42,7 @@ Player.provide('subtitles',
         $this.hasSubtitles = false;
         Player.set('subtitles', '');
         Player.fire('player:subtitlechange');
-      }
+      };
 
       /* GETTERS */
       Player.getter('enableSubtitles', function(){return $this.enableSubtitles;});
@@ -118,7 +118,7 @@ Player.provide('subtitles',
         } else {
           Player.set('subtitleText', '');
         }
-      }
+      };
       $this.possiblyInsertSubtitleTracks = function(){
         if (/iPhone|iPad/.test(navigator.userAgent)) {
           var ve = Player.get("videoElement");
@@ -222,7 +222,7 @@ Player.provide('subtitles',
               Player.fail
           );
         }
-      }
+      };
 
       _reset();
       return $this;

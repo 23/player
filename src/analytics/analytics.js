@@ -55,7 +55,7 @@ Player.provide('analytics',
         if($this.analyticsReportMethod=='individual') {
           _sendReports();
         }
-      }
+      };
       var _sendReports = function(){
         if(_queuedReports.length>0) {
           // Checkout reports
@@ -72,12 +72,12 @@ Player.provide('analytics',
           }
         }
         if($this.analyticsReportMethod=='batch') _queueSendReports();
-      }
+      };
       var _queueSendReports = function(delay){
         window.setTimeout(_sendReports, (delay||$this.timeReportRate)*1000);
-      }
-    
-    
+      };
+
+
       // Each report should include extra data as context
       var _context = function(o){
         $.extend(o,Player.parameters);
@@ -93,8 +93,8 @@ Player.provide('analytics',
         o.referer = document.referrer;
         o.uuid = Player.get('uuid');
         return o;
-      }
-      
+      };
+
       // Bind to events for player load
       Player.bind('player:video:loaded', function(e){
           Player.set('analyticsEvent', {event:'load'});
