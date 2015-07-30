@@ -49,7 +49,7 @@ Player.provide('subtitles',
       Player.getter('hasSubtitles', function(){return $this.hasSubtitles;});
       Player.getter('subtitleText', function(){return $this.subtitleText;});
       Player.getter('subtitles', function(){return $this.subtitles;});
-      Player.getter('locales', function(){$this.locales});
+      Player.getter('locales', function(){return $this.locales;});
       Player.getter('localesArray', function(){
           var ret = [];
           $.each($this.locales, function(i,o){
