@@ -31,11 +31,14 @@ Player.provide('context-menu',{
         });
         return paramString;
     });
+    Player.getter('advancedContextMenu', function(){return $this.advancedContextMenu;});
+
 
     /* SETTERS */
     Player.setter('showMenu', function(e){
         $this.showMenu = !!e;
         if($this.showMenu){
+            $this.advancedContextMenu = e.altKey;
             $this.showLinkBox = false;
             $this.menuLeft = e.pageX;
             if($this.menuLeft + 182 > $(window).width()){
@@ -69,10 +72,23 @@ Player.provide('context-menu',{
             iframe.attr("src", iframe.attr("src") + "&start=" + Math.round(Player.get("currentTime")));
             $this.linkBoxValue = embed[0].outerHTML;
             break;
+        case "object-id":
+            $this.linkBoxValue = (Player.get("video_type") == "clip" ? Player.get("video_photo_id") : Player.get("video_live_id"));
+            break;
+        case "object-token":
+            $this.linkBoxValue = Player.get("video_token");
+            break;
+        case "source-link":
+            $this.linkBoxValue = Player.get("qualities")[Player.get("quality")].source;
+            break;
         }
         $this.showLinkBox = true;
         $this.render();
     });
+    Player.setter('logVideoObject', function(value){
+        console.log(Player.get("video"));
+    });
+
 
     $(document).on("contextmenu", function(e) {
         Player.set('showMenu', e);
@@ -86,4 +102,56 @@ Player.provide('context-menu',{
     });
 
     return $this;
+});
+
+Player.translate("share_this_video",{
+    en: "Share this video"
+});
+Player.translate("share_this_event",{
+    en: "Share this event"
+});
+Player.translate("close",{
+    en: "Close"
+});
+Player.translate("get_video_url",{
+    en: "Get video url"
+});
+Player.translate("get_event_url",{
+    en: "Get event url"
+});
+Player.translate("get_video_url_at_current",{
+    en: "Get video url at current time"
+});
+Player.translate("get_embed_code",{
+    en: "Get embed code"
+});
+Player.translate("get_embed_code_at_current",{
+    en: "Get embed code at current time"
+});
+Player.translate("open_in_admin",{
+    en: "Open in administration"
+});
+Player.translate("get_id",{
+    en: "Get id"
+});
+Player.translate("get_token",{
+    en: "Get token"
+});
+Player.translate("get_link_to_source",{
+    en: "Get link to source"
+});
+Player.translate("log_video_object",{
+    en: "Log video object to console"
+});
+Player.translate("debug_information",{
+    en: "Debug information"
+});
+Player.translate("help_center",{
+    en: "Help center"
+});
+Player.translate("23_video_players",{
+    en: "23 Video players"
+});
+Player.translate("about_23_video",{
+    en: "About 23 Video"
 });
