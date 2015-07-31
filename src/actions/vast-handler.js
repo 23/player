@@ -96,7 +96,7 @@ window.VastHandler = function(videoActionHandler){
 
         // Playback events to be tracked and reported
         if (typeof $this.action.events == "undefined") $this.action.events = [];
-        var impressions = ad.find("Impression");
+        var impressions = ad.find("Impression"); // Impression reporting
         $.each(impressions, function(i,impression){
             if($(impression).text()!=""){
                 $this.action.events.push({
@@ -105,10 +105,20 @@ window.VastHandler = function(videoActionHandler){
                 });
             }
         });
+        var errors = ad.find("Error"); // Error reporting
+        $.each(errors, function(i,error){
+            if($(error).text()!=""){
+                $this.action.events.push({
+                    "name": "error",
+                    "url": $.trim($(error).text())
+                });
+            }
+        });
+        var trackingevents = [];
         if($this.action.type == "ad"){
-            var trackingevents = ad.find("Creative Linear").eq(0).find("TrackingEvents Tracking");
+            trackingevents = ad.find("Creative Linear").eq(0).find("TrackingEvents Tracking");
         }else if($this.action.type == "banner"){
-            var trackingevents = ad.find("Creative NonLinearAds").eq(0).find("TrackingEvents Tracking");
+            trackingevents = ad.find("Creative NonLinearAds").eq(0).find("TrackingEvents Tracking");
         }
         $.each(trackingevents, function(i, event){
             var $event = $(event);
@@ -120,10 +130,11 @@ window.VastHandler = function(videoActionHandler){
             }
         });
 
+        var clickthrough = [];
         if($this.action.type == "ad"){
-            var clickthrough = ad.find("Creative Linear").eq(0).find("VideoClicks ClickThrough").eq(0);
+            clickthrough = ad.find("Creative Linear").eq(0).find("VideoClicks ClickThrough").eq(0);
         }else if($this.action.type == "banner"){
-            var clickthrough = ad.find("Creative NonLinear").eq(0).find("NonLinearClickThrough").eq(0);
+            clickthrough = ad.find("Creative NonLinear").eq(0).find("NonLinearClickThrough").eq(0);
         }
         if(clickthrough.length>0) $this.action.link = $.trim(clickthrough.text());
 
@@ -154,6 +165,7 @@ window.VastHandler = function(videoActionHandler){
                     $this.parseVastResponse(data);
                 },
                 error: function(data){
+                    $this.eventHandlers["error"]();
                     $this.callback(false);
                 }
             });
@@ -213,6 +225,9 @@ window.VastHandler = function(videoActionHandler){
     };
     $this.eventHandlers["close"] = function(){
         $this.reportEvent("close", false);
+    };
+    $this.eventHandlers["error"] = function(){
+        $this.reportEvent("error", false);
     };
 
     $this.reportEvent = function(event, once){
