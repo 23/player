@@ -52,7 +52,7 @@ var PlayerVideo = function(Player,$,type,data){
         width:0,
         height:0,
         length:0
-    }
+    };
     $.extend($v, defaults, data);
     $v.type = type; // 'clip' or 'stream'
     $v.populated = false;
@@ -80,7 +80,7 @@ var PlayerVideo = function(Player,$,type,data){
         $v = Player.fire('player:video:populate', $v);
         $v.populated = true;
         callback($v);
-    }
+    };
 
     // Reload the clip/meta from API
     $v.reload = function(callback, fail){
@@ -109,7 +109,7 @@ var PlayerVideo = function(Player,$,type,data){
         },
         fail
       );
-    }
+    };
 
     $v.switchTo = function(){
         // The first time the clip is activated, populate it
@@ -120,10 +120,10 @@ var PlayerVideo = function(Player,$,type,data){
         Player.set('video', $v);
         Player.fire('player:video:loaded', $v);
         Player.set('video', $v);
-    }
+    };
 
     return $v;
-}
+};
 
 Player.provide('core',
   {

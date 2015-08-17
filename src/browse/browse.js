@@ -51,7 +51,7 @@ Player.provide('browse',
               $this.browseRight.click(function(){$this.scroll(+1);});
               $this.handleScrollThumbs();
           }
-      }
+      };
       $this.handleScrollThumbs = function(){
           try {
               var itemsWidth = $this.browseItems.width();
@@ -66,7 +66,7 @@ Player.provide('browse',
           }catch(e){
               window.setTimeout($this.handleScrollThumbs, 1000);
           }
-      }
+      };
       $this.scroll = function(direction){
           try {
               var itemsWidth = $this.browseItems.width();
@@ -78,7 +78,7 @@ Player.provide('browse',
                   $this.handleScrollThumbs();
               });
           }catch(e){}
-      }
+      };
       $(window).bind('load resize', $this.handleScrollThumbs);
 
       // Load recommendations through the API
@@ -114,19 +114,19 @@ Player.provide('browse',
               Player.fire('player:browse:loaded');
               Player.fire('player:browse:updated');
           }
-      }
+      };
 
 
       // Helper methods for skipping in and looping playlists
       $this.getCurrentVideoIndex = function(){
-        var current_photo_id = Player.get('video_photo_id')
+        var current_photo_id = Player.get('video_photo_id');
         var currentIndex = -1;
         var c = Player.get('clips');
         c.each(function(clip,i){
           if(clip.photo_id==current_photo_id) currentIndex = i;
         });
         return currentIndex;
-      }
+      };
       $this.getNextVideo = function(){
         var c = Player.get('clips');
         var i = $this.getCurrentVideoIndex() + 1;
@@ -135,20 +135,20 @@ Player.provide('browse',
           i = 0;
         }
         return c[i];
-      }
+      };
       $this.getPreviousVideo = function(){
         var c = Player.get('clips');
         var i = $this.getCurrentVideoIndex() - 1;
         if(i<0) i = 0;
         return c[i];
-      }
+      };
       $this.playNextVideo = function(){
         Player.set('browse_photo_id', $this.getNextVideo().photo_id);
-      }      
+      };
       $this.playPreviousVideo = function(){
         Player.set('browse_photo_id', $this.getPreviousVideo().photo_id);
-      }      
-      
+      };
+
       // Bind to events
       $this.firstLoad = true;
       Player.bind('player:video:loaded', function(){
@@ -188,13 +188,13 @@ Player.provide('browse',
         });
 
       /* GETTERS */
-      Player.getter('showBrowse', function(){return $this.showBrowse});
-      Player.getter('browseMode', function(){return $this.browseMode});
-      Player.getter('recommendationMethod', function(){return $this.recommendationMethod});
-      Player.getter('hasRecommendations', function(){return (Player.get('clips').length+Player.get('streams').length>1)});
-      Player.getter('playlistClickMode', function(){return $this.playlistClickMode});
-      Player.getter('browseThumbnailWidth', function(){return $this.browseThumbnailWidth});
-      Player.getter('browseThumbnailHeight', function(){return $this.browseThumbnailHeight});
+      Player.getter('showBrowse', function(){return $this.showBrowse;});
+      Player.getter('browseMode', function(){return $this.browseMode;});
+      Player.getter('recommendationMethod', function(){return $this.recommendationMethod;});
+      Player.getter('hasRecommendations', function(){return (Player.get('clips').length+Player.get('streams').length>1);});
+      Player.getter('playlistClickMode', function(){return $this.playlistClickMode;});
+      Player.getter('browseThumbnailWidth', function(){return $this.browseThumbnailWidth;});
+      Player.getter('browseThumbnailHeight', function(){return $this.browseThumbnailHeight;});
 
       /* SETTERS */
       Player.setter('showBrowse', function(sb){
