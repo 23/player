@@ -154,11 +154,8 @@ Player.provide('browse',
       Player.bind('player:video:loaded', function(){
           if($this.firstLoad) {
               PlayerUtilities.mergeSettings($this, ['showBrowse', 'browseMode', 'recommendationMethod', 'playlistClickMode', 'loop']);
-              $this.loadRecommendations();
               Player.fire('player:browse:updated');
               $this.firstLoad = false;
-          } else {
-              Player.set('browseMode', false);
           }
         });
       Player.bind('player:video:playing', function(){

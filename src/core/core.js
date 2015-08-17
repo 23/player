@@ -166,50 +166,66 @@ Player.provide('core',
       $this.streams = [];
       $this.clips = [];
 
+      $this.onSettingsLoaded = function(data){
+          if(data.status=='ok') {
+              // Save //TODO: he user's permission level
+              $this.permission_level = data.permission_level;
+              // Merge in settings API, then from player parameter
+              $.extend($this.settings, data.settings);
+              $this.settings = $.extend(opts, Player.parameters);
+              // Normalize numbers and bools
+              $.each($this.settings, function(i,v){
+                  if(v=='f'||v=='false') $this.settings[i]=false;
+                  if(v=='t'||v=='true') $this.settings[i]=true;
+                  if(!isNaN(v)) $this.settings[i]=new Number(v)+0;
+              });
+              $this.mainUrl = "http://"+data.site.domain;
+              Player.setDefaultLocale(data.settings.locale);
+              Player.fire('player:settings', $this.settings);
+          }
+      };
+
+      $this.onLiveLoaded = function(data){
+          if(data.status=='ok') {
+              $.each(data.live, function(i,stream){
+                  if(i==0 && $this.streams.length > 0) return; // If the first live object has already been provided, skip the first
+                  var v = new PlayerVideo(Player,$,'stream',stream);
+                  $this.streams.push(v);
+                  if (!v.broadcasting_p && typeof(Player.parameters['stream_preview_p'])!='undefined' && Player.parameters['stream_preview_p']) {
+                      v.reload();
+                  }
+              });
+          }
+      };
+
+      $this.onPhotoLoaded = function(data){
+          if(data.status=='ok') {
+              $.each(data.photos, function(i,photo){
+                  if(i==0 && $this.clips.length > 0) return; // If the first photo object has already been provided, skip the first
+                  $this.clips.push(new PlayerVideo(Player,$,'clip',photo));
+              });
+          }
+      };
+
       // METHODS FOR BOOSTRAPPING
       $this.load = function(callback){
           var methods = [];
 
           // Load settings for the player from 23 Video
-          methods.push({
-              method:'/api/player/settings',
-              data:{player_id:$this.settings.player_id, parameters:Player.parametersString},
-              callback: function(data){
-                  if(data.status=='ok') {
-                      // Save the user's permission level
-                      $this.permission_level = data.permission_level;
-                      // Merge in settings API, then from player parameter
-                      $.extend($this.settings, data.settings);
-                      $this.settings = $.extend(opts, Player.parameters);
-                      // Normalize numbers and bools
-                      $.each($this.settings, function(i,v){
-                          if(v=='f'||v=='false') $this.settings[i]=false;
-                          if(v=='t'||v=='true') $this.settings[i]=true;
-                          if(!isNaN(v)) $this.settings[i]=new Number(v)+0;
-                      });
-                      $this.mainUrl = "http://"+data.site.domain;
-                      Player.setDefaultLocale(data.settings.locale);
-                      Player.fire('player:settings', $this.settings);
-                  }
-              }
-          });
+          if(!window.settingsData){
+              methods.push({
+                  method:'/api/player/settings',
+                  data:{player_id:$this.settings.player_id, parameters:Player.parametersString},
+                  callback: $this.onSettingsLoaded
+              });
+          }
 
           // Load live streams
           $this.streams = [];
           methods.push({
               method:'/api/live/list',
               data:$.extend(Player.parameters, {upcoming_p:1, ordering:'streaming', player_id:$this.settings.player_id}),
-              callback: function(data){
-                  if(data.status=='ok') {
-                      $.each(data.live, function(i,stream){
-                          var v = new PlayerVideo(Player,$,'stream',stream);
-                          $this.streams.push(v);
-                          if (!v.broadcasting_p && typeof(Player.parameters['stream_preview_p'])!='undefined' && Player.parameters['stream_preview_p']) {
-                            v.reload();
-                          }
-                      });
-                  }
-              }
+              callback: $this.onLiveLoaded
           });
 
           // Load on-demand clips
@@ -217,13 +233,7 @@ Player.provide('core',
           methods.push({
               method:'/api/photo/list',
               data:$.extend({size:10, include_actions_p:1}, Player.parameters, {player_id:$this.settings.player_id}),
-              callback: function(data){
-                  if(data.status=='ok') {
-                      $.each(data.photos, function(i,photo){
-                          $this.clips.push(new PlayerVideo(Player,$,'clip',photo));
-                      });
-                  }
-              }
+              callback: $this.onPhotoLoaded
           });
 
           // Call the API
@@ -368,47 +378,69 @@ Player.provide('core',
       }
       Player.getter('uuid', function(){return $this.uuid;});
 
+      $this.onDataLoaded = function(){
+          $this.loaded = true;
+          Player.fire('player:loaded');
+
+          var currentlyStreaming = false;
+          $.each($this.streams, function(i,s){
+              if(s.streaming_p) currentlyStreaming = true;
+          });
+
+          if(typeof(Player.parameters.live_id)!='undefined'){
+              // If we're embedding a specific stream, show that stream under some conditions
+              loadStreamsByDefault = false;
+              if($this.streams.length > 0) {
+                  if($this.streams[0].broadcasting_p && true) {
+                      loadStreamsByDefault = true; // the stream is actually live, show it
+                  }
+                  if($this.clips.length==0) {
+                      loadStreamsByDefault = true; // there are no recordings, the stream is the best thing to show
+                  }
+                  if(Player.get("source")!="site"){
+                      loadStreamsByDefault = true; // if player is embedded outside of the video site, let the live banner handle display
+                  }
+              }
+          } else if (typeof(Player.parameters.photo_id)!='undefined'||typeof(Player.parameters.album_id)!='undefined'||typeof(Player.parameters.tag)!='undefined') {
+              // If we're embedding specific clips, show those
+              loadStreamsByDefault = false;
+          } else {
+              // Otherwise, prioritize the stream when streaming - otherwise not.
+              loadStreamsByDefault = currentlyStreaming;
+          }
+          if(loadStreamsByDefault&&$this.streams.length>0) {
+              $this.streams[0].switchTo(); // live stream is possible
+          } else if($this.clips.length>0) {
+              $this.clips[0].switchTo(); // otherwise show the clip
+          } else {
+              Player.set('error', "No video to play. Make sure you're logged in and that the player is configured correctly.");
+          }
+      };
+
       // Load the player
       $this.bootstrap = function(){
           Player.fire('player:init');
-          $this.load(function(){
-              $this.loaded = true;
-              Player.fire('player:loaded');
-
-              var currentlyStreaming = false;
-              $.each($this.streams, function(i,s){
-                if(s.streaming_p) currentlyStreaming = true;
-              });
-
-              if(typeof(Player.parameters.live_id)!='undefined'){
-                // If we're embedding a specific stream, show that stream under some conditions
-                loadStreamsByDefault = false;
-                if($this.streams.length > 0) {
-                  if($this.streams[0].broadcasting_p && true) {
-                    loadStreamsByDefault = true; // the stream is actually live, show it
+          if((window.photoData || window.liveData) && window.settingsData){
+              // When a media object is provided as part of the player's html,
+              // we need to allow for other modules to be loaded, before we bootstrap
+              // the player. This is not needed when data is obtained through ajax calls
+              window.setTimeout(function(){
+                  $this.onSettingsLoaded(window.settingsData);
+                  if(window.photoData){
+                      $this.onPhotoLoaded(window.photoData);
+                  }else if(window.liveData){
+                      $this.onLiveLoaded(window.liveData);
                   }
-                  if($this.clips.length==0) {
-                    loadStreamsByDefault = true; // there are no recordings, the stream is the best thing to show
-                  }
-                  if(Player.get("source")!="site"){
-                    loadStreamsByDefault = true; // if player is embedded outside of the video site, let the live banner handle display
-                  }
-                }
-              } else if (typeof(Player.parameters.photo_id)!='undefined'||typeof(Player.parameters.album_id)!='undefined'||typeof(Player.parameters.tag)!='undefined') {
-                // If we're embedding specific clips, show those
-                loadStreamsByDefault = false;
-              } else {
-                // Otherwise, prioritize the stream when streaming - otherwise not.
-                loadStreamsByDefault = currentlyStreaming;
-              }
-              if(loadStreamsByDefault&&$this.streams.length>0) {
-                  $this.streams[0].switchTo(); // live stream is possible
-              } else if($this.clips.length>0) {
-                  $this.clips[0].switchTo(); // otherwise show the clip
-              } else {
-                  Player.set('error', "No video to play. Make sure you're logged in and that the player is configured correctly.");
-              }
-          });
+                  $this.onDataLoaded();
+                  window.setTimeout(function(){
+                      $this.load(function(){
+                          Player.fire("player:browse:loaded");
+                      });
+                  }, $this.settings.browseMode ? 1 : 3500);
+              }, 10);
+          }else{
+              $this.load($this.onDataLoaded);
+          }
       };
       $this.bootstrap();
 
