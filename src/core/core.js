@@ -428,7 +428,8 @@ Player.provide('core',
                   $this.onSettingsLoaded(window.settingsData);
                   if(window.photoData){
                       $this.onPhotoLoaded(window.photoData);
-                  }else if(window.liveData){
+                  }
+                  if(window.liveData){
                       $this.onLiveLoaded(window.liveData);
                   }
                   $this.onDataLoaded();
