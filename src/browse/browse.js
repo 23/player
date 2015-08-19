@@ -158,6 +158,9 @@ Player.provide('browse',
               $this.firstLoad = false;
           }
         });
+      Player.bind('player:data:loaded', function(){
+          $this.loadRecommendations();
+      });
       Player.bind('player:video:playing', function(){
           Player.set('browseMode', false);
       });
