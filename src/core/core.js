@@ -435,12 +435,15 @@ Player.provide('core',
                   $this.onDataLoaded();
                   window.setTimeout(function(){
                       $this.load(function(){
-                          Player.fire("player:browse:loaded");
+                          Player.fire("player:data:loaded");
                       });
                   }, $this.settings.browseMode ? 1 : 3500);
               }, 10);
           }else{
-              $this.load($this.onDataLoaded);
+              $this.load(function(){
+                  $this.onDataLoaded();
+                  Player.fire("player:data:loaded");
+              });
           }
       };
       $this.bootstrap();
