@@ -360,7 +360,6 @@ Player.provide('video-display',
             try {
               $this.video.setContext(playableContext);
             }catch(e){};
-            playableSource = '';
             playableContext = null;
           }
           try {
@@ -369,7 +368,7 @@ Player.provide('video-display',
                   $this.video.setPlaying(playing);
               }
           }catch(e){
-              $this._queuePlay = true;
+              $this._queuePlay = !!playing;
           }
       });
       Player.setter('paused', function(paused){
