@@ -255,8 +255,9 @@ window.VastHandler = function(videoActionHandler){
     };
 
     $this.ajaxReport = function(url){
+        var url_replaced = url.replace(/\[timestamp\]|\[random\]/g, (new Date()).getTime()).replace(/\[referrer\]/g, document.referrer);
         $.ajax({
-            url: url,
+            url: url_replaced,
             dataType: "eventReport",
             xhrFields: {
                 withCredentials: true
