@@ -22,16 +22,11 @@
           bottom:auto;
           left:auto;
       {% endcase %}
+      width: {{logoWidth}}px;
+      height: {{logoHeight}}px;
     ">
     <a href="{{siteLink}}">
-      <img
-          src="{{logoSource}}"
-          style="
-                 max-width:{{logoWidth}}px;
-                 max-height:{{logoHeight}}px;
-                 opacity:{{logoAlpha}}
-                 "
-          />
+      <img src="{{logoSource}}" style="opacity:{{logoAlpha}}" />
     </a>
   </div>
 {% endif %}
