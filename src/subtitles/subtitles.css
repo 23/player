@@ -1,11 +1,14 @@
 .subtitles-container {
     position:absolute;
-    bottom:45px;
+    bottom:10px;
     width:100%;
     text-align:center;
     font-size:17px;
     line-height:29px;
     text-align:center;
+}
+.tray-shown .subtitles-container {
+    bottom: 45px;
 }
 .subtitles-container span {
     padding:3px 5px;
