@@ -202,7 +202,7 @@ Player.provide('actions',
           if($this.showHandlers[action.type]) {
             return $this.showHandlers[action.type](action);
           }
-
+          Player.fire("player:action:activated", action);
         } else if(!actionActive && $this.activeActions[action.action_id]) {
           // Deactivate action by calling hide handler and then unloading the container
           // If the hide handler return true, it will be responsible for unloading the containers
@@ -215,6 +215,7 @@ Player.provide('actions',
             delete action.parent;
             delete $this.activeActions[action.action_id];
           }
+          Player.fire("player:action:deactivated", action);
         }
       });
 
