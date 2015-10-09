@@ -199,10 +199,12 @@ Player.provide('actions',
           }
 
           // Call the relevant showhandler, if it exists
+          var result;
           if($this.showHandlers[action.type]) {
-            return $this.showHandlers[action.type](action);
+            result = $this.showHandlers[action.type](action);
           }
           Player.fire("player:action:activated", action);
+          return result;
         } else if(!actionActive && $this.activeActions[action.action_id]) {
           // Deactivate action by calling hide handler and then unloading the container
           // If the hide handler return true, it will be responsible for unloading the containers
