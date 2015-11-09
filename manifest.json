@@ -7,6 +7,7 @@
     "glueLocation": "../glue/",
     "dependencies": [
         "http://videos.23video.com/resources/um/script/swfobject/swfobject.js",
+        "http://videos.23video.com/resources/um/script/hls.min.js",
         "../eingebaut/eingebaut.js",
         "../visualplatform.js/visualplatform.js"
     ],
