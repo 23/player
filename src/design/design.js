@@ -112,13 +112,13 @@ Player.provide('design',
               $('body').removeClass("tray-shown");
           }
           // Honour `trayTimeout`
-          if(!Player.get('video_playable')){
-              $this._minimized = true;
-              $("#tray").addClass("minimized");
-          }else{
-              $this._minimized = false;
-          }
           if($this.showTray&&$this.trayTimeout>0) {
+              if(!Player.get('video_playable')){
+                  $this._minimized = true;
+                  $("#tray").addClass("minimized");
+              }else{
+                  $this._minimized = false;
+              }
               var trayAnimatingIn = false;
               var triggerTrayTimeout = function(e){
                   if($this.trayTimeout<=0) return;
