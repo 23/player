@@ -83,9 +83,7 @@ Player.provide('design',
           }
       });
 
-      // SHOW TRAY AND TIME IT OUT
-      // Handle settings
-      $this.trayTimeoutId = null;
+
       Player.bind('player:settings', function(e){
           PlayerUtilities.mergeSettings($this, ['showTray', 'trayTimeout', 'verticalPadding', 'horizontalPadding', 'trayAlpha','trayBackgroundColor','trayTextColor','trayFont','trayTitleFontSize','trayTitleFontWeight','trayContentFontSize','trayContentFontWeight', 'scrubberColor']);
           $this.trayTitleFontSize = $this.trayContentFontSize * 1.3;
@@ -103,49 +101,58 @@ Player.provide('design',
               $this.trayBackgroundColorRGBA = $this.trayBackgroundColor;
           }
           $this.applyDesignPreferences();
-
-          // Honour `showTray`
-          if($this.showTray && Player.get('video_playable')){
-              $('#tray').show();
-              $('body').addClass("tray-shown");
-          }else{
-              $('#tray').hide();
-              $('body').removeClass("tray-shown");
-          }
-          // Honour `trayTimeout`
-          if($this.showTray&&$this.trayTimeout>0) {
-              var trayAnimatingIn = false;
-              var triggerTrayTimeout = function(e){
-                  if($this.trayTimeout<=0) return;
-                  window.clearTimeout($this.trayTimeoutId);
-                  if( (e&&e.hideNow) || !Player.get('video_playable') ){
-                    if(!Player.get('showSharing')&&!Player.get('browseMode')&&!Player.get('slideOverviewShown')&&$("#tray").find(".activebutton").length==0) {
-                      trayAnimatingIn = false;
-                      $('#tray').stop().animate({"opacity": 0}, 150, function(){
-                        $(this).hide();
-                        $('body').removeClass("tray-shown");
-                      });
-                      $('body').addClass("hide-cursor");
-                    }
-                    return;
-                  }
-                  if(!trayAnimatingIn){
-                    $('#tray').stop().show().animate({"opacity": 1}, 150, function(){trayAnimatingIn=false;});
-                    $('body').addClass("tray-shown");
-                    trayAnimatingIn = true;
-                  }
-                  $('body').removeClass("hide-cursor");
-                  $this.trayTimeoutId = window.setTimeout(function(){
-                    triggerTrayTimeout({hideNow:true});
-                  }, $this.trayTimeout);
-              };
-              $(document).mousemove(triggerTrayTimeout);
-              $(document).mouseleave(function(){triggerTrayTimeout({hideNow:true});});
-              Player.bind('player:browse:updated player:sharing:shareengaged player:video:loaded', triggerTrayTimeout);
-              triggerTrayTimeout();
-          }
       });
 
+      // Show tray and time it out
+      var _trayTimeoutId = null;
+      var _trayAnimatingOut = false;
+      var _showTray = function(){
+          window.clearTimeout(_trayTimeoutId);
+          if(_trayAnimatingOut){
+              $("#tray").stop();
+              _trayAnimatingOut = false;
+          }
+          $("#tray").fadeIn(0);
+          $('body').addClass("tray-shown");
+          if($this.trayTimeout > 0){
+              _trayTimeoutId = window.setTimeout(_requestHideTray, $this.trayTimeout);
+          }
+      };
+      var _requestShowTray = function(){
+          if($this.showTray && Player.get("video_playable")){
+              _showTray();
+          }else{
+              _hideTray();
+          }
+      };
+      var _hideTray = function(){
+          window.clearTimeout(_trayTimeoutId);
+          if(!_trayAnimatingOut){
+              _trayAnimatingOut = true;
+              $("#tray").stop().fadeOut(function(){
+                  $('body').removeClass("tray-shown");
+                  _trayAnimatingOut = false;
+              });
+          }
+      };
+      var _requestHideTray = function(){
+          if( !Player.get('showSharing')
+              && !Player.get('browseMode')
+              && !Player.get('slideOverviewShown')
+              && !$("#tray").find(".activebutton").length ){
+              _hideTray();
+          }
+      };
+      $(document).mousemove(_requestShowTray);
+      $(document).mouseleave(_requestHideTray);
+      Player.setter("showTray", function(st){
+          $this.showTray = st;
+          _requestShowTray();
+      });
+      Player.setter("trayTimeout", function(tt){
+          $this.trayTimeout = tt;
+      });
+      Player.bind('player:browse:updated player:sharing:shareengaged player:video:loaded player:settings', _requestShowTray);
 
       $this.dummyElement = $(document.createElement('div')).css({backgroundColor:'rgba(0,0,0,.666)'});
       $this.applyDesignPreferences = function(){
@@ -236,17 +243,6 @@ Player.provide('design',
               }
           },1000);
       }
-
-      // Simple setters to help control the tray and its timeout
-      Player.setter('showTray', function(st){
-        $this.showTray = st;
-        $('#tray').toggle($this.showTray);
-        $('body').removeClass("hide-cursor");
-      });
-      Player.setter('trayTimeout', function(tt){
-        $this.trayTimeout = tt;
-        if($this.trayTimeout<=0) window.clearTimeout($this.trayTimeoutId);
-      });
 
       // Return a reference
       return $this;
