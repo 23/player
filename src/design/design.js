@@ -82,9 +82,7 @@ Player.provide('design',
           }
       });
 
-      // SHOW TRAY AND TIME IT OUT
-      // Handle settings
-      $this.trayTimeoutId = null;
+
       Player.bind('player:settings', function(e){
           PlayerUtilities.mergeSettings($this, ['showTray', 'trayTimeout', 'verticalPadding', 'horizontalPadding', 'trayAlpha','trayBackgroundColor','trayTextColor','trayFont','trayTitleFontSize','trayTitleFontWeight','trayContentFontSize','trayContentFontWeight', 'scrubberColor']);
           $this.trayTitleFontSize = $this.trayContentFontSize * 1.3;
@@ -102,60 +100,62 @@ Player.provide('design',
               $this.trayBackgroundColorRGBA = $this.trayBackgroundColor;
           }
           $this.applyDesignPreferences();
-
-          // Honour `showTray`
-          if($this.showTray){
-              $('#tray').show();
-              $('body').addClass("tray-shown");
-          }else{
-              $('#tray').hide();
-              $('body').removeClass("tray-shown");
-          }
-          // Honour `trayTimeout`
-          if($this.showTray&&$this.trayTimeout>0) {
-              if(!Player.get('video_playable')){
-                  $this._minimized = true;
-                  $("#tray").addClass("minimized");
-              }else{
-                  $this._minimized = false;
-              }
-              var trayAnimatingIn = false;
-              var triggerTrayTimeout = function(e){
-                  if($this.trayTimeout<=0) return;
-                  window.clearTimeout($this.trayTimeoutId);
-                  if( (e&&e.hideNow) || !Player.get('video_playable') ){
-                    if(!Player.get('showSharing')&&!Player.get('browseMode')&&!Player.get('slideOverviewShown')&&$("#tray").find(".activebutton").length==0) {
-                      trayAnimatingIn = false;
-                      $('.tray-navigation').stop().animate({opacity:0}, 300, function(){
-                        $('#tray').addClass('minimized');
-                        $this._minimized = true;
-                        $('.tray-navigation').css({opacity:1});
-                        $('body').removeClass("tray-shown");
-                      });
-                      $('body').addClass("hide-cursor");
-                    }
-                    return;
-                  }
-                  $('body').removeClass("hide-cursor");
-                  if(!trayAnimatingIn&&$this._minimized){
-                    $('.tray-navigation').css({opacity:0});
-                    $('#tray').removeClass('minimized');
-                    $('.tray-navigation').animate({opacity:1}, 800, function(){trayAnimatingIn=false;});
-                    $this._minimized = false;
-                    $('body').addClass("tray-shown");
-                    trayAnimatingIn = true;
-                  }
-                  $this.trayTimeoutId = window.setTimeout(function(){
-                    triggerTrayTimeout({hideNow:true});
-                  }, $this.trayTimeout);
-              };
-              $(document).mousemove(triggerTrayTimeout);
-              $(document).mouseleave(function(){triggerTrayTimeout({hideNow:true});});
-              Player.bind('player:browse:updated player:sharing:shareengaged player:video:loaded', triggerTrayTimeout);
-              triggerTrayTimeout();
-          }
       });
 
+      // Show tray and time it out
+      var _trayTimeoutId = null;
+      var _trayAnimatingOut = false;
+      var _showTray = function(){
+          window.clearTimeout(_trayTimeoutId);
+          if(_trayAnimatingOut){
+              $(".tray-navigation").stop();
+              _trayAnimatingOut = false;
+          }
+          $("#tray").removeClass("minimized");;
+          $(".tray-navigation").css({"opacity": 1});
+          $('body').addClass("tray-shown");
+          if($this.trayTimeout > 0){
+              _trayTimeoutId = window.setTimeout(_requestHideTray, $this.trayTimeout);
+          }
+      };
+      var _requestShowTray = function(){
+          if($this.showTray && Player.get("video_playable")){
+              _showTray();
+          }else{
+              _hideTray();
+          }
+      };
+      var _hideTray = function(){
+          window.clearTimeout(_trayTimeoutId);
+          if(!_trayAnimatingOut){
+              _trayAnimatingOut = true;
+              $(".tray-navigation").stop().animate({"opacity": 0}, 400, "swing", function(){
+                  $('body').removeClass("tray-shown");
+                  $("#tray").addClass("minimized");
+                  $(".tray-navigation").animate({"opacity": 1}, 200, "swing", function(){
+                      _trayAnimatingOut = false;
+                  });
+              });
+          }
+      };
+      var _requestHideTray = function(){
+          if( !Player.get('showSharing')
+              && !Player.get('browseMode')
+              && !Player.get('slideOverviewShown')
+              && !$("#tray").find(".activebutton").length ){
+              _hideTray();
+          }
+      };
+      $(document).mousemove(_requestShowTray);
+      $(document).mouseleave(_requestHideTray);
+      Player.setter("showTray", function(st){
+          $this.showTray = st;
+          _requestShowTray();
+      });
+      Player.setter("trayTimeout", function(tt){
+          $this.trayTimeout = tt;
+      });
+      Player.bind('player:browse:updated player:sharing:shareengaged player:video:loaded player:settings', _requestShowTray);
 
       $this.dummyElement = $(document.createElement('div')).css({backgroundColor:'rgba(0,0,0,.666)'});
       $this.applyDesignPreferences = function(){
@@ -235,17 +235,6 @@ Player.provide('design',
               }
           },1000);
       }
-
-      // Simple setters to help control the tray and its timeout
-      Player.setter('showTray', function(st){
-        $this.showTray = st;
-        $('#tray').toggle($this.showTray).removeClass("minimized");
-        $('body').removeClass("hide-cursor");
-      });
-      Player.setter('trayTimeout', function(tt){
-        $this.trayTimeout = tt;
-        if($this.trayTimeout<=0) window.clearTimeout($this.trayTimeoutId);
-      });
 
       // Return a reference
       return $this;
