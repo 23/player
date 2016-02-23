@@ -59,6 +59,7 @@ Player.provide('video-display',
     displayDevice:'html5',
     quality: '',
     autoPlay: false,
+    autoMute: false,
     showThumbnailOnEnd: false,
     fullscreenQuality: '',
     start:0,
@@ -136,7 +137,7 @@ Player.provide('video-display',
 
       // Merge in player settings
       Player.bind('player:settings', function(e,s){
-        PlayerUtilities.mergeSettings($this, ['autoPlay', 'start', 'verticalPadding', 'horizontalPadding', 'displayDevice', 'fullscreenQuality', 'showThumbnailOnEnd']);
+        PlayerUtilities.mergeSettings($this, ['autoPlay', 'autoMute', 'start', 'verticalPadding', 'horizontalPadding', 'displayDevice', 'fullscreenQuality', 'showThumbnailOnEnd']);
         if($this.video) $this.video.showPosterOnEnd = $this.showThumbnailOnEnd;
         if($this.video&&$this.video.displayDevice!=$this.displayDevice) $this.loadEingebaut();
         $this.container.css({left:$this.horizontalPadding+'px', bottom:$this.verticalPadding+'px'});
@@ -273,6 +274,8 @@ Player.provide('video-display',
         // Possibly load volume preference from previous session
         if($this._loadVolumeCookie&&$this.video) {
           var cookieVolume = Persist.get('playerVolume');
+          // Check if should auto mute the video  
+          if($this.autoMute) { cookieVolume = "0"; }
           if(cookieVolume.length>0) Player.set('volume', new Number(cookieVolume));
           $this._loadVolumeCookie = false;
         }
