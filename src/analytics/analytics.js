@@ -74,7 +74,8 @@ Player.provide('analytics',
         if($this.analyticsReportMethod=='batch') _queueSendReports();
       };
       var _queueSendReports = function(delay){
-        window.setTimeout(_sendReports, (delay||$this.timeReportRate)*1000);
+        if(typeof(delay)=='undefined') delay = $this.timeReportRate;
+        window.setTimeout(_sendReports, delay*1000);
       };
 
 
