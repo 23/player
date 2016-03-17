@@ -9,9 +9,9 @@ Player.provide('design',
     verticalPadding:0,
     horizontalPadding:0,
     trayAlpha:0.75,
-    trayBackgroundColor:'#000000',
-    trayTextColor:'#aaaaaa',
-    trayFont:'Helvetica',
+    trayBackgroundColor:'#ffffff',
+    trayTextColor:'#013622',
+    trayFont:'TT, NBInternationalPro, Helvetica',
     trayTitleFontSize:16,
     trayTitleFontWeight:'normal',
     trayContentFontSize:12,
@@ -126,6 +126,7 @@ Player.provide('design',
           }
       };
       var _hideTray = function(){
+      return;
           window.clearTimeout(_trayTimeoutId);
           if(!_trayAnimatingOut){
               _trayAnimatingOut = true;
@@ -155,26 +156,6 @@ Player.provide('design',
       Player.bind('player:browse:updated player:sharing:shareengaged player:video:loaded player:settings', _requestShowTray);
 
       $this.dummyElement = $(document.createElement('div')).css({backgroundColor:'rgba(0,0,0,.666)'});
-      $this.applyDesignPreferences = function(){
-          // Tray title font, size, weight
-          $('h1').css({fontFamily:$this.trayFont, fontSize:$this.trayTitleFontSize+'px', fontWeight:$this.trayTitleFontWeight});
-          // Tray content font, size, weight
-          $('p').css({fontFamily:$this.trayFont, fontSize:$this.trayContentFontSize+'px', fontWeight:$this.trayContentFontWeight});
-          // Text color
-          $('body,button').css({color:$this.trayTextColor});
-          // Background color and opacity
-          $('.big-play-button, a.button').css({backgroundColor:$this.trayBackgroundColor, opacity:$this.trayAlpha});
-          $('.scrubber-play').css({backgroundColor:$this.scrubberColor});
-          $this.rgbaSupport = /^rgba/.test($this.dummyElement.css('backgroundColor'));
-          if($this.rgbaSupport) {
-              $('.info-pane, .sharing-container, .player-browse #browse, .section-title').css({backgroundColor:$this.trayBackgroundColorRGBA});
-          } else {
-              // (fall back to background color + opacity if RGBa is not supported
-              $('.info-pane, .sharing-container, .player-browse #browse, .section-title').css({backgroundColor:$this.trayBackgroundColor, opacity:$this.trayAlpha});
-          }
-          // Vertical and horisontal padding
-          $('.video-display').css({bottom:$this.verticalPadding+'px', left:$this.horizontalPadding+'px'})
-      }
 
       if (!/Android/.test(navigator.userAgent) && 'ontouchstart' in document.documentElement) {
           // Fullscreen on pinch to zoom

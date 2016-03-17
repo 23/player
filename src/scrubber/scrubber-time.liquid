@@ -1,9 +1,9 @@
 {% if scrubberTime == 0 and currentTime == 0 %}
-	{{duration|formatTime}}
+	{{0|formatTime}} / {{duration|formatTime}}
 {% else %}
 	{% if scrubberTime != empty %}
-	  {{scrubberTime|formatTime}}
+	  {{scrubberTime|formatTime}} / {{duration|formatTime}}
 	{% else %}
-	  {{currentTime|formatTime}}
+	  {{currentTime|formatTime}} / {{duration|formatTime}}
 	{% endif %}
 {% endif %}

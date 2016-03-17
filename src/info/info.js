@@ -16,7 +16,7 @@
 
 Player.provide('info', 
   {
-    showDescriptions: true,
+    showDescriptions: false,
     infoTimeout: 10000
   },
   function(Player,$,opts){

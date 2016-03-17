@@ -8,6 +8,8 @@ Player.provide('context-menu',{
 },function(Player,$,opts){
     var $this = this;
     $.extend($this, opts);
+    delete $this.container;
+    return $this;
 
     $this.showMenu = false;
     $this.showLinkBox = false;

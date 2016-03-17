@@ -142,7 +142,7 @@ Player.provide('scrubber',
           // Update handle labels
           if (Player.get('video').type === 'clip') {
               // Normal handle
-              if ($this.timeContainer && $this.timeContainer.length) $this.timeContainer.html(formatTime(newTime));
+            if ($this.timeContainer && $this.timeContainer.length) $this.timeContainer.html([formatTime(newTime), formatTime(Player.get('duration'))].join(' / '));
           } else {
               if ((!Player.get('scrubberTime') && Player.get('quality') === 'standard') || (newTime > (duration - Player.get('liveBufferRegion')))) {
                 if ($this.timeContainer && $this.timeContainer.length) $this.timeContainer.html($this.handleTextLive);

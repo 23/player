@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="40px" height="40px" viewBox="0 0 40 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 3.6.1 (26313) - http://www.bohemiancoding.com/sketch -->
+    <title>fullscreen-active</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="fullscreen-active" fill="#1EC95B">
+            <g transform="translate(11.000000, 11.000000)" id="Full-Screen">
+                <path d="M11.6917698,9.54763636 L9.32189887,11.7294545 L12.8802636,15.0021818 L10.5080204,17.1818182 L17.6223776,17.1818182 L17.6223776,10.6385455 L15.2572512,12.8203636 L11.6917698,9.54763636 Z M7.11910167,0.818181818 L0,0.818181818 L0,7.36581818 L2.36749866,5.184 L5.93060785,8.45672727 L8.30522324,6.27490909 L4.74685853,3.00218182 L7.11910167,0.818181818 Z" transform="translate(8.811189, 9.000000) rotate(-270.000000) translate(-8.811189, -9.000000) "></path>
+            </g>
+        </g>
+    </g>
+</svg>
