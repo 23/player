@@ -481,7 +481,7 @@ var LocalStorage = {
     set: function(name, value) {if(LocalStorage.accept()) try{localStorage.setItem(name, value);}catch(e){}},
     get: function(name) {if(LocalStorage.accept()) {return localStorage.getItem(name)||'';} else {return '';}},
     erase: function(name) {if(LocalStorage.accept()) localStorage.removeItem(name);},
-    accept: function() {var ret = false; try {ret = (typeof(Storage)!='undefined' && typeof(localStorage)!='undefined');} catch(e){}; return ret;}
+    accept: function() {var ret = false;try {localStorage.getItem('test');ret = (typeof(Storage)!='undefined' && typeof(localStorage)!='undefined');} catch(e){};return ret;}
 };
 // Avoid 'console' errors in browsers that lack a console.
 (function() {
