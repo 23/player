@@ -370,6 +370,11 @@ Player.provide('video-display',
           }
           try {
               if($this.video) {
+                  if(playing && $this.video.displayDevice == "html5") {
+                      // Call load() to capture user interaction on touch devices. Allows us to start playback
+                      // without user interaction at a later point, even if 'beforeplay' cancels playback now
+                      $this.video.video[0].load();
+                  }
                   if(playing && !Player.get('playing') && !Player.fire('player:video:beforeplay')) return false;
                   $this.video.setPlaying(playing);
               }
