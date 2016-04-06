@@ -359,7 +359,7 @@ Player.provide('video-display',
             Player.set('playing', false);
           }
       });
-
+      var _loadCalled = false;
       Player.setter('playing', function(playing){
           if(!Player.get('video_playable')) return;
           if(playableContext) {
@@ -370,10 +370,11 @@ Player.provide('video-display',
           }
           try {
               if($this.video) {
-                  if(playing && $this.video.displayDevice == "html5") {
+                  if(playing && $this.video.displayDevice == "html5" && !_loadCalled) {
                       // Call load() to capture user interaction on touch devices. Allows us to start playback
                       // without user interaction at a later point, even if 'beforeplay' cancels playback now
                       $this.video.video[0].load();
+                      _loadCalled = true;
                   }
                   if(playing && !Player.get('playing') && !Player.fire('player:video:beforeplay')) return false;
                   $this.video.setPlaying(playing);
