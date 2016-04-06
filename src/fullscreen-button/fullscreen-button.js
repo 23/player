@@ -37,7 +37,6 @@ Player.provide('fullscreen-button',
         $('.big-button, .video-canvas div').show();
       });
     Player.bind('player:video:enterfullscreen', function(e){
-        Player.set('playing', true);
         Player.set('analyticsEvent', 'fullscreen');
       });
 
