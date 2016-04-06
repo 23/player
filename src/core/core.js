@@ -87,7 +87,7 @@ var PlayerVideo = function(Player,$,type,data){
       callback = callback||function(){};
       fail = fail||Player.fail;
       var method = ($v.type=='clip' ? '/api/photo/list' : '/api/live/list');
-      var query = ($v.type=='clip' ? {photo_id:$v.photo_id, token:$v.token} : {live_id:$v.live_id, token:$v.token});
+      var query = ($v.type=='clip' ? {photo_id:$v.photo_id, token:$v.token, include_actions_p:1} : {live_id:$v.live_id, token:$v.token});
       var object = ($v.type=='clip' ? 'photos' : 'live');
       if(object=='live' && typeof(Player.parameters['stream_preview_p'])!='undefined') {
         query['stream_preview_p'] = Player.parameters['stream_preview_p'];
@@ -101,6 +101,7 @@ var PlayerVideo = function(Player,$,type,data){
               Player.set('video', $v);
               Player.fire('player:video:loaded', $v);
               Player.set('video', $v);
+              Player.set('loadActions', false);
               callback($v);
             });
           } else {
@@ -480,7 +481,7 @@ var LocalStorage = {
     set: function(name, value) {if(LocalStorage.accept()) try{localStorage.setItem(name, value);}catch(e){}},
     get: function(name) {if(LocalStorage.accept()) {return localStorage.getItem(name)||'';} else {return '';}},
     erase: function(name) {if(LocalStorage.accept()) localStorage.removeItem(name);},
-    accept: function() {var ret = false; try {ret = (typeof(Storage)!='undefined' && typeof(localStorage)!='undefined');} catch(e){}; return ret;}
+    accept: function() {var ret = false;try {localStorage.getItem('test');ret = (typeof(Storage)!='undefined' && typeof(localStorage)!='undefined');} catch(e){};return ret;}
 };
 // Avoid 'console' errors in browsers that lack a console.
 (function() {
