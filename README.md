@@ -1,8 +1,6 @@
-# 23 Video Player
+# TwentyThree video player
 
-Video player framework for 23 Video build on Glue, Eingebaut and the Visualplatform API
-
-
+Video player framework for [TwentyThree](https://www.twentythree.net) build on Glue, Eingebaut and the Visualplatform API
 
 # Modifying and building the player using git repository
 
@@ -19,9 +17,9 @@ Not you can start a server on `localhost` to bootstrap the code from:
 
     python -m SimpleHTTPServer
     
-Now, open up http://locahost:8000/player/src/player.html?domain=reinvent.23video.com in a browser, possibly using your own 23 Video domain instead.
+Now, open up http://locahost:8000/player/src/player.html?domain=video.twentythree.net in a browser, possibly using your own domain for TwentyThree instead.
 
-This will get you most of the relevant code, although jQuery and the 23 version of Liquid.js are still loaded remotely. You shouldn't need to modify these, although you might want to create Liquid filters for your purposes.
+This will get you most of the relevant code, although jQuery and the TwentyThree version of Liquid.js are still loaded remotely. You shouldn't need to modify these, although you might want to create Liquid filters for your purposes.
 
 The Glue framework makes it easy to create both a development and an optimized production version of the project. To remove or add modules, update `manifest.json` and run:
 
@@ -29,4 +27,4 @@ The Glue framework makes it easy to create both a development and an optimized p
    
 This will overwrite the `dist/` folder entirely along with `src/player.html`. 
 
-After building, you will find a fully minimized and optimized version of your project ready for distribution in `dist/`. You can test this by opening up http://locahost:8000/player/dist/player.html?domain=reinvent.23video.com.
+After building, you will find a fully minimized and optimized version of your project ready for distribution in `dist/`. You can test this by opening up http://locahost:8000/player/dist/player.html?domain=video.twentythree.net.
