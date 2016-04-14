@@ -67,7 +67,7 @@ Player.provide('actions',
     $this.rgbaSupport = /^rgba/.test($this.dummyElement.css('backgroundColor'));
 
     // CONTROLLER LISTENING TO PLAYBACK STATE AND DISPATCHING ACTIONS
-    var _dispatcher = function(event){
+    var _dispatcher = function(event, evtObj){
       // We need to get 'currentTime', 'duration' and 'playing' before checking dispatcherActive, probably
       // because interfacing with Flash's ExternalInterface in some cases is async and therefore
       // may allow other events being fired and possibly changing the value of dispatcherActive
@@ -222,15 +222,18 @@ Player.provide('actions',
       });
 
       $this.ignoreVideoActions = false;
-
-      // If we're about to show prerolls, we need to abort the initial playback call,
-      // since Windows Phone otherwise blocks attempts to change source on the video element
-      if(event=="player:video:beforeplay"&&$this.normalizedActionsPosition==-1&&videoActionActive&&/Windows Phone/.test(navigator.userAgent)){
-        return false;
-      }
-
       Player.fire("player:action:dispatched");
-      return true;
+
+      // Return the correct (possibly chained) value to player:video:beforeplay
+      if(event=="player:video:beforeplay") {
+        if($this.normalizedActionsPosition==-1&&videoActionActive&&/Windows Phone/.test(navigator.userAgent)){
+          // If we're about to show prerolls, we need to abort the initial playback call,
+          // since Windows Phone otherwise blocks attempts to change source on the video element
+          return false;
+        }else{
+          return evtObj;
+        }
+      }
     }
 
     $this.normalizeEventToPosition = function(event, ct, d){
