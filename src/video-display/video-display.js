@@ -376,7 +376,7 @@ Player.provide('video-display',
                       $this.video.video[0].load();
                       _loadCalled = true;
                   }
-                  if(playing && !Player.get('playing') && !Player.fire('player:video:beforeplay')) return false;
+                  if(playing && !Player.get('playing') && !Player.fire('player:video:beforeplay', true)) return false;
                   $this.video.setPlaying(playing);
               }
           }catch(e){
