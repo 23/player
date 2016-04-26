@@ -1,5 +1,5 @@
 /*
-  CORE PLAYER FOR 23 VIDEO
+  CORE PLAYER FOR TwentyThree
   This is the guts of the video player, which will load in
   data and settings from the API and manage events to trigger
   playback and more.
@@ -212,7 +212,7 @@ Player.provide('core',
       $this.load = function(callback){
           var methods = [];
 
-          // Load settings for the player from 23 Video
+          // Load settings for the player from TwentyThree
           if(!window.settingsData){
               methods.push({
                   method:'/api/player/settings',

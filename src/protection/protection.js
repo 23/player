@@ -1,6 +1,6 @@
 /* 
    MODULE: PROTECTION
-   Utility module to manage protection and verification with the 23 Video backend. 
+   Utility module to manage protection and verification with the TwentyThree backend. 
    Specifically, this allows protected content to be accessed through a lookup of 
    `protection_token` via /api/protection/verify. The method covers different schemes,
    for example geoblocking, password protection, cleeng paywalls and more.
