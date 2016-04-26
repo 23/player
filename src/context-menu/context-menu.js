@@ -149,9 +149,9 @@ Player.translate("debug_information",{
 Player.translate("help_center",{
     en: "Help center"
 });
-Player.translate("23_video_players",{
-    en: "23 Video players"
+Player.translate("twentythree_players",{
+    en: "TwentyThree video players"
 });
-Player.translate("about_23_video",{
-    en: "About 23 Video"
+Player.translate("about_twentythree",{
+    en: "About TwentyThree"
 });
