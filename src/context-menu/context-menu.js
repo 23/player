@@ -91,8 +91,11 @@ Player.provide('context-menu',{
 
 
     $(document).on("contextmenu", function(e) {
-        Player.set('showMenu', e);
-        e.preventDefault();
+        // If shift is pressed, display the browser's own context menu
+        if(!e.shiftKey){
+            e.preventDefault();
+            Player.set('showMenu', e);
+        }
     });
     $this.container.on("click", ".menu-background", function(e){
         if($this.showMenu){
@@ -149,9 +152,9 @@ Player.translate("debug_information",{
 Player.translate("help_center",{
     en: "Help center"
 });
-Player.translate("23_video_players",{
-    en: "23 Video players"
+Player.translate("twentythree_players",{
+    en: "TwentyThree video players"
 });
-Player.translate("about_23_video",{
-    en: "About 23 Video"
+Player.translate("about_twentythree",{
+    en: "About TwentyThree"
 });
