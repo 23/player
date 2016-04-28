@@ -257,10 +257,10 @@ Player.provide('slides',{
     // When a video is loaded, init and update the display of slides
     var last_id = 0;
     Player.bind("player:video:loaded player:protection:verified",function(e,v){
-        if(v && (last_id==v.photo_id||last_id==v.live_id) && e!="player:protection:verified"){
+        if(v && last_id==(v.type="clip"?v.photo_id:v.live_id) && e!="player:protection:verified"){
             $this.updateCurrentSlide();
         }else if(v){
-            last_id = (v.photo_id?v.photo_id:v.live_id);
+            last_id = (v.type="clip"?v.photo_id:v.live_id);
             $this.initSlides(v);
         }
     });
