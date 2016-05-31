@@ -20,7 +20,6 @@
     };
 
     var _display360 = function(callback){
-        console.log("localhost");
         if(typeof AFRAME == "undefined"){
             _loadAframe(function(){
                 _activate360(callback);
@@ -49,6 +48,7 @@
             _videoElement().container.append(scene);
             _videoElement().video.bind("play", _playing360);
             _playVideoOnEnterVR();
+            _togglePlayOnCanvasClick();
 
             window.setTimeout(callback, 500);
 
@@ -80,6 +80,16 @@
         elmScene.bind('enter-vr', function() {
             Player.set('playing', true);
         });
+    }
+
+    var _togglePlayOnCanvasClick = function() {
+     _videoElement().container.bind("click", function() {
+        if (Player.get("playing")) {
+            Player.set("playing", false);
+        } else {
+            Player.set("playing", true);
+        }
+     });
     }
 
     window.display360 = _display360;
