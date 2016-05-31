@@ -48,6 +48,7 @@
             elmAssets.append(_build360ThumbnailAsset());
             _videoElement().container.append(scene);
             _videoElement().video.bind("play", _playing360);
+            _playVideoOnEnterVR();
 
             window.setTimeout(callback, 500);
 
@@ -74,6 +75,12 @@
      _videoElement().container.find('a-videosphere').attr('visible', true);
     }
 
+    var _playVideoOnEnterVR = function() {
+        var elmScene = _videoElement().container.find('a-scene');
+        elmScene.bind('enter-vr', function() {
+            Player.set('playing', true);
+        });
+    }
 
     window.display360 = _display360;
 
