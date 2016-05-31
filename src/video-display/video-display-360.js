@@ -4,6 +4,10 @@
         return Player.get("videoElement");
     }
 
+    var _sceneElement = function() {
+        return _videoElement().container.find('a-scene');
+    }
+
     var _loadAframe = function(callback){
         $.ajax({
             url: "//aframe.io/releases/0.2.0/aframe.min.js",
@@ -49,6 +53,7 @@
             _videoElement().video.bind("play", _playing360);
             _playVideoOnEnterVR();
             _togglePlayOnCanvasClick();
+            _bindActions();
 
             window.setTimeout(callback, 500);
 
@@ -76,8 +81,7 @@
     }
 
     var _playVideoOnEnterVR = function() {
-        var elmScene = _videoElement().container.find('a-scene');
-        elmScene.bind('enter-vr', function() {
+        _sceneElement.bind('enter-vr', function() {
             Player.set('playing', true);
         });
     }
@@ -90,6 +94,31 @@
             Player.set("playing", true);
         }
      });
+    }
+
+    var _bindActions = function() {
+        Player.bind("player:action:activated", _showAction);
+        Player.bind("player:action:deactivated", _hideAction);
+    }
+
+    var _showAction = function(e, action) {
+        console.log("_showAction", e, action);
+        switch(action.type) {
+            case 'image':
+                _showImageAction(action);
+                break;
+        }
+    }
+
+    var _hideAction = function(e, action) {
+        $('[action-id=' + action.action_id + ']').remove();
+    }
+
+    _showImageAction = function(action) {
+        var width = action.width*10;
+        var height = action.height*10;
+        var elmImage = $('<a-image src="' + action.image + '" width="' + width + '" height="' + height + '" action-id="' + action.action_id + '"></a-image>');
+        _sceneElement().append(elmImage);
     }
 
     window.display360 = _display360;
