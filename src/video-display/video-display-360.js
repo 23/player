@@ -20,7 +20,6 @@
     };
 
     var _display360 = function(callback){
-        console.log("localhost");
         if(typeof AFRAME == "undefined"){
             _loadAframe(function(){
                 _activate360(callback);
