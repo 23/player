@@ -1,11 +1,18 @@
 (function($, window, Player){
 
+    // Keeps track of whether the player is in "cardboard/vr mode" or not
+    var _isInVR = false;
+
     var _videoElement = function() {
         return Player.get("videoElement");
     }
 
     var _sceneElement = function() {
         return _videoElement().container.find('a-scene');
+    }
+
+    var _playerElement = function() {
+        return $('#player');
     }
 
     var _loadAframe = function(callback){
@@ -46,19 +53,24 @@
                 "autoplay": false
             }).get(0).load();
 
+            _apply360Class();
             var elmAssets = scene.find("a-assets");
             elmAssets.append(_videoElement().video);
             elmAssets.append(_build360ThumbnailAsset());
             _videoElement().container.append(scene);
-            _videoElement().video.bind("play", _playing360);
-            _playVideoOnEnterVR();
-            _togglePlayOnCanvasClick();
+            _videoElement().video.bind("play", _onPlayStart);
+            _bindEnterExitVR();
             _bind3DActions();
 
             window.setTimeout(callback, 500);
 
         }, "video-display/video-display-360.liquid", scene.get(0));
 
+    }
+
+    // Adds a "video-360" class to the #player element, for use in styling
+    var _apply360Class = function() {
+        _playerElement().addClass('video-360');
     }
 
     var _build360ThumbnailAsset = function() {
@@ -75,49 +87,99 @@
       return poster.replace("large", "1920x1080cr");
     }
 
-    var _playing360 = function() {
+    // Hide 360 thumbnail and show 360 video when video is played
+    var _onPlayStart = function() {
      _videoElement().container.find('a-sky').attr('visible', false);
      _videoElement().container.find('a-videosphere').attr('visible', true);
     }
 
-    var _playVideoOnEnterVR = function() {
-        _sceneElement.bind('enter-vr', function() {
-            Player.set('playing', true);
-        });
+    // Monitors for switches between "desktop mode" and "VR mode"
+    var _bindEnterExitVR = function() {
+        _sceneElement().bind('enter-vr', _onEnterVR);
+        _sceneElement().bind('exit-vr', _onExitVR);
     }
 
-    var _togglePlayOnCanvasClick = function() {
-     _videoElement().container.bind("click", function() {
+    var _onEnterVR = function() {
+        _isInVR = true;
+
+        // Apply is-in-vr class to player to allow for conditional styling
+        _playerElement().addClass('is-in-vr');
+
+        // Show supported actions as VR entities
+        _showAll3DActions();
+
+        // Let video by toggled by canvas click, but wait a bit to not react to the current click
+        window.setTimeout(function() {
+            _videoElement().container.bind("click", _togglePlay);
+        }, 10);
+    }
+
+    var _onExitVR = function() {
+        _isInVR = false;
+
+        // Remove is-in-vr class on player
+        _playerElement().removeClass('is-in-vr');
+
+        // Hide any VR actions, as they are in the regular player-actions overlay in 2D mode
+        _hideAll3DActions();
+
+        // Unbind listener that stops/starts play on entire canvas click
+        _videoElement().container.unbind("click", _togglePlay);
+    }
+
+    // Start/pause video
+    var _togglePlay = function() {
         if (Player.get("playing")) {
             Player.set("playing", false);
         } else {
             Player.set("playing", true);
         }
-     });
     }
 
+    // Shows and hides actions as 3D entities when in "3D/VR mode"
     var _bind3DActions = function() {
-        Player.bind("player:action:activated", _show3DAction);
-        Player.bind("player:action:deactivated", _hide3DAction);
+        Player.bind("player:action:activated", _create3DAction);
+        Player.bind("player:action:deactivated", _remove3DAction);
     }
 
-    var _show3DAction = function(e, action) {
+    // Creates a supported action as an A-Frame VR element
+    var _create3DAction = function(e, action) {
         switch(action.type) {
             case 'image':
-                _showImage3DAction(action);
+                _createImage3DAction(action);
                 break;
         }
     }
 
-    var _hide3DAction = function(e, action) {
-        $('[action-id=' + action.action_id + ']').remove();
+    // Removes
+    var _remove3DAction = function(e, action) {
+        $('a-scene [action-id=' + action.action_id + ']').remove();
     }
 
-    _showImage3DAction = function(action) {
+    var _createImage3DAction = function(action) {
         var width = action.width*10;
         var height = action.height*10;
-        var elmImage = $('<a-image src="' + action.image + '" width="' + width + '" height="' + height + '" action-id="' + action.action_id + '"></a-image>');
+        var elmImage = $('<a-image />');
+        elmImage.attr({
+            src: action.image,
+            width: width,
+            height: height,
+            'action-id': action.action_id,
+            visible: _isInVR
+        });
         _sceneElement().append(elmImage);
+    }
+
+    var _showAll3DActions = function() {
+        $('a-scene [action-id]').each(function(index, nodeAction) {
+            $(nodeAction).attr({ visible: true });
+        });
+    }
+
+    var _hideAll3DActions = function() {
+        $('a-scene [action-id]').each(function(index, nodeAction) {
+            $(nodeAction).attr({ visible: false });
+        });
     }
 
     window.display360 = _display360;
