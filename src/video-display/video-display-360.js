@@ -53,7 +53,7 @@
             _videoElement().video.bind("play", _playing360);
             _playVideoOnEnterVR();
             _togglePlayOnCanvasClick();
-            _bindActions();
+            _bind3DActions();
 
             window.setTimeout(callback, 500);
 
@@ -96,25 +96,24 @@
      });
     }
 
-    var _bindActions = function() {
-        Player.bind("player:action:activated", _showAction);
-        Player.bind("player:action:deactivated", _hideAction);
+    var _bind3DActions = function() {
+        Player.bind("player:action:activated", _show3DAction);
+        Player.bind("player:action:deactivated", _hide3DAction);
     }
 
-    var _showAction = function(e, action) {
-        console.log("_showAction", e, action);
+    var _show3DAction = function(e, action) {
         switch(action.type) {
             case 'image':
-                _showImageAction(action);
+                _showImage3DAction(action);
                 break;
         }
     }
 
-    var _hideAction = function(e, action) {
+    var _hide3DAction = function(e, action) {
         $('[action-id=' + action.action_id + ']').remove();
     }
 
-    _showImageAction = function(action) {
+    _showImage3DAction = function(action) {
         var width = action.width*10;
         var height = action.height*10;
         var elmImage = $('<a-image src="' + action.image + '" width="' + width + '" height="' + height + '" action-id="' + action.action_id + '"></a-image>');
