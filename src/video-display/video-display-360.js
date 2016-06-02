@@ -30,6 +30,7 @@
         checkAframeLoaded();
     };
 
+    // Main entrypoint for 360 videos
     var _display360 = function(callback){
         if(typeof AFRAME == "undefined"){
             _loadAframe(function(){
@@ -65,7 +66,6 @@
             window.setTimeout(callback, 500);
 
         }, "video-display/video-display-360.liquid", scene.get(0));
-
     }
 
     // Adds a "video-360" class to the #player element, for use in styling
@@ -271,6 +271,41 @@
         $(this).attr({ scale: '1 1 1'});
     }
 
+    // Main entrypoint to playback regular videos in "VR mode"
+    var _displayBigScreen = function(callback){
+        if(typeof AFRAME == "undefined"){
+            _loadAframe(function(){
+                _activateBigScreen(callback);
+            });
+        }else{
+            _activateBigScreen(callback);
+        }
+    };
+
+    var _activateBigScreen = function(callback){
+        var scene = $("<div></div>");
+        Player.modules[0].render(function(){
+
+            _videoElement().video.attr({
+                "id": "videoElement",
+                "preload": "none",
+                "crossorigin": "anonymous"
+            }).prop({
+                "webkit-playsinline": true,
+                "autoplay": false
+            }).get(0).load();
+
+            _apply360Class();
+            var elmAssets = scene.find("a-assets");
+            elmAssets.append(_videoElement().video);
+            _videoElement().container.append(scene);
+
+            window.setTimeout(callback, 500);
+
+        }, "video-display/video-display-bigscreen.liquid", scene.get(0));
+    }
+
     window.display360 = _display360;
+    window.displayBigScreen = _displayBigScreen;
 
 })(jQuery, window, Player);
