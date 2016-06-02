@@ -20,17 +20,29 @@
 }
 
 /* 360 AFrame overrides */
-#player .a-enter-vr {
+#player.video-360 .a-enter-vr {
     bottom: auto;
     right: auto;
     top: 0;
     left: 65px;
 }
 @media (min-width: 480px) {
-  #player .a-enter-vr {
+  #player.video-360 .a-enter-vr {
     bottom: auto;
     right: auto;
     top: 0;
     left: 80px;
   }
+}
+
+#player.video-360 .player-actions {
+    pointer-events: none;
+}
+
+#player.video-360 .player-actions > .action {
+    pointer-events: auto;
+}
+
+#player.is-in-vr .player-actions {
+    display: none;
 }
