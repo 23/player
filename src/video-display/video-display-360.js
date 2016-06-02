@@ -91,6 +91,14 @@
     var _onPlayStart = function() {
      _videoElement().container.find('a-sky').attr('visible', false);
      _videoElement().container.find('a-videosphere').attr('visible', true);
+
+     // TEMP: Fake VR mode for desktop development - DO NOT COMMIT
+     _create3DAction(null, { color: 'red', x: 0.5, y: 0.5, width: 0.05, height: 0.05, type: 'testcube' });
+     _create3DAction(null, { color: 'green', x: 1, y: 0.5, width: 0.05, height: 0.05, type: 'testcube' });
+     //_create3DAction(null, { color: 'blue', x: 0.5, y: 0, width: 0.05, height: 0.05, type: 'testcube' });
+     //_create3DAction(null, { color: 'yellow', x: 0.75, y: 0.5, width: 0.05, height: 0.05, type: 'testcube' });
+     //_create3DAction(null, { color: 'purple', x: 0.25, y: 0.5, width: 0.05, height: 0.05, type: 'testcube' });
+     _onEnterVR();
     }
 
     // Monitors for switches between "desktop mode" and "VR mode"
@@ -110,7 +118,8 @@
 
         // Let video by toggled by canvas click, but wait a bit to not react to the current click
         window.setTimeout(function() {
-            _videoElement().container.bind("click", _togglePlay);
+            // TODO: Incomment this back in before commit - DO NOT COMMIT
+            //_videoElement().container.bind("click", _togglePlay);
         }, 10);
     }
 
@@ -144,11 +153,108 @@
 
     // Creates a supported action as an A-Frame VR element
     var _create3DAction = function(e, action) {
+        console.log(action)
+
+        // Generate element
+        var elmAction;
         switch(action.type) {
             case 'image':
-                _createImage3DAction(action);
+                //elmAction = _createImage3DAction(action);
+                break;
+            case 'testcube': // Just for testing
+                elmAction = $('<a-box color="' + action.color + '" />');
                 break;
         }
+
+        // Only continue for supported action types
+        if (!elmAction) {
+            return;
+        }
+
+        // Calculate dimensions and position
+        var transform = _calculate3DActionTransform(
+            action.width, action.height, action.x, action.y);
+        console.log(transform)
+
+        // Apply common attributes
+        elmAction.attr({
+            width: transform.width,
+            height: transform.height,
+            position: transform.x + ", " + transform.y + ", " + transform.z,
+            'action-id': action.action_id,
+            visible: true //_isInVR
+        });
+
+        // Add to scene
+        _sceneElement().append(elmAction);
+    }
+
+    var _calculate3DActionTransform = function(percentWidth, percentHeight, percentX, percentY) {
+        // Green: Straight below camera
+        // Input: x=1, y=0.5
+        // Desired degrees: x=0, y=180, z=
+        // Desired position: x=0, y=-5, z=0
+
+
+        var viewPortRadius = 5;
+        var radiansPerDegree = (Math.PI*2)/360 // Javascript sinus and cosinus uses radians, not degrees
+
+        var degreeX = (percentX - 0.5)*360;
+        var degreeY = (percentY - 0.5)*180;
+        console.log("degreeX = ", degreeX, "degreeY = ", degreeY)
+        var radianX = degreeX * radiansPerDegree;
+        var radianY = degreeY * radiansPerDegree;
+        var y = viewPortRadius * Math.cos(radianX) * Math.sin(radianY);
+        var x = viewPortRadius * Math.sin(radianX) * Math.sin(radianY);
+        var z = viewPortRadius * Math.cos(radianY) * -1;
+
+        /*
+        var degreeX = (percentX - 0.5)*360;
+        console.log("degreeX: " + degreeX)
+        var angleX = degreeX * radiansPerDegree;
+        var x = Math.sin(angleX) * viewPortRadius;
+        var z = Math.cos(angleX) * viewPortRadius * -1; // Positive Z is "behind" the camera
+
+        var degreeY = (percentY - 0.5)*360;
+        console.log("degreeY: " + degreeY)
+        var angleY = degreeY * radiansPerDegree;
+        var y = Math.sin(angleY) * viewPortRadius;
+        */
+
+        return {
+            width: 1,
+            height: 1,
+            x: x,
+            y: y,
+            z: z
+        };
+    }
+
+    var _calculate3DActionTransformOld = function(percentWidth, percentHeight, percentX, percentY) {
+        // Base assumption: In cardboard mode, we can see approx.
+        // 7 x 7 meters when looking at object 5 meters away
+        var viewPortWidth = 7;
+        var viewPortHeight = 7;
+
+        // Calculate dimensions
+        var width = viewPortWidth * percentWidth;
+        var height = viewPortHeight * percentHeight;
+
+        // Calculate positioning: Given coords are relative to upper left corner,
+        // we needs them to be relative to the center middle (0, 0 , 0)
+        var adjY = (viewPortHeight/2) * viewPortHeight * percentY;
+        //var adjY = (7/2) - (7 * 0.14)
+        var x = (percentWidth - percentX) * viewPortWidth;
+        var y = (percentHeight - percentY) * viewPortHeight;
+        var z = -5;
+
+        return {
+            width: width,
+            height: height,
+            x: x,
+            y: y,
+            z: z
+        };
     }
 
     // Removes
@@ -157,17 +263,9 @@
     }
 
     var _createImage3DAction = function(action) {
-        var width = action.width*10;
-        var height = action.height*10;
         var elmImage = $('<a-image />');
-        elmImage.attr({
-            src: action.image,
-            width: width,
-            height: height,
-            'action-id': action.action_id,
-            visible: _isInVR
-        });
-        _sceneElement().append(elmImage);
+        elmImage.attr({ src: action.image });
+        return elmImage;
     }
 
     var _showAll3DActions = function() {
