@@ -89,8 +89,8 @@
 
     // Hide 360 thumbnail and show 360 video when video is played
     var _onPlayStart = function() {
-     _videoElement().container.find('a-sky').attr('visible', false);
-     _videoElement().container.find('a-videosphere').attr('visible', true);
+        _videoElement().container.find('a-sky').attr('visible', false);
+        _videoElement().container.find('a-videosphere').attr('visible', true);
     }
 
     // Monitors for switches between "desktop mode" and "VR mode"
@@ -175,6 +175,14 @@
             visible: true //_isInVR
         });
 
+        // Apply click handler if action has a link
+        if (action.link) {
+            elmAction.bind('click', _on3DActionClicked.bind(this, action));
+            // Mouse enter and leave doesn't play well with jQuery events for some reason
+            elmAction[0].addEventListener('mouseenter', _on3DActionMouseEntered.bind(elmAction, action));
+            elmAction[0].addEventListener('mouseleave', _on3DActionMouseLeft.bind(elmAction, action));
+        }
+
         // Add to scene
         _sceneElement().append(elmAction);
     }
@@ -222,7 +230,10 @@
 
     var _createImage3DAction = function(action) {
         var elmImage = $('<a-image />');
-        elmImage.attr({ src: action.image });
+        elmImage.attr({
+            src: action.image,
+            transparent: 'true'
+        });
         return elmImage;
     }
 
@@ -236,6 +247,28 @@
         $('a-scene [action-id]').each(function(index, nodeAction) {
             $(nodeAction).attr({ visible: false });
         });
+    }
+
+    var _on3DActionClicked = function(action) {
+        if(/^\$/.test(action.link)){ // Is the link a Glue command? Run it!
+            Player.runCommand({command: action.link});
+        } else { // Open link with relevant target
+            Player.fire("player:action:click", action);
+            window.open(action.link, (action.link_target || '_new'));
+        }
+    }
+
+    var _on3DActionMouseEntered = function(action) {
+        var actionHoverScaleIncrease = 0.2;
+        var newScale = 1 + actionHoverScaleIncrease;
+
+        $(this).attr({
+            scale: newScale + ', ' + newScale + ', ' + newScale
+        })
+    }
+
+    var _on3DActionMouseLeft = function(action) {
+        $(this).attr({ scale: '1 1 1'});
     }
 
     window.display360 = _display360;
