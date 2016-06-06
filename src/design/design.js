@@ -8,7 +8,8 @@ Player.provide('design',
     verticalPadding:0,
     horizontalPadding:0,
     trayFont:'Helvetica',
-    scrubberColor:'#1EC95B'
+    scrubberColor:'#1EC95B',
+    endOn:'sharing'
   },
   function(Player,$,opts){
       var $this = this;
@@ -89,10 +90,12 @@ Player.provide('design',
           // Read from settings the action to take when the playflow has been completed
           setTimeout(function(){
               if(transition.currentPosition == 5 && !Player.get("actionsShown")){
-                  if($this.endOn == "browse" || true) {
+                  if($this.endOn == "browse") {
                       Player.set("browseMode", true);
-                  }else{
+                  }else if($this.endOn == "loop"){
                       Player.set("showLoop", true);
+                  }else if($this.endOn == "sharing"){
+                      Player.set("showSharing", true);
                   }
               }
           }, 10);
