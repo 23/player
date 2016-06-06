@@ -187,8 +187,7 @@ Player.provide('actions',
 
           // Possibly pause video (important to be done after action has been added to activeActions
           // because of async behaviour when using ExternalInterface)
-            if(typeof action.pause_mode != "undefined" && action.pause_mode == "pause_playback"){
-                console.log(action);
+          if(typeof action.pause_mode != "undefined" && action.pause_mode == "pause_playback"){
             Player.set("playing", false);
           }
 
