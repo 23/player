@@ -16,15 +16,19 @@
 
 Player.provide('info', 
   {
+      showDescriptions: true
   },
   function(Player,$,opts){
       var $this = this;
       $.extend($this, opts);
 
       // Bind to events
+      Player.bind('player:settings', function(e){
+          PlayerUtilities.mergeSettings($this, ['showDescriptions']);
+      });
       Player.bind('player:video:loaded', function(e,video){
           $this.render(function(){
-              Player.set('infoShown', true);
+              Player.set('infoShown', !!$this.showDescriptions);
           });
       });
       Player.bind('player:video:play', function(e,video){
