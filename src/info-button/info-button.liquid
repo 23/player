@@ -1,7 +1,0 @@
-{% if video_title != empty or video_content != empty %}
-  <button class="tray-button button info-button {% if showDescriptions == true %}highlight-button{% endif %}" click="$toggle:showDescriptions" aria-label="{{"video_information"|translate}}" label="{{"video_information"|translate}}" aria-expanded="{% if showDescriptions %}true{% else %}false{% endif %}" tabindex="1200">
-   <span class="hide-visually">
-     {{"video_information"|translate}}
-   </span>
- </button>
-{% endif %}

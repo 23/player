@@ -1,7 +1,0 @@
-{% if showBrowse and hasRecommendations %}
-<button class="tray-button button browse-button {% if browseMode %}browse-button-off highlight-button{% else %}browse-button-on{% endif %}" click="$toggle:browseMode" aria-controls="browse" aria-label="{{"recommendations"|translate}}" label="{{"recommendations"|translate}}" aria-expanded="{% if browseMode %}true{% else %}false{% endif %}" tabindex="1100">
-  <span class="hide-visually">
-    {{"recommendations"|translate}}
-  </span>
-</button>
-{% endif %}
