@@ -102,7 +102,8 @@ Player.provide('loop',{
                 $this.container.find(".loop-container").toggleClass("loop-container-activated", $this.showLoop);
             }, 10));
             _loopTimeouts.push(setTimeout(function(){
-                  $this.container.find(".loop-container").css({display: ""});
+                $this.container.find(".loop-container").css({display: ""});
+                $("body").toggleClass("overlay-shown", $this.showLoop);
             }, 210));
             _prevShow = $this.showLoop;
             if($this.showLoop){
