@@ -130,7 +130,7 @@ Player.provide('design',
       });
 
       Player.bind('player:settings', function(e){
-          PlayerUtilities.mergeSettings($this, ['verticalPadding', 'horizontalPadding', 'trayFont', 'scrubberColor', 'showTray']);
+          PlayerUtilities.mergeSettings($this, ['verticalPadding', 'horizontalPadding', 'trayFont', 'scrubberColor', 'showTray', 'endOn']);
           if(!$this.showTray){
               Player.set("forcer", {
                   type: "block",
