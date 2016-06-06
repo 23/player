@@ -6,8 +6,8 @@
 
     "glueLocation": "../glue/",
     "dependencies": [
-        "http://videos.23video.com/resources/um/script/swfobject/swfobject.js",
-        "http://videos.23video.com/resources/um/script/hls.min.js",
+        "http://video.twentythree.net/resources/um/script/swfobject/swfobject.js",
+        "http://video.twentythree.net/resources/um/script/hls.min.js",
         "../eingebaut/eingebaut.js",
         "../visualplatform.js/visualplatform.js"
     ],
@@ -29,16 +29,13 @@
         "play-button",
         "volume-button",
         "share-button",
-        "browse-button",
         "browse",
         "loop",
         "fullscreen-button",
         "subtitle-button",
         "quality-button",
-        "info-button",
         "info",
         "actions",
-        "download-button",
         "accessibility",
         "protection",
         "slides",
