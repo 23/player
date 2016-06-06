@@ -33,7 +33,6 @@ window.VideoActionHandler = function(actions, container, module, callback){
                 $this.eingebaut.container.parent().hide(0,function(){$(this).show();});
             }
             container.parent().hide();
-            Player.set("slideModeDisabled", false);
             return callback();
         }
 
@@ -61,14 +60,13 @@ window.VideoActionHandler = function(actions, container, module, callback){
             $this.currentAction.video = Player.get("url") + $this.currentAction.video;
         }
 
-        Player.set("slideModeDisabled", true);
-
         $this.eingebaut.setContext({
             source: $this.currentAction.video,
             startTime: 0,
             callback: $this.videoCallback,
             displayDevice: (!$this.eingebaut.canPlayType("video/mp4")?"flash":undefined)
         });
+
         $this.eingebaut.setPlaying(true);
 
     };

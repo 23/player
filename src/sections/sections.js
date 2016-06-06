@@ -47,10 +47,20 @@ Player.provide('sections',
               sec.position = 1.0*sec.start_time/d;
               sec.positionPct = (sec.position*100.0) + '%';
               $this.sections.push(sec);
-            });
+          });
+          $this.render(function(){
+              $this.container.find(".section").each(function(i, section){
+                  var $section = $(section);
+                  $section.one("mouseenter", function(){
+                      var $title = $section.find(".section-title");
+                      $title.css({
+                          left: $title.outerWidth() / -2
+                      });
+                  });
+              });
+          });
           Player.fire('player:sectionschange');
-          $this.render();
-        });
+      });
 
       return $this;
   }

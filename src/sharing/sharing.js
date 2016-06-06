@@ -32,12 +32,33 @@
 Player.provide('sharing', 
   {
     socialSharing: true,
-    showSharing: false
+    showSharing: false,
+    showDownload: false
   },
   function(Player,$,opts){
       var $this = this;
       $.extend($this, opts);
-      $this.showAnimation = [{opacity:'show'}, 400];
+
+      var _shareCurrentTime = false;
+
+      var _onRender = function(){
+          $this.sharingLink = $this.container.find(".sharing-link");
+          $this.currentTimeSelect = $this.container.find(".current-time-select");
+          $this.checkbox = $this.container.find(".checkbox");
+          $this.currentTimeSelect.click(_currentTimeClick);
+      };
+      var _currentTimeClick = function(){
+          $this.checkbox.toggleClass("checked");
+          _shareCurrentTime = $this.checkbox.hasClass("checked");
+          if(_shareCurrentTime){
+              Player.set("playing", false);
+              var url = Player.get("videoLink") + "?start=" + parseInt(Player.get("currentTime"));
+              $this.sharingLink.text(url);
+              $this.sharingLink.attr("href", url);
+          }else{
+              $this.sharingLink.text( Player.get("videoLink") );
+          }
+      };
 
       // Helper function
       var absolutize = function(u){
@@ -47,7 +68,7 @@ Player.provide('sharing',
 
       // Bind to events
       Player.bind('player:settings', function(e,settings){
-          PlayerUtilities.mergeSettings($this, ['socialSharing', 'showSharing', 'rssLink', 'podcastLink', 'embedCode']);
+          PlayerUtilities.mergeSettings($this, ['socialSharing', 'showSharing', 'rssLink', 'podcastLink', 'embedCode', 'showDownload']);
           $this.rssLink = absolutize($this.rssLink||Player.get('url') + '/rss');
           $this.podcastLink = absolutize($this.podcastLink||Player.get('url') + '/podcast');
           $this.embedCode = $this.embedCode||'';
@@ -56,13 +77,8 @@ Player.provide('sharing',
       $this.videoLink = '';
       Player.bind('player:video:loaded', function(){
           $this.videoLink = absolutize(Player.get('video_one'));
-          Player.fire('player:sharing', {});
-        });
-
-      // Render on sharing update
-      Player.bind('player:sharing', function(){
-          $this.render();
-        });
+          $this.render(_onRender);
+      });
 
       /* GETTERS */
       Player.getter('socialSharing', function(){
@@ -90,7 +106,21 @@ Player.provide('sharing',
         });
       Player.getter('siteLink', function(){
           return Player.get('mainUrl');
-        });
+      });
+      Player.getter('showDownload', function(){
+          return ($this.showDownload && Player.get("video_type") == "clip" && !Player.get("isTouchDevice"));
+      });
+      Player.getter('downloadUrl', function(){
+          var v = Player.get("video");
+          if (typeof(v.video_1080p_download)!='undefined' && v.video_1080p_download.length>0 && v.video_1080p_size>0) {
+              return Player.get('url') + '/attachment' + v.video_1080p_download;
+          } else if (typeof(v.video_hd_download)!='undefined' && v.video_hd_download.length>0) {
+              return Player.get('url') + '/attachment' + v.video_hd_download;
+          } else if (typeof(v.video_medium_download)!='undefined' && v.video_medium_download.length>0) {
+              return Player.get('url') + '/attachment' + v.video_medium_download;
+          }
+          return "";
+      });
 
       var socialLink = function(service){
         if(!Player.get('socialSharing')) return('');
@@ -105,19 +135,40 @@ Player.provide('sharing',
       Player.getter('mailLink', function(){return socialLink('mail');});
      
       /* SETTERS */
+      var _sharingTimeouts = [];
+      var _prevShow = false;
       Player.setter('showSharing', function(ss){
-          if(!Player.get('socialSharing')) return;
-          $this.showSharing = ss;
-          if(ss) {
-              $('.activebutton').removeClass('activebutton').parent().removeClass('activebutton-container');
-              Player.set('browseMode', false);
-              Player.set('showDescriptions', false);
-              Player.set('slideOverviewShown', false);
+          $this.showSharing = ss && $this.socialSharing;
+          if($this.showSharing){
+              $this.showSharing = !Player.fire("player:module:overlayactivated", {name: "sharing", prevented: false}).prevented;
           }
-          Player.set('showDescriptions', false);
-          if(ss) Player.fire('player:sharing:shareengaged', {});
-          Player.fire('player:sharing', {});
-        });
+          if($this.showSharing) Player.fire('player:sharing:shareengaged', {});
+          if($this.showSharing != _prevShow){
+              while(_sharingTimeouts.length > 0){
+                  clearTimeout(_sharingTimeouts.pop());
+              }
+
+              $("body").toggleClass("overlay-shown", true);
+
+              if(_shareCurrentTime){
+                  _currentTimeClick();
+              }
+
+              // Block a few other modules
+              Player.set("forcer", {type: "block", element: "tray big-play info", from: "sharing", active: $this.showSharing});
+              
+              // Animate the container in/out
+              $this.container.find(".sharing-container").show();
+              _sharingTimeouts.push(setTimeout(function(){
+                  $this.container.find(".sharing-container").toggleClass("sharing-container-active", $this.showSharing);
+              }, 10));
+              _sharingTimeouts.push(setTimeout(function(){
+                  $this.container.find(".sharing-container").css({display: ""});
+                  $("body").toggleClass("overlay-shown", $this.showSharing);
+              }, 210));
+              _prevShow = $this.showSharing;
+          }
+      });
       Player.setter('shareTo', function(service){
           Player.fire('player:sharing:shareengaged', {});
           if(service=='site') {
@@ -126,7 +177,16 @@ Player.provide('sharing',
           } else {
               window.open(Player.get(service + 'Link'));
           }
-        });
+      });
+
+      Player.bind("player:module:overlayactivated", function(e, info){
+          if(info.name != "sharing"){
+              Player.set("showSharing", false);
+          }
+          return info;
+      });
+
+      $this.render(_onRender);
 
       return $this;
   }

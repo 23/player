@@ -14,9 +14,20 @@ Player.provide('subtitle-button',
 
     // Update UI when subtitle changes
     Player.bind('player:subtitlechange', function(e){
-        $this.container.removeClass("activebutton-container");
-        $this.render();
-      });
+        $this.render(function(){
+            $this.button = $this.container.find(".subtitle-button");
+            $this.buttonMenu = $this.container.find(".button-menu");
+            var localeCount = Player.get('localesArray').length;
+            $this.buttonMenu.css({
+                fontSize: $this.container.find("li").height()*(localeCount+1)
+            });
+            $this.button.one("mouseenter", function(){
+                $this.buttonMenu.css({
+                    right: ($this.buttonMenu.width()-30)/-2
+                });
+            });
+        });
+    });
       
     return $this;
   }

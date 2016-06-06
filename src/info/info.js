@@ -16,57 +16,34 @@
 
 Player.provide('info', 
   {
-    showDescriptions: true,
-    infoTimeout: 10000
   },
   function(Player,$,opts){
       var $this = this;
       $.extend($this, opts);
-      $this.showAnimation = [{opacity:'show'}, 400];
-      
-      // Listen to find if we show show info
-      Player.bind('player:settings', function(e,settings){
-          PlayerUtilities.mergeSettings($this, ['showDescriptions', 'infoTimeout']);
-        });
 
       // Bind to events
-      Player.bind('player:infoengaged', function(e,video){
-          $this.render();
+      Player.bind('player:video:loaded', function(e,video){
+          $this.render(function(){
+              Player.set('infoShown', true);
+          });
       });
       Player.bind('player:video:play', function(e,video){
-          Player.set('showDescriptions', false);
+          Player.set('infoShown', false);
       });
-      Player.bind('player:settings player:video:loaded', function(e,video){
-          if($this.infoTimeout>0) {
-            setTimeout(function(){
-              if($this.infoTimeout>0) {
-                Player.set('showDescriptions', false);
-              }
-            }, $this.infoTimeout);
-          }
-          Player.fire('player:infoengaged');
-        });
 
       /* GETTERS */
-      Player.getter('showDescriptions', function(){
-          return $this.showDescriptions;
-        });
-      Player.getter('infoTimeout', function(){
-          return $this.infoTimeout;
-        });
+      Player.getter('infoShown', function(){
+          return $this.infoShown;
+      });
      
       /* SETTERS */
-      Player.setter('showDescriptions', function(sd){
-          if(sd) {
-              $('.activebutton').removeClass('activebutton').parent().removeClass("activebutton-container");
-              Player.set('browseMode', false);
-              Player.set('showSharing', false);
-              Player.set('slideOverviewShown', false);
-          }
-          $this.showDescriptions = sd;
-          $this.infoTimeout = 0; // disable fade-out when showDescription is explicitly set
-          Player.fire('player:infoengaged');
-        });
+      Player.setter('infoShown', function(is){
+          $this.infoShown = is;
+          Player.set("forcer", {type: "block", element: "tray", from: "info", active: $this.infoShown});
+          $this.container.find(".info-overlay").toggle($this.infoShown);
+      });
+
+      $this.render();
 
       return $this;
   }

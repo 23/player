@@ -12,11 +12,22 @@ Player.provide('quality-button',
     var $this = this;
     $.extend($this, opts);
 
-    // Update UI when subtitle changes
+    // Update UI when quality changes
     Player.bind('player:video:qualitychange', function(e){
-        $this.render();
-        $this.container.removeClass("activebutton-container");
-      });
+        $this.render(function(){
+            $this.button = $this.container.find(".quality-button");
+            $this.buttonMenu = $this.container.find(".button-menu");
+            var qualityCount = Player.get('qualitiesArray').length;
+            $this.buttonMenu.css({
+                fontSize: $this.container.find("li").height()*qualityCount
+            });
+            $this.button.one("mouseenter", function(){
+                $this.buttonMenu.css({
+                    right: ($this.buttonMenu.width()-30)/-2
+                });
+            });
+        });
+    });
 
     // Only show the button with more than a single element
     Player.getter('hasQualitySwitching', function(){return Player.get('qualitiesArray').length>1;});

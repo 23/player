@@ -1,19 +1,24 @@
 {% if hasQualitySwitching and isStream == false %}
-<button class="tray-button button quality-button has-list" aria-controls="qualityOptions" aria-label="{{"quality"|translate}}" label="{{"quality"|translate}}" tabindex="1400">
-  <span class="hide-visually">
-    {{"quality"|translate}}
-  </span>
-</button>
+<div class="button-container">
+  <button class="quality-button" aria-controls="qualityOptions" aria-label="{{"quality"|translate}}" label="{{"quality"|translate}}" tabindex="1400">
+    {% if is_dev %}
+      <img src="design/gear@2x.png" srcset="design/gear.svg" />
+    {% else %}
+      <img src="gear@2x.png" srcset="gear.svg" />
+    {% endif %}
+  
+    <span class="hide-visually">
+      {{"quality"|translate}}
+    </span>
 
-<ul id="qualityOptions" class="button-list">
+  </button>
+
+  <ul id="qualityOptions" class="button-menu button-menu-selection">
     {% for q in qualitiesArray %}
-    <li {% if q.quality == quality %}class="selected"{% endif %} click="$set:quality:{{q.quality}}; $set:playing:true">
-      <button tabindex="1400" aria-label="{{q.quality}} {{"quality_2"|translate}}" label="{{q.{{"quality_2"|translate}}}} quality" role="button" tabindex="1401">
-        {{q.displayName}}
-      </button>
-    </li>
+      <li {% if q.quality == quality %}class="selected"{% endif %} click="$set:quality:{{q.quality}}; $set:playing:true">
+        <button aria-label="{{q.quality}} {{"quality_2"|translate}}" label="{{q.{{"quality_2"|translate}}}} quality" role="button" tabindex="1401">{{q.displayQuality}}</button>
+      </li>
     {% endfor %}
   </ul>
-
-
+</div>
 {% endif %}

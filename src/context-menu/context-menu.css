@@ -7,55 +7,55 @@
   display: block;
   z-index: 9998;
 }
+.menu-list, .link-box {
+  position: absolute;
+  z-index: 9999;
+  background: #222222;
+  background: rgba(34,34,34,0.8);
+  border-radius: 2px;  
+}
 .menu-list {
   padding:4px 0;
   display: block;
-  position: absolute;
-  z-index: 9999;
   font-size: 11px;
   top: 50px;
   left: 200px;
   width: 180px;
   height: auto;
-  background-color: #FFF;
-  border: 1px solid #A5A5A5;
-  border-radius: 2px;
 }
 
-.menu-list li:hover {
-  background-color: #f0f0f0;
-}
 .menu-list li.divider {
   height: 0;
   margin: 3px 0;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #222;
 }
 
 .menu-list li a {
   display: block;
   padding: 5px 10px 2px 10px;
   text-decoration: none;
-  color: #777;
+  color: #FFF;
   vertical-align: middle;
+}
+.menu-list li a:hover {
+  color: #1EC95B;
 }
 
 .link-box {
-  position: absolute;
   top: 50%;
   left: 20%;
   right: 20%;
-  background-color: #FFF;
-  z-index: 9999;
-  border: 1px solid #A5A5A5;
-  border-radius: 2px;
   padding: 14px 16px;
   color: #777;
   margin-top: -50px;
 }
 
+.link-box h3, .link-box input, .close-link-box {
+    color: #FFF;
+}
+
 .link-box h3 {
   font-size: 14px;
-  color: #777;
   margin-bottom: 10px;
 }
 
@@ -70,6 +70,8 @@
   line-height: 24px;
   padding: 4px;
   font-size: 12px;
+  border: 1px solid #FFF;
+  background-color: transparent;
 }
 
 .close-link-box {

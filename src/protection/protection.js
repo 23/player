@@ -54,7 +54,6 @@ Player.provide('protection',
         }, 1000);
         break;
       case 'password':
-        Player.set('autoPlay', true);
         $this.maxRetries = 3;
         $this.verifyCallback = callback;
         $this.render(function(){
@@ -121,13 +120,11 @@ Player.provide('protection',
             // (d)
             // We got a protected token for the resource, reload it using that information
             v.token = r.protectedtoken.protected_token;
-            v.reload(function(){
+            v.reload(function(verifiedVideo){
               // (e)
-              // We got the actual video, ready to play. 
-              // Switch in the object
+              // We got the actual video, ready to play.
+              verifiedVideo.token = v.token;
               updateState(v, 'verified', v.protection_method);
-              v.switchTo();
-              Player.set('playing', Player.get('autoPlay'));
             }, function(data){
               console.debug('Protection error', 'Received error for ressource when using using protected_token', data);
               updateState(v, 'denied', v.protection_method);
@@ -142,11 +139,32 @@ Player.provide('protection',
     }
     
     // Listen to loaded event and run the verification mechanism
-    var _previousLoadedVideo = null;
+    var _lastObjectId = 0;
+    var _protectionHandled = false;
+    var _verifiedCallback = function(){};
     Player.bind('player:video:loaded', function(event, video){
-      if(video===_previousLoadedVideo) return;
-      _previousLoadedVideo = video;
-      verifyAccess(event, video, 1);
+      if(!video) return;
+      var _objectId = (video.type == "clip" ? video.photo_id : video.live_id);
+      if(_objectId != _lastObjectId){
+        _lastObjectId = _objectId;
+        _protectionHandled = false;
+      }
+    });
+    Player.bind("player:playflow:beforetransition", function(e, transition){
+        // If transitioning to position 2, playback has been initated by the user or autoplay
+        // Run verification if the video is protected
+        var video = Player.get("video");
+        if(video.protected_p == "1" && transition.nextPosition == 2 && !transition.blocked && !_protectionHandled){
+            Player.set("forcer", {type: "block", element: "tray", from: "protection", active: true});
+            transition.blocked = true;
+            _verifiedCallback = transition.performTransition;
+            verifyAccess(event, video, 1);
+        }
+        return transition;
+    });
+    Player.bind("player:protection:verified", function(){
+        Player.set("forcer", {type: "block", element: "tray", from: "protection", active: false});
+        _verifiedCallback();
     });
     // Handle error message and possible retries
     Player.bind('player:protection:denied', function(event, video){

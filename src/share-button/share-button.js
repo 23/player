@@ -11,11 +11,14 @@ Player.provide('share-button',
   function(Player,$,opts){
     var $this = this;
     $.extend($this, opts);
-    $this.render();
-    
-    Player.bind('player:sharing', function(e){
-        $this.render();
-      });
+      
+    $this.render($this.toggleShareButton);
+
+    $this.toggleShareButton = function(){
+      $this.container.toggle(!!Player.get("socialSharing"));
+    };
+
+    Player.bind('player:video:loaded', $this.toggleShareButton);
 
     return $this;
   }

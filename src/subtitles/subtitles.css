@@ -6,10 +6,11 @@
     font-size:17px;
     line-height:29px;
     text-align:center;
+    transition: bottom 100ms linear;
 }
-.tray-shown .subtitles-container {
-    bottom: 45px;
-}
+/* Raise the subtitles to not overlap with the tray */
+.tray-shown .subtitles-container, .force-tray .subtitles-container { bottom: 45px; }
+.block-tray .subtitles-container { bottom: 10px; }
 .subtitles-container span {
     padding:3px 5px;
     margin:0 auto;

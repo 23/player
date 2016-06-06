@@ -1,0 +1,36 @@
+* [13/18] Todo
+- [X] Autoplay
+- [X] Live scrubber
+- [X] Handle custom play button
+- [X] Slides <> protection
+- [X] Styling of protection forms
+- [X] Logo
+- [X] Ad countdown
+- [X] Dispatch of people-capture before playback
+- [X] Sections
+- [X] Replay
+- [X] Download
+- [X] Setter for reloading
+- [X] Live display thumbnail
+- [ ] Live actions (collectors)
+- [ ] DVR scrubber
+- [ ] Banner <> Collector
+- [ ] Live banner
+- [ ] Font
+
+* [0/3] To adjust
+- [ ] Closebutton transition
+- [ ] Fix class names on volume button to make sense
+- [ ] Accessibility tabindexes
+
+
+* [5/8] To be decided
+- [ ] Responsive UI
+
+
+* [0/2] To test
+- [ ] Subtitles on mobile (Android?)
+- [ ] Slides for live with and without dvr
+
+* [/] Future
+- [ ] Actions & slides colliding

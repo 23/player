@@ -1,32 +1,7 @@
 {% if showLogo == true and logoSource != empty %}
-  <div class="logo" value="stuff" style="
-      {% case logoPosition %}
-        {% when 'top left' %}
-          top:20px;
-          left:20px;
-          bottom: auto;
-          right: auto;
-        {% when 'bottom left' %}
-          bottom:20px;
-          left:20px;
-          top:auto;
-          right:auto;
-        {% when 'bottom right'  %}
-          bottom:20px;
-          right:20px;
-          top:auto;
-          left:auto;
-        {% when 'top right'  %}
-          top:20px;
-          right:20px;
-          bottom:auto;
-          left:auto;
-      {% endcase %}
-      width: {{logoWidth}}px;
-      height: {{logoHeight}}px;
-    ">
+  <div class="logo">
     <a href="{{siteLink}}">
-      <img src="{{logoSource}}" style="opacity:{{logoAlpha}}" />
+      <img src="{{logoSource}}" />
     </a>
   </div>
 {% endif %}

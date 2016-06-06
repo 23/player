@@ -11,13 +11,21 @@ Player.provide('slides-button',{
     var $this = this;
     $.extend($this, opts);
 
-
-    Player.bind("player:slides:overviewchange player:slides:loaded player:slides:init", function(){
-        $this.render();
+    Player.bind("player:slides:loaded player:slides:init player:slides:modechange", function(e){
+        $this.render(function(){
+            $this.button = $this.container.find(".slides-button");
+            $this.buttonMenu = $this.container.find(".button-menu");
+            var slidemodeCount = Player.get('slideModes').length;
+            $this.buttonMenu.css({
+                fontSize: $this.container.find("li").height()*slidemodeCount
+            });
+            $this.button.one("mouseenter", function(){
+                $this.buttonMenu.css({
+                    right: ($this.buttonMenu.width()-30)/-2
+                });
+            });
+        });
     });
-
-
-    $this.render();
 
     return $this;
 });

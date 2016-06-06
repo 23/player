@@ -1,11 +1,11 @@
 {% if hasLink %}<div class="action-click-container" click="$set:clickAction:true"></div>{% endif %}
 {% if identityCountdown or identityAllowClose %}
-  <div class="action-countdown-container">
+  <div class="action-countdown-container {% if identityAllowClose %}action-allow-close{% endif %}" {% if identityAllowClose %}click="$set:closeIdentity:true"{% endif %}>
     {% if identityCountdown %}
       <div class="action-countdown-text">{{ identityCountdownText }}</div>
     {% endif %}
     {% if identityAllowClose %}
-      <div class="action-close" click="$set:closeIdentity:true"></div>
+      <div class="action-skip-icon"></div>
     {% endif %}
   </div>
 {% endif %}

@@ -28,58 +28,12 @@ Player.provide('browse',
     recommendationMethod: 'channel-popular',
     playlistClickMode:'inline',
     loop: false,
-    browseThumbnailWidth:120,
-    browseThumbnailHeight:68
+    browseThumbnailWidth:400,
+    browseThumbnailHeight:225
   },
   function(Player,$,opts){
       var $this = this;
       $.extend($this, opts);
-
-      $this.showAnimation = [{opacity:'show', height:'show'}, 300];
-      $this.hideAnimation = [{opacity:'hide', height:'hide'}, 200];
-
-      // Render the browse interface and enable a simple carousel
-      $this.build = function(){
-          // Find the relavant elements in the template
-          $this.browseLeft = $($this.container).find('.browse-left');
-          $this.browseRight = $($this.container).find('.browse-right');
-          $this.browseContainer = $($this.container).find('.browse-container');
-          $this.browseItems = $($this.container).find('.browse-recommendations');
-
-          if($this.browseLeft && $this.browseRight && $this.browseContainer && $this.browseItems) {
-              $this.browseLeft.click(function(){$this.scroll(-1);});
-              $this.browseRight.click(function(){$this.scroll(+1);});
-              $this.handleScrollThumbs();
-          }
-      };
-      $this.handleScrollThumbs = function(){
-          try {
-              var itemsWidth = $this.browseItems.width();
-              if(itemsWidth==0) {
-                  window.setTimeout($this.handleScrollThumbs, 800);
-                  return;
-              }
-              var itemsLeft = $this.browseItems.position()['left'];
-              var containerWidth = $this.browseContainer.width();
-              $this.browseLeft.toggle( itemsLeft < 0);
-              $this.browseRight.toggle( itemsLeft > (itemsWidth-containerWidth)*-1 );
-          }catch(e){
-              window.setTimeout($this.handleScrollThumbs, 1000);
-          }
-      };
-      $this.scroll = function(direction){
-          try {
-              var itemsWidth = $this.browseItems.width();
-              var itemsLeft = $this.browseItems.position()['left'];
-              var containerWidth = $this.browseContainer.width();
-              var newLeft = itemsLeft + ((direction*containerWidth)*-1); // scroll by a full screen
-              newLeft = Math.min(0, Math.max(newLeft, (itemsWidth-containerWidth)*-1)); // then enforce min and max
-              $this.browseItems.animate({left:newLeft+'px'}, function(){
-                  $this.handleScrollThumbs();
-              });
-          }catch(e){}
-      };
-      $(window).bind('load resize', $this.handleScrollThumbs);
 
       // Load recommendations through the API
       $this.loadedRecommendations = false;
@@ -167,8 +121,6 @@ Player.provide('browse',
       Player.bind('player:video:ended', function(){
           if($this.loop) {
               $this.playNextVideo();
-          } else if($this.showBrowse) {
-              Player.set('browseMode', true);
           }
       });
 
@@ -187,7 +139,9 @@ Player.provide('browse',
 
       // Render on browse update
       Player.bind('player:browse:updated', function(){
-          $this.render($this.build);
+          $this.render(function(){
+              _prevShow = false;
+          });
         });
 
       /* GETTERS */
@@ -195,24 +149,56 @@ Player.provide('browse',
       Player.getter('browseMode', function(){return $this.browseMode;});
       Player.getter('recommendationMethod', function(){return $this.recommendationMethod;});
       Player.getter('hasRecommendations', function(){return (Player.get('clips').length+Player.get('streams').length>1);});
+      Player.getter('nextVideo', function(){return $this.getNextVideo();});
       Player.getter('playlistClickMode', function(){return $this.playlistClickMode;});
       Player.getter('browseThumbnailWidth', function(){return $this.browseThumbnailWidth;});
       Player.getter('browseThumbnailHeight', function(){return $this.browseThumbnailHeight;});
+      Player.getter('recommendations', function(){
+          var objects = Player.get("streams").concat(Player.get("clips"));
+          var recommendations = [];
+          for(var i = 0; i < objects.length; i++) {
+              var o = objects[i];
+              if(o.type == "stream" && o.live_id != Player.get("video_live_id")){
+                  recommendations.push(o);
+              }
+              if(o.type == "clip" && o.photo_id != Player.get("video_photo_id")){
+                  recommendations.push(o);
+              }
+          }
+          recommendations = recommendations.slice(0, 6);
+          for(var j = 0; j < 6 - recommendations.length; j++) {
+              recommendations.push({type: "empty"});
+          }
+          return recommendations;
+      });
 
       /* SETTERS */
       Player.setter('showBrowse', function(sb){
           $this.showBrowse = sb;
           $this.loadRecommendations();
-        });
+      });
+      var _browseTimeouts = [];
+      var _prevShow = false;
       Player.setter('browseMode', function(bm){
-          if(bm) {
-              $('.activebutton').removeClass('activebutton').parent().removeClass('activebutton-container');
-              Player.set('showSharing', false);
-              Player.set('showDescriptions', false);
-              Player.set('slideOverviewShown', false);
-          }
           $this.browseMode = bm;
-          Player.fire('player:browse:updated');
+          if($this.browseMode){
+              $this.browseMode = !Player.fire("player:module:overlayactivated", {name: "browse", prevented: false}).prevented;
+          }
+          if($this.browseMode != _prevShow){
+              while(_browseTimeouts.length > 0){
+                  clearTimeout(_browseTimeouts.pop());
+              }
+              Player.set("forcer", {type: "persist", element: "tray", active: $this.browseMode, from: "browse"});
+              $this.container.find(".browse-container").show();
+              _browseTimeouts.push(setTimeout(function(){
+                  $this.container.find(".browse-container").toggleClass("browse-container-activated", $this.browseMode);
+              }, 10));
+              _browseTimeouts.push(setTimeout(function(){
+                  $this.container.find(".browse-container").css({display: ""});
+              }, 210));
+              if($this.browseMode){ _resize(); }
+              _prevShow = $this.browseMode;
+          }
         });
       Player.setter('browse_photo_id', function(id){
           if(Player.get('playlistClickMode')=='link' && Player.get('permission_level')!='none') {
@@ -233,7 +219,39 @@ Player.provide('browse',
               Player.set('video_live_id', id);
               Player.set('playing', true);
           }
-        });
+      });
+
+      Player.bind("player:module:overlayactivated", function(e, info){
+          if(info.name != "browse"){
+              Player.set("browseMode", false);
+          }
+          return info;
+      });
+
+      var _resize = function(){
+          $this.container.find(".recommendation").each(function(i, el){
+              var $el = $(el), $img = $el.find("img");
+              var cw = $el.width(), ch = $el.height()
+              var cr = cw / ch;
+              var ir = 16/9;
+              if(ir > cr){
+                  $img.css({
+                      top: 0,
+                      left: (ir*ch-cw)/-2,
+                      height: "100%",
+                      width: "auto"
+                  });
+              }else{
+                  $img.css({
+                      top: (cw/ir-ch)/-2,
+                      left: 0,
+                      height: "auto",
+                      width: "100%"
+                  });
+              }
+          });
+      };
+      $(window).resize(_resize);
 
       return $this;
   }

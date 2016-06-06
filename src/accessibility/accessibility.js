@@ -85,8 +85,12 @@ Player.provide('accessibility',
           // Disable tray timeout on tab
           if(e.keyCode==9) {
             $('body').addClass('tabbed');
-            Player.set('showTray', true);
-            Player.set('trayTimeout', 0);
+            Player.set("forcer", {
+              type: "persist",
+              element: "tray",
+              from: "accessibility",
+              active: true
+            });
           }
           if(e.keyCode==27) {
             // Destroy menus

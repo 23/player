@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="40px" height="40px" viewBox="0 0 40 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 3.8.3 (29802) - http://www.bohemiancoding.com/sketch -->
+    <title>replay</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="replay" fill="#FFFFFF">
+            <path d="M25.0942187,14.11152 C23.7025,12.80144 21.8473438,12 19.8125,12 C15.5046875,12 12,15.5888 12,20 C12,24.4112 15.5046875,28 19.8125,28 C21.9629688,28 23.9129687,27.1056 25.3270313,25.66112 L23.7809375,24.07792 C22.7629687,25.11664 21.3596875,25.76 19.8125,25.76 C16.7107813,25.76 14.1875,23.17616 14.1875,20 C14.1875,16.82384 16.7107813,14.24 19.8125,14.24 C21.244375,14.24 22.5520312,14.79152 23.5460937,15.6968 L21.6875,17.6 L24.9239062,17.6 L27,17.6 L27,16.86624 L27,12.16 L25.0942187,14.11152 L25.0942187,14.11152 Z" id="refresh"></path>
+        </g>
+    </g>
+</svg>

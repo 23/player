@@ -1,0 +1,82 @@
+.loop-container, .loop-container-sub {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+.loop-container {
+    display: none;
+    opacity: 0;
+    transition: opacity 200ms linear;
+    background: black;
+}
+.loop-container-activated {
+    display: block;
+    opacity: 1;
+}
+.loop-container-sub {
+    display: table;
+}
+.loop-container-cell {
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+    border-color: #1EC95B;
+    border-width: 0px;
+}
+
+.loop-thumbnail {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0.4;
+}
+
+.loop-headline {
+    font-size: 16px;
+}
+.button-container-loop-play {
+    position: relative;
+    background-color: #000000;
+    width: 91px;
+    height: 51px;
+    margin: 16px auto;
+}
+.button-container-loop-play > .loop-play-button {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-color: #1EC95B;
+    transition: background-color 100ms linear;
+}
+.loop-title {
+    font-size: 32px;
+    line-height: 1.2em;
+    margin: 10px 10% 0;
+}
+.loop-duration {
+    font-size: 14px;
+    color: #CCCCCC;
+}
+
+.loop-countdown {
+    margin: 20px auto 0;
+    width: 36px;
+    height: 36px;
+    border-radius: 20px;
+    font-size: 16px;
+    line-height: 36px;
+    border: 2px solid transparent;
+    border-color: inherit;
+}
+.loop-countdown-animating {
+    animation: borderfade 1000ms ease-in-out infinite;
+}
+
+@keyframes borderfade {
+    0% { border-color: inherit; }
+    50% { border-color: white; }
+    100% { border-color: inherit;  }
+}

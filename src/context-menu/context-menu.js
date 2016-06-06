@@ -40,17 +40,26 @@ Player.provide('context-menu',{
         if($this.showMenu){
             $this.advancedContextMenu = e.altKey;
             $this.showLinkBox = false;
-            $this.menuLeft = e.pageX;
-            if($this.menuLeft + 182 > $(window).width()){
-                $this.menuLeft = e.pageX - 182;
-            }
-            $this.menuTop = e.pageY;
-            if($this.menuTop + 185 > $(window).height()){
-                $this.menuTop = Math.max(2, e.pageY - 185);
-            }
         }
         $this.render(function(){
-          $this.container.find(".link-box input").select();
+            $this.container.find(".link-box input").select();
+            $this.menu = $this.container.find(".menu-list");
+            if($this.menu.size() > 0){
+                var left = e.pageX;
+                var top = e.pageY;
+                var w = $this.menu.width();
+                var h = $this.menu.outerHeight();
+                if( left + w > $(window).width() ){
+                    left = Math.max(10, left - w);
+                }
+                if( top + h > $(window).height() ){
+                    top = Math.max(10, top - h);
+                }
+                $this.menu.css({
+                    top: top,
+                    left: left
+                });
+            }
         });
     });
     Player.setter('linkBoxValue', function(type){

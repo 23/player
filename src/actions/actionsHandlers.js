@@ -78,35 +78,19 @@ var registerActionHandlers = function($this){
             }
         }).attr('src', action.image);
     }
-    // Handlers for video and video ad actions does the same basic thing:
-    // Disable the dispatcher, gathers all video actions to be shown at this actionsPosition,
-    // and let the VideoHandler-method take care of playback flow. Afterwards, control is
-    // handed back to the dispatcher.
+
     // HANDLER: AD & VIDEO
     $this.startTimeHandled = false;
     $this.showHandlers['ad'] = $this.showHandlers['video'] = function(action){
-        $this.dispatcherActive = false;
-        var actions = $this.getOverlappingActions(action.position);
-        $.each(actions, function(i,a){
-            if(a.type == "video" || a.type == "ad"){
-                $this.activeActions[a.action_id] = a;
-            }
-        });
+        var actions = $this.getOverlappingActions(action);
         $this.videoActionHandler = new window.VideoActionHandler(actions, action.container, $this, function(){
-            $this.dispatcherActive = true;
-            if(action.normalizedStartTime==-1){
-                if(!$this.startTimeHandled) Player.set("currentTime", $this.start);
-                Player.set("playing", true);
-            }else if(action.normalizedStartTime==2){
-                Player.fire("player:video:ended");
-            }
-            $this.startTimeHandled = true;
+            Player.fire( action.normalizedStartTime == -1 ? "player:action:prerollsplayed" : "player:action:postrollsplayed" );
         });
         return false;
     };
 
     // HANDLER: BANNER
-    // This handler mimics the showHandler for action type "image" expect it makes sure that the VAST feed
+    // This handler mimics the showHandler for action type "image" exept it makes sure that the VAST feed
     // has been loaded and parsed, before creating the image element and its container
     $this.showHandlers['banner'] = function(action){
         if(typeof action.ad_url=="undefined"||action.ad_url=="") return;

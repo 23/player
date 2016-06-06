@@ -8,24 +8,17 @@
   - player:slides:init
   - player:slides:loaded
   - player:slides:modechange
-  - player:slides:overviewchange
 
   Answers properties:
 
   - slides [get]
-  - showSlides [get]
   - hasSlides [get]
-  - slideOverviewAvailable [get]
-  - slideOverviewShown [get/set]
   - slideMode [set]
-  - switchSlideMode [set]
-  - playFromSlide [set]
 
 */
 
 Player.provide('slides',{
-    showSlides: true,
-    defaultSlideMode: "pip-video",
+    slideMode: "slidemode-sbs",
     verticalPadding:0,
     horizontalPadding:0
 },function(Player,$,opts){
@@ -33,8 +26,9 @@ Player.provide('slides',{
     $.extend($this, opts);
 
     Player.bind('player:settings', function(){
-      PlayerUtilities.mergeSettings($this, ['showSlides', 'defaultSlideMode', 'verticalPadding', 'horizontalPadding']);
-      Player.set("slideMode", $this.defaultSlideMode);
+      PlayerUtilities.mergeSettings($this, ['slideMode', 'verticalPadding', 'horizontalPadding']);
+      $this.killSlides();  
+      Player.set("slideMode", $this.slideMode);
     });
 
     $this.slideUpdateInterval = 8000;
@@ -43,118 +37,54 @@ Player.provide('slides',{
     $this.currentSlide = {
         deck_slide_id: ''
     };
-    $this.queuedSlideMode = "";
-    $this.slideOverviewShown = false;
 
     Player.getter('slides', function(){return $this.slides;});
     Player.getter('showSlides', function(){return $this.showSlides;});
     Player.getter('hasSlides', function(){
         return $this.slides.length > 0;
     });
-
-    // The slide overview should be available if the video or stream has slides and slides is enabled in player settings
-    // For streams, the slide overview only makes sense if the stream has dvr
-    Player.getter('slideOverviewAvailable', function(){
-        var ret = $this.showSlides && Player.get("hasSlides");
-        var v = Player.get("video");
-        if(v && v.type == "stream"){
-            ret = ret && Player.get("stream_has_dvr");
-        }
-        return ret;
-    });
-    Player.getter('slideOverviewShown', function(){return $this.slideOverviewShown;});
     Player.getter('slideMode', function(){return $this.slideMode;});
-
+    Player.getter('slideModes', function(){
+        return [{
+            key: "slidemode-sbs",
+            display: "Side by side"
+        }, {
+            key: "slidemode-video",
+            display: "Video only"
+        }, {
+            key: "slidemode-slide",
+            display: "Slides only"
+        }];
+    });
 
     // Setter for switching between the different modes of displaying slides
     // Available modes: sbs-slide, sbs-video, pip-slide, pip-video, no-slides
     Player.setter("slideMode", function(mode){
-        // If there is no slide to display, switch to "no-slides" and queue up the slide mode
-        // The queued slide mode will be restored by updateSlides() when there is a slide to display
-        if(mode != "no-slides" && $this.currentSlide.deck_slide_id == ''){
-            $this.queuedSlideMode = mode;
-            mode = "no-slides";
-        }
-
-        // Don't do anything, if we are already in the requested mode
-        if(typeof $this.slideMode != "undefined" && $this.slideMode == mode) return;
-
         $this.slideMode = mode;
-
-        if($this.slideModeDisabled) return;
 
         // Set correct body-classes so slides and video is sized and positioned correctly
         $this.setBodyClasses(mode);
-
 
         Player.fire("player:slides:modechange", $this.slideMode);
         $this.resize();
     });
 
-    // Setter for switiching between pip-slide and pip-video
-    Player.setter('switchSlideMode', function(value){
-        switch($this.slideMode){
-            case "pip-video":
-                Player.set("slideMode", "pip-slide");
-                break;
-            case "pip-slide":
-                Player.set("slideMode", "pip-video");
-                break;
-        }
-    });
-
-    Player.setter("slideModeDisabled", function(disabled){
-        $this.slideModeDisabled = disabled;
-        if(disabled){
-            $this.setBodyClasses("no-slides");
-        }else{
-            $this.setBodyClasses($this.slideMode);
-        }
-    });
-
-    Player.setter('slideOverviewShown', function(value){
-        $this.slideOverviewShown = value;
-        $this.render(function(){
-            if($this.slideOverviewShown){
-                $this.container.find(".slide-overview-container-background").css({
-                    opacity: 0.7
-                });
-                Player.set("showSharing", false);
-                Player.set("browseMode", false);
-                Player.set("showDescriptions", false);
-            }
-            $this.updateCurrentSlide();
-        });
-        Player.fire("player:slides:overviewchange");
-    });
-
-    Player.setter("playFromSlide", function(index){
-        var v = Player.get("video");
-        if(v && v.type == "clip"){
-            Player.set("currentTime", parseInt($this.slides[index].second));
-        }else{
-            var ct = Player.get("currentTime");
-            var streamStartDate = (Player.get("videoElement").getProgramDate()/1000)-ct;
-            Player.set("currentTime", parseInt($this.slides[index].absolute_time_epoch)-streamStartDate);
-        }
-        Player.set("playing", true);
-        Player.set("slideOverviewShown", false);
-    });
-
     // Resets intervals for loading slides
     $this.initSlides = function(v){
         window.clearInterval($this.slideUpdateIntervalId);
-        if ($this.showSlides){
-            if(v.type=="clip"){
+        $this.loadSlides(v);
+        if(v.type=="stream"){
+            $this.slideUpdateIntervalId = window.setInterval(function(){
                 $this.loadSlides(v);
-            }else if(v.type=="stream"){
-                $this.loadSlides(v);
-                $this.slideUpdateIntervalId = window.setInterval(function(){
-                    $this.loadSlides(v);
-                },$this.slideUpdateInterval);
-            }
+            },$this.slideUpdateInterval);
         }
         Player.fire("player:slides:init");
+    };
+
+    $this.killSlides = function(){
+        window.clearInterval($this.slideUpdateIntervalId);
+        $("body").addClass("no-slides");
+        Player.fire("player:slides:kill");
     };
 
     // Fetches slide info from the api
@@ -209,16 +139,14 @@ Player.provide('slides',{
             // If we do not have a slide to show, disable slide display temporarily
             $this.container.find(".slide-container img").remove();
             $this.currentSlide = {deck_slide_id: ''};
-            Player.set("slideMode", $this.slideMode);
+            $("body").addClass("no-slides");
         }else if($this.currentSlide.deck_slide_id != slideToShow.deck_slide_id){
             // Update the current slide and possibly restore slide mode
             $this.currentSlide = slideToShow;
             $this.updateCurrentSlide();
-            if($this.queuedSlideMode != ""){
-              Player.set("slideMode", $this.queuedSlideMode);
-              $this.queuedSlideMode = "";
-            }
+            $("body").removeClass("no-slides");
         }
+        $this.resize();
     };
 
     // Updates the slide that is currently displayed
@@ -231,53 +159,48 @@ Player.provide('slides',{
                 currentImg.remove();
             }
             nextImg.show();
-        }).attr("src", Player.get("url")+$this.currentSlide.slide_url).prependTo($this.container.find(".slide-container td"));
+        }).attr({
+            "src": Player.get("url")+$this.currentSlide.slide_url
+        }).click(function(){
+            Player.set("slideMode", ($this.slideMode == "slidemode-sbs" ? "slidemode-slide" : "slidemode-sbs"));
+        }).prependTo( $this.container.find(".slide-container td") );
     };
 
     $this.setBodyClasses = function(mode){
-        $("body").removeClass("pip pip-slide pip-video sbs sbs-slide sbs-video no-slides");
-        if(mode == "no-slides"){
-            $("body").addClass("no-slides");
-        }else if(mode == "sbs-slide" || mode == "sbs-video") {
-            $("body").addClass("sbs "+mode);
-        }else if(mode == "pip-slide" || mode == "pip-video") {
-            $("body").addClass("pip "+mode);
-        }
+        $("body").removeClass("slidemode-sbs slidemode-video slidemode-slide");
+        $("body").addClass(mode);
         if(/MSIE/.test(navigator.userAgent)){
             $(".video-display").hide(0, function(){$(this).show();});
         }
     };
 
     Player.bind("player:video:timeupdate player:slides:loaded",function(){
-        if($this.showSlides){
-            $this.updateSlides();
-        }
+        $this.updateSlides();
     });
 
     // When a video is loaded, init and update the display of slides
-    var last_id = 0;
-    Player.bind("player:video:loaded player:protection:verified",function(e,v){
-        if(v && last_id==(v.type=="clip"?v.photo_id:v.live_id) && e!="player:protection:verified"){
-            $this.updateCurrentSlide();
-        }else if(v){
-            last_id = (v.type=="clip"?v.photo_id:v.live_id);
-            $this.initSlides(v);
+    Player.bind("player:playflow:transitioned",function(e,transition){
+        if(transition.currentPosition == 3){
+            $this.initSlides( Player.get("video") );
+        }else{
+            $this.killSlides();
         }
     });
 
     $this.resize = function(){
       // Set max-height slide img manually whenever the slide has a "100%-height" container
-      var slide = $("body.sbs .slide-container img, body.pip-slide .slide-container img");
+      var slide = $(".slide-container img");
       if(slide.size()>0) {
         slide.css("max-height", $(".slide-container").get(0).clientHeight);
       }
-      if($this.slideMode == "sbs-slide" || $this.slideMode == "sbs-video") {
+      if($this.slideMode == "slidemode-slide" || $this.slideMode == "slidemode-sbs") {
         $('.slide-container table td').css({paddingBottom:$this.verticalPadding+'px', paddingRight:$this.horizontalPadding+'px'});
       } else {
         $('.slide-container table td').css({paddingBottom:'', paddingRight:''});
       }
     };
     $(window).resize($this.resize);
+    Player.bind("player:slides:modechange", $this.resize);
 
     $this.render();
 

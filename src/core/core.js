@@ -72,22 +72,12 @@ var PlayerVideo = function(Player,$,type,data){
     // (all data needed even when the clip isn't active)
     $v = Player.fire('player:video:init', $v);
 
-    // Populate the clip with extra information
-    // such as subtitles, sections and more,
-    // depending on whether modules are activated.
-    // (all data needed only when the clip activated)
-    $v.populate = function(callback){
-        $v = Player.fire('player:video:populate', $v);
-        $v.populated = true;
-        callback($v);
-    };
-
     // Reload the clip/meta from API
     $v.reload = function(callback, fail){
       callback = callback||function(){};
       fail = fail||Player.fail;
       var method = ($v.type=='clip' ? '/api/photo/list' : '/api/live/list');
-      var query = ($v.type=='clip' ? {photo_id:$v.photo_id, token:$v.token, include_actions_p:1} : {live_id:$v.live_id, token:$v.token});
+      var query = ($v.type=='clip' ? {photo_id:$v.photo_id, token:$v.token} : {live_id:$v.live_id, token:$v.token});
       var object = ($v.type=='clip' ? 'photos' : 'live');
       if(object=='live' && typeof(Player.parameters['stream_preview_p'])!='undefined') {
         query['stream_preview_p'] = Player.parameters['stream_preview_p'];
@@ -97,13 +87,9 @@ var PlayerVideo = function(Player,$,type,data){
         function(data){
           if(data[object].length>0) {
             $v = new PlayerVideo(Player,$,$v.type,data[object][0]);
-            $v.populate(function(){
-              Player.set('video', $v);
-              Player.fire('player:video:loaded', $v);
-              Player.set('video', $v);
-              Player.set('loadActions', false);
-              callback($v);
-            });
+            Player.set('video', $v);
+            Player.fire('player:video:loaded', $v);
+            callback($v);
           } else {
             fail = fail||Player.fail;
           }
@@ -113,14 +99,8 @@ var PlayerVideo = function(Player,$,type,data){
     };
 
     $v.switchTo = function(){
-        // The first time the clip is activated, populate it
-        if(!$v.populated) {
-            $v.populate($v.switchTo);
-            return;
-        }
         Player.set('video', $v);
         Player.fire('player:video:loaded', $v);
-        Player.set('video', $v);
     };
 
     return $v;
@@ -225,7 +205,7 @@ Player.provide('core',
           $this.streams = [];
           methods.push({
               method:'/api/live/list',
-              data:$.extend(Player.parameters, {upcoming_p:1, ordering:'streaming', player_id:$this.settings.player_id}),
+              data:$.extend({include_actions_p:1}, Player.parameters, {upcoming_p:1, ordering:'streaming', player_id:$this.settings.player_id}),
               callback: $this.onLiveLoaded
           });
 
@@ -249,6 +229,14 @@ Player.provide('core',
       });
       Player.setter('video', function(v){
           $this.video = v;
+      });
+      Player.setter('reloadVideo', function(){
+          $this.video.reload();
+      });
+      Player.setter('loadVideo', function(video){
+          var type = video.type || "clip";
+          $this.video = new PlayerVideo(Player,$,type,video);
+          $this.video.reload();
       });
       Player.setter('settings', function(s){
           $this.settings = s;

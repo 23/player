@@ -1,26 +1,51 @@
-{% if showSharing %}
-  <div id="sharing" class="sharing-container">
-    <div class="share-embed">
-      <label for="embed-code" class="share-embed-label">{{"embed"|translate}}</label>
-      <input name="embed-code" type="text" value="{{embedCode|escape}}" onclick="$(this).select();" click="$fire:player:sharing:embedengaged" aria-label="{{"copy_embed"|translate}}" label="{{"copy_embed"|translate}}" tabindex="1301"/>
-    </div>
-
-    <div class="share-buttons">
-      <button click="$set:shareTo:site" class="site-button" aria-label="{{"see_on_site"|translate}}" label="{{"see_on_site"|translate}}" tabindex="1302">
-        {{"see_on_site"|translate}}
-      </button>
-      <button click="$set:shareTo:facebook" class="facebook-button" aria-label="{{"share_on_facebook"|translate}}" label="{{"share_on_facebook"|translate}}" tabindex="1303">
-        {{"share_on_facebook"|translate}}
-      </button>
-      <button click="$set:shareTo:twitter" class="twitter-button" aria-label="{{"tweet_this_video"|translate}}" label="{{"tweet_this_video"|translate}}" tabindex="1304">
-        {{"tweet_this_video"|translate}}
-      </button>
-      <button click="$set:shareTo:google" class="google-button" aria-label="{{"plus_one_google"|translate}}" label="{{"plus_one_google"|translate}}" tabindex="1305">
-        {{"plus_one_google"|translate}}
-      </button>
-      <button click="$set:shareTo:mail" class="mail-button" aria-label="{{"mail_video"|translate}}" label="{{"mail_video"|translate}}" tabindex="1306">
-        {{"mail_video"|translate}}
-      </button>
+<div id="sharing" class="sharing-container">
+  
+  <div class="sharing-info">
+    <h3>Share "{{video_title}}"</h3>
+    <a href="{{videoLink}}" target="_blank" class="sharing-link selectable">{{videoLink}}</a>
+    <div class="current-time-select">
+      {% if is_dev %}
+        <div class="checkbox"><img src="design/checkmark.png" srcset="design/checkmark.svg"  /></div>
+      {% else %}
+        <div class="checkbox"><img src="checkmark.png" srcset="checkmark.svg"  /></div>
+      {% endif %}
+      Share from current position
     </div>
   </div>
-{% endif %}
+
+  <div class="button-container button-container-close">
+    <button class="close-button" click="$set:showSharing:false"></button>
+  </div>
+
+  <div class="share-buttons-container">
+    <div class="share-buttons">
+      <div class="button-container">
+        <button click="$set:shareTo:facebook" class="facebook-button" aria-label="{{"share_on_facebook"|translate}}" label="{{"share_on_facebook"|translate}}" tabindex="1303">
+          {{"share_on_facebook"|translate}}
+        </button>
+      </div>
+      <div class="button-container">
+        <button click="$set:shareTo:twitter" class="twitter-button" aria-label="{{"tweet_this_video"|translate}}" label="{{"tweet_this_video"|translate}}" tabindex="1304">
+          {{"tweet_this_video"|translate}}
+        </button>
+      </div>
+      <div class="button-container">
+        <button click="$set:shareTo:linkedin" class="linkedin-button" aria-label="Share on LinkedIn" label="Share on LinkedIn" tabindex="1304">
+          Share on LinkedIn
+        </button>
+      </div>
+      <div class="button-container">
+        <button click="$set:shareTo:site" class="more-button" aria-label="{{"see_on_site"|translate}}" label="{{"see_on_site"|translate}}" tabindex="1306">
+          More sharing options
+        </button>
+      </div>
+      {% if showDownload and downloadUrl != "" %}
+      <div class="button-container">
+        <button onclick="window.location = '{{downloadUrl}}';" class="download-button">
+          Download video
+        </button>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>

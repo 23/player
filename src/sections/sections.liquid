@@ -1,9 +1,11 @@
-<div class="sections">
-  {% for section in sections %} 
-    {% if section.start_time > 0  %} 
-      <div class="section" style="left:{{section.positionPct}};" click="$set:currentTime:{{section.start_time}}; $set:playing:true" title="{{section.title|escape}}">
-        {% if isTouchDevice == false %}<div class="section-title">{{section.title|escape}}</div>{% endif %}
-      </div>
-    {% endif %} 
-  {% endfor %} 
+<div class="sections-container">
+  <div class="sections">
+    {% for section in sections %} 
+      {% if section.start_time > 0  %} 
+        <div class="section" style="left:{{section.positionPct}};" click="$set:currentTime:{{section.start_time}}; $set:playing:true" title="{{section.title|escape}}">
+          {% if isTouchDevice == false %}<div class="section-title">{{section.title|escape}}</div>{% endif %}
+        </div>
+      {% endif %} 
+    {% endfor %}
+  </div>
 </div>

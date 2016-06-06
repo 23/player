@@ -8,24 +8,41 @@
    Answers properties:
    - showLogo [get/set]
    - logoSource [get]
-   - logoPosition [get]
-   - logoAlpha [get]
-   - logoWidth [get]
-   - logoHeight [get]
 */
 
 Player.provide('logo', 
   {
     logoSource:'',
-    showLogo:true,
-    logoPosition: 'top right',
-    logoAlpha: .9,
-    logoWidth: 80,
-    logoHeight: 40
+    showLogo:true
   },
   function(Player,$,opts){
       var $this = this;
       $.extend($this, opts);
+
+      var _onImageLoaded = function(){
+          var img = $this.logo.get(0);
+          var ratio = img.naturalWidth / img.naturalHeight;
+          var style = {"display": "block"};
+          if(ratio > 1.2){
+              style["max-width"] = "110px";
+          }else if(ratio < 0.8){
+              style["max-height"] = "110px";
+          }else{
+              style["max-width"] = "75px";
+          }
+          $this.logo.css(style);
+      };
+
+      var _onRender = function(){
+          $this.logo = $this.container.find("img");
+          if($this.logo.size() > 0){
+              if($this.logo.get(0).complete){
+                  _onImageLoaded();
+              }else{
+                  $this.logo.load(_onImageLoaded);
+              }
+          }
+      };
       
       // Bind to events
       Player.bind('player:settings', function(e,settings){
@@ -33,25 +50,12 @@ Player.provide('logo',
           PlayerUtilities.mergeSettings($this, ['logoSource', 'showLogo', 'logoPosition', 'logoAlpha', 'logoWidth', 'logoHeight']);
           if(!$this.logoSource.length) $this.showLogo = false;
           if($this.logoSource.length>0 && !/\/\//.test($this.logoSource)) $this.logoSource = Player.get('url')+$this.logoSource;
-          $this.render();
-        });
-      Player.bind('player:sharing', function(){
-          $this.render();
-        });
+          $this.render(_onRender);
+      });
 
       /* GETTERS */
       Player.getter('showLogo', function(){return $this.showLogo||false;});
       Player.getter('logoSource', function(){return $this.logoSource||'';});
-      Player.getter('logoPosition', function(){return $this.logoPosition||'';});
-      Player.getter('logoAlpha', function(){return $this.logoAlpha||'';});
-      Player.getter('logoWidth', function(){return $this.logoWidth||'';});
-      Player.getter('logoHeight', function(){return $this.logoHeight||'';});
-     
-      /* SETTERS */
-      Player.setter('showLogo', function(sl){
-          $this.showLogo = sl;
-          $this.render();
-        });
 
       return $this;
   }

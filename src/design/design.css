@@ -1,9 +1,6 @@
 /* ========================= BROWSER RESET ======================== */
 body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td,button{margin:0;padding:0;}table{border-collapse:collapse;border-spacing:0;}fieldset,img,button{border:0;}address,caption,cite,code,dfn,em,strong,th,var{font-style:normal;font-weight:normal;}ol,ul {list-style:none;}caption,th {text-align:left;}h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:normal;}q:before,q:after{content:'';}abbr,acronym {border:0;}* focus, video, object, player, embed {outline:none} *{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;-o-user-select:none;user-select:none;}iframe{border:0} input,textarea{-webkit-user-select:text;-moz-user-select:text;-ms-user-select:text;-o-user-select:text;user-select:text;}iframe{border:0}button{background-color:transparent;}
 
-
-
-
 /* ========================= GENERAL TAGS ======================== */
 a img {border:0;}
 html,body {
@@ -40,87 +37,12 @@ p {
 .clear {
     clear: both;
 }
-.share-buttons button, .submitbutton {
-    background-color:#3B3B3C;
-    color:white; /*updated in js via player settings */
-    font-size:11px;
-    padding:0 5px 0 30px;
-    border:none;
-    background-repeat:no-repeat;
-    background-position:left center;
-    cursor:pointer;
-    height:30px; 
-    line-height:32px;
-    margin-right:10px;
-}
-.submitbutton {
-    padding-left:5px;
-    font-size:14px;
-}
-body.hide-cursor, body.hide-cursor * {
-    cursor: none;
-}
-
-
-/* ========================= GENERIC CLASSES ======================== */
-
-/* === buttons === */
-.button { /* standard button design */
-    position:relative;
-    height:30px;
-    width:30px;
-    border-radius:2px;
-    background-color:black;  /*updated in js via player settings */
-    background-position:center center;
-    background-repeat:no-repeat;
-    opacity:.8;
-    cursor:pointer;
-    font-size:0;
-}
-.touch .button {
-    height: 40px;
-    width: 40px;
-}
-.highlight-button {
-    opacity:1 !important;
-}
-.button:hover {
-    opacity:1;
-}
-.button.big { /* big version of same button */
-    height:60px;
-    width:60px;
-    border-radius:3px;
-}
-.touch .button.big {
-    height: 80px;
-    width: 80px;
-}
-
-ul.button-list {
-    display: none;
-    position: absolute;
-    bottom: 32px;
-    right: 0px;
-    opacity: 0;
-    background:rgb(0,0,0); /*fallback for browser with no RGBa support */
-    background:rgba(0,0,0,.8); /*updated in js via player settings */
-    line-height:25px;
-    padding:2px 10px;
-    text-align:left;
-}
-.activebutton-container ul.button-list {
-    display: block;
-    font-size:11px;
-    line-height:22px;
-    opacity: 1;
-    -webkit-animation: menuSlideIn 400ms;
-    -moz-animation: menuSlideIn 400ms;
-    animation: menuSlideIn 400ms;
-}
-
-.touch ul.button-list {
-    bottom: 42px;
+.selectable, .selectable * {
+    -webkit-user-select: initial;
+    -moz-user-select: initial;
+    -ms-user-select: initial;
+    -o-user-select: initial;
+    user-select: initial;
 }
 .hide-visually {
     text-indent: -9999px;
@@ -131,40 +53,74 @@ ul.button-list {
     clip: rect(1px, 1px, 1px, 1px);
 }
 
-.button-list li { /* menu items */
-    white-space:nowrap;
-    background:url('not-selected-icon.png') -10px -5px no-repeat;
-    padding-left:14px;
-    cursor: pointer;
+/* ========================= GENERIC CLASSES ======================== */
+
+/* === buttons === */
+.button-container {
+    position: relative;
 }
-.button-bulletless li {
-    background-image:none !important;
-    padding-left:0;
-}
-.button-list li.hover { /* menu item hover */
-}
-.button-list li.selected { /* menu item selected */
-    background-image:url('selected-icon.png');
-}
-.button-list button {
-    cursor: pointer;
-}
-a.button { /* standard button design as a straight link */
-    display:inline-block; 
-    *display:inline; 
-    *zoom:1; 
-    border:1px solid #333;
-    height:30px;
-    width:30px;
-    border-radius:2px;
-    background-color:black;  /*updated in js via player settings */
+.button-container > button { /* standard button design */
+    display: block;
+    position:relative;
+    height:40px;
+    width:40px;
     background-position:center center;
     background-repeat:no-repeat;
-    opacity:.8;
     cursor:pointer;
     font-size:0;
-    text-decoration:none;
 }
+.button-container > button img {
+    display: block;
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+ul.button-menu {
+    position: absolute;
+    bottom: 100%;
+    right: 0px;
+    height: 0;
+    background:rgb(0,0,0);
+    background:rgba(0,0,0,.6);
+    padding: 0px;
+    font-size: 0;
+    overflow: hidden;
+    transition: height 200ms ease;
+}
+.button-container:hover ul.button-menu, .button-container-active ul.button-menu {
+    height: 1em;
+}
+ul.button-menu li {
+    display: block;
+    text-align: right;
+    font-size: 11px;
+    background: transparent none 10px center no-repeat;
+}
+ul.button-menu li button { /* menu items */
+    height: 30px;
+    padding: 0 14px 0 20px;
+    line-height: 30px;
+    text-align: right;
+    white-space:nowrap;
+    color: white;
+    cursor: pointer;
+    color: #AAAAAA;
+}
+ul.button-menu li:hover button { color: #1EC95B; }
+
+/* Menu with selection */
+ul.button-menu-selection li.selected { background-image:url('checkmark.png'); }
+ul.button-menu-selection li.selected button { color: #FFFFFF; }
+ul.button-menu-selection li button { padding-left: 30px; }
+ul.button-menu-selection li.selected:hover button { color: #FFFFFF; }
+
+/* Close button for overlays */
+.button-container-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
 /* === /buttons === */
 
 
@@ -173,35 +129,65 @@ a.button { /* standard button design as a straight link */
 /* ========================= OVERALL GRID ======================== */
 
 /* === tray === */
-#tray { /* tray position */
+#tray {
     position:absolute;
-    bottom:0;
+    bottom:-20px;
     left:0;
     width:100%;
-    display: none;
+    opacity: 0;
+    transition: all 100ms linear;
 }
-.tray-navigation {
-    *filter: alpha(enabled=false) !important; /* IE alpha overflow hidden bug, http://labs.thesedays.com/blog/2011/06/02/ie-alpha-overflow-hidden-bug/ */
-    position:relative;
-    margin:3px 5px 5px 5px;
+#stray {
+    bottom: 0 !important;
+    opacity: 1 !important;
 }
-.tray-left .tray-button { /* buttons left of scrubber */
+.tray-shown #tray {
+    bottom: 0;
+    opacity: 1;
+}
+.block-tray #tray {
+    bottom: -40px !important;
+}
+.persist-tray #tray {
+    bottom: 0 !important;
+    opacity: 1 !important;
+}
+#traysub {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: rgb(0,0,0);
+    background: rgba(0,0,0,0.6);
+}
+@media all and (min-width: 1200px) {
+    #traysub {
+        width: 800px;
+    }
+}
+.tray-left {
     float:left;
-    margin-right:3px;
 }
-.tray-right .tray-button { /* buttons right of scrubber */
+.tray-left .button-container button {
+    width: 71px;
+    transition: background-color 200ms linear;
+}
+.tray-right {
+    padding-right: 5px;
+}
+.tray-right .button-container { /* buttons right of scrubber */
     float:right;
-    margin-left:3px;
+}
+.tray-right .button-container > button, .tray-right .button-container > button img {
+    width: 30px;
+    height: 40px;
 }
 .tray-scrubber {  /* scrubber position */
-    display:none;
-    margin:0 200px 0 33px; /* this will be updated using JS to fix the with of .tray-left and .tray-right */
-}
-.tray-scrubber-sub {
-    position:relative;
+    position: relative;
+    margin: 0;
+    margin-left: 71px; /* Width of play/pause button */
+    margin-right: 0; /* Width of buttons to the right of the scrubber. Updated in js. */
+    padding: 0 10px;
 }
 /* === /tray === */
-
 
 
 
@@ -209,254 +195,540 @@ a.button { /* standard button design as a straight link */
 
 /* === Module: Scrubber === */
 .scrubber-container {
-    position:relative;
-    height:30px;
-    background:rgb(0,0,0); /*fallback for browser with no RGBa support */
-    background:rgba(0,0,0,.8); /*updated in js via player settings */
-    border-radius:2px;
-    filter: alpha(enabled=false) !important; /* IE alpha overflow hidden bug, http://labs.thesedays.com/blog/2011/06/02/ie-alpha-overflow-hidden-bug/ */
-}
-.touch .scrubber-container {
-    height: 40px;
+    position:relative; 
+    height:40px;
 }
 .scrubber {
-    position:absolute; 
-    top:0px;
-    left:10px;
-    right:10px;
-    height:30px;
+    position: relative;
+    margin-right: 70px;
+    height: 100%;
     cursor:pointer;
 }
-.touch .scrubber {
-    height: 40px;
+.scrubber-track {
+    position: relative;
+    top: 18px;
+    height: 4px;
 }
-.scrubber-track, .scrubber-buffer, .scrubber-play {
-    position:absolute; 
-    top:12px;
-    left:0;
-    height:6px;
+.scrubber-buffer, .scrubber-play {
+    position:absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
     width:0;
-    cursor:pointer;
-}
-.touch .scrubber-track, .touch .scrubber-buffer, .touch .scrubber-play {
-    top: 17px;
+    transition: width 100ms ease;
 }
 .scrubber-track {
     width:100%;
-    background-color:#888;
+    background-color:#222222;
 }
 .scrubber-buffer {
-    background-color:#666;
+    background: #1EC95B;
+    opacity: 0.2;
 }
 .scrubber-play {
-    background-color:#eee; /*updated in js via player settings */
+    background-color: #1EC95B;
 }
-.scrubber-handle {
-    display:none;
-    cursor:pointer;
-    position:absolute;
-    top:7px;
-    background-color:#eee;
-    border-radius:1px;
-    font-size:9px;
-    line-height:9px;
-    color:#333;
-    padding:4px 4px 2px 4px;
-    z-index:10;
-}
-.touch .scrubber-handle {
-    top: 12px;
-}
-.scrubber-container-hover .scrubber-handle {
-    display:block;
-}
-.scrubber-time {
-    display:none;
-    position:absolute; 
-}
+
 .scrubber-thumbnail {
-    position:absolute;
-    bottom:37px;
-    border-radius:2px;
-    border:2px solid white;
     display:none;
+    position:absolute;
+    left: 0;
+    bottom:44px;
+    width: 94px;
+    border:2px solid #222222;
+    overflow: hidden;
+}
+.tray-shown .scrubber:hover .scrubber-thumbnail {
+    display: block;
 }
 .touch .scrubber-thumbnail {
-    bottom: 47px;
+    display: none !important;
 }
-.scrubber-thumbnail-sub {
-    background-repeat: 'no-repeat';
-    width:100%;
-    height:100%;
+.scrubber-thumbnail img {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
 }
-/* === /Sharing === */
+.scrubber-thumbnail-time-container {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+}
+.scrubber-thumbnail-time {
+    padding: 4px;
+    background: #222222;
+    background: rgba(34,34,34,0.8);
+    font-size: 10px;
+    line-height: 1em;
+}
+
+.time-container {
+    position: absolute;
+    top: 15px;
+    right: 0;
+    height: 10px;
+    font-size: 10px;
+    line-height: 1em;
+}
+.video-stream .time-container {
+    padding-left: 10px;
+    background: transparent url("live-dot.png") left center no-repeat;
+    background-image: linear-gradient(transparent, transparent), url("live-dot.svg");
+    background-size: 6px;
+}
+.video-stream .time-container span {
+    color: #FA4646;
+    padding-right: 4px;
+}
+/* === /Scrubber === */
 
 /* === Module: Sections === */
+.sections-container {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    margin-top: -2px;
+    padding: 0 10px;
+}
 .sections {
-    position:absolute; 
-    top:10px;
-    left:10px;
-    right:10px;
-    height:0; /* for ie7's sake, otherwise this element covers the scrubber  */
+    position:relative;
+    margin-right: 70px;
 }
 .section {
     position:absolute; 
     top:0;
-    width:8px;
-    height:8px; 
-    margin:0px 0 0 -4px;
-    border:1px solid black;
-    background-color:#ccc;
-    border-radius:5px;
+    width:4px;
+    height:4px; 
+    margin-left: -2px;
+    background: rgb(255,255,255);
+    background: rgba(255,255,255,0.6);
     cursor:pointer;
+    transition: background 200ms linear;
+}
+.section:hover {
+    background: rgba(255,255,255,1);
 }
 .section-title {
     display:none;
+    opacity: 0;
+    position: absolute;
+    bottom: 28px;
+    left: -50px;
+    max-width: 120px;
+    padding: 14px 18px;
+    font-size: 13px;
+    line-height: 13px;
+    white-space: nowrap;
+    background: rgb(34,34,34);
+    background: rgba(34,34,34,0.7);
+    border: 1px solid rgb(64,64,64);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: opacity 200ms linear;
+}
+#tray:hover .section-title {
+    display: block;
+}
+.section:hover .section-title {
+    opacity: 1;
 }
 /* === /Sections === */
 
+/* === Module: Volume button === */
+.volume-slider {
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    width: 100%;
+    height: 0;
+    background: rgb(0,0,0);
+    background: rgba(0,0,0,0.6);
+    overflow: hidden;
+    transition: height 200ms ease;
+}
+.tray-shown .button-container:hover .volume-slider, .tray-shown .button-container-active .volume-slider {
+    display: block;
+    height: 100px;
+}
+.volume-slider-inner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100px;
+    cursor: pointer;
+}
+.volume-slider .volume-track {
+    position: absolute;
+    top: 12px;
+    bottom: 12px;
+    left: 13px;
+    width: 4px;
+    background-color: #222222;
+}
+.volume-slider .volume-level {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 0;
+    background-color: #1EC95B;
+    transition: height 100ms linear;
+}
+.volume-button-off img.volume-off-icon, .volume-button-on img.volume-on-icon {
+    display: none;
+}
+/* === /Volume button === */
+
 /* === Module: Info === */
-.info-pane {
-    margin:0 5px;
-    background:rgb(0,0,0); /*fallback for browser with no RGBa support */
-    background:rgba(0,0,0,.8); /*updated in js via player settings */
-    border-radius:2px;
-    padding:5px 10px 8px 10px;
+.info-overlay {
+    display: none;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 1;
+    transition: opacity 200ms linear;
+}
+.block-info .info-overlay {
+    opacity: 0;
+}
+.info-overlay-text {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    padding: 5% 4%;
+    background:rgb(0,0,0);
+    background:rgba(0,0,0,0) url(info-gradient.png) left bottom repeat-x;
+    background-size: auto 100%;
+}
+.info-overlay-live {
+    position: relative;
+    height: 13px;
+    line-height: 13px;
+    font-size: 10px;
+    padding-left: 24px;
+    color: #FA4646;
+    margin-bottom: 10px;
+}
+.info-overlay-live-icon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 11px;
+    width: 17px;
+    border: 1px solid #FA4646;
+    background: transparent url(live-icon.png) center center no-repeat;
+    background-image: linear-gradient(transparent, transparent), url(live-icon.svg);
+    background-size: 13px;
+    
+}
+.info-overlay-title {
+    font-size: 26px;
+    color: #FFFFFF;
+    line-height: 1.2em;
+    margin-bottom: 0.4em;
+}
+.info-overlay-domain {
+    font-size: 14px;
+    color: #CCCCCC;
 }
 /* === /Info === */
 
+/* === Module: Share button === */
+.button-container-share {
+    opacity: 0;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    transition: opacity 200ms linear;
+}
+.tray-shown .button-container-share {
+    opacity: 1;
+}
+body.overlay-shown .button-container-share {
+    opacity: 0;
+}
+/* === /Share button === */
+
 /* === Module: Sharing === */
 .sharing-container {
-    background:rgb(0,0,0); /*fallback for browser with no RGBa support */
-    background:rgba(0,0,0,.8); /*updated in js via player settings */
-    margin:3px 5px 0 5px;
-    border-radius:2px;
-    padding:10px;
+    display: none;
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background:rgb(0,0,0);
+    background:rgba(0,0,0,.6);
+    transition: opacity 200ms linear;
 }
-.share-embed {
-    padding-bottom:10px;
+.sharing-container-active {
+    display: block;
+    opacity: 1;
 }
-.share-embed input {
-    width:80%;
-    max-width:471px;
-    line-height:20px;
-    font-size:11px;
-    height:20px;
-    padding:3px;
-    border:none;
-    background-color:white;
-    box-shadow: inset 0 0 6px #666;
+.sharing-info {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 3% 4%;
 }
-.share-embed-label {
-    float:left;
-    font-size:14px; 
-    padding:0 23px 0 32px; 
-    font-weight:bold;
-    line-height:26px;
-    background:url('embed-icon.png') left center no-repeat;
+.sharing-info h3 {
+    font-size: 26px;
+    line-height: 1.2em;
+}
+.sharing-info a {
+    font-size: 14px;
+    line-height: 1.2em;
+    color: #AAAAAA;
+    text-decoration: none;
+}
+.sharing-info a:hover {
+    text-decoration: underline;
+}
+.sharing-info .current-time-select {
+    display: none;
+    font-size: 14px;
+    line-height: 1em;
+    height: 1em;
+    margin: 4px 0;
+}
+.video-clip .sharing-info .current-time-select {
+    display: block;
+}
+.sharing-info .current-time-select .checkbox {
+    float: left;
+    width: 12px;
+    height: 12px;
+    margin-right: 6px;
+    border: 1px solid #FFFFFF;
+    text-align: center;
+}
+.sharing-info .current-time-select .checkbox img {
+    display: none;
+    height: 10px;
+}
+.sharing-info .current-time-select .checked img {
+    display: inline;
+}
+.share-buttons-container {
+    display: table;
+    width: 100%;
+    height: 100%;
 }
 .share-buttons {
-    height:30px;
-    overflow:hidden;
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
 }
+.share-buttons .button-container {
+    display: inline-block;
+    margin-right: 10px;
+}
+.share-buttons .button-container button {
+    width: 50px;
+    height: 50px;
+}
+
 /* === /Sharing === */
 
 /* === Module: Browse === */
-/* Place the browse pane within the player */
-.player-browse #browse {
-    position:relative;
-    padding:10px 2px;
-    background:rgb(0,0,0); /*fallback for browser with no RGBa support */
-    background:rgba(0,0,0,.8); /*updated in js via player settings */
-}
-/* Place left and right browsing with a carousel in the middle */
-.browse-container, .browse-left, .browse-right {
-    height:105px;
-    overflow:hidden;
-}
-.browse-left, .browse-right {
-    position:absolute;
-    top:0;
-    width:30px;
-    cursor:pointer;
-    background-position:center center;
-    background-repeat:no-repeat;
-    opacity:.8;
-}
-.browse-left {
-    left:0;
-    background-image:url('prev-icon.png');
-}
-.browse-right {
-    right:0;
-    background-image:url('next-icon.png');
-}
 .browse-container {
-    position:relative;
-    margin:0 30px;
-}
-/* Thumbnails in a fully standard table, 
-   makes sure we don't need to handle breaking
-   or explicitly set the width */
-table.browse-recommendations {
+    display: none;
+    opacity: 0;
     position:absolute;
-    top:0px;
-    left:0px;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background:rgb(0,0,0);
+    background:rgba(0,0,0,.6);
+    transition: opacity 200ms linear;
 }
-table.browse-recommendations td {
-    width:120px;
-    height:105px;
-    cursor:pointer;
-    padding:0 10px;
+.browse-container-activated {
+    display: block;
+    opacity: 1;
 }
-table.browse-recommendations img {
-    width:120px;
-    height:67px;
+.browse-container h3 {
+    position: relative;
+    height: 60px;
+    font-size: 26px;
+    font-weight: 100;
+    line-height: 60px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    margin-left: 26px;
 }
-table.browse-recommendations div {
-    line-height:16px;
-    height:32px;
-    overflow:hidden;
+.recommendations-grid {
+    position: absolute;
+    top: 60px;
+    left: 2px;
+    right: 2px;
+    bottom: 41px;
 }
+.recommendations-grid .recommendation {
+    position: relative;
+    float: left;
+    width: 33.33%;
+    height: 50%;
+    overflow: hidden;
+    cursor: pointer;
+}
+.recommendations-grid .recommendation-0,
+.recommendations-grid .recommendation-3 {
+    left: -1px;
+}
+.recommendations-grid .recommendation-2,
+.recommendations-grid .recommendation-5 {
+    right: -1px;
+}
+.recommendations-grid .recommendation-3,
+.recommendations-grid .recommendation-4,
+.recommendations-grid .recommendation-5 {
+    bottom: -1px;
+}
+.recommendation img {
+    display: block;
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+    -webkit-filter: blur(0); filter: blur(0); /* If this is not set, image bounce around in Chrome */
+    transform: scale(1);
+    transition: transform 300ms ease-in-out;
+}
+.recommendation:hover img {
+    transform: scale(1.1);
+}
+.recommendation-meta {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 10px 60px 10px 15px;
+    font-size: 16px;
+    line-height: 1.2em;
+    min-height: 1.2em;
+    opacity: 0;
+    background: linear-gradient(rgba(34,34,34,0), rgba(34,34,34,1.0));
+    transition: opacity 200ms linear;
+}
+.recommendation:hover .recommendation-meta {
+    opacity: 1;
+}
+.recommendation-meta .recommendation-duration {
+    position: absolute;
+    bottom: 10px;
+    right: 15px;
+    font-size: 12px;
+    line-height: 1em;
+}
+
 /* === /Browse === */
 
-/* Button graphics */
-.play-button {background-image:url('play-icon.png');}
-.big-play-button {background-image:url('big-play-icon.png');}
-.pause-button {background-image:url('pause-icon.png');}
-.stop-button {background-image:url('stop-icon.png');}
-.facebook-button {background-image:url('facebook-icon.png');}
-.twitter-button {background-image:url('twitter-icon.png');}
-.google-button {background-image:url('google-icon.png');}
-.site-button {background-image:url('site-icon.png');}
-.browse-button-on {background-image:url('browse-on-icon.png');}
-.browse-button-off {background-image:url('browse-off-icon.png');}
-.share-button {background-image:url('share-icon.png');}
-.info-button {background-image:url('info-icon.png');}
-.volume-button-on {background-image:url('volume-on-icon.png');}
-.volume-button-off {background-image:url('volume-off-icon.png');}
-.fullscreen-button {background-image:url('fullscreen-icon.png');}
-.mail-button {background-image:url('mail-icon.png');}
-.quality-button {background-image:url('quality-icon.png');}
-.subtitle-button {background-image:url('subtitle-icon.png');}
-.download-button {background-image:url('download-icon.png');}
-.slides-button {background-image:url('slides-icon.png');}
-
-
-/* Hover color for sharing buttons */
-.site-button:hover, .mail-button:hover, .facebook-button:hover, .twitter-button:hover, .google-button:hover {
-    -o-transition:.2s;
-    -ms-transition:.2s;
-    -moz-transition:.2s;
-    -webkit-transition:.2s;
-    transition:.2s;
+/* === Subtitle button === */
+.subtitle-button .cc-active-icon, .subtitle-button .cc-active-bar-icon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: none;
+}
+.subtitle-button-active .cc-active-icon, .subtitle-button-active .cc-active-bar-icon {
+    display: block;
+}
+.subtitle-button-active .cc-icon {
+    display: none;
 }
 
-.site-button:hover {background-color: #47953e;}
-.mail-button:hover {background-color: #92008b;}
-.facebook-button:hover {background-color: #3c5a98;}
-.twitter-button:hover {background-color: #2ba9e1;}
-.google-button:hover {background-color: #dd4b38;}
+/* === /Subtitle button === */
+
+/* === Button graphics === */
+
+/* Tray buttons */
+.play-button {
+    background-image: url('play.png');
+    background-image: linear-gradient(transparent, transparent), url('play.svg');
+    background-size: 40px;
+}
+.pause-button {
+    background-image: url('pause.png');
+    background-image: linear-gradient(transparent, transparent), url('pause.svg');
+    background-size: 40px;
+}
+.stop-button {
+    background-image: url('stop.png');
+    background-image: linear-gradient(transparent, transparent), url('stop.svg');
+    background-size: 40px;
+}
+.replay-button {
+    background-image: url('replay.png');
+    background-image: linear-gradient(transparent, transparent), url('replay.svg');
+    background-size: 40px;
+}
+.button-container .quality-button > img { transform: rotate(0deg); transition: transform 200ms linear; }
+.button-container:hover .quality-button > img { transform: rotate(20deg); }
+
+/* Big play */
+.big-play-button, .loop-play-button {
+    background-image: url('big-play.png');
+    background-image: linear-gradient(transparent, transparent), url('big-play.svg');
+    background-size: 40px;
+}
+
+/* Sharing buttons */
+.facebook-button {
+    background-image: url('facebook.png');
+    background-image: linear-gradient(transparent, transparent), url('facebook.svg');
+    background-size: 40px;
+}
+.facebook-button:hover {
+    background-image: url('facebook-colored.png');
+    background-image: linear-gradient(transparent, transparent), url('facebook-colored.svg');
+}
+.twitter-button {
+    background-image: url('twitter.png');
+    background-image: linear-gradient(transparent, transparent), url('twitter.svg');
+    background-size: 40px;
+}
+.twitter-button:hover {
+    background-image: url('twitter-colored.png');
+    background-image: linear-gradient(transparent, transparent), url('twitter-colored.svg');
+}
+.linkedin-button {
+    background-image: url('linkedin.png');
+    background-image: linear-gradient(transparent, transparent), url('linkedin.svg');
+    background-size: 40px;
+}
+.linkedin-button:hover {
+    background-image: url('linkedin-colored.png');
+    background-image: linear-gradient(transparent, transparent), url('linkedin-colored.svg');
+}
+.more-button {
+    background-image: url('more.png');
+    background-image: linear-gradient(transparent, transparent), url('more.svg');
+    background-size: 40px;
+}
+.download-button {
+    background-image: url('download.png');
+    background-image: linear-gradient(transparent, transparent), url('download.svg');
+    background-size: 40px;
+}
+/* Hover state of .more-button is handled through design.js */
+
+.close-button {
+    background-image: url('close.png');
+    background-image: linear-gradient(transparent, transparent), url('close.svg');
+    background-size: 40px;
+}
 
 /* Hide a number of elements in very small players */
 .size-tiny .info-button, 
@@ -470,7 +742,7 @@ table.browse-recommendations div {
 .size-tiny .info-pane,
 .size-tiny .sharing-container,
 .size-tiny .player-browse #browse {
-    display:none !important;
+    /*display:none !important;*/
 }
 
 /* Hide some elements in slightly small players */
@@ -480,52 +752,5 @@ table.browse-recommendations div {
 .size-small .browse-button-off,
 .size-small .sharing-container 
 .size-small .player-browse #browse {
-    display:none;
-}
-
-/* All graphics in retina version */
-@media 
-(-webkit-min-device-pixel-ratio: 2), 
-(min-resolution: 192dpi) { 
-    .play-button {background-image:url('play-icon@2x.png'); background-size:30px;}
-    .big-play-button {background-image:url('big-play-icon@2x.png'); background-size:60px;}
-    .pause-button {background-image:url('pause-icon@2x.png'); background-size:30px;}
-    .stop-button {background-image:url('stop-icon@2x.png'); background-size:30px;}
-    .facebook-button {background-image:url('facebook-icon@2x.png'); background-size:30px;}
-    .twitter-button {background-image:url('twitter-icon@2x.png'); background-size:30px;}
-    .google-button {background-image:url('google-icon@2x.png'); background-size:30px;}
-    .site-button {background-image:url('site-icon@2x.png'); background-size:30px;}
-    .browse-button-on {background-image:url('browse-on-icon@2x.png'); background-size:30px;}
-    .browse-button-off {background-image:url('browse-off-icon@2x.png'); background-size:30px;}
-    .share-button {background-image:url('share-icon@2x.png'); background-size:30px;}
-    .info-button {background-image:url('info-icon@2x.png'); background-size:30px;}
-    .volume-button-on {background-image:url('volume-on-icon@2x.png'); background-size:30px;}
-    .volume-button-off {background-image:url('volume-off-icon@2x.png'); background-size:30px;}
-    .fullscreen-button {background-image:url('fullscreen-icon@2x.png'); background-size:30px;}
-    .mail-button {background-image:url('mail-icon@2x.png'); background-size:30px;}
-    .quality-button {background-image:url('quality-icon@2x.png'); background-size:30px;}
-    .subtitle-button {background-image:url('subtitle-icon@2x.png'); background-size:30px;}
-    .download-button {background-image:url('download-icon@2x.png'); background-size:30px;}
-    .slides-button {background-image:url('slides-icon@2x.png'); background-size:30px;}
-
-    ul.button-list li {background-image:url('not-selected-icon@2x.png'); background-size:30px;}
-    ul.button-list li.selected {background-image:url('selected-icon@2x.png'); background-size:30px;}
-    .share-embed-label {background-image:url('embed-icon@2x.png'); background-size:30px;}
-    .browse-left {background-image:url('prev-icon@2x.png'); background-size:30px;}
-    .browse-right {background-image:url('next-icon@2x.png'); background-size:30px;}
-}
-
-
-/* CSS Animations and Transitions */
-@-moz-keyframes menuSlideIn {
-    from {opacity:0; margin-bottom:-15px;}
-    to {opacity:1;}
-}
-@-webkit-keyframes menuSlideIn {
-    from {opacity:0; margin-bottom:-15px;}
-    to {opacity:1;}
-}
-@keyframes menuSlideIn {
-    from {opacity:0;margin-bottom:-15px;}
-    to {opacity:1;}
+    /*display:none;*/
 }

@@ -1,26 +1,24 @@
-{% if browseMode and hasRecommendations %}
-  <div id="browse">
-  <div class="browse-left"></div>
-  <div class="browse-right"></div>
-  <div class="browse-container">
-    <table class="browse-recommendations"><tr>
-      {% for stream in streams %}
-        {% if stream.live_id != video_live_id %}
-          <td class="browse-recommendation browse-live-recommendation-{{forloop.index0}}" click="$set:browse_live_id:{{stream.live_id}}" aria-label="{{stream.name}}" label="{{stream.name}}" role="button" tabindex="1101">
-            <img src="{{url}}{{stream.browseThumbnailUrl}}" />
-            <div>Live: {{stream.name}}</div>
-          </td>
+<div id="browse" class="browse-container">
+  <h3>{{video_title}}</h3>
+  <div class="">
+    <div class="recommendations-grid">
+      {% for rec in recommendations %}
+        {% if rec.type == "stream" %}
+          <div class="recommendation recommendation-live recommendation-{{forloop.index0}}" click="$set:browse_live_id:{{rec.live_id}}" aria-label="{{rec.name}}" label="{{rec.name}}" role="button" tabindex="1101">
+            <img src="{{url}}{{rec.browseThumbnailUrl}}" />
+            <div class="recommendation-meta">Live: {{rec.name | truncate: 40}}</div>
+          </div>
+        {% endif %}
+        {% if rec.type == "clip" %}
+          <div class="recommendation recommendation-live recommendation-{{forloop.index0}}" click="$set:browse_photo_id:{{rec.photo_id}}" aria-label="{{rec.title}}" label="{{rec.title}}" role="button" tabindex="1102">
+            <img src="{{url}}{{rec.browseThumbnailUrl}}" />
+            <div class="recommendation-meta">{{rec.title | truncate: 40}}<div class="recommendation-duration">{{ rec.video_length | formatTime }}</div></div>
+          </div>
+        {% endif %}
+        {% if rec.type == "empty" %}
+          <div class="recommendation recommendation-empty recommendation-{{forloop.index0}}"></div>
         {% endif %}
       {% endfor %}
-      {% for clip in clips %}
-        {% if clip.photo_id != video_photo_id %}
-          <td class="browse-recommendation browse-ondemand-recommendation-{{forloop.index0}}" click="$set:browse_photo_id:{{clip.photo_id}}" aria-label="{{clip.title}}" label="{{clip.title}}" role="button" tabindex="1102">
-            <img src="{{url}}{{clip.browseThumbnailUrl}}" />
-            <div>{{clip.title}}</div>
-          </td>
-        {% endif %}
-      {% endfor %}
-    </tr></table>
+    </div>
   </div>
-  </div>
-{% endif %}
+</div>

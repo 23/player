@@ -22,12 +22,16 @@
     height:100%;
     background:black;
     background:rgba(0,0,0,.9);
-    z-index:9999;
+    z-index:9997;
 }
 .error-display p {
     font-size:14px;
-    padding:10px;
-    margin:0;
+    padding: 40px 0 40px 70px;
+    margin: 0 auto;
+    max-width: 80%;
+    background: transparent url('warning.png') left center no-repeat;
+    background-image: linear-gradient(transparent, transparent), url('warning.svg');
+    background-size: 50px;
 }
 .error-display p,
 .error-display a {

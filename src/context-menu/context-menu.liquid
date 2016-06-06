@@ -10,7 +10,7 @@
       <div class="clear"></div>
     </div>
   {% else %}
-    <ul class="menu-list" style="left: {{menuLeft}}px; top: {{menuTop}}px;">
+    <ul class="menu-list">
       {% if socialSharing %}
         <li><a href="#" onclick="return false;" click="$set:linkBoxValue:url">{% if video_type == "clip" %}{{"get_video_url"|translate}}{% else %}{{"get_event_url"|translate}}{% endif %}</a></li>
         {% if video_type != "stream" %}
