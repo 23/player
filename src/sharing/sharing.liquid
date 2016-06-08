@@ -17,8 +17,8 @@
     <button class="close-button" click="$set:showSharing:false"></button>
   </div>
 
-  <div class="share-buttons-container">
-    <div class="share-buttons">
+  <table class="share-buttons-container">
+    <tr><td class="share-buttons">
       <div class="button-container">
         <button click="$set:shareTo:facebook" class="facebook-button" aria-label="{{"share_on_facebook"|translate}}" label="{{"share_on_facebook"|translate}}" tabindex="1303">
           {{"share_on_facebook"|translate}}
@@ -46,6 +46,6 @@
         </button>
       </div>
       {% endif %}
-    </div>
-  </div>
+    </td></tr>
+  </table>
 </div>

@@ -408,8 +408,8 @@ ul.button-menu-selection li.selected:hover button { color: #FFFFFF; }
     bottom: 0;
     right: 0;
     padding: 5% 4%;
-    background:rgb(0,0,0);
-    background:rgba(0,0,0,0) url(info-gradient.png) left bottom repeat-x;
+    background:transparent url(info-gradient.png) left bottom repeat-x;
+    *background:rgb(0,0,0); /* IE 7 */
     background-size: auto 100%;
 }
 .info-overlay-live {
@@ -529,16 +529,19 @@ body.overlay-shown .button-container-share {
 }
 .share-buttons {
     display: table-cell;
+    height: 100%;
     vertical-align: middle;
     text-align: center;
 }
 .share-buttons .button-container {
     display: inline-block;
+    *display: inline; /* IE 7 */
     margin-right: 10px;
 }
 .share-buttons .button-container button {
     width: 50px;
     height: 50px;
+    *display: inline; /* IE 7 */
 }
 
 /* === /Sharing === */
