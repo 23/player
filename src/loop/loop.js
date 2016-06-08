@@ -75,6 +75,7 @@ Player.provide('loop',{
     };
     $this.buildLoop = function(){
         var nextVideo = Player.get("nextVideo");
+        if(!nextVideo) return;
         var backgroundUrl = [
             Player.get("url"),
             nextVideo.tree_id,
