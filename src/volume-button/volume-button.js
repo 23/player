@@ -22,7 +22,7 @@ Player.provide('volume-button',
 
     var _buttonClass = "";
     Player.bind('player:video:volumechange player:video:play player:video:pause player:video:loaded', function(e){
-        if(!$this.button.length) return;
+        if(typeof $this.button == "undefined" || !$this.button.length) return;
         $this.button.removeClass("volume-button-on volume-button-off");
         if(Player.get("volumeMuted")){
             _buttonClass = "volume-button-on";
