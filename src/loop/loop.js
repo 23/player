@@ -21,8 +21,8 @@ Player.provide('loop',{
 
     var _resize = function(){
         var $window = $(window);
+        if(!$this.loopThumbnail) return;
         var image = $this.loopThumbnail.get(0);
-        if(!image) return;
         if(!image.complete) { return $this.loopThumbnail.load(_resize); }
         
         var wr = $window.width() / $window.height();
