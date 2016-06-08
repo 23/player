@@ -132,6 +132,7 @@ ul.button-menu-selection li.selected:hover button { color: #FFFFFF; }
 #tray {
     position:absolute;
     bottom:-20px;
+    bottom:-40px\9;
     left:0;
     width:100%;
     opacity: 0;
@@ -316,6 +317,7 @@ ul.button-menu-selection li.selected:hover button { color: #FFFFFF; }
 .section-title {
     display:none;
     opacity: 0;
+    visibility: hidden\9;
     position: absolute;
     bottom: 28px;
     left: -50px;
@@ -336,6 +338,7 @@ ul.button-menu-selection li.selected:hover button { color: #FFFFFF; }
 }
 .section:hover .section-title {
     opacity: 1;
+    visibility: visible;
 }
 /* === /Sections === */
 

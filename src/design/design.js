@@ -33,7 +33,11 @@ Player.provide('design',
               currentPosition: _playflowPosition,
               nextPosition: nextPosition,
               blocked: false,
-              performTransition: _setPlayflowPosition.bind(null, nextPosition)
+              performTransition: (function(next){
+                  return function(){
+                      _setPlayflowPosition(next);
+                  };
+              })(nextPosition)
           };
           transition = Player.fire("player:playflow:beforetransition", transition);
           console.log("before transition to "+nextPosition, transition);

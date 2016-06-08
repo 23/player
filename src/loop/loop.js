@@ -10,7 +10,7 @@ Player.provide('loop',{
     $.extend($this, opts);
     var _prevShow = false;
 
-    var _onRender = function(context){
+    var _onRender = function(){
         $this.loopContainer = $this.container.find(".loop-container");
         $this.loopThumbnail = $this.loopContainer.find(".loop-thumbnail");
         $this.countDown = $this.loopContainer.find(".loop-countdown");
@@ -53,7 +53,11 @@ Player.provide('loop',{
         if(timeLeft > 0){
             $this.countDown.text(timeLeft);
             _countdownTimeouts.push(
-                setTimeout($this.countFrom.bind(null, timeLeft-1), 1000)
+                setTimeout((function(tl){
+                    return function(){
+                        $this.countFrom(tl);
+                    };
+                })(timeLeft-1), 1000)
             );
         }else{
             Player.set("playLoopVideo");
@@ -82,7 +86,7 @@ Player.provide('loop',{
             loopVideo: nextVideo,
             backgroundUrl: backgroundUrl
         };
-        $this.render(_onRender.bind(null, context), null, null, context);
+        $this.render(_onRender, null, null, context);
     };
     
     var _loopTimeouts = [];
