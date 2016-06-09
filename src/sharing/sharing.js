@@ -52,7 +52,7 @@ Player.provide('sharing',
           _shareCurrentTime = $this.checkbox.hasClass("checked");
           if(_shareCurrentTime){
               Player.set("playing", false);
-              var url = Player.get("videoLink") + "?start=" + parseInt(Player.get("currentTime"));
+              var url = Player.get("videoLink") + "/" + formatTime(parseInt(Player.get("currentTime")));
               $this.sharingLink.text(url);
               $this.sharingLink.attr("href", url);
           }else{
@@ -123,8 +123,11 @@ Player.provide('sharing',
       });
 
       var socialLink = function(service){
-        if(!Player.get('socialSharing')) return('');
-        return Player.get('videoLink') + '/' + service;
+          if(!Player.get('socialSharing')) return('');
+          if(_shareCurrentTime){
+              return Player.get('videoLink') + '/' + formatTime(Player.get("currentTime")) + '/' + service;
+          }
+          return Player.get('videoLink') + '/' + service;
       };
       Player.getter('facebookLink', function(){return socialLink('facebook');});
       Player.getter('twitterLink', function(){return socialLink('twitter');});
