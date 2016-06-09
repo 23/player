@@ -11,7 +11,6 @@
   - player:actions:overlay:click
 
   Answers properties:
-  - actionsPosition [get] (before, relative time from 0 to 1, after)
   - identityCountdown [get]
   - identityAllowClose [get]
   - identityCountdownText [get]
@@ -36,7 +35,6 @@ Player.provide('actions',
     $this.hideHandlers = {};
     $this.dispatcherActive = true;
     $this.activeActions = {};
-    $this.actionsPosition = -1; // (-1 for "before", relative time from 0 to 1 during playback, 2 for "after")
       
     // Build default properties and merge in player settings
     Player.bind('player:settings', function(){
@@ -87,9 +85,10 @@ Player.provide('actions',
     // CONTROLLER LISTENING TO PLAYBACK STATE AND DISPATCHING ACTIONS
     var _dispatcher = function(playing, pos){
       var ct = Player.get("currentTime"), d = Player.get("duration");
-      $this.actionsPosition = pos || ct / d;
+      var actionsPositionDuration = pos || (ct / d);
+      var actionsPositionDays = pos || (ct / 86400);
       // Is the dispatcher active and supposed to dispatch actions?
-      if($this.dispatcherActive != true || isNaN($this.actionsPosition)) {
+      if($this.dispatcherActive != true && isNaN(actionsPosition)) {
         return true;
       }
 
@@ -97,10 +96,25 @@ Player.provide('actions',
       $.each(Player.get('videoActions'), function(i,action){
         // The dispatcher does not handle prerolls and postrolls
         if(action.type=="ad"||action.type=="video"){ return; }
+        // Ignore actions on live that are positioned relative to duration
+        if(Player.get("video_type") == "stream" && action.time_relative_to == "duration" && action.normalizedStartTime >= 0) { return; }
 
         // Figure out if the action should be active or not
         // First, are we on or in between start time and end time?
-        var actionActive = $this.actionsPosition>=action.normalizedStartTime && $this.actionsPosition<=action.normalizedEndTime && !action.failed;
+        var actionActive = false;
+        if(action.time_relative_to != "days"){
+          actionActive = actionsPositionDuration>=action.normalizedStartTime;
+          actionActive = actionActive && actionsPositionDuration<=action.normalizedEndTime;
+        }else{
+          if(action.normalizedStartTime <= 1 && action.normalizedStartTime * 86400 >= d){
+            // If the action is placed relative to days and the start time does not lie
+            // within the duration of the video, show the action just before the video ends
+            action.normalizedStartTime = (d-1) / 86400;
+          }
+          actionActive = actionsPositionDays>=action.normalizedStartTime;
+          actionActive = actionActive && actionsPositionDays<=action.normalizedEndTime;
+        }
+
         // If not, check if we should be a little more flexible for actions that should pause playback
         if(!actionActive && action.pause_mode=="pause_playback"){
           var start_sec = action.normalizedStartTime*d;
@@ -110,7 +124,10 @@ Player.provide('actions',
           }
         }
         // If action is active according to timing, check if it should only be shown when video is paused
-        actionActive = (actionActive && (!action.pause_mode || action.pause_mode!="only_on_pause" || !playing));
+        actionActive = actionActive && (!action.pause_mode || action.pause_mode!="only_on_pause" || !playing);
+
+        // If loading of the action failed, don't show it
+        actionActive = actionActive && !action.failed;
 
         if(actionActive && !$this.activeActions[action.action_id]) { // If action is active but have not yet been parsed, do so now
 
@@ -244,7 +261,7 @@ Player.provide('actions',
       }
     };
 
-    // Return an array of video and video ad actions that are active at the current actionsPosition
+    // Return an array of video and video ad actions that are active at same time as a
     $this.getOverlappingActions = function(a){
       var actions = [];
       $.each(Player.get('videoActions'), function(i,action){
@@ -343,14 +360,9 @@ Player.provide('actions',
     $(window).resize($this._resize);
 
     // GETTERS EXPOSING GENERIC PROPERTIES OF THE MODULE
-    Player.getter('videoActions', function(){return Player.get('video').actions||{};});
-    Player.getter('actionsPosition', function(){
-      switch($this.actionsPosition) {
-        case -1: return "before";
-        case 2: return "after";
-        default: return $this.actionsPosition;
-      }
-      return $this.actionsPosition;
+    Player.getter('videoActions', function(){
+      var v = Player.get('video');
+      return (v && v.actions ? v.actions : {});
     });
     Player.getter('identityCountdown', function(){return $this.identityCountdown;});
     Player.getter('identityAllowClose', function(){
