@@ -40,10 +40,8 @@ Player.provide('design',
               })(nextPosition)
           };
           transition = Player.fire("player:playflow:beforetransition", transition);
-          console.log("before transition to "+nextPosition, transition);
           if(!transition.blocked){
               _playflowPosition = transition.nextPosition;
-              console.log("transitioned to " + transition.nextPosition);
               Player.fire("player:playflow:transitioned", {
                   currentPosition: _playflowPosition
               });
