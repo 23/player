@@ -25,7 +25,7 @@ body {
 h1 {
     font-size:14px; /*updated in js via player settings */
     line-height:2em;
-    font-weight:bold; /*updated in js via player settings */
+    font-weight:normal;
     letter-spacing:.3px;
 }
 p {
@@ -407,7 +407,7 @@ ul.button-menu-selection li.selected:hover button { color: #FFFFFF; }
     left: 0;
     bottom: 0;
     right: 0;
-    padding: 5% 4%;
+    padding: 7% 6%;
     background:transparent url(info-gradient.png) left bottom repeat-x;
     *background:rgb(0,0,0); /* IE 7 */
     background-size: auto 100%;
@@ -437,7 +437,7 @@ ul.button-menu-selection li.selected:hover button { color: #FFFFFF; }
     font-size: 26px;
     color: #FFFFFF;
     line-height: 1.2em;
-    margin-bottom: 0.4em;
+    margin-bottom: 0.2em;
 }
 .info-overlay-domain {
     font-size: 14px;
@@ -449,8 +449,8 @@ ul.button-menu-selection li.selected:hover button { color: #FFFFFF; }
 .button-container-share {
     opacity: 0;
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: 12px;
+    right: 12px;
     transition: opacity 200ms linear;
 }
 .tray-shown .button-container-share {
@@ -482,7 +482,7 @@ body.overlay-shown .button-container-share {
     position: absolute;
     top: 0;
     left: 0;
-    padding: 3% 4%;
+    padding: 3% 5%;
 }
 .sharing-info h3 {
     font-size: 26px;
@@ -494,25 +494,22 @@ body.overlay-shown .button-container-share {
     color: #AAAAAA;
     text-decoration: none;
 }
-.sharing-info a:hover {
-    text-decoration: underline;
-}
 .sharing-info .current-time-select {
     display: none;
     font-size: 14px;
     line-height: 1em;
     height: 1em;
-    margin: 4px 0;
+    margin: 8px 0;
 }
 .video-clip .sharing-info .current-time-select {
     display: block;
 }
 .sharing-info .current-time-select .checkbox {
     float: left;
-    width: 12px;
-    height: 12px;
+    width: 10px;
+    height: 10px;
     margin-right: 6px;
-    border: 1px solid #FFFFFF;
+    border: 1px solid #AAAAAA;
     text-align: center;
 }
 .sharing-info .current-time-select .checkbox img {
@@ -691,6 +688,12 @@ body.overlay-shown .button-container-share {
 }
 
 /* Sharing buttons */
+.share-button {
+    background-image: url('share.png');
+    background-image: linear-gradient(transparent, transparent), url('share.svg');
+    background-size: 40px;
+    transition: background-color 200ms linear;
+}
 .facebook-button {
     background-image: url('facebook.png');
     background-image: linear-gradient(transparent, transparent), url('facebook.svg');
@@ -734,6 +737,7 @@ body.overlay-shown .button-container-share {
     background-image: url('close.png');
     background-image: linear-gradient(transparent, transparent), url('close.svg');
     background-size: 40px;
+    transition: background-color 200ms linear;
 }
 
 /* Hide a number of elements in very small players */

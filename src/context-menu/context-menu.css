@@ -34,7 +34,7 @@
   display: block;
   padding: 5px 10px 2px 10px;
   text-decoration: none;
-  color: #FFF;
+  color: #AAAAAA;
   vertical-align: middle;
 }
 .menu-list li a:hover {
@@ -51,7 +51,7 @@
 }
 
 .link-box h3, .link-box input, .close-link-box {
-    color: #FFF;
+    color: #AAAAAA;
 }
 
 .link-box h3 {
@@ -70,8 +70,9 @@
   line-height: 24px;
   padding: 4px;
   font-size: 12px;
-  border: 1px solid #FFF;
-  background-color: transparent;
+  border: none;
+  background: rgb(0,0,0);
+  background: rgba(0,0,0,0.5);
 }
 
 .close-link-box {

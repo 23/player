@@ -213,17 +213,22 @@ Player.provide('design',
           css += ".volume-slider .volume-level { background-color: " + $this.scrubberColor + "; }";
           css += ".big-play-button, .button-container > .loop-play-button { background-color: " + $this.scrubberColor + "; }";
           css += ".big-play-button:hover, .button-container:hover > .loop-play-button { background-color: " + $this.hexToRGBA( $this.scrubberColor, 0.85 ) + "; }";
+          css += ".share-button:hover, .close-button:hover { background-color: " + $this.scrubberColor + "; }";
+          css += ".sharing-info a:hover { color: " + $this.scrubberColor + "; }";
           css += ".protection-password input.submitbutton { background-color: " + $this.scrubberColor + "; }";
           css += ".protection-password input.submitbutton:hover { background-color: " + $this.hexToRGBA($this.scrubberColor, 0.9) + "; }";
 
           // SVG filter
           css += ".button-container:hover > button img { -webkit-filter: url(#icon_hover); filter: url(#icon_hover); }";
           css += ".subtitle-button-active img.cc-active-bar-icon { -webkit-filter: url(#icon_hover); filter: url(#icon_hover); }";
-          css += ".more-button:hover, .download-button:hover, .close-button:hover { -webkit-filter: url(#icon_hover); filter: url(#icon_hover); }";
+          css += ".more-button:hover, .download-button:hover { -webkit-filter: url(#icon_hover); filter: url(#icon_hover); }";
 
           // Text color
           css += "ul.button-menu li:hover button { color: " + $this.scrubberColor + "; }";
           css += ".menu-list li a:hover { color: " + $this.scrubberColor + "; }";
+
+          //Font
+          css += "body { font-family: " + $this.trayFont + ", sans-serif; }";
 
           // Border color
           css += ".loop-container-cell { border-color: " + $this.scrubberColor + "; }";
