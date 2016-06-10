@@ -158,7 +158,7 @@ Player.provide('protection',
             Player.set("forcer", {type: "block", element: "tray", from: "protection", active: true});
             transition.blocked = true;
             _verifiedCallback = transition.performTransition;
-            verifyAccess(event, video, 1);
+            verifyAccess(e, video, 1);
         }
         return transition;
     });
