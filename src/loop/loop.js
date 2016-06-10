@@ -51,7 +51,7 @@ Player.provide('loop',{
             clearTimeout(_countdownTimeouts.pop());
         }
         if(timeLeft > 0){
-            $this.countDown.text(timeLeft);
+            $this.countDown.text(timeLeft + (timeLeft != 1 ? " seconds" : " second"));
             _countdownTimeouts.push(
                 setTimeout((function(tl){
                     return function(){

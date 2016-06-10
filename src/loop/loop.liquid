@@ -1,17 +1,16 @@
 <div class="loop-container">
   <img class="loop-thumbnail" src="{{ backgroundUrl }}" />
-  <div class="button-container button-container-close">
-    <button class="close-button" click="$set:showLoop:false"></button>
-  </div>
   <div class="loop-container-sub">
     <div class="loop-container-cell">
-      <h3 class="loop-headline">Next video</h3>
+      <h3 class="loop-headline">Next video in <span class="loop-countdown">5</span></h3>
       <div class="button-container button-container-loop-play">
         <button class="loop-play-button" click="$set:playLoopVideo"></button>
       </div>
       <h2 class="loop-title">{{ loopVideo.title }}</h2>
       <p class="loop-duration">{{ loopVideo.video_length | formatTime }}</p>
-      <div class="loop-countdown">5</div>
     </div>
+  </div>
+  <div class="button-container button-container-close">
+    <button class="close-button" click="$set:showLoop:false"></button>
   </div>
 </div>
