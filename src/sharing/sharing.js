@@ -141,7 +141,7 @@ Player.provide('sharing',
       var _sharingTimeouts = [];
       var _prevShow = false;
       Player.setter('showSharing', function(ss){
-          $this.showSharing = ss && $this.socialSharing;
+          $this.showSharing = ss && Player.get("socialSharing");
           if($this.showSharing){
               $this.showSharing = !Player.fire("player:module:overlayactivated", {name: "sharing", prevented: false}).prevented;
           }
