@@ -324,6 +324,7 @@ Player.provide('video-display',
 
           playableContext = {
               source: $this.rawSource,
+              startTime: (Player.get("video_type") == "clip" ? Player.get("currentTime") : 0),
               displayDevice: (quality!="auto"||$this.video.canPlayType('application/vnd.apple.mpegURL')?$this.video.displayDevice:"flash"),
               callback: $this.video._callback,
               preventBackup: true
