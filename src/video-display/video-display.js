@@ -62,7 +62,6 @@ Player.provide('video-display',
     autoMute: false,
     showThumbnailOnEnd: false,
     fullscreenQuality: '',
-    start:0,
     verticalPadding:0,
     horizontalPadding:0,
     maxLengthDVR:10800,
@@ -137,7 +136,7 @@ Player.provide('video-display',
 
       // Merge in player settings
       Player.bind('player:settings', function(e,s){
-        PlayerUtilities.mergeSettings($this, ['autoPlay', 'autoMute', 'start', 'verticalPadding', 'horizontalPadding', 'displayDevice', 'fullscreenQuality', 'showThumbnailOnEnd']);
+        PlayerUtilities.mergeSettings($this, ['autoPlay', 'autoMute', 'verticalPadding', 'horizontalPadding', 'displayDevice', 'fullscreenQuality', 'showThumbnailOnEnd']);
         if($this.video) $this.video.showPosterOnEnd = $this.showThumbnailOnEnd;
         if($this.video&&$this.video.displayDevice!=$this.displayDevice) $this.loadEingebaut();
         $this.container.css({left:$this.horizontalPadding+'px', bottom:$this.verticalPadding+'px'});
@@ -149,7 +148,6 @@ Player.provide('video-display',
           $this._waiting = false;
       });
 
-      $this._currentTime = false;
       $this._loadVolumeCookie = true;
       $this.loadContent = function(){
         if ($this.video && typeof $this.video.controller != 'undefined' && $this.video.controller != '') return;
@@ -224,7 +222,6 @@ Player.provide('video-display',
 
         } else if (v.type=='stream') {
           // LIVE VIDEO
-          $this.start = 0; // Reset the start parameter for live video
           if($this.displayDevice=='html5' && $this.video.canPlayType('application/vnd.apple.mpegurl')) {
             // The current Eingebaut display is html5 and Apple HLS is supported. This feels like the future.
             $this.qualities['standard'] = {format:'hls', codec:'unknown', displayName:'Automatic', displayQuality:'unknown', source:v.hls_stream};
@@ -251,7 +248,6 @@ Player.provide('video-display',
         }
 
         Player.fire('player:video:qualitychange');
-        $this._currentTime = $this.start;
 
         // Set quality
         var newQuality = '';
@@ -286,12 +282,6 @@ Player.provide('video-display',
         Player.fire('player:video:ready', $this.video);
       }
       Player.bind('player:video:loaded', $this.loadContent);
-
-
-      // After playback has started once, don't use the `start` parameter any longer
-      Player.bind('player:video:playing', function(){
-          Player.set('start', 0);
-      });
 
       // In some cases, we want to switch up the quality when going to full screen
       Player.bind('player:video:enterfullscreen', function(e){
@@ -334,7 +324,6 @@ Player.provide('video-display',
 
           playableContext = {
               source: $this.rawSource,
-              startTime: ($this._currentTime === false ? Player.get('currentTime') : $this._currentTime),
               displayDevice: (quality!="auto"||$this.video.canPlayType('application/vnd.apple.mpegURL')?$this.video.displayDevice:"flash"),
               callback: $this.video._callback,
               preventBackup: true
@@ -345,7 +334,6 @@ Player.provide('video-display',
             var playing = Player.get('playing');
             $this.video.setContext(playableContext);
             playableContext = null;
-            $this._currentTime = false;
             Player.fire('player:video:sourcechange');
             Player.fire('player:video:qualitychange');
             Player.set('playing', playing);
@@ -432,9 +420,6 @@ Player.provide('video-display',
                   Player.set("volume", volume);
               }
           }
-      });
-      Player.setter('start', function(s){
-          $this.start = s;
       });
       Player.setter('autoPlay', function(ap){
         $this.autoPlay = ap;
