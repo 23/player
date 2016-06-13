@@ -654,10 +654,12 @@ body.overlay-shown .button-container-share {
 
 /* === Subtitle button === */
 .subtitle-button .cc-active-icon, .subtitle-button .cc-active-bar-icon {
+    display: none;
+}
+.subtitle-button .cc-active-bar-icon {
     position: absolute;
     top: 0;
     left: 0;
-    display: none;
 }
 .subtitle-button-active .cc-active-icon, .subtitle-button-active .cc-active-bar-icon {
     display: block;
