@@ -531,6 +531,7 @@ body.overlay-shown .button-container-share {
 }
 .sharing-info .current-time-select .checked img {
     display: inline;
+    vertical-align: text-top;
 }
 .share-buttons-container {
     display: table;
