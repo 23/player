@@ -64,11 +64,13 @@ Player.provide('design',
           if(_nextObjectId != _currentObjectId){
               _currentObjectId = _nextObjectId;
               _resetPlayflowPosition();
-              if( Player.get("autoPlay") && Player.get("videoElement").canAutoplay() ){
-                  Player.set("playing", true);
-              }
           }
       });
+      Player.bind("player:video:ready", function(){
+          if( Player.get("autoPlay") && Player.get("videoElement").canAutoplay() ){
+              Player.set("playing", true);
+          }
+      })
       Player.bind("player:video:beforeplay", function(e, playbackAllowed){
           if(!_beforePlayHandled){
               _beforePlayHandled = true;
