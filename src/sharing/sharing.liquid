@@ -34,11 +34,13 @@
           Share on LinkedIn
         </button>
       </div>
+      {% if source != "site" %}
       <div class="button-container">
         <button click="$set:shareTo:site" class="more-button" aria-label="{{"see_on_site"|translate}}" label="{{"see_on_site"|translate}}" tabindex="1306">
           More sharing options
         </button>
       </div>
+      {% endif %}
       {% if showDownload and downloadUrl != "" %}
       <div class="button-container">
         <button onclick="window.location = '{{downloadUrl}}';" class="download-button">
