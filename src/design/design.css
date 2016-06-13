@@ -105,8 +105,21 @@ ul.button-menu li button { /* menu items */
     color: white;
     cursor: pointer;
     color: #AAAAAA;
+    width: auto; /* Display buttons with correct width in IE7 http://jehiah.cz/a/button-width-in-ie */
+    overflow: visible; /* See above */
 }
 ul.button-menu li:hover button { color: #1EC95B; }
+
+/* Hack for IE7 to display menus properly */
+ul.button-menu {
+    *overflow: visible;
+    *visibility: hidden;
+}
+.button-container:hover ul,
+.button-container:hover li,
+.button-container:hover button {
+    *visibility: visible;
+}
 
 /* Menu with selection */
 ul.button-menu-selection li.selected { background-image:url('checkmark.png'); }
