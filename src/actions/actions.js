@@ -33,7 +33,7 @@ Player.provide('actions',
     $.extend($this, opts);
     $this.showHandlers = {};
     $this.hideHandlers = {};
-    $this.dispatcherActive = true;
+    $this.dispatcherActive = false;
     $this.activeActions = {};
       
     // Build default properties and merge in player settings
