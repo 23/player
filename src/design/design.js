@@ -27,7 +27,7 @@ Player.provide('design',
       // 3: Content video is active
       // 4: Content video has ended, showing postrolls and other "after video" actions
       // 5: Playflow ended. Show recommendations/sharing loop to next video, show any non-video actions
-      var _playflowPosition = 1;
+      var _playflowPosition = 0;
       var _setPlayflowPosition = function(nextPosition){
           if(nextPosition === _playflowPosition) return;
           var transition = {
@@ -43,6 +43,11 @@ Player.provide('design',
           transition = Player.fire("player:playflow:beforetransition", transition);
           if(!transition.blocked){
               _playflowPosition = transition.nextPosition;
+              var playflowClasses = [];
+              for(var i = 1; i <= 5; i++) {
+                  if(i != _playflowPosition) playflowClasses.push("playflow-position-"+i);
+              }
+              $("body").addClass("playflow-position-"+_playflowPosition).removeClass(playflowClasses.join(" "));
               Player.fire("player:playflow:transitioned", {
                   currentPosition: _playflowPosition
               });
