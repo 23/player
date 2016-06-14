@@ -88,7 +88,7 @@ Player.provide('actions',
       var actionsPositionDuration = pos || (ct / d);
       var actionsPositionDays = pos || (ct / 86400);
       // Is the dispatcher active and supposed to dispatch actions?
-      if($this.dispatcherActive != true && isNaN(actionsPosition)) {
+      if($this.dispatcherActive != true && isNaN(actionsPositionDuration)) {
         return true;
       }
 
