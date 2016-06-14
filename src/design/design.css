@@ -264,6 +264,7 @@ ul.button-menu-selection li.selected:hover button { color: #FFFFFF; }
     top: 0;
     left: 0;
     width: 100%;
+    height: auto;
 }
 .scrubber-thumbnail-time-container {
     position: absolute;
