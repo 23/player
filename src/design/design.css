@@ -455,6 +455,10 @@ ul.button-menu-selection li.selected:hover button { color: #FFFFFF; }
 .info-overlay-domain {
     font-size: 14px;
     color: #CCCCCC;
+    text-decoration: none;
+}
+a.info-overlay-domain:hover {
+    text-decoration: underline;
 }
 /* === /Info === */
 
