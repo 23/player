@@ -521,6 +521,12 @@ body.overlay-shown .button-container-share {
 .video-clip .sharing-info .current-time-select {
     display: block;
 }
+.playflow-position-1 .sharing-info .current-time-select,
+.playflow-position-2 .sharing-info .current-time-select,
+.playflow-position-4 .sharing-info .current-time-select,
+.playflow-position-5 .sharing-info .current-time-select {
+    display: none;
+}
 .sharing-info .current-time-select .checkbox {
     float: left;
     width: 10px;
