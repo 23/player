@@ -11,13 +11,15 @@ Player.provide('volume-button',
   function(Player,$,opts){
     var $this = this;
     $.extend($this, opts);
-      
-    $this.render(function(){
+
+    Player.bind("player:video:ready", function(){
+      $this.render(function(){
         $this.buttonContainer = $this.container.find(".button-container");
         $this.button = $this.buttonContainer.find("button");
         $this.volumeSlider = $this.container.find(".volume-slider-inner");
         $this.volumeLevel = $this.volumeSlider.find(".volume-level");
         $this.initVolumeSlider();
+      });
     });
 
     var _buttonClass = "";
@@ -36,7 +38,6 @@ Player.provide('volume-button',
     var _dragging = false;
     $this.initVolumeSlider = function(){
         if(!$this.volumeSlider.length) return;
-        $this.updateVolumeSlider();
         $this.button.on("mouseup", function(e){
             if(_dragging){
                 e.preventDefault();
@@ -59,6 +60,7 @@ Player.provide('volume-button',
                 $this.setVolumeFromEvent(e);
             }
         });
+        Player.fire("player:video:volumechange");
     };
     $this.setVolumeFromEvent = function(e){
         var offsetY = e.pageY - $this.volumeSlider.offset().top;
