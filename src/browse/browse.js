@@ -85,7 +85,7 @@ Player.provide('browse',
         var c = Player.get('clips');
         var i = $this.getCurrentVideoIndex() + 1;
         if(!c[i]) {
-          $this.loadRecommendations(true);
+          $this.loadRecommendations();
           i = 0;
         }
         return c[i];
