@@ -117,6 +117,14 @@ Player.provide('protection',
               updateState(v, 'denied', v.protection_method);
               return;
             }
+            // Potentially pass profile data on to People
+            if(typeof r.protectedtoken.profile != "undefined"){
+              var profile = {source: "protection"};
+              $.extend(profile, r.protectedtoken.profile);
+              if(typeof profile.email != "undefined"){
+                Player.fire("player:tracking:data", profile);
+              }
+            }
             // (d)
             // We got a protected token for the resource, reload it using that information
             v.token = r.protectedtoken.protected_token;
