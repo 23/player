@@ -24,9 +24,9 @@ Player.provide('logo',
           var ratio = img.naturalWidth / img.naturalHeight;
           var style = {"display": "block"};
           if(ratio > 1.2){
-              style["max-width"] = "110px";
+              style["max-width"] = "90px";
           }else if(ratio < 0.8){
-              style["max-height"] = "110px";
+              style["max-height"] = "90px";
           }else{
               style["max-width"] = "75px";
           }
