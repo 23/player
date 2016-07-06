@@ -298,6 +298,7 @@ Player.provide('core',
       Player.getter('stream_has_dvr', function(){
           return (Player.get("video").type=="stream"&&Player.get("video").hls_dvr_stream);
       });
+      Player.getter('video_is_360', function(){return $this.video ? $this.video.video_360_p == 1 : false;});
       Player.getter('video_duration', function(){return ($this.video ? $this.video.video_length||'' : '');});
       Player.getter('video_type', function(){return ($this.video ? $this.video.type||'' : '');});
       Player.getter('video_tree_id', function(){return ($this.video ? $this.video.tree_id||'' : '');});

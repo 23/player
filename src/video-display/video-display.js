@@ -263,8 +263,23 @@ Player.provide('video-display',
             }
           }
         }
-        if(newQuality!=''){
-          Player.set('quality', newQuality);
+
+        if(Player.get("video_is_360") && $this.displayDevice == "html5"){
+          if($this.qualities["fullhd"]){
+            Player.set("quality", "fullhd");
+          }else if($this.qualities["hd"]){
+            Player.set("quality", "hd");
+          }else{
+            Player.set("quality", newQuality);
+          }
+          Player.set("autoPlay", false);
+          ThreeSixtyController.init($this, $this.video.video, $this.canvas);
+        }else{
+          // Switch out of 360 rendering
+          ThreeSixtyController.destroy();
+          if(newQuality!=''){
+            Player.set('quality', newQuality);
+          }
         }
 
         // Possibly load volume preference from previous session

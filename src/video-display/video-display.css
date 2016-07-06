@@ -18,3 +18,7 @@
     width:100%; 
     height:100%; 
 }
+
+body.displaying-360 .player-actions {
+    display: none;
+}
