@@ -264,7 +264,8 @@ Player.provide('video-display',
           }
         }
 
-        if(Player.get("video_is_360") && $this.displayDevice == "html5"){
+        if(Player.get("video_is_360") && $this.displayDevice == "html5" && typeof window.CustomEvent === "function"){
+          // Render 360 videos in browsers that supports Aframe
           if($this.qualities["fullhd"]){
             Player.set("quality", "fullhd");
           }else if($this.qualities["hd"]){
