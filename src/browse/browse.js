@@ -50,10 +50,10 @@ Player.provide('browse',
           if(Player.get('clips').length<=1) {
               var opts = (/-new$/.test(Player.get('recommendationMethod')) ? {orderby:'uploaded', order:'desc'} : {orderby:'rank', order:'desc'});
               if(/^channel-/.test(Player.get('recommendationMethod'))) opts['album_id'] = Player.get('video_album_id');
+              $this.loadedRecommendations = true;
               Player.get('api').photo.list(
                   $.extend({size:10, player_id:Player.get('player_id')}, opts),
                   function(data){
-                      $this.loadedRecommendations = true;
                       $.each(data.photos, function(i,photo){
                           if(photo.photo_id!=Player.get('video_photo_id')) {
                               Player.get('clips').push(new PlayerVideo(Player,$,'clip',photo));
@@ -207,6 +207,7 @@ Player.provide('browse',
               Player.set('open_photo_id', {pi:id, target:"_top"});
           } else {
               Player.set('video_photo_id', id);
+              Player.set("currentTime", 0);
               Player.set('playing', true);
           }
         });
