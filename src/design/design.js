@@ -232,8 +232,8 @@ Player.provide('design',
           css += ".protection-password input.submitbutton:hover { background-color: " + $this.hexToRGBA($this.scrubberColor, 0.9) + "; }";
 
           // SVG filter
-          css += ".button-container:hover > button img { -webkit-filter: url(#icon_hover); filter: url(#icon_hover); }";
-          css += ".subtitle-button-active img.cc-active-bar-icon { -webkit-filter: url(#icon_hover); filter: url(#icon_hover); }";
+          css += ".tray-right .button-container:hover > button { -webkit-filter: url(#icon_hover); filter: url(#icon_hover); }";
+          css += ".subtitle-button-active .cc-active-bar-icon { -webkit-filter: url(#icon_hover); filter: url(#icon_hover); }";
           css += ".more-button:hover, .download-button:hover { -webkit-filter: url(#icon_hover); filter: url(#icon_hover); }";
 
           // Text color

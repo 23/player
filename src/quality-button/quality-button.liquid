@@ -1,12 +1,7 @@
 {% if hasQualitySwitching and isStream == false %}
 <div class="button-container">
   <button class="quality-button" aria-controls="qualityOptions" aria-label="{{"quality"|translate}}" label="{{"quality"|translate}}" tabindex="1400">
-    {% if is_dev %}
-      <img src="design/gear@2x.png" srcset="design/gear.svg" />
-    {% else %}
-      <img src="gear@2x.png" srcset="gear.svg" />
-    {% endif %}
-  
+
     <span class="hide-visually">
       {{"quality"|translate}}
     </span>

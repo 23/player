@@ -71,12 +71,6 @@ p {
     cursor:pointer;
     font-size:0;
 }
-.button-container > button img {
-    display: block;
-    position: relative;
-    width: 100%;
-    height: 100%;
-}
 ul.button-menu {
     position: absolute;
     bottom: 100%;
@@ -666,26 +660,31 @@ body.overlay-shown .button-container-share {
 /* === /Browse === */
 
 /* === Subtitle button === */
-.subtitle-button .cc-active-icon, .subtitle-button .cc-active-bar-icon {
+.subtitle-button .cc-active-icon,
+.subtitle-button .cc-active-bar-icon {
     display: none;
 }
-.subtitle-button .cc-active-bar-icon {
-    position: absolute;
-    top: 0;
-    left: 0;
-}
-.subtitle-button-active .cc-active-icon, .subtitle-button-active .cc-active-bar-icon {
+.subtitle-button-active .cc-active-icon,
+.subtitle-button-active .cc-active-bar-icon {
     display: block;
 }
 .subtitle-button-active .cc-icon {
     display: none;
 }
-
+.subtitle-button .cc-icon,
+.subtitle-button .cc-active-icon,
+.subtitle-button .cc-active-bar-icon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
 /* === /Subtitle button === */
 
 /* === Button graphics === */
 
-/* Tray buttons */
+/* Tray left buttons */
 .play-button {
     background-image: url('play.png');
     background-image: linear-gradient(transparent, transparent), url('play.svg');
@@ -706,8 +705,58 @@ body.overlay-shown .button-container-share {
     background-image: linear-gradient(transparent, transparent), url('replay.svg');
     background-size: 40px;
 }
-.button-container .quality-button > img { transform: rotate(0deg); transition: transform 200ms linear; }
-.button-container:hover .quality-button > img { transform: rotate(20deg); }
+
+/* Tray right buttons */
+.fullscreen-button {
+    background-image: url('fullscreen.png');
+    background-image: linear-gradient(transparent, transparent), url('fullscreen.svg');
+    background-size: 30px;
+}
+.video-360-button {
+    background-image: url('vr.png');
+    background-image: linear-gradient(transparent, transparent), url('vr.svg');
+    background-size: 30px;
+}
+.quality-button {
+    background-image: url('gear.png');
+    background-image: linear-gradient(transparent, transparent), url('gear.svg');
+    background-size: 30px;
+}
+.button-container .quality-button { transform: rotate(0deg); transition: transform 200ms linear; }
+.button-container:hover .quality-button { transform: rotate(20deg); } /* Rotate quality icon on hover */
+.volume-button-on {
+    background-image: url('volume-on.png');
+    background-image: linear-gradient(transparent, transparent), url('volume-on.svg');
+    background-size: 30px;
+}
+.volume-button-off {
+    background-image: url('volume-off.png');
+    background-image: linear-gradient(transparent, transparent), url('volume-off.svg');
+    background-size: 30px;
+}
+.subtitle-button .cc-icon {
+    background-image: url('cc.png');
+    background-image: linear-gradient(transparent, transparent), url('cc.svg');
+    background-size: 30px;
+    background-position: center center;
+}
+.subtitle-button .cc-active-icon {
+    background-image: url('cc-active.png');
+    background-image: linear-gradient(transparent, transparent), url('cc-active.svg');
+    background-size: 30px;
+    background-position: center center;
+}
+.subtitle-button .cc-active-bar-icon {
+    background-image: url('cc-active-bar.png');
+    background-image: linear-gradient(transparent, transparent), url('cc-active-bar.svg');
+    background-size: 30px;
+    background-position: center center;
+}
+.slides-button  {
+    background-image: url('slides.png');
+    background-image: linear-gradient(transparent, transparent), url('slides.svg');
+    background-size: 30px;
+}
 
 /* Big play */
 .big-play-button, .loop-play-button {
@@ -760,7 +809,7 @@ body.overlay-shown .button-container-share {
     background-image: linear-gradient(transparent, transparent), url('download.svg');
     background-size: 40px;
 }
-/* Hover state of .more-button is handled through design.js */
+/* Hover state of .more-button & .download-button is handled through design.js */
 
 .close-button {
     background-image: url('close.png');

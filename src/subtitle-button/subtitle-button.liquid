@@ -6,15 +6,9 @@
         {{"closed_captioning"|translate}}
       </span>
 
-      {% if is_dev %}
-        <img class="cc-icon" src="design/cc@2x.png" srcset="design/cc.svg" />
-        <img class="cc-active-bar-icon" src="design/cc-active-bar@2x.png" srcset="design/cc-active-bar.svg" />
-        <img class="cc-active-icon" src="design/cc-active@2x.png" srcset="design/cc-active.svg" />
-      {% else %}
-        <img class="cc-icon" src="cc@2x.png" srcset="cc.svg" />
-        <img class="cc-active-bar-icon" src="cc-active-bar@2x.png" srcset="cc-active-bar.svg" />
-        <img class="cc-active-icon" src="cc-active@2x.png" srcset="cc-active.svg" />
-      {% endif %}
+      <div class="cc-icon"></div>
+      <div class="cc-active-bar-icon"></div>
+      <div class="cc-active-icon"></div>
       
     </button>
     

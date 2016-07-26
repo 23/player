@@ -1,13 +1,7 @@
 {% if video_is_360 and displayDevice == "html5" and isTouchDevice == true %}
   <div class="button-container">
     <button class="video-360-button" click="$set:toggleVRMode" aria-label="{{"Toggle VR mode"|translate}}" label="{{"Toggle VR mode"|translate}}" tabindex="1250">
-      
-      {% if is_dev %}
-        <img src="design/vr@2x.png" srcset="design/vr.svg" />
-      {% else %}
-        <img src="vr@2x.png" srcset="vr.svg" />
-      {% endif %}
-  
+
       <span class="hide-visually">
         {{"Toggle VR mode"|translate}}
       </span>

@@ -1,13 +1,7 @@
 {% if hasSlides %}
   <div class="button-container">
     <button class="slides-button" aria-label="{{"Toggle slide overview"|translate}}" label="{{"Toggle slide overview"|translate}}" tabindex="1250">
-      
-      {% if is_dev %}
-        <img src="design/slides@2x.png" srcset="design/slides.svg" />
-      {% else %}
-        <img src="slides@2x.png" srcset="slides.svg" />
-      {% endif %}
-  
+
       <span class="hide-visually">
         {{"Toggle slide overview"|translate}}
       </span>

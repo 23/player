@@ -27,9 +27,9 @@ Player.provide('volume-button',
         if(typeof $this.button == "undefined" || !$this.button.length) return;
         $this.button.removeClass("volume-button-on volume-button-off");
         if(Player.get("volumeMuted")){
-            _buttonClass = "volume-button-on";
-        }else{
             _buttonClass = "volume-button-off";
+        }else{
+            _buttonClass = "volume-button-on";
         }
         $this.button.addClass(_buttonClass);
         $this.updateVolumeSlider();
