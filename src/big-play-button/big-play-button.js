@@ -59,19 +59,24 @@ Player.provide('big-play-button',
     };
 
     var _onRender = function(){
-      if($this.bigPlaySource != ""){
-        $this.bigPlayWidth = 100;
-        $this.bigPlayHeight = 100;
-      }else{
-        $this.bigPlayWidth = 91;
-        $this.bigPlayHeight = 51;
-      }
       $this.button = $this.container.find("button");
       _resize();
     };
     var _resize = function(){
       var ww = $(window).width();
       var wh = $(window).height();
+      if($this.bigPlaySource != ""){
+        $this.bigPlayWidth = 100;
+        $this.bigPlayHeight = 100;
+      }else{
+        if(ww < 300){
+          $this.bigPlayWidth = 70;
+          $this.bigPlayHeight = 39;
+        }else{
+          $this.bigPlayWidth = 91;
+          $this.bigPlayHeight = 51;
+        }
+      }
       var left = ww / 2 - $this.bigPlayWidth / 2;
       var top = wh / 2 - $this.bigPlayHeight / 2;
       $this.container.find(".big-play-container").css({

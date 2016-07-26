@@ -29,10 +29,14 @@
 /* SLIDE MODES */
 
 /* No slides - body class "no-slides" */
-body.no-slides .slide-container {
+body.no-slides .slide-container,
+.size-small .slide-container,
+.size-tiny .slide-container {
     display: none !important;
 }
-body.no-slides .video-display {
+body.no-slides .video-display,
+.size-small .video-display,
+.size-tiny .video-display {
     display: block !important;
     right: 0 !important;
 }

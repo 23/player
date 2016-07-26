@@ -18,6 +18,10 @@
     width:91px; 
     height:51px;
 }
+.size-tiny .big-play-container {
+    width: 70px;
+    height: 39px;
+}
 .big-play-container table {
     width:100%;
     height:100%;
@@ -34,6 +38,10 @@
     width: 91px;
     height: 51px;
     transition: background-color 100ms linear;
+}
+.size-tiny .big-play-container .button-container > .big-play-button {
+    width: 70px;
+    height: 39px;
 }
 
 .big-play-custom-container {

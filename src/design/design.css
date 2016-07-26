@@ -441,13 +441,14 @@ ul.button-menu-selection li.selected:hover button { color: #FFFFFF; }
     background: transparent url(live-icon.png) center center no-repeat;
     background-image: linear-gradient(transparent, transparent), url(live-icon.svg);
     background-size: 13px;
-    
 }
 .info-overlay-title {
     font-size: 26px;
     color: #FFFFFF;
     line-height: 1.2em;
     margin-bottom: 0.2em;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .info-overlay-domain {
     font-size: 14px;
@@ -457,6 +458,12 @@ ul.button-menu-selection li.selected:hover button { color: #FFFFFF; }
 a.info-overlay-domain:hover {
     text-decoration: underline;
 }
+.size-small .info-overlay-text { padding: 5% 6%; }
+.size-small .info-overlay-title { font-size: 18px; white-space: nowrap; }
+.size-small .info-overlay-domain { font-size: 12px; }
+.size-tiny .info-overlay-text { padding: 5% 6%; }
+.size-tiny .info-overlay-title { font-size: 16px; white-space: nowrap; }
+.size-tiny .info-overlay-domain { font-size: 10px; }
 /* === /Info === */
 
 /* === Module: Share button === */
@@ -496,17 +503,22 @@ body.overlay-shown .button-container-share {
     position: absolute;
     top: 0;
     left: 0;
-    padding: 3% 5%;
+    right: 0;
+    padding: 3% 50px 3% 5%;
 }
 .sharing-info h3 {
     font-size: 26px;
     line-height: 1.2em;
 }
 .sharing-info a {
+    display: block;
     font-size: 14px;
     line-height: 1.2em;
     color: #AAAAAA;
     text-decoration: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 .sharing-info .current-time-select {
     display: none;
@@ -561,7 +573,6 @@ body.overlay-shown .button-container-share {
     height: 50px;
     *display: inline; /* IE 7 */
 }
-
 /* === /Sharing === */
 
 /* === Module: Browse === */
@@ -591,6 +602,13 @@ body.overlay-shown .button-container-share {
     white-space: nowrap;
     text-overflow: ellipsis;
     margin-left: 26px;
+    margin-right: 50px;
+}
+.size-small .browse-container h3 {
+    font-size: 18px;
+    height: 40px;
+    line-height: 40px;
+    margin-left: 18px;
 }
 .recommendations-grid {
     position: absolute;
@@ -598,6 +616,9 @@ body.overlay-shown .button-container-share {
     left: 2px;
     right: 2px;
     bottom: 41px;
+}
+.size-small .recommendations-grid {
+    top: 40px;
 }
 .recommendations-grid .recommendation {
     position: relative;
@@ -819,26 +840,21 @@ body.overlay-shown .button-container-share {
 }
 
 /* Hide a number of elements in very small players */
-.size-tiny .info-button, 
-.size-tiny .share-button,
-.size-tiny .browse-button-on,
-.size-tiny .browse-button-off,
 .size-tiny .quality-button,
 .size-tiny .subtitle-button,
 .size-tiny .slides-button,
-.size-tiny .tray-scrubber,
-.size-tiny .info-pane,
-.size-tiny .sharing-container,
-.size-tiny .player-browse #browse {
-    /*display:none !important;*/
+.size-tiny .scrubber,
+.size-tiny .player-browse #browse,
+.size-tiny .sharing-info,
+.size-tiny .more-button,
+.size-tiny .download-button {
+    display:none !important;
 }
 
 /* Hide some elements in slightly small players */
-.size-small .info-description,
-.size-small .info-button, 
-.size-small .browse-button-on,
-.size-small .browse-button-off,
-.size-small .sharing-container 
-.size-small .player-browse #browse {
-    /*display:none;*/
+.size-small .subtitle-button,
+.size-small .slides-button,
+.size-small .sharing-info {
+    display:none;
 }
+
