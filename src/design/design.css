@@ -662,7 +662,6 @@ body.overlay-shown .button-container-share {
     padding: 10px 60px 10px 15px;
     font-size: 16px;
     line-height: 1.2em;
-    min-height: 1.2em;
     opacity: 0;
     background: linear-gradient(rgba(34,34,34,0), rgba(34,34,34,1.0));
     transition: opacity 200ms linear;
@@ -670,9 +669,14 @@ body.overlay-shown .button-container-share {
 .recommendation:hover .recommendation-meta {
     opacity: 1;
 }
+.recommendation-meta .recommendation-title {
+    min-height: 1.2em;
+    max-height: 2.4em;
+    overflow: hidden;
+}
 .recommendation-meta .recommendation-duration {
     position: absolute;
-    bottom: 10px;
+    bottom: 14px;
     right: 15px;
     font-size: 12px;
     line-height: 1em;
@@ -847,14 +851,33 @@ body.overlay-shown .button-container-share {
 .size-tiny .player-browse #browse,
 .size-tiny .sharing-info,
 .size-tiny .more-button,
-.size-tiny .download-button {
+.size-tiny .download-button,
+.size-tiny .player-sections,
+.size-small .recommendation-meta .recommendation-title {
     display:none !important;
 }
 
 /* Hide some elements in slightly small players */
 .size-small .subtitle-button,
 .size-small .slides-button,
-.size-small .sharing-info {
+.size-small .sharing-info,
+.size-small .recommendation-meta .recommendation-title {
     display:none;
 }
 
+/* Adjust position of share and close buttons */
+.size-small .button-container-share,
+.size-tiny .button-container-share,
+.size-small .button-container-close,
+.size-tiny .button-container-close{
+    top: 5px;
+    right: 5px;
+}
+.size-small .button-container-share > button,
+.size-tiny .button-container-share > button,
+.size-small .button-container-close > button,
+.size-tiny .button-container-close > button{
+    width: 30px;
+    height: 30px;
+    background-size: 30px;
+}
