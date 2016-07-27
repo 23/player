@@ -156,10 +156,6 @@ ul.button-menu-selection li.selected:hover button { color: #FFFFFF; }
     opacity: 0;
     transition: all 100ms linear;
 }
-#tray {
-    bottom: 5px !important;
-    opacity: 1 !important;
-}
 .tray-shown #tray {
     bottom: 5px;
     opacity: 1;
