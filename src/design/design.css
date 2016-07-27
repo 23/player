@@ -60,6 +60,7 @@ p {
 /* === buttons === */
 .button-container {
     position: relative;
+    border-radius: 2px;
 }
 .button-container > button { /* standard button design */
     display: block;
@@ -70,27 +71,35 @@ p {
     background-repeat:no-repeat;
     cursor:pointer;
     font-size:0;
+    border-radius: 2px;
 }
 ul.button-menu {
     position: absolute;
     bottom: 100%;
     right: 0px;
     height: 0;
-    background:rgb(0,0,0);
-    background:rgba(0,0,0,.6);
     padding: 0px;
+    padding-bottom: 0px;
     font-size: 0;
     overflow: hidden;
-    transition: height 200ms ease;
+    transition: height 200ms ease, padding-bottom 200ms ease;
 }
 .button-container:hover ul.button-menu, .button-container-active ul.button-menu {
     height: 1em;
+    padding-bottom: 5px;
 }
 ul.button-menu li {
     display: block;
     text-align: right;
     font-size: 11px;
-    background: transparent none 10px center no-repeat;
+    background: rgb(0,0,0) none 10px center no-repeat;
+    background: rgba(0,0,0,0.7) none 10px center no-repeat;
+}
+ul.button-menu li:first-child {
+    border-radius: 2px 2px 0 0;
+}
+ul.button-menu li:last-child {
+    border-radius: 0 0 2px 2px;
 }
 ul.button-menu li button { /* menu items */
     height: 30px;
@@ -147,12 +156,12 @@ ul.button-menu-selection li.selected:hover button { color: #FFFFFF; }
     opacity: 0;
     transition: all 100ms linear;
 }
-#stray {
-    bottom: 0 !important;
+#tray {
+    bottom: 5px !important;
     opacity: 1 !important;
 }
 .tray-shown #tray {
-    bottom: 0;
+    bottom: 5px;
     opacity: 1;
 }
 .block-tray #tray {
@@ -164,38 +173,51 @@ ul.button-menu-selection li.selected:hover button { color: #FFFFFF; }
 }
 #traysub {
     max-width: 1200px;
-    margin: 0 auto;
-    background: rgb(0,0,0);
-    background: rgba(0,0,0,0.6);
+    margin: 0 5px;
 }
 @media all and (min-width: 1200px) {
     #traysub {
         width: 800px;
+        margin: 0 auto;
     }
 }
 .tray-left {
     float:left;
 }
 .tray-left .button-container button {
-    width: 71px;
+    width: 30px;
+    height: 30px;
     transition: background-color 200ms linear;
 }
 .tray-right {
-    padding-right: 5px;
+    padding-right: 0px;
 }
 .tray-right .button-container { /* buttons right of scrubber */
     float:right;
 }
 .tray-right .button-container > button, .tray-right .button-container > button img {
     width: 30px;
-    height: 40px;
+    height: 30px;
 }
 .tray-scrubber {  /* scrubber position */
     position: relative;
     margin: 0;
-    margin-left: 71px; /* Width of play/pause button */
+    margin-left: 35px; /* Width of play/pause button */
     margin-right: 0; /* Width of buttons to the right of the scrubber. Updated in js. */
     padding: 0 10px;
+    border-radius: 2px;
+}
+.tray-right .button-container,
+.tray-left .button-container,
+.tray-scrubber {
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.7);
+}
+.tray-right .button-container {
+    margin-left: 5px;
+}
+.tray-left .button-container {
+    margin-right: 5px;
 }
 /* === /tray === */
 
@@ -206,7 +228,7 @@ ul.button-menu-selection li.selected:hover button { color: #FFFFFF; }
 /* === Module: Scrubber === */
 .scrubber-container {
     position:relative; 
-    height:40px;
+    height:30px;
 }
 .scrubber {
     position: relative;
@@ -216,7 +238,7 @@ ul.button-menu-selection li.selected:hover button { color: #FFFFFF; }
 }
 .scrubber-track {
     position: relative;
-    top: 18px;
+    top: 13px;
     height: 4px;
 }
 .scrubber-buffer, .scrubber-play {
@@ -279,7 +301,7 @@ ul.button-menu-selection li.selected:hover button { color: #FFFFFF; }
 
 .time-container {
     position: absolute;
-    top: 15px;
+    top: 10px;
     right: 0;
     height: 10px;
     font-size: 10px;
@@ -359,14 +381,14 @@ ul.button-menu-selection li.selected:hover button { color: #FFFFFF; }
     left: 0;
     width: 100%;
     height: 0;
-    background: rgb(0,0,0);
-    background: rgba(0,0,0,0.6);
     overflow: hidden;
-    transition: height 200ms ease;
+    padding-bottom: 0;
+    transition: height 200ms ease, padding-bottom 200ms ease;
 }
 .tray-shown .button-container:hover .volume-slider, .tray-shown .button-container-active .volume-slider {
     display: block;
     height: 100px;
+    padding-bottom: 5px;
 }
 .volume-slider-inner {
     position: absolute;
@@ -375,6 +397,8 @@ ul.button-menu-selection li.selected:hover button { color: #FFFFFF; }
     width: 100%;
     height: 100px;
     cursor: pointer;
+    background: rgb(0,0,0);
+    background: rgba(0,0,0,0.7);
 }
 .volume-slider .volume-track {
     position: absolute;
