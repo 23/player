@@ -316,7 +316,7 @@ Player.provide('design',
           $('.tray-right>div:parent').show();
 
           var buttonWidth = 35;
-          var r = $('.tray-right .button-container:visible').length * buttonWidth;
+          var r = $('.tray-right .button-container > button:visible').length * buttonWidth;
           $('.tray-scrubber').css({marginRight:r+'px'});
       }
       $(window).resize(_resize);
