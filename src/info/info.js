@@ -16,7 +16,8 @@
 
 Player.provide('info', 
   {
-      showDescriptions: true
+      showDescriptions: true,
+      showDomain: true
   },
   function(Player,$,opts){
       var $this = this;
@@ -24,7 +25,7 @@ Player.provide('info',
 
       // Bind to events
       Player.bind('player:settings', function(e){
-          PlayerUtilities.mergeSettings($this, ['showDescriptions']);
+          PlayerUtilities.mergeSettings($this, ['showDescriptions', 'showDomain']);
       });
       Player.bind('player:video:loaded', function(e,video){
           $this.render(function(){
@@ -39,6 +40,7 @@ Player.provide('info',
       Player.getter('infoShown', function(){
           return $this.infoShown;
       });
+      Player.getter('showDomain', function(){ return $this.showDomain; });
      
       /* SETTERS */
       Player.setter('infoShown', function(is){
