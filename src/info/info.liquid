@@ -4,10 +4,12 @@
       <div class="info-overlay-live"><div class="info-overlay-live-icon"></div>Live</div>
     {% endif %}
     {% if video_title != empty%}<h1 class="info-overlay-title">{{video_title|truncatewords:15}}</h1>{% endif %}
-    {% if video.published_p != 0 && video.published_p != "0" %}
-      <a href="{{url}}{{video_one}}" class="info-overlay-domain">{{domain}}</a>
-    {% else %}
-      <div class="info-overlay-domain">{{domain}}</div>
+    {% if showDomain %}
+      {% if video.published_p != 0 && video.published_p != "0" %}
+        <a href="{{url}}{{video_one}}" class="info-overlay-domain">{{domain}}</a>
+      {% else %}
+        <div class="info-overlay-domain">{{domain}}</div>
+      {% endif %}
     {% endif %}
   </div>
 </div>
