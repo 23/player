@@ -13,7 +13,7 @@ html, body, .player-design, #player {
 }
 body {
     margin:0;
-    color:white;  /*updated in js via player settings */
+    color:#000;  /*updated in js via player settings */
     font:11px/14px Helvetica;  /*updated in js via player settings */
 
     scrollbar-base-color: #000;
@@ -76,8 +76,8 @@ ul.button-menu {
     bottom: 100%;
     right: 0px;
     height: 0;
-    background:rgb(0,0,0);
-    background:rgba(0,0,0,.6);
+    background:rgb(255,255,255);
+    background:rgba(255,255,255,.6);
     padding: 0px;
     font-size: 0;
     overflow: hidden;
@@ -100,7 +100,7 @@ ul.button-menu li button { /* menu items */
     white-space:nowrap;
     color: white;
     cursor: pointer;
-    color: #AAAAAA;
+    color: #555555;
     width: auto; /* Display buttons with correct width in IE7 http://jehiah.cz/a/button-width-in-ie */
     overflow: visible; /* See above */
 }
@@ -118,10 +118,10 @@ ul.button-menu {
 }
 
 /* Menu with selection */
-ul.button-menu-selection li.selected { background-image:url('checkmark.png'); }
-ul.button-menu-selection li.selected button { color: #FFFFFF; }
+ul.button-menu-selection li.selected { background-image:url('checkmark-dark.png'); }
+ul.button-menu-selection li.selected button { color: #000000; }
 ul.button-menu-selection li button { padding-left: 30px; }
-ul.button-menu-selection li.selected:hover button { color: #FFFFFF; }
+ul.button-menu-selection li.selected:hover button { color: #000000; }
 
 /* Close button for overlays */
 .button-container-close {
@@ -141,32 +141,48 @@ ul.button-menu-selection li.selected:hover button { color: #FFFFFF; }
 #tray {
     position:absolute;
     bottom:-20px;
-    bottom:-40px\9;
+    bottom:-50px;
     left:0;
     width:100%;
-    opacity: 0;
     transition: all 100ms linear;
-}
-#stray {
-    bottom: 0 !important;
-    opacity: 1 !important;
-}
-.tray-shown #tray {
-    bottom: 0;
-    opacity: 1;
-}
-.block-tray #tray {
-    bottom: -40px !important;
-}
-.persist-tray #tray {
-    bottom: 0 !important;
-    opacity: 1 !important;
 }
 #traysub {
     max-width: 1200px;
+    padding-bottom: 10px;
     margin: 0 auto;
-    background: rgb(0,0,0);
-    background: rgba(0,0,0,0.6);
+    background: transparent;
+    background: rgb(255,255,255);
+    background: rgba(255,255,255,0.6);
+    transition: background-color 100ms linear;
+}
+.tray-left,
+.tray-right,
+.scrubber-container .time-container {
+    opacity: 0;
+}
+.tray-shown #tray {
+    bottom: 0;
+}
+.tray-shown .tray-left,
+.tray-shown .tray-right,
+.tray-shown .scrubber-container .time-container {
+    opacity: 1;
+}
+.block-tray #tray {
+    bottom: -50px !important;
+}
+.block-tray .tray-left,
+.block-tray .tray-right,
+.block-tray .scrubber-container .time-container {
+    opacity: 0 !important;
+}
+.persist-tray #tray {
+    bottom: 0 !important;
+}
+.persist-tray .tray-left,
+.persist-tray .tray-right,
+.persist-tray .scrubber-container .time-container {
+    opacity: 1 !important;
 }
 @media all and (min-width: 1200px) {
     #traysub {
@@ -209,15 +225,26 @@ ul.button-menu-selection li.selected:hover button { color: #FFFFFF; }
     height:40px;
 }
 .scrubber {
-    position: relative;
-    margin-right: 70px;
-    height: 100%;
+    position: fixed;
+    left: 0;
+    bottom: -5px;
+    width: 100%;
+    height: 10px;
     cursor:pointer;
+    transition: bottom 100ms linear;
+}
+.tray-shown .scrubber {
+    bottom: 0;
+}
+.block-tray .scrubber {
+    bottom: -10px !important;
+}
+.persist-tray .scrubber {
+    bottom: 0 !important;
 }
 .scrubber-track {
     position: relative;
-    top: 18px;
-    height: 4px;
+    height: 10px;
 }
 .scrubber-buffer, .scrubber-play {
     position:absolute;
@@ -243,9 +270,9 @@ ul.button-menu-selection li.selected:hover button { color: #FFFFFF; }
     display:none;
     position:absolute;
     left: 0;
-    bottom:44px;
+    bottom:54px;
     width: 94px;
-    border:2px solid #222222;
+    border:2px solid #DDDDDD;
     overflow: hidden;
 }
 .tray-shown .scrubber:hover .scrubber-thumbnail {
@@ -271,8 +298,8 @@ ul.button-menu-selection li.selected:hover button { color: #FFFFFF; }
 }
 .scrubber-thumbnail-time {
     padding: 4px;
-    background: #222222;
-    background: rgba(34,34,34,0.8);
+    background: #DDDDDD;
+    background: rgba(221,221,211,0.8);
     font-size: 10px;
     line-height: 1em;
 }
@@ -299,22 +326,26 @@ ul.button-menu-selection li.selected:hover button { color: #FFFFFF; }
 
 /* === Module: Sections === */
 .sections-container {
-    position: absolute;
-    top: 50%;
+    position: fixed;
     left: 0;
-    right: 0;
-    margin-top: -2px;
-    padding: 0 10px;
+    bottom: -5px;
+    width: 100%;
+    transition: bottom 100ms linear;
 }
-.sections {
-    position:relative;
-    margin-right: 70px;
+.tray-shown .sections-container {
+    bottom: 0;
+}
+.block-tray .sections-container {
+    bottom: -10px !important;
+}
+.persist-tray .sections-container {
+    bottom: 0 !important;
 }
 .section {
     position:absolute; 
-    top:0;
+    bottom:0;
     width:4px;
-    height:4px; 
+    height:10px; 
     margin-left: -2px;
     background: rgb(255,255,255);
     background: rgba(255,255,255,0.6);
@@ -329,13 +360,14 @@ ul.button-menu-selection li.selected:hover button { color: #FFFFFF; }
     opacity: 0;
     visibility: hidden\9;
     position: absolute;
-    bottom: 28px;
+    bottom: 12px;
     left: -50px;
     max-width: 120px;
-    padding: 14px 18px;
+    padding: 10px 14px;
     font-size: 13px;
     line-height: 13px;
     white-space: nowrap;
+    color: #FFF;
     background: rgb(34,34,34);
     background: rgba(34,34,34,0.7);
     border: 1px solid rgb(64,64,64);
@@ -343,7 +375,7 @@ ul.button-menu-selection li.selected:hover button { color: #FFFFFF; }
     text-overflow: ellipsis;
     transition: opacity 200ms linear;
 }
-#tray:hover .section-title {
+.sections-container:hover .section-title {
     display: block;
 }
 .section:hover .section-title {
@@ -359,8 +391,8 @@ ul.button-menu-selection li.selected:hover button { color: #FFFFFF; }
     left: 0;
     width: 100%;
     height: 0;
-    background: rgb(0,0,0);
-    background: rgba(0,0,0,0.6);
+    background: rgb(255,255,255);
+    background: rgba(255,255,255,0.6);
     overflow: hidden;
     transition: height 200ms ease;
 }
@@ -491,8 +523,8 @@ body.overlay-shown .button-container-share {
     left: 0;
     width: 100%;
     height: 100%;
-    background:rgb(0,0,0);
-    background:rgba(0,0,0,.6);
+    background:rgb(255,255,255);
+    background:rgba(255,255,255,.6);
     transition: opacity 200ms linear;
 }
 .sharing-container-active {
@@ -514,7 +546,7 @@ body.overlay-shown .button-container-share {
     display: block;
     font-size: 14px;
     line-height: 1.2em;
-    color: #AAAAAA;
+    color: #555555;
     text-decoration: none;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -584,8 +616,8 @@ body.overlay-shown .button-container-share {
     left: 0;
     width: 100%;
     height: 100%;
-    background:rgb(0,0,0);
-    background:rgba(0,0,0,.6);
+    background:rgb(255,255,255);
+    background:rgba(255,255,255,.6);
     transition: opacity 200ms linear;
 }
 .browse-container-activated {
@@ -615,7 +647,8 @@ body.overlay-shown .button-container-share {
     top: 60px;
     left: 2px;
     right: 2px;
-    bottom: 41px;
+    bottom: 51px;
+    color: #FFF;
 }
 .size-small .recommendations-grid {
     top: 40px;
@@ -711,95 +744,95 @@ body.overlay-shown .button-container-share {
 
 /* Tray left buttons */
 .play-button {
-    background-image: url('play.png');
-    background-image: linear-gradient(transparent, transparent), url('play.svg');
+    background-image: url('play-dark.png');
+    background-image: linear-gradient(transparent, transparent), url('play-dark.svg');
     background-size: 40px;
 }
 .pause-button {
-    background-image: url('pause.png');
-    background-image: linear-gradient(transparent, transparent), url('pause.svg');
+    background-image: url('pause-dark.png');
+    background-image: linear-gradient(transparent, transparent), url('pause-dark.svg');
     background-size: 40px;
 }
 .stop-button {
-    background-image: url('stop.png');
-    background-image: linear-gradient(transparent, transparent), url('stop.svg');
+    background-image: url('stop-dark.png');
+    background-image: linear-gradient(transparent, transparent), url('stop-dark.svg');
     background-size: 40px;
 }
 .replay-button {
-    background-image: url('replay.png');
-    background-image: linear-gradient(transparent, transparent), url('replay.svg');
+    background-image: url('replay-dark.png');
+    background-image: linear-gradient(transparent, transparent), url('replay-dark.svg');
     background-size: 40px;
 }
 
 /* Tray right buttons */
 .fullscreen-button {
-    background-image: url('fullscreen.png');
-    background-image: linear-gradient(transparent, transparent), url('fullscreen.svg');
+    background-image: url('fullscreen-dark.png');
+    background-image: linear-gradient(transparent, transparent), url('fullscreen-dark.svg');
     background-size: 30px;
 }
 .video-360-button {
-    background-image: url('vr.png');
-    background-image: linear-gradient(transparent, transparent), url('vr.svg');
+    background-image: url('vr-dark.png');
+    background-image: linear-gradient(transparent, transparent), url('vr-dark.svg');
     background-size: 30px;
 }
 .quality-button {
-    background-image: url('gear.png');
-    background-image: linear-gradient(transparent, transparent), url('gear.svg');
+    background-image: url('gear-dark.png');
+    background-image: linear-gradient(transparent, transparent), url('gear-dark.svg');
     background-size: 30px;
 }
 .button-container .quality-button { transform: rotate(0deg); transition: transform 200ms linear; }
 .button-container:hover .quality-button { transform: rotate(20deg); } /* Rotate quality icon on hover */
 .volume-button-on {
-    background-image: url('volume-on.png');
-    background-image: linear-gradient(transparent, transparent), url('volume-on.svg');
+    background-image: url('volume-on-dark.png');
+    background-image: linear-gradient(transparent, transparent), url('volume-on-dark.svg');
     background-size: 30px;
 }
 .volume-button-off {
-    background-image: url('volume-off.png');
-    background-image: linear-gradient(transparent, transparent), url('volume-off.svg');
+    background-image: url('volume-off-dark.png');
+    background-image: linear-gradient(transparent, transparent), url('volume-off-dark.svg');
     background-size: 30px;
 }
 .subtitle-button .cc-icon {
-    background-image: url('cc.png');
-    background-image: linear-gradient(transparent, transparent), url('cc.svg');
+    background-image: url('cc-dark.png');
+    background-image: linear-gradient(transparent, transparent), url('cc-dark.svg');
     background-size: 30px;
     background-position: center center;
 }
 .subtitle-button .cc-active-icon {
-    background-image: url('cc-active.png');
-    background-image: linear-gradient(transparent, transparent), url('cc-active.svg');
+    background-image: url('cc-active-dark.png');
+    background-image: linear-gradient(transparent, transparent), url('cc-active-dark.svg');
     background-size: 30px;
     background-position: center center;
 }
 .subtitle-button .cc-active-bar-icon {
-    background-image: url('cc-active-bar.png');
-    background-image: linear-gradient(transparent, transparent), url('cc-active-bar.svg');
+    background-image: url('cc-active-bar-dark.png');
+    background-image: linear-gradient(transparent, transparent), url('cc-active-bar-dark.svg');
     background-size: 30px;
     background-position: center center;
 }
 .slides-button  {
-    background-image: url('slides.png');
-    background-image: linear-gradient(transparent, transparent), url('slides.svg');
+    background-image: url('slides-dark.png');
+    background-image: linear-gradient(transparent, transparent), url('slides-dark.svg');
     background-size: 30px;
 }
 
 /* Big play */
 .big-play-button, .loop-play-button {
-    background-image: url('big-play.png');
-    background-image: linear-gradient(transparent, transparent), url('big-play.svg');
+    background-image: url('big-play-dark.png');
+    background-image: linear-gradient(transparent, transparent), url('big-play-dark.svg');
     background-size: 40px;
 }
 
 /* Sharing buttons */
 .share-button {
-    background-image: url('share.png');
-    background-image: linear-gradient(transparent, transparent), url('share.svg');
+    background-image: url('share-dark.png');
+    background-image: linear-gradient(transparent, transparent), url('share-dark.svg');
     background-size: 40px;
     transition: background-color 200ms linear;
 }
 .facebook-button {
-    background-image: url('facebook.png');
-    background-image: linear-gradient(transparent, transparent), url('facebook.svg');
+    background-image: url('facebook-dark.png');
+    background-image: linear-gradient(transparent, transparent), url('facebook-dark.svg');
     background-size: 40px;
 }
 .facebook-button:hover {
@@ -807,8 +840,8 @@ body.overlay-shown .button-container-share {
     background-image: linear-gradient(transparent, transparent), url('facebook-colored.svg');
 }
 .twitter-button {
-    background-image: url('twitter.png');
-    background-image: linear-gradient(transparent, transparent), url('twitter.svg');
+    background-image: url('twitter-dark.png');
+    background-image: linear-gradient(transparent, transparent), url('twitter-dark.svg');
     background-size: 40px;
 }
 .twitter-button:hover {
@@ -816,8 +849,8 @@ body.overlay-shown .button-container-share {
     background-image: linear-gradient(transparent, transparent), url('twitter-colored.svg');
 }
 .linkedin-button {
-    background-image: url('linkedin.png');
-    background-image: linear-gradient(transparent, transparent), url('linkedin.svg');
+    background-image: url('linkedin-dark.png');
+    background-image: linear-gradient(transparent, transparent), url('linkedin-dark.svg');
     background-size: 40px;
 }
 .linkedin-button:hover {
@@ -825,20 +858,20 @@ body.overlay-shown .button-container-share {
     background-image: linear-gradient(transparent, transparent), url('linkedin-colored.svg');
 }
 .more-button {
-    background-image: url('more.png');
-    background-image: linear-gradient(transparent, transparent), url('more.svg');
+    background-image: url('more-dark.png');
+    background-image: linear-gradient(transparent, transparent), url('more-dark.svg');
     background-size: 40px;
 }
 .download-button {
-    background-image: url('download.png');
-    background-image: linear-gradient(transparent, transparent), url('download.svg');
+    background-image: url('download-dark.png');
+    background-image: linear-gradient(transparent, transparent), url('download-dark.svg');
     background-size: 40px;
 }
 /* Hover state of .more-button & .download-button is handled through design.js */
 
 .close-button {
-    background-image: url('close.png');
-    background-image: linear-gradient(transparent, transparent), url('close.svg');
+    background-image: url('close-dark.png');
+    background-image: linear-gradient(transparent, transparent), url('close-dark.svg');
     background-size: 40px;
     transition: background-color 200ms linear;
 }
