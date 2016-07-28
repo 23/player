@@ -573,7 +573,7 @@ body.overlay-shown .button-container-share {
     width: 10px;
     height: 10px;
     margin-right: 6px;
-    border: 1px solid #AAAAAA;
+    border: 1px solid #555555;
     text-align: center;
 }
 .sharing-info .current-time-select .checkbox img {
