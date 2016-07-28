@@ -9,7 +9,7 @@
     display: none;
     opacity: 0;
     transition: opacity 200ms linear;
-    background: black;
+    background: #FFF;
 }
 .loop-container-activated {
     display: block;
@@ -58,5 +58,5 @@
 }
 .loop-duration {
     font-size: 14px;
-    color: #CCCCCC;
+    color: #333333;
 }
