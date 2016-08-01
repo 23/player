@@ -155,6 +155,9 @@ ul.button-menu-selection li.selected:hover button { color: #000000; }
     background: rgba(255,255,255,0.6);
     transition: background-color 100ms linear;
 }
+.size-tiny #traysub {
+    padding-bottom: 0px;
+}
 .tray-left,
 .tray-right,
 .scrubber-container .time-container {
