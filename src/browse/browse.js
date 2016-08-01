@@ -166,7 +166,7 @@ Player.provide('browse',
               }
           }
           recommendations = recommendations.slice(0, 6);
-          for(var j = 0; j < 6 - recommendations.length; j++) {
+          for(var j = 0; recommendations.length < 6; j++) {
               recommendations.push({type: "empty"});
           }
           return recommendations;
