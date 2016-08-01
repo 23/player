@@ -314,10 +314,6 @@ Player.provide('design',
           // and tray-left to go flying. Very litterally: Hide empty stuff, show other.
           $('.tray-right>div:empty').hide();
           $('.tray-right>div:parent').show();
-
-          var buttonWidth = 30;
-          var r = $('.tray-right .button-container > button:visible').length * buttonWidth + 5;
-          $('.tray-scrubber').css({marginRight:r+'px'});
       }
       $(window).resize(_resize);
       Player.bind('glue:render', _resize);

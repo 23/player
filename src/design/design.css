@@ -140,23 +140,19 @@ ul.button-menu-selection li.selected:hover button { color: #FFFFFF; }
 /* === tray === */
 #tray {
     position:absolute;
-    bottom:-20px;
-    bottom:-40px\9;
+    bottom:-30px;
+    bottom:-55px\9;
     left:0;
     width:100%;
     opacity: 0;
     transition: all 100ms linear;
-}
-#stray {
-    bottom: 0 !important;
-    opacity: 1 !important;
 }
 .tray-shown #tray {
     bottom: 0;
     opacity: 1;
 }
 .block-tray #tray {
-    bottom: -40px !important;
+    bottom: -55px !important;
 }
 .persist-tray #tray {
     bottom: 0 !important;
@@ -164,21 +160,30 @@ ul.button-menu-selection li.selected:hover button { color: #FFFFFF; }
 }
 #traysub {
     max-width: 1200px;
-    margin: 0 auto;
-    background: rgb(0,0,0);
-    background: rgba(0,0,0,0.6);
+    margin: 0 5px 5px;
 }
 @media all and (min-width: 1200px) {
     #traysub {
         width: 800px;
+        margin: 0 auto 5px;
     }
 }
 .tray-left {
     float:left;
+    background: rgb(0,0,0);
+    background: rgba(0,0,0,0.6);
 }
 .tray-left .button-container button {
-    width: 71px;
+    width: 60px;
+    height: 50px;
     transition: background-color 200ms linear;
+}
+.tray-right-container {
+    position: relative;
+    height: 50px;
+    margin-left: 65px;
+    background: rgb(0,0,0);
+    background: rgba(0,0,0,0.6);
 }
 .tray-right {
     padding-right: 5px;
@@ -188,13 +193,14 @@ ul.button-menu-selection li.selected:hover button { color: #FFFFFF; }
 }
 .tray-right .button-container > button, .tray-right .button-container > button img {
     width: 30px;
-    height: 40px;
+    height: 30px;
 }
 .tray-scrubber {  /* scrubber position */
-    position: relative;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
     margin: 0;
-    margin-left: 71px; /* Width of play/pause button */
-    margin-right: 0; /* Width of buttons to the right of the scrubber. Updated in js. */
     padding: 0 10px;
 }
 /* === /tray === */
@@ -206,18 +212,17 @@ ul.button-menu-selection li.selected:hover button { color: #FFFFFF; }
 /* === Module: Scrubber === */
 .scrubber-container {
     position:relative; 
-    height:40px;
+    height:20px;
 }
 .scrubber {
     position: relative;
-    margin-right: 70px;
     height: 100%;
     cursor:pointer;
 }
 .scrubber-track {
     position: relative;
-    top: 18px;
-    height: 4px;
+    top: 7px;
+    height: 6px;
 }
 .scrubber-buffer, .scrubber-play {
     position:absolute;
@@ -243,7 +248,7 @@ ul.button-menu-selection li.selected:hover button { color: #FFFFFF; }
     display:none;
     position:absolute;
     left: 0;
-    bottom:44px;
+    bottom:54px;
     width: 94px;
     border:2px solid #222222;
     overflow: hidden;
@@ -279,7 +284,7 @@ ul.button-menu-selection li.selected:hover button { color: #FFFFFF; }
 
 .time-container {
     position: absolute;
-    top: 15px;
+    top: 4px;
     right: 0;
     height: 10px;
     font-size: 10px;
@@ -303,19 +308,18 @@ ul.button-menu-selection li.selected:hover button { color: #FFFFFF; }
     top: 50%;
     left: 0;
     right: 0;
-    margin-top: -2px;
+    margin-top: -4px;
     padding: 0 10px;
 }
 .sections {
     position:relative;
-    margin-right: 70px;
 }
 .section {
     position:absolute; 
     top:0;
-    width:4px;
-    height:4px; 
-    margin-left: -2px;
+    width:8px;
+    height:8px; 
+    margin-left: -4px;
     background: rgb(255,255,255);
     background: rgba(255,255,255,0.6);
     cursor:pointer;
@@ -329,10 +333,10 @@ ul.button-menu-selection li.selected:hover button { color: #FFFFFF; }
     opacity: 0;
     visibility: hidden\9;
     position: absolute;
-    bottom: 28px;
+    bottom: 10px;
     left: -50px;
     max-width: 120px;
-    padding: 14px 18px;
+    padding: 8px 10px;
     font-size: 13px;
     line-height: 13px;
     white-space: nowrap;
@@ -713,22 +717,22 @@ body.overlay-shown .button-container-share {
 .play-button {
     background-image: url('play.png');
     background-image: linear-gradient(transparent, transparent), url('play.svg');
-    background-size: 40px;
+    background-size: 60px;
 }
 .pause-button {
     background-image: url('pause.png');
     background-image: linear-gradient(transparent, transparent), url('pause.svg');
-    background-size: 40px;
+    background-size: 60px;
 }
 .stop-button {
     background-image: url('stop.png');
     background-image: linear-gradient(transparent, transparent), url('stop.svg');
-    background-size: 40px;
+    background-size: 60px;
 }
 .replay-button {
     background-image: url('replay.png');
     background-image: linear-gradient(transparent, transparent), url('replay.svg');
-    background-size: 40px;
+    background-size: 60px;
 }
 
 /* Tray right buttons */
