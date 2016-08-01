@@ -37,12 +37,23 @@
 .loop-headline {
     font-size: 16px;
 }
+.size-small .loop-headline, .size-tiny .loop-headline {
+    font-size: 14px;
+}
 .button-container-loop-play {
     position: relative;
     background-color: #000000;
     width: 91px;
     height: 51px;
     margin: 16px auto;
+}
+.size-small .button-container-loop-play {
+    width: 70px;
+    height: 39px;
+    margin: 10px auto;
+}
+.size-tiny .button-container-loop-play {
+    display: none;
 }
 .button-container-loop-play > .loop-play-button {
     display: block;
@@ -56,7 +67,18 @@
     line-height: 1.2em;
     margin: 10px 10% 0;
 }
+.size-small .loop-title {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+.size-tiny .loop-title {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
 .loop-duration {
     font-size: 14px;
     color: #CCCCCC;
+}
+.size-small .loop-duration, .size-tiny .loop-duration {
+    display: none;
 }
