@@ -751,8 +751,6 @@ body.overlay-shown .button-container-share {
     background-image: linear-gradient(transparent, transparent), url('gear.svg');
     background-size: 30px;
 }
-.button-container .quality-button { transform: rotate(0deg); transition: transform 200ms linear; }
-.button-container:hover .quality-button { transform: rotate(20deg); } /* Rotate quality icon on hover */
 .volume-button-on {
     background-image: url('volume-on.png');
     background-image: linear-gradient(transparent, transparent), url('volume-on.svg');
