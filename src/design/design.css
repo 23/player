@@ -13,7 +13,7 @@ html, body, .player-design, #player {
 }
 body {
     margin:0;
-    color:#000;  /*updated in js via player settings */
+    color:#333;  /*updated in js via player settings */
     font:11px/14px Helvetica;  /*updated in js via player settings */
 
     scrollbar-base-color: #000;
@@ -147,7 +147,6 @@ ul.button-menu-selection li.selected:hover button { color: #000000; }
     transition: all 100ms linear;
 }
 #traysub {
-    max-width: 1200px;
     padding-bottom: 10px;
     margin: 0 auto;
     background: transparent;
@@ -186,11 +185,6 @@ ul.button-menu-selection li.selected:hover button { color: #000000; }
 .persist-tray .tray-right,
 .persist-tray .scrubber-container .time-container {
     opacity: 1 !important;
-}
-@media all and (min-width: 1200px) {
-    #traysub {
-        width: 800px;
-    }
 }
 .tray-left {
     float:left;
@@ -819,8 +813,8 @@ body.overlay-shown .button-container-share {
 
 /* Big play */
 .big-play-button, .loop-play-button {
-    background-image: url('big-play-dark.png');
-    background-image: linear-gradient(transparent, transparent), url('big-play-dark.svg');
+    background-image: url('big-play.png');
+    background-image: linear-gradient(transparent, transparent), url('big-play.svg');
     background-size: 40px;
 }
 
