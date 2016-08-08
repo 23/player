@@ -493,6 +493,7 @@ a.info-overlay-domain:hover {
     top: 12px;
     right: 12px;
     transition: opacity 200ms linear;
+    background-color: rgba(0,0,0,0.7);
 }
 .tray-shown .button-container-share {
     opacity: 1;
@@ -755,50 +756,50 @@ body.overlay-shown .button-container-share {
 .fullscreen-button {
     background-image: url('fullscreen.png');
     background-image: linear-gradient(transparent, transparent), url('fullscreen.svg');
-    background-size: 30px;
+    background-size: 28px;
 }
 .video-360-button {
     background-image: url('vr.png');
     background-image: linear-gradient(transparent, transparent), url('vr.svg');
-    background-size: 30px;
+    background-size: 28px;
 }
 .quality-button {
     background-image: url('gear.png');
     background-image: linear-gradient(transparent, transparent), url('gear.svg');
-    background-size: 30px;
+    background-size: 28px;
 }
 .volume-button-on {
     background-image: url('volume-on.png');
     background-image: linear-gradient(transparent, transparent), url('volume-on.svg');
-    background-size: 30px;
+    background-size: 28px;
 }
 .volume-button-off {
     background-image: url('volume-off.png');
     background-image: linear-gradient(transparent, transparent), url('volume-off.svg');
-    background-size: 30px;
+    background-size: 28px;
 }
 .subtitle-button .cc-icon {
     background-image: url('cc.png');
     background-image: linear-gradient(transparent, transparent), url('cc.svg');
-    background-size: 30px;
+    background-size: 28px;
     background-position: center center;
 }
 .subtitle-button .cc-active-icon {
     background-image: url('cc-active.png');
     background-image: linear-gradient(transparent, transparent), url('cc-active.svg');
-    background-size: 30px;
+    background-size: 28px;
     background-position: center center;
 }
 .subtitle-button .cc-active-bar-icon {
     background-image: url('cc-active-bar.png');
     background-image: linear-gradient(transparent, transparent), url('cc-active-bar.svg');
-    background-size: 30px;
+    background-size: 28px;
     background-position: center center;
 }
 .slides-button  {
     background-image: url('slides.png');
     background-image: linear-gradient(transparent, transparent), url('slides.svg');
-    background-size: 30px;
+    background-size: 28px;
 }
 
 /* Big play */
