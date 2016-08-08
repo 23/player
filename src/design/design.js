@@ -221,7 +221,6 @@ Player.provide('design',
           
           var css = "";
           // Background colors
-          css += ".tray-left .button-container:hover > button { background-color: " + $this.scrubberColor + "; }";
           css += ".scrubber-buffer, .scrubber-play { background-color: " + $this.scrubberColor + "; }";
           css += ".volume-slider .volume-level { background-color: " + $this.scrubberColor + "; }";
           css += ".big-play-button, .button-container > .loop-play-button { background-color: " + $this.scrubberColor + "; }";
@@ -233,6 +232,7 @@ Player.provide('design',
 
           // SVG filter
           css += ".tray-right .button-container:hover > button { -webkit-filter: url(#icon_hover); filter: url(#icon_hover); }";
+          css += ".tray-left .button-container:hover > button { -webkit-filter: url(#icon_hover); filter: url(#icon_hover); }";
           css += ".subtitle-button-active .cc-active-bar-icon { -webkit-filter: url(#icon_hover); filter: url(#icon_hover); }";
           css += ".more-button:hover, .download-button:hover { -webkit-filter: url(#icon_hover); filter: url(#icon_hover); }";
 

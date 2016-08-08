@@ -185,7 +185,8 @@ ul.button-menu-selection li.selected:hover button { color: #FFFFFF; }
     float:right;
     border-left: 1px solid #000;
 }
-.tray-right .button-container:hover {
+.tray-right .button-container:hover,
+.tray-left .button-container:hover {
     background-color: #1E1E1E;
     -webkit-box-shadow: inset 0 0 1px #000;
     -moz-box-shadow: inset 0 0 1px #000;
@@ -234,7 +235,7 @@ ul.button-menu-selection li.selected:hover button { color: #FFFFFF; }
 }
 .scrubber-track {
     width:100%;
-    background-color:#222222;
+    background-color:#000;
 }
 .scrubber-buffer {
     background: #1EC95B;
