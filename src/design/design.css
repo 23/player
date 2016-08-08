@@ -717,22 +717,22 @@ body.overlay-shown .button-container-share {
 .play-button {
     background-image: url('play.png');
     background-image: linear-gradient(transparent, transparent), url('play.svg');
-    background-size: 60px;
+    background-size: 40px;
 }
 .pause-button {
     background-image: url('pause.png');
     background-image: linear-gradient(transparent, transparent), url('pause.svg');
-    background-size: 60px;
+    background-size: 40px;
 }
 .stop-button {
     background-image: url('stop.png');
     background-image: linear-gradient(transparent, transparent), url('stop.svg');
-    background-size: 60px;
+    background-size: 40px;
 }
 .replay-button {
     background-image: url('replay.png');
     background-image: linear-gradient(transparent, transparent), url('replay.svg');
-    background-size: 60px;
+    background-size: 40px;
 }
 
 /* Tray right buttons */
@@ -760,6 +760,9 @@ body.overlay-shown .button-container-share {
     background-image: url('volume-off.png');
     background-image: linear-gradient(transparent, transparent), url('volume-off.svg');
     background-size: 30px;
+}
+.subtitle-button, .slides-button {
+    margin: 0 2px;
 }
 .subtitle-button .cc-icon {
     background-image: url('cc.png');
