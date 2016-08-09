@@ -203,6 +203,20 @@ ul.button-menu-selection li.selected:hover button { color: #FFFFFF; }
     margin: 0;
     padding: 0 10px;
 }
+.tray-title {
+    position: absolute;
+    top: 6px;
+    left: 0;
+    right: 0;
+    height: 20px;
+    padding: 0 10px;
+    font-size: 14px;
+    text-transform: uppercase;
+    line-height: 20px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 /* === /tray === */
 
 

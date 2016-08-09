@@ -142,6 +142,7 @@ Player.provide('design',
                   $body.addClass("video-stream");
               }
           }
+          $(".tray-title").text(Player.get("video_title"));
       });
 
       Player.bind('player:settings', function(e){
@@ -314,6 +315,10 @@ Player.provide('design',
           // and tray-left to go flying. Very litterally: Hide empty stuff, show other.
           $('.tray-right>div:empty').hide();
           $('.tray-right>div:parent').show();
+
+          var buttonWidth = 30;
+          var r = $('.tray-right .button-container > button:visible').length * buttonWidth + 15;
+          $(".tray-title").css({"padding-right": r});
       }
       $(window).resize(_resize);
       Player.bind('glue:render', _resize);
