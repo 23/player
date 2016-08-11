@@ -57,7 +57,11 @@ Player.provide('actions',
     // Clicks on the container (but not individual actions) should toggle playback
     $this.container.on("click", function(e){
       if(e.handled||e.target!=this) return;
-      Player.set("playing", !Player.get("playing"));
+      if(Player.get("displayDevice") == "html5" && Player.get("videoElement").video.get(0).muted){
+        Player.get("videoElement").video.get(0).muted = false;
+      } else {
+        Player.set("playing", !Player.get("playing"));
+      }
       e.handled = true;
       e.stopPropagation();
       e.preventDefault();
