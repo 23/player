@@ -60,6 +60,8 @@ Player.provide('video-display',
     quality: '',
     autoPlay: false,
     autoMute: false,
+    mutedAutoPlay: false,
+    inlinePlayback: true,
     showThumbnailOnEnd: false,
     fullscreenQuality: '',
     verticalPadding:0,
@@ -122,7 +124,7 @@ Player.provide('video-display',
           }catch(e){}
 
           $this.canvas.html('');
-          $this.video = new Eingebaut($this.canvas, $this.displayDevice, '', callback);
+          $this.video = new Eingebaut($this.canvas, $this.displayDevice, '', callback, {inlinePlayback: $this.inlinePlayback});
           $this.video.load();
           $this.video.showPosterOnEnd = $this.showThumbnailOnEnd;
           $this.video.setProgramDateHandling(true);
@@ -136,7 +138,7 @@ Player.provide('video-display',
 
       // Merge in player settings
       Player.bind('player:settings', function(e,s){
-        PlayerUtilities.mergeSettings($this, ['autoPlay', 'autoMute', 'verticalPadding', 'horizontalPadding', 'displayDevice', 'fullscreenQuality', 'showThumbnailOnEnd']);
+        PlayerUtilities.mergeSettings($this, ['autoPlay', 'mutedAutoPlay', 'autoMute', 'verticalPadding', 'horizontalPadding', 'displayDevice', 'fullscreenQuality', 'showThumbnailOnEnd', 'inlinePlayback']);
         if($this.video) $this.video.showPosterOnEnd = $this.showThumbnailOnEnd;
         if($this.video&&$this.video.displayDevice!=$this.displayDevice) $this.loadEingebaut();
         $this.container.css({left:$this.horizontalPadding+'px', bottom:$this.verticalPadding+'px'});
@@ -551,6 +553,9 @@ Player.provide('video-display',
       });
       Player.getter('autoPlay', function(){
           return $this.autoPlay;
+      });
+      Player.getter('mutedAutoPlay', function(){
+          return $this.mutedAutoPlay;
       });
 
       // Property used for livestreams that does not have a finite value for duration
