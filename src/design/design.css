@@ -170,7 +170,7 @@ ul.button-menu-selection li.selected:hover button { color: #000000; }
 .tray-shown .scrubber-container .time-container {
     opacity: 1;
 }
-.block-tray #tray {
+.block-tray #tray, body.mute-autoplay #tray {
     bottom: -50px !important;
 }
 .block-tray .tray-left,
@@ -818,6 +818,14 @@ body.overlay-shown .button-container-share {
     background-image: url('big-play.png');
     background-image: linear-gradient(transparent, transparent), url('big-play.svg');
     background-size: 40px;
+}
+
+/* Muted autoplay button */
+.video-display .toggle-mute-button {
+    background-image: url('volume-on.svg');
+    background-size: 20px;
+    background-position: 6px center;
+    background-repeat: no-repeat;
 }
 
 /* Sharing buttons */

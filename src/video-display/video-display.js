@@ -86,6 +86,9 @@ Player.provide('video-display',
       $this.canvas = $(document.createElement('div')).addClass('video-canvas');
       $this.container.append($this.canvas);
 
+      var _toggleMuteButton = $("<div class='toggle-mute-button'>Turn on sound</div>");
+      $this.container.append(_toggleMuteButton);
+
       /* PROPERTIES */
       $this.qualities = {};
       $this.rawSource = "";
