@@ -72,15 +72,21 @@ Player.provide('design',
           }
       });
       Player.bind("player:video:ready", function(){
-          if( Player.get("autoPlay") && Player.get("mutedAutoPlay") &&
-              /iPhone|iPod|iPad/.test(navigator.userAgent) &&
-              parseInt(navigator.userAgent.match(/Version\/([0-9]*)\./)[1]) > 9 ) {
-              Player.get("videoElement").video.get(0).muted = true;
+        if( Player.get("autoPlay") ) {
+          if(
+            Player.get("mutedAutoPlay") &&
+            !Player.get("videoElement").canAutoplay() &&
+            /iPhone|iPod|iPad/.test(navigator.userAgent) &&
+            parseInt(navigator.userAgent.match(/Version\/([0-9]*)\./)[1]) > 9
+          ) {
+            Player.get("videoElement").video.get(0).muted = true;
+            $("body").addClass("mute-autoplay");
           }
-          if( Player.get("autoPlay") && Player.get("videoElement").canAutoplay() ){
-              Player.set("playing", true);
+          if( Player.get("videoElement").canAutoplay() ){
+            Player.set("playing", true);
           }
-      })
+        }
+      });
       Player.bind("player:video:beforeplay", function(e, playbackAllowed){
           if(!_beforePlayHandled){
               _beforePlayHandled = true;
