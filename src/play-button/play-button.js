@@ -24,6 +24,7 @@ Player.provide('play-button',
     // Update class and text
     var _buttonClass = "", _labelText = "";
     Player.bind('player:video:play player:video:seeked player:video:pause player:video:ended player:playflow:transitioned', function(e){
+        if(!$this.button) return;
         $this.button.removeClass("play-button pause-button stop-button replay-button");
         if(Player.get("playing")){
             _labelText = Player.translate("pause_video");
