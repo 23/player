@@ -9,7 +9,7 @@ Player.provide('design',
     horizontalPadding:0,
     trayFont:'Helvetica',
     scrubberColor:'#1EC95B',
-    endOn:'sharing',
+    endOn:'share',
     start: 0
   },
   function(Player,$,opts){
@@ -72,20 +72,24 @@ Player.provide('design',
           }
       });
       Player.bind("player:video:ready", function(){
-        if( Player.get("autoPlay") ) {
-          if(
-            Player.get("mutedAutoPlay") &&
-            !Player.get("videoElement").canAutoplay() &&
-            /iPhone|iPod|iPad/.test(navigator.userAgent) &&
-            parseInt(navigator.userAgent.match(/Version\/([0-9]*)\./)[1]) > 9
-          ) {
-            Player.get("videoElement").video.get(0).muted = true;
-            $("body").addClass("mute-autoplay");
+        // "player:video:ready is called as a response to "player:video:loaded"
+        // Here we timeout to allow handling of "player:video:loaded" to finish, before we autoplay
+        window.setTimeout(function(){
+          if( Player.get("autoPlay") ) {
+            if(
+              Player.get("mutedAutoPlay") &&
+              !Player.get("videoElement").canAutoplay() &&
+              /iPhone|iPod|iPad/.test(navigator.userAgent) &&
+              parseInt(navigator.userAgent.match(/Version\/([0-9]*)\./)[1]) > 9
+            ) {
+              Player.get("videoElement").video.get(0).muted = true;
+              $("body").addClass("mute-autoplay");
+            }
+            if( Player.get("videoElement").canAutoplay() ){
+              Player.set("playing", true);
+            }
           }
-          if( Player.get("videoElement").canAutoplay() ){
-            Player.set("playing", true);
-          }
-        }
+        }, 1);
       });
       Player.bind("player:video:beforeplay", function(e, playbackAllowed){
           if(!_beforePlayHandled){
@@ -120,7 +124,7 @@ Player.provide('design',
                       Player.set("browseMode", true);
                   }else if($this.endOn == "loop"){
                       Player.set("showLoop", true);
-                  }else if($this.endOn == "sharing"){
+                  }else if($this.endOn == "share"){
                       Player.set("showSharing", true);
                   }
               }
