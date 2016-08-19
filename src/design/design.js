@@ -9,7 +9,7 @@ Player.provide('design',
     horizontalPadding:0,
     trayFont:'Helvetica',
     scrubberColor:'#1EC95B',
-    endOn:'sharing',
+    endOn:'share',
     start: 0
   },
   function(Player,$,opts){
@@ -124,7 +124,7 @@ Player.provide('design',
                       Player.set("browseMode", true);
                   }else if($this.endOn == "loop"){
                       Player.set("showLoop", true);
-                  }else if($this.endOn == "sharing"){
+                  }else if($this.endOn == "share"){
                       Player.set("showSharing", true);
                   }
               }
