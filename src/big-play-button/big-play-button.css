@@ -1,13 +1,13 @@
-.player-big-play-button {
+.player-big-play-button .big-play-container {
     display: none;
     opacity: 0;
     transition: opacity 200ms linear;
 }
-.player-big-play-button.big-play-shown {
+.player-big-play-button.big-play-shown .big-play-container {
     display: block;
     opacity: 1;
 }
-.block-big-play .player-big-play-button {
+.block-big-play .player-big-play-button .big-play-container {
     opacity: 0 !important;
 }
 
