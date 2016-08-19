@@ -5,11 +5,13 @@ body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,
 a img {border:0;}
 html, body, .player-design, #player {
     /* Make sure that iOS Safari doesn't try to expand the player iframe */
-    position: relative;
     width:100%;
     height:100%;
     background-color: #000000;
     overflow:hidden;
+}
+body, .player-design, #player {
+    position: relative;
 }
 body {
     margin:0;
