@@ -42,15 +42,17 @@ Player.provide('design',
           };
           transition = Player.fire("player:playflow:beforetransition", transition);
           if(!transition.blocked){
-              _playflowPosition = transition.nextPosition;
-              var playflowClasses = [];
-              for(var i = 1; i <= 5; i++) {
-                  if(i != _playflowPosition) playflowClasses.push("playflow-position-"+i);
-              }
-              $("body").addClass("playflow-position-"+_playflowPosition).removeClass(playflowClasses.join(" "));
-              Player.fire("player:playflow:transitioned", {
-                  currentPosition: _playflowPosition
-              });
+              window.setTimeout(function(){
+                  _playflowPosition = transition.nextPosition;
+                  var playflowClasses = [];
+                  for(var i = 1; i <= 5; i++) {
+                      if(i != _playflowPosition) playflowClasses.push("playflow-position-"+i);
+                  }
+                  $("body").addClass("playflow-position-"+_playflowPosition).removeClass(playflowClasses.join(" "));
+                  Player.fire("player:playflow:transitioned", {
+                      currentPosition: _playflowPosition
+                  });
+              },1);
           }
           return !transition.blocked;
       };
