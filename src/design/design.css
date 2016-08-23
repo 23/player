@@ -213,8 +213,8 @@ ul.button-menu-selection li.selected:hover button { color: #FFFFFF; }
 .tray-right .button-container,
 .tray-left .button-container,
 .tray-scrubber {
-    background-color: rgb(0,0,0);
-    background-color: rgba(0,0,0,0.7);
+    background: rgb(0,0,0);
+    background: rgba(0,0,0,0.7);
 }
 .tray-right .button-container {
     margin-left: 5px;
