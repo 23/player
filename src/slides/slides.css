@@ -40,6 +40,8 @@ body.no-slides .video-display,
 .size-tiny .video-display {
     display: block !important;
     right: 0 !important;
+    width: auto !important;
+    height: auto !important;
 }
 
 
@@ -58,7 +60,8 @@ body.slidemode-slide .slide-container {
     left: 0;
 }
 body.slidemode-slide .video-display {
-    display: none;
+    width: 1px;
+    height: 1px;
 }
 
 /* Video only - body class "slidemode-video" */
