@@ -57,6 +57,11 @@ p {
     clip: rect(1px, 1px, 1px, 1px);
 }
 
+.defs-only {
+    width: 0px;
+    height: 0px;
+}
+
 /* ========================= GENERIC CLASSES ======================== */
 
 /* === buttons === */
@@ -117,15 +122,15 @@ ul.button-menu li button { /* menu items */
 }
 ul.button-menu li:hover button { color: #1EC95B; }
 
-/* Hack for IE7 to display menus properly */
+/* Hack for IE7+8 to display menus properly */
 ul.button-menu {
-    *overflow: visible;
-    *visibility: hidden;
+    overflow: visible\9;
+    visibility: hidden\9;
 }
 .button-container:hover ul,
 .button-container:hover li,
 .button-container:hover button {
-    *visibility: visible;
+    visibility: visible\9;
 }
 
 /* Menu with selection */
@@ -588,13 +593,13 @@ body.overlay-shown .button-container-share {
 }
 .share-buttons .button-container {
     display: inline-block;
-    *display: inline; /* IE 7 */
+    display: inline\9; /* IE 7+8 */
     margin-right: 10px;
 }
 .share-buttons .button-container button {
     width: 50px;
     height: 50px;
-    *display: inline; /* IE 7 */
+    display: inline\9; /* IE 7+8 */
 }
 /* === /Sharing === */
 
