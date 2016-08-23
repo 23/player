@@ -57,6 +57,11 @@ p {
     clip: rect(1px, 1px, 1px, 1px);
 }
 
+.defs-only {
+    width: 0px;
+    height: 0px;
+}
+
 /* ========================= GENERIC CLASSES ======================== */
 
 /* === buttons === */
