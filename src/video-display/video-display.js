@@ -374,7 +374,7 @@ Player.provide('video-display',
           }
           try {
               if($this.video) {
-                  if(playing && $this.video.displayDevice == "html5" && !_loadCalled) {
+                  if(playing && $this.video.ready && $this.video.displayDevice == "html5" && !_loadCalled) {
                       // Call load() to capture user interaction on touch devices. Allows us to start playback
                       // without user interaction at a later point, even if 'beforeplay' cancels playback now
                       $this.video.video[0].load();
