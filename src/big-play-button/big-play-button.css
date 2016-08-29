@@ -45,8 +45,8 @@
 }
 
 .big-play-custom-container {
-    width: 100px;
-    height: 100px;
+    width: 100px !important;
+    height: 100px !important;
 }
 .big-play-custom-container .big-play-button {
     background: none !important;
