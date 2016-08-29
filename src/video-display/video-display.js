@@ -597,7 +597,7 @@ Player.provide('video-display',
           $this.reconnectTimeoutId = window.setTimeout(function(){
               if(Player.get("videoElement").getStalled()){
                   if($this.reconnectIntervalIndex <=2){
-                      Player.get("videoElement").setSource(Player.get("videoElement").getSource());
+                      Player.get("videoElement").setSource(Player.get("videoElement").getSource(), null, null, false);
                       if(Player.get("video_playable")){
                           Player.set("playing",true);
                       }
