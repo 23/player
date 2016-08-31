@@ -163,14 +163,12 @@ Player.provide('design',
 
       Player.bind('player:settings', function(e){
           PlayerUtilities.mergeSettings($this, ['verticalPadding', 'horizontalPadding', 'trayFont', 'scrubberColor', 'showTray', 'endOn', 'start']);
-          if(!$this.showTray){
-              Player.set("forcer", {
-                  type: "block",
-                  element: "tray",
-                  from: "settings",
-                  active: true
-              });
-          }
+          Player.set("forcer", {
+              type: "block",
+              element: "tray",
+              from: "settings",
+              active: !!$this.showTray
+          });
           $this.applyDesignPreferences();
       });
 
