@@ -167,7 +167,7 @@ Player.provide('design',
               type: "block",
               element: "tray",
               from: "settings",
-              active: !!$this.showTray
+              active: !$this.showTray
           });
           $this.applyDesignPreferences();
       });
