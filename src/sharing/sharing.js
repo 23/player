@@ -46,6 +46,9 @@ Player.provide('sharing',
           $this.currentTimeSelect = $this.container.find(".current-time-select");
           $this.checkbox = $this.container.find(".checkbox");
           $this.currentTimeSelect.click(_currentTimeClick);
+          var _show = $this.showSharing;
+          Player.set('showSharing', false);
+          Player.set('showSharing', _show);
       };
       var _currentTimeClick = function(){
           $this.checkbox.toggleClass("checked");
@@ -72,6 +75,7 @@ Player.provide('sharing',
           $this.rssLink = absolutize($this.rssLink||Player.get('url') + '/rss');
           $this.podcastLink = absolutize($this.podcastLink||Player.get('url') + '/podcast');
           $this.embedCode = $this.embedCode||'';
+          $this.render(_onRender);
           Player.fire('player:sharing', {});
         });
       $this.videoLink = '';

@@ -110,7 +110,9 @@ Player.provide('scrubber',
                   marginRight: $this.timeContainer.width() + 10
               });
           }else{
-              $this.timeContainer.html( "<span>Live</span> " + formatTime(Player.get('displayPlayProgress')) );
+              if($this.timeContainer && $this.timeContainer.size() > 0) {
+                  $this.timeContainer.html( "<span>Live</span> " + formatTime(Player.get('displayPlayProgress')) );
+              }
           }
       }
       
