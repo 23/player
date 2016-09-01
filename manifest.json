@@ -7,7 +7,7 @@
     "glueLocation": "../glue/",
     "dependencies": [
         "http://video.twentythree.net/resources/um/script/swfobject/swfobject.js",
-        "http://video.twentythree.net/resources/um/script/hls.min.js",
+        "http://video.twentythree.net/resources/um/script/hls-iecompat.min.js",
         "../eingebaut/eingebaut.js",
         "../visualplatform.js/visualplatform.js"
     ],
