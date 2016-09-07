@@ -15,10 +15,12 @@ Player.provide('share-button',
     $this.render($this.toggleShareButton);
 
     $this.toggleShareButton = function(){
-      $this.container.toggle(!!Player.get("socialSharing"));
+      window.setTimeout(function(){
+        $this.container.toggle(!!Player.get("socialSharing"));
+      }, 10);
     };
 
-    Player.bind('player:video:loaded', $this.toggleShareButton);
+    Player.bind('player:settings player:video:loaded', $this.toggleShareButton);
 
     return $this;
   }
