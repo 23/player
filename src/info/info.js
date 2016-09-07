@@ -23,14 +23,17 @@ Player.provide('info',
       var $this = this;
       $.extend($this, opts);
 
+      $this.onRender = function(){
+          Player.set('infoShown', !!$this.showDescriptions);
+      };
+
       // Bind to events
       Player.bind('player:settings', function(e){
           PlayerUtilities.mergeSettings($this, ['showDescriptions', 'showDomain']);
+          $this.render($this.onRender);
       });
       Player.bind('player:video:loaded', function(e,video){
-          $this.render(function(){
-              Player.set('infoShown', !!$this.showDescriptions);
-          });
+          $this.render($this.onRender);
       });
       Player.bind('player:video:play', function(e,video){
           Player.set('infoShown', false);
