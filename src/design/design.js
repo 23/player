@@ -10,7 +10,8 @@ Player.provide('design',
     trayFont:'Helvetica',
     scrubberColor:'#1EC95B',
     endOn:'share',
-    start: 0
+    start: 0,
+    loop: false
   },
   function(Player,$,opts){
       var $this = this;
@@ -121,7 +122,9 @@ Player.provide('design',
       Player.bind("player:playflow:transitioned", function(e, transition){
           // Read from settings the action to take when the playflow has been completed
           setTimeout(function(){
-              if(transition.currentPosition == 5 && !Player.get("actionsShown")){
+              if(transition.currentPosition == 5 && $this.loop){
+                  _setPlayflowPosition(2);
+              }else if(transition.currentPosition == 5 && !Player.get("actionsShown")){
                   if($this.endOn == "browse") {
                       Player.set("browseMode", true);
                   }else if($this.endOn == "loop"){
@@ -162,7 +165,7 @@ Player.provide('design',
       });
 
       Player.bind('player:settings', function(e){
-          PlayerUtilities.mergeSettings($this, ['verticalPadding', 'horizontalPadding', 'trayFont', 'scrubberColor', 'showTray', 'endOn', 'start']);
+          PlayerUtilities.mergeSettings($this, ['verticalPadding', 'horizontalPadding', 'trayFont', 'scrubberColor', 'showTray', 'endOn', 'start', 'loop']);
           Player.set("forcer", {
               type: "block",
               element: "tray",
@@ -250,6 +253,7 @@ Player.provide('design',
           css += ".tray-right .button-container:hover > button { -webkit-filter: url(#icon_hover); filter: url(#icon_hover); }";
           css += ".subtitle-button-active .cc-active-bar-icon { -webkit-filter: url(#icon_hover); filter: url(#icon_hover); }";
           css += ".more-button:hover, .download-button:hover { -webkit-filter: url(#icon_hover); filter: url(#icon_hover); }";
+          css += ".video-display .controls-360 div:hover { -webkit-filter: url(#icon_hover); filter: url(#icon_hover); }";
 
           // Text color
           css += "ul.button-menu li:hover button { color: " + $this.scrubberColor + "; }";
