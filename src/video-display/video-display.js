@@ -384,26 +384,28 @@ Player.provide('video-display',
       $("body").toggleClass("video-360", Player.get("video_is_360"));
       var notice;
       if (Player.get("video_is_360") && Player.get("360Supported")) {
-        var controls = $(
-          "<div class='controls-360'>" +
-            "<div class='controls-360-up arrow' data-dimension='x' data-delta='2'></div>" +
-            "<div class='controls-360-down arrow' data-dimension='x' data-delta='-2'></div>" +
-            "<div class='controls-360-left arrow' data-dimension='y' data-delta='2'></div>" +
-            "<div class='controls-360-right arrow' data-dimension='y' data-delta='-2'></div>" +
-            "<div class='controls-360-center' data-dimension='y' data-delta='-2'>&#9679;</div>" +
-          "</div>"
-        );
-        controls.on("mousedown", ".arrow", function(){
-          var $this = $(this);
-          var rotationDelta = {};
-          rotationDelta[$this.data("dimension")] = $this.data("delta");
-          _setRotationInterval(rotationDelta);
-        }).on("mouseup mouseleave", function(){
-          _setRotationInterval();
-        }).on("click", ".controls-360-center", function(){
-          ThreeSixtyController.setRotationAnimated({ x: 0, y: 0 }, 400);
-        });
-        $this.container.append(controls);
+        if(!Player.get("isTouchDevice")){
+          var controls = $(
+            "<div class='controls-360'>" +
+              "<div class='controls-360-up arrow' data-dimension='x' data-delta='2'></div>" +
+              "<div class='controls-360-down arrow' data-dimension='x' data-delta='-2'></div>" +
+              "<div class='controls-360-left arrow' data-dimension='y' data-delta='2'></div>" +
+              "<div class='controls-360-right arrow' data-dimension='y' data-delta='-2'></div>" +
+              "<div class='controls-360-center' data-dimension='y' data-delta='-2'>&#9679;</div>" +
+            "</div>"
+          );
+          controls.on("mousedown", ".arrow", function(){
+            var $this = $(this);
+            var rotationDelta = {};
+            rotationDelta[$this.data("dimension")] = $this.data("delta");
+            _setRotationInterval(rotationDelta);
+          }).on("mouseup mouseleave", function(){
+            _setRotationInterval();
+          }).on("click", ".controls-360-center", function(){
+            ThreeSixtyController.setRotationAnimated({ x: 0, y: 0 }, 400);
+          });
+          $this.container.append(controls);
+        }
         notice = $(
           "<div class='notice-360'>This is a 360&deg; video.<br />Use the arrow controls or drag the video to move around.<div>"
         );
