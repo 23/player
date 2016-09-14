@@ -27,7 +27,6 @@ Player.provide('browse',
     browseMode: false,
     recommendationMethod: 'channel-popular',
     playlistClickMode:'inline',
-    loop: false,
     browseThumbnailWidth:400,
     browseThumbnailHeight:225
   },
@@ -107,7 +106,7 @@ Player.provide('browse',
       $this.firstLoad = true;
       Player.bind('player:video:loaded', function(){
           if($this.firstLoad) {
-              PlayerUtilities.mergeSettings($this, ['showBrowse', 'browseMode', 'recommendationMethod', 'playlistClickMode', 'loop']);
+              PlayerUtilities.mergeSettings($this, ['showBrowse', 'browseMode', 'recommendationMethod', 'playlistClickMode']);
               Player.fire('player:browse:updated');
               $this.firstLoad = false;
           }
@@ -117,11 +116,6 @@ Player.provide('browse',
       });
       Player.bind('player:video:playing', function(){
           Player.set('browseMode', false);
-      });
-      Player.bind('player:video:ended', function(){
-          if($this.loop) {
-              $this.playNextVideo();
-          }
       });
 
       // Build a specific thumbnail for the browse pane

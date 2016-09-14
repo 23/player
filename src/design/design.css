@@ -709,6 +709,25 @@ body.overlay-shown .button-container-share {
 
 /* === /Browse === */
 
+/* === video-360-button === */
+.player-video-360-button {
+    display: none;
+    position: absolute;
+    right: 20px;
+    bottom: 50px;
+}
+.displaying-360 .player-video-360-button {
+    display: block;
+}
+.button-container > .video-360-button {
+    width: 50px;
+    height: 50px;
+    background-image: url('vr.png');
+    background-image: linear-gradient(transparent, transparent), url('vr.svg');
+    background-size: 40px;
+    background-color: rgba(0,0,0,0.5);
+}
+
 /* === Subtitle button === */
 .subtitle-button .cc-active-icon,
 .subtitle-button .cc-active-bar-icon {
@@ -760,11 +779,6 @@ body.overlay-shown .button-container-share {
 .fullscreen-button {
     background-image: url('fullscreen.png');
     background-image: linear-gradient(transparent, transparent), url('fullscreen.svg');
-    background-size: 30px;
-}
-.video-360-button {
-    background-image: url('vr.png');
-    background-image: linear-gradient(transparent, transparent), url('vr.svg');
     background-size: 30px;
 }
 .quality-button {
