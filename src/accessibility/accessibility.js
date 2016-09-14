@@ -14,13 +14,15 @@ Player.provide('accessibility',
   function(Player,$,opts){
     var $this = this;
     $.extend($this, opts);
+
+    $this.shortcutsDisabled = false;
     
     /* EVENT HANDLERS */
-    var _togglePlayback = function(){}
+    var _togglePlayback = function(){};
     $this.loadShortcuts = function(){
       // Handle keyboard events
       $(document).keypress(function(e){
-        try {if(Player.get('videoActionPlaying')) return;} catch(e){}
+        if(Player.get('shortcutsDisabled')) return;
         if(!document.activeElement||$(document.activeElement).parent('form').length) return;
         if(!e.ctrlKey && !e.altKey && !e.metaKey) {
           var matched = false;
@@ -59,7 +61,7 @@ Player.provide('accessibility',
         }
       });
       $(document).keydown(function(e){
-        try {if(Player.get('videoActionPlaying')) return;} catch(e){}
+        if(Player.get('shortcutsDisabled')) return;
         if(!e.ctrlKey && !e.altKey && !e.metaKey) {
           var matched = false;
           // Increase volume on +/up
@@ -100,7 +102,7 @@ Player.provide('accessibility',
           if(matched) e.preventDefault();
         }
       });
-    }
+    };
 
 
     /* SETTERS: Handle element focus */
@@ -125,6 +127,19 @@ Player.provide('accessibility',
       if(typeof module.container != 'undefined') {
         Player.set('focus', module.container);
       }
+    });
+    Player.setter("shortcutsDisabled", function(disabled){
+      $this.shortcutsDisabled = disabled;
+    });
+
+    /* GETTERS */
+    Player.getter("shortcutsDisabled", function() {
+      try {
+        if (Player.get('videoActionPlaying')) {
+          return true;
+        }
+      } catch(e) {}
+      return $this.shortcutsDisabled;
     });
 
 

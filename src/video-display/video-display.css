@@ -37,3 +37,90 @@ body.mute-autoplay .video-display .toggle-mute-button {
 body.displaying-360 .player-actions {
     display: none;
 }
+.video-display .scene-360, .video-display canvas {
+    position: relative;
+    display: block;
+    height: 100% !important;
+    width: 100% !important;
+}
+.video-display .screen-360 {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    z-index: 1000;
+    display: none;
+}
+
+.video-display .controls-360 {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 60px;
+    height: 60px;
+    border: 1px solid #444444;
+    border-radius: 30px;
+    background-color: rgba(34,34,34,0.7);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+.video-display .controls-360 div {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
+    cursor: pointer;
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+.video-display .controls-360 .controls-360-up {
+    top: 0;
+    left: 20px;
+    background-image: url(arrow-up.svg);
+}
+.video-display .controls-360 .controls-360-down {
+    bottom: 0;
+    left: 20px;
+    background-image: url(arrow-down.svg);
+}
+.video-display .controls-360 .controls-360-right {
+    top: 20px;
+    right: 0;
+    background-image: url(arrow-right.svg);
+}
+.video-display .controls-360 .controls-360-left {
+    top: 20px;
+    left: 0;
+    background-image: url(arrow-left.svg);
+}
+.video-display .controls-360 .controls-360-center {
+    top: 20px;
+    left: 20px;
+}
+
+.video-display .notice-360 {
+    position: absolute;
+    left: 0;
+    min-height: 2.8em;
+    padding: 10px;
+    padding-left: 70px;
+    font-size: 14px;
+    line-height: 1.4em;
+    background: rgba(0,0,0,0.5) url(360.svg) 10px center no-repeat;
+}
+.size-small .notice-360,
+.size-tiny .notice-360{
+    font-size: 10px;
+}
+.tray-shown .video-display .notice-360 {
+    bottom: 44px;
+}
+.video-display .notice-360,
+.block-tray .video-display .notice-360 {
+    bottom: 10px;
+}
+.video-360 .info-overlay {
+    display: none !important;
+}
