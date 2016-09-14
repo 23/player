@@ -89,6 +89,9 @@ Player.provide('video-display',
       var _toggleMuteButton = $("<div class='toggle-mute-button'>Turn on sound</div>");
       $this.container.append(_toggleMuteButton);
 
+      var _360Screen = $("<div class='screen-360'></div>");
+      $this.container.append(_360Screen);
+
       /* PROPERTIES */
       $this.qualities = {};
       $this.rawSource = "";
@@ -197,7 +200,7 @@ Player.provide('video-display',
             // H.264
             if (typeof(v.video_4k_download)!='undefined' && v.video_4k_download.length>0 && v.video_4k_size>0 && !/iPhone|Android/.test(navigator.userAgent))
               $this.qualities['4k'] = {format:'video_4k', codec:'h264', displayName:'4K', displayQuality:'4K', source:Player.get('url') + v.video_4k_download, sortkey: 5};
-            if (typeof(v.video_1080p_download)!='undefined' && v.video_1080p_download.length>0 && v.video_1080p_size>0 && !/iPhone|Android/.test(navigator.userAgent))
+            if (typeof(v.video_1080p_download)!='undefined' && v.video_1080p_download.length>0 && v.video_1080p_size>0 && !/Android/.test(navigator.userAgent))
               $this.qualities['fullhd'] = {format:'video_1080p', codec:'h264', displayName:'Full HD', displayQuality:'1080p', source:Player.get('url') + v.video_1080p_download, sortkey: 4};
             if (typeof(v.video_hd_download)!='undefined' && v.video_hd_download.length>0)
               $this.qualities['hd'] = {format:'video_hd', codec:'h264', displayName:'HD', displayQuality:'720p', source:Player.get('url') + v.video_hd_download, sortkey: 3};
@@ -264,28 +267,13 @@ Player.provide('video-display',
           var qa = Player.get('qualitiesArray');
           for(var i = 0; i < qa.length; i += 1){
             if($this.qualities[qa[i]]){
-              newQuality = qs[i];
+              newQuality = qa[i];
             }
           }
         }
 
-        if(Player.get("video_is_360") && $this.displayDevice == "html5" && typeof window.CustomEvent === "function"){
-          // Render 360 videos in browsers that supports Aframe
-          if($this.qualities["fullhd"]){
-            Player.set("quality", "fullhd");
-          }else if($this.qualities["hd"]){
-            Player.set("quality", "hd");
-          }else{
-            Player.set("quality", newQuality);
-          }
-          Player.set("autoPlay", false);
-          ThreeSixtyController.init($this, $this.video.video, $this.canvas);
-        }else{
-          // Switch out of 360 rendering
-          ThreeSixtyController.destroy();
-          if(newQuality!=''){
-            Player.set('quality', newQuality);
-          }
+        if(newQuality!=''){
+          Player.set('quality', newQuality);
         }
 
         // Possibly load volume preference from previous session
@@ -326,6 +314,113 @@ Player.provide('video-display',
           }
         }
       });
+
+    Player.getter("360Supported", function(){
+      if ($this.displayDevice !== "html5") return false;
+      if (/Edge/.test(navigator.userAgent)){
+        var matches = navigator.userAgent.match(/Edge\/([0-9]+)\./);
+        if (matches.length > 1 && parseInt(matches[1]) >= 14) {
+          return true;
+        } else {
+          return false;
+        }
+      }else{
+        return (typeof window.CustomEvent === "function");
+      }
+    });
+
+    var _360handled = false;
+    Player.bind("player:playflow:transitioned", function(e, transition){
+      if(transition.currentPosition === 3 && Player.get("video_is_360") && Player.get("360Supported") && !_360handled) {
+        _360handled = true;
+        _360Screen.fadeIn();
+
+        var _newQuality = $this.quality;
+        if($this.qualities["fullhd"]) {
+          _newQuality = "fullhd";
+        }else if($this.qualities["hd"]) {
+          _newQuality = "hd";
+        }
+        if(_newQuality != $this.quality) {
+          Player.set("quality", _newQuality);
+        }
+
+        ThreeSixtyController.init($this, $this.video.video, $this.canvas, function(){
+          _360Screen.fadeOut();
+          Player.set("playing", true);
+          var canvas = $("canvas").get(0);
+          canvas.width = $("#player").width()-1;
+          canvas.width = $("#player").width();
+          if(/iPhone|iPad/.test(navigator.userAgent)){
+            // Do stuff for iOS
+            window.setTimeout(function(){
+              console.log("Changing first");
+              $(canvas).parent().parent().get(0).style.width = "200px";
+              window.setTimeout(function(){
+                console.log("Changing second");
+                $(canvas).parent().parent().get(0).style.width = "400px";
+              }, 1000);
+            }, 5000);
+          }
+        });
+      }
+    });
+    var _rotationTimeoutId = 0;
+    Player.bind("player:playflow:beforetransition", function(e, transition){
+      if (transition.nextPosition === 4 && _360handled) {
+        _360handled = false;
+        ThreeSixtyController.destroy();
+      }
+    });
+    var _setRotationInterval = function(rotationDelta){
+      clearInterval(_rotationTimeoutId);
+      if(rotationDelta){
+        _rotationTimeoutId = setInterval(function(){
+          ThreeSixtyController.setRotationDelta(rotationDelta);
+        }, 30);
+      }
+    };
+    Player.bind("player:video:loaded", function(e,v){
+      $("body").toggleClass("video-360", Player.get("video_is_360"));
+      var notice;
+      if (Player.get("video_is_360") && Player.get("360Supported")) {
+        var controls = $(
+          "<div class='controls-360'>" +
+            "<div class='controls-360-up arrow' data-dimension='x' data-delta='2'></div>" +
+            "<div class='controls-360-down arrow' data-dimension='x' data-delta='-2'></div>" +
+            "<div class='controls-360-left arrow' data-dimension='y' data-delta='2'></div>" +
+            "<div class='controls-360-right arrow' data-dimension='y' data-delta='-2'></div>" +
+            "<div class='controls-360-center' data-dimension='y' data-delta='-2'>&#9679;</div>" +
+          "</div>"
+        );
+        controls.on("mousedown", ".arrow", function(){
+          var $this = $(this);
+          var rotationDelta = {};
+          rotationDelta[$this.data("dimension")] = $this.data("delta");
+          _setRotationInterval(rotationDelta);
+        }).on("mouseup mouseleave", function(){
+          _setRotationInterval();
+        }).on("click", ".controls-360-center", function(){
+          ThreeSixtyController.setRotationAnimated({ x: 0, y: 0 }, 400);
+        });
+        $this.container.append(controls);
+        notice = $(
+          "<div class='notice-360'>This is a 360&deg; video.<br />Use the arrow controls or drag the video to move around.<div>"
+        );
+        $this.container.one("mousedown touchstart", function(){
+          $(".notice-360").fadeOut();
+        });
+        $this.container.append(notice);
+      } else if (Player.get("video_is_360")) {
+        notice = $(
+          "<div class='notice-360'>This is a 360&deg; video.<br />Watch this video in Chrome, Firefox or Edge<br />or on an Android phone to get the full experience.</div>"
+        );
+        $this.container.append(notice);
+      } else {
+        $("body").removeClass("video-360");
+        $(".controls-360, .notice").remove();
+      }
+    });
 
       /* SETTERS */
       var playableContext = null;
