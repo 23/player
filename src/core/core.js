@@ -195,7 +195,7 @@ Player.provide('core',
           if(!window.settingsData){
               methods.push({
                   method:'/api/player/settings',
-                  data:{player_id:$this.settings.player_id, parameters:Player.parametersString, referrer: encodeURI(document.referrer)},
+                  data:{player_id:$this.settings.player_id, parameters:Player.parametersString},
                   callback: $this.onSettingsLoaded
               });
           }
