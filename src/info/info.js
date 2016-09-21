@@ -24,7 +24,7 @@ Player.provide('info',
       $.extend($this, opts);
 
       $this.onRender = function(){
-          Player.set('infoShown', (!!$this.showDescriptions && Player.get("playflowPosition") <= 1);
+          Player.set('infoShown', (!!$this.showDescriptions && Player.get("playflowPosition") <= 1));
       };
 
       // Bind to events
