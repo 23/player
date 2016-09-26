@@ -119,12 +119,7 @@ Player.provide('core',
 
       // PROPERTIES
       $this.settings = $.extend(opts, Player.parameters);
-      $.each($this.settings, function(i,v){
-          if(v=='0') $this.settings[i]=0;
-          if(v=='f'||v=='false') $this.settings[i]=false;
-          if(v=='1') $this.settings[i]=1;
-          if(v=='t'||v=='true') $this.settings[i]=true;
-        });
+      PlayerUtilities.normalizeSettings($this.settings);
 
       // Build domain
       if($this.domain=='') $this.domain = $this.settings.domain||document.domain;
@@ -154,11 +149,7 @@ Player.provide('core',
               $.extend($this.settings, data.settings);
               $this.settings = $.extend(opts, Player.parameters);
               // Normalize numbers and bools
-              $.each($this.settings, function(i,v){
-                  if(v=='f'||v=='false') $this.settings[i]=false;
-                  if(v=='t'||v=='true') $this.settings[i]=true;
-                  if(!isNaN(v)) $this.settings[i]=new Number(v)+0;
-              });
+              PlayerUtilities.normalizeSettings($this.settings);
               $this.mainUrl = "http://"+data.site.domain;
               Player.setDefaultLocale(data.settings.locale);
               Player.fire('player:settings', $this.settings);
@@ -345,7 +336,7 @@ Player.provide('core',
       // Different sizes of players (this is used by non-design modules such as subtitles, thus placed here.)
       $this.playerSize = 'medium';
       $this.handleSize = function(){
-          var b = $('body')
+          var b = $('body');
           var w = $(window).width();
           if(w<300) $this.playerSize = 'tiny';
           else if(w<450) $this.playerSize = 'small';
@@ -446,10 +437,18 @@ var PlayerUtilities = {
   mergeSettings: function(obj,settings){
     var s = Player.get('settings');
     $.each(settings, function(i,setting){
-        if (typeof(s[setting])!='undefined' && s[setting].length!=='') {
-          obj[setting] = s[setting];
-        }
-      });
+      if (typeof(s[setting])!='undefined' && s[setting].length!=='') {
+        obj[setting] = s[setting];
+      }
+    });
+    PlayerUtilities.normalizeSettings(obj);
+  },
+  normalizeSettings: function(settings){
+    $.each(settings, function(i,v){
+      if(v=='f'||v=='false') $settings[i]=false;
+      if(v=='t'||v=='true') settings[i]=true;
+      if(!isNaN(v)) settings[i]=new Number(v)+0;
+    });
   }
 };
 
