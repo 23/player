@@ -200,8 +200,8 @@ Player.provide('browse',
           } else if(Player.get('playlistClickMode')=='top' && Player.get('permission_level')!='none'){
               Player.set('open_photo_id', {pi:id, target:"_top"});
           } else {
-              Player.set('video_photo_id', id);
               Player.set("currentTime", 0);
+              Player.set('video_photo_id', id);
               Player.set('playing', true);
           }
         });
