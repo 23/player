@@ -104,11 +104,11 @@ Player.provide('design',
       Player.bind("player:action:prerollsplayed", function(){
           // Play the content video now from the specified start time
           _setPlayflowPosition(3);
+          Player.set("playing", true);
           if(Player.get("video_type") == "clip" && $this.start != 0){
               Player.set("currentTime", $this.start);
           }
           $this.start = 0;
-          Player.set("playing", true);
       });
       Player.bind("player:video:play player:video:playing", function(){
           _setPlayflowPosition(3);
