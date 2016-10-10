@@ -136,3 +136,8 @@ Player.provide('loop',{
     
     return $this;
 });
+
+
+Player.translate("next_video_in",{
+    en: "Next video in"
+});
