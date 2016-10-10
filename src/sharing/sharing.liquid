@@ -1,7 +1,7 @@
 <div id="sharing" class="sharing-container">
   
   <div class="sharing-info">
-    <h3>Share "{{video_title}}"</h3>
+    <h3>{{"share"|translate}} "{{video_title}}"</h3>
     <a href="{{videoLink}}" target="_blank" class="sharing-link selectable">{{videoLink}}</a>
     <div class="current-time-select">
       {% if is_dev %}
@@ -9,7 +9,7 @@
       {% else %}
         <div class="checkbox"><img src="checkmark.png" srcset="checkmark.svg"  /></div>
       {% endif %}
-      Share from current time
+      {{"share_from_current_time"|translate}}
     </div>
   </div>
 
@@ -31,20 +31,20 @@
       </div>
       <div class="button-container">
         <button click="$set:shareTo:linkedin" class="linkedin-button" aria-label="Share on LinkedIn" label="Share on LinkedIn" tabindex="1304">
-          Share on LinkedIn
+          {{"share_on_linkedin"|translate}}
         </button>
       </div>
       {% if source != "site" %}
       <div class="button-container">
         <button click="$set:shareTo:site" class="more-button" aria-label="{{"see_on_site"|translate}}" label="{{"see_on_site"|translate}}" tabindex="1306">
-          More sharing options
+          {{"more_sharing_options"|translate}}
         </button>
       </div>
       {% endif %}
       {% if showDownload and downloadUrl != "" %}
       <div class="button-container">
         <button onclick="window.location = '{{downloadUrl}}';" class="download-button">
-          Download video
+          {{"download_video"|translate}}
         </button>
       </div>
       {% endif %}
