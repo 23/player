@@ -221,3 +221,18 @@ Player.translate("plus_one_google",{
 Player.translate("mail_video",{
     en: "Mail video"
 });
+Player.translate("share",{
+    en: "Share"
+});
+Player.translate("share_from_current_time",{
+    en: "Share from current time"
+});
+Player.translate("share_on_linkedin",{
+    en: "Share on LinkedIn"
+});
+Player.translate("more_sharing_options",{
+    en: "More sharing options"
+});
+Player.translate("download_video",{
+    en: "Download video"
+});
