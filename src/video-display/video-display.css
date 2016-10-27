@@ -37,11 +37,22 @@ body.mute-autoplay .video-display .toggle-mute-button {
 body.displaying-360 .player-actions {
     display: none;
 }
-.video-display .scene-360, .video-display canvas {
+.video-display canvas {
+    display: none;
     position: relative;
-    display: block;
     height: 100% !important;
     width: 100% !important;
+    cursor: -webkit-grab;
+    cursor: -moz-grab;
+    cursor: grab;
+}
+.video-display canvas.mouse-dragging {
+    cursor: -webkit-grabbing;
+    cursor: -mox-grabbing;
+    cursor: grabbing;
+}
+body.displaying-360 .video-display canvas {
+    display: block;
 }
 .video-display .screen-360 {
     position: fixed;
@@ -50,7 +61,7 @@ body.displaying-360 .player-actions {
     width: 100%;
     height: 100%;
     background: #000;
-    z-index: 1000;
+    z-index: 1;
     display: none;
 }
 
