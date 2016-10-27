@@ -31,11 +31,11 @@ Player.provide('fullscreen-button',
 
     // Hide elements when Flash is prompting for full screen
     Player.bind('player:video:fullscreenprompt', function(e){
-        $('.big-button, .video-canvas div').hide();
-      });
+        $('.glue-big-play-button').css({"display": "none"});
+    });
     Player.bind('player:video:clearfullscreenprompt', function(e){
-        $('.big-button, .video-canvas div').show();
-      });
+        $('.glue-big-play-button').css({"display": ""});
+    });
     Player.bind('player:video:enterfullscreen', function(e){
         Player.set('analyticsEvent', 'fullscreen');
       });
