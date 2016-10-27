@@ -111,11 +111,33 @@ var ThreeSixtyController = (function(){
 
     controls = new THREE.CameraControls(camera, renderer.domElement, scene);
 
+    function onFirstMouseMove(e) {
+      window.removeEventListener("mousemove", onFirstMouseMove);
+      var movement = 10;
+      if (e.pageX / window.innerWidth < 0.5) {
+        movement = -10;
+      }
+
+      var ControlsRotation = controls.getRotation();
+      
+      ControlsRotation.yaw -= (movement * THREE.Math.DEG2RAD);
+      controls.setRotation(ControlsRotation);
+      window.setTimeout(function() {
+        ControlsRotation.yaw += (movement * THREE.Math.DEG2RAD);
+        controls.setRotation(ControlsRotation);
+      }, 500);
+      
+    }
+    window.addEventListener("mousemove", onFirstMouseMove);
+
     function setOrientationControls(e) {
       window.removeEventListener('deviceorientation', setOrientationControls, true);
       if (!e.alpha) {
         return;
       }
+      
+      window.removeEventListener("mousemove", onFirstMouseMove);
+
       controls.dispose();
       container.find(".controls-360").remove();
       
