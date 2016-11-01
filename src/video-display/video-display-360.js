@@ -10,7 +10,7 @@ var ThreeSixtyController = (function(){
   var canvasCtx, texture;
   var screen;
 
-  var maxTries = 20,
+  var maxTries = 100,
       tries = 0;
 
   function performCallback(success) {

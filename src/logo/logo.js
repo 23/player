@@ -53,6 +53,10 @@ Player.provide('logo',
           $this.render(_onRender);
       });
 
+      Player.bind('player:video:loaded', function() {
+          $this.render(_onRender);
+      });
+
       /* GETTERS */
       Player.getter('showLogo', function(){return $this.showLogo||false;});
       Player.getter('logoSource', function(){return $this.logoSource||'';});
