@@ -360,18 +360,20 @@ Player.provide('video-display',
 
         if (Player.get("video_is_360")) {
           $("body").addClass("video-360");
-
-          var _newQuality = $this.quality;
-          if ($this.qualities["fullhd"]) {
-            _newQuality = "fullhd";
-          } else if ($this.qualities["hd"]) {
-            _newQuality = "hd";
-          }
-          if (_newQuality != $this.quality) {
-            Player.set("quality", _newQuality);
-          }
           
           if (Player.get("360Supported")) {
+
+            /* Switch to highest possible quality */
+            var _newQuality = $this.quality;
+            if ($this.qualities["fullhd"]) {
+              _newQuality = "fullhd";
+            } else if ($this.qualities["hd"]) {
+              _newQuality = "hd";
+            }
+            if (_newQuality != $this.quality) {
+              Player.set("quality", _newQuality);
+            }
+
             notice = $(
               "<div class='notice-360'>This is a 360&deg; video.<br />Use the arrow controls or drag the video to move around.<div>"
             );
