@@ -355,6 +355,7 @@ Player.provide('video-display',
 
       Player.bind("player:video:loaded", function(e,v) {
         ThreeSixtyController.destroy();
+        _360handled = false;
         $("body").removeClass("video-360 displaying-360");
         $(".notice-360").remove();
 
