@@ -1,5 +1,6 @@
 var ThreeSixtyController = (function(){
   var loadInited = false,
+      loaded = false,
       built = false,
       active = false,
       callback = function() {},
@@ -24,6 +25,7 @@ var ThreeSixtyController = (function(){
   function loadThree(onSuccess, onFail) {
     if (window.THREE) {
       registerCameraControls();
+      loaded = true;
       onSuccess();
     } else {
       if (!loadInited) {
@@ -63,7 +65,7 @@ var ThreeSixtyController = (function(){
       performCallback(true);
     };
 
-    if (window.THREE) {
+    if (loaded) {
       onThreeLoaded();
     } else if (!loadInited) {
       screen.show();
