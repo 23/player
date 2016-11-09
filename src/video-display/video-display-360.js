@@ -363,6 +363,30 @@ function registerCameraControls() {
     window.addEventListener("mouseup", onMouseUp);
     window.addEventListener("mousemove", onMouseMove);
 
+    function onTouchStart(e) {
+      if (!active && e.touches && e.touches.length === 1) {
+        onMouseDown(e.touches[0]);
+      }
+    }
+
+    function onTouchEnd(e) {
+      if (!e.touches || e.touches.length === 0) {
+        onMouseUp();
+      }
+    }
+
+    function onTouchMove(e) {
+      if (e.touches && e.touches.length === 1) {
+        onMouseMove(e.touches[0]);
+        e.preventDefault();
+      }
+    }
+
+    domElement.addEventListener("touchstart", onTouchStart);
+    window.addEventListener("touchend", onTouchEnd);
+    window.addEventListener("touchmove", onTouchMove);
+
+
     scope.dispose = function() {
       active = false;
       pitchObject.rotation.x = 0;
@@ -371,6 +395,10 @@ function registerCameraControls() {
       domElement.removeEventListener("mousedown", onMouseDown);
       window.removeEventListener("mouseup", onMouseUp);
       window.removeEventListener("mousemove", onMouseMove);
+
+      domElement.removeEventListener("touchstart", onTouchStart);
+      window.removeEventListener("touchend", onTouchEnd);
+      window.removeEventListener("touchmove", onTouchMove);
     };
 
     scope.reset = function() {
