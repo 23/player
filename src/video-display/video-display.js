@@ -257,6 +257,11 @@ Player.provide('video-display',
 
         Player.fire('player:video:qualitychange');
 
+        // Set crossorigin attribute on 360 live streams playing through html5
+        if (v.video_360_p === 1 && v.type === "stream" && $this.displayDevice === "html5") {
+          $this.video.video.attr({"crossorigin": "anonymous"});
+        }
+
         // Set quality
         var newQuality = '';
         if($this.qualities[$this.quality]) { // 1. Try quality chosen in player settings
