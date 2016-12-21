@@ -215,7 +215,7 @@ Player.provide('core',
       /* SETTERS */
       Player.setter('domain', function(d){
           $this.domain = d;
-          $this.url = $this.protocal + '://' + $this.domain;
+          $this.url = $this.protocol + '://' + $this.domain;
       });
       Player.setter('video', function(v){
           $this.video = v;
