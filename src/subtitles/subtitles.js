@@ -123,6 +123,7 @@ Player.provide('subtitles',
       $this.possiblyInsertSubtitleTracks = function(){
         if (/iPhone|iPad/.test(navigator.userAgent)) {
           var ve = Player.get("videoElement");
+          var v;
           if (typeof(ve) != "undefined") {
             v = $(ve.video[0]);
           } else {
@@ -143,6 +144,12 @@ Player.provide('subtitles',
           $this.bindFullscreenListeners(v);
         }
       };
+      Player.bind("player:video:loadedmetadata", function(){
+        if ($this.pendingSubtitleTracks) {
+          $this.possiblyInsertSubtitleTracks();
+          $this.pendingSubtitleTracks = false;
+        }
+      });
       $this.fullscreenListenersBound = false;
       $this.bindFullscreenListeners = function(v){
         if (/iPad/.test(navigator.userAgent) && !$this.fullscreenListenersBound) {
@@ -197,7 +204,7 @@ Player.provide('subtitles',
                         $this.locales[o.locale] = o;
                       });
                     Player.set('subtitleLocale', (_onByDefault?$this.defaultLocale:''));
-                    $this.possiblyInsertSubtitleTracks();
+                    $this.pendingSubtitleTracks = true;
                 },
                 Player.fail
             );
