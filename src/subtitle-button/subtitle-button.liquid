@@ -1,7 +1,7 @@
 {% if hasSubtitles and enableSubtitles %}
   <div class="button-container">
     <button class="subtitle-button{% if subtitleLocale != empty %} subtitle-button-active{% endif %}" aria-controls="subtitleOptions" aria-label="{{"closed_captioning"|translate}}" label="{{"closed_captioning"|translate}}" tabindex="1600">
-    
+      
       <span class="hide-visually">
         {{"closed_captioning"|translate}}
       </span>
@@ -9,22 +9,32 @@
       <div class="cc-icon"></div>
       <div class="cc-active-bar-icon"></div>
       <div class="cc-active-icon"></div>
-      
+
+      {% if subtitleMenuWidget == 'select' %}
+        <select onchange="Player.set('subtitleLocale', this.options[this.selectedIndex].value);">
+          {% for l in localesArray %}
+            <option {% if l.locale == subtitleLocale %}selected{% endif %} value="{{l.locale}}">{{l.language}}</option>
+          {% endfor %}
+          <option {% if subtitleLocale == empty %}selected{% endif %} value="">{{"none"|translate}}</option>
+        </select>
+      {% endif %}
     </button>
-    
-    <ul id="subtitleOptions" class="button-menu button-menu-selection">
-      {% for l in localesArray %}
-        <li {% if l.locale == subtitleLocale %}class="selected"{% endif %} click="$set:subtitleLocale:{{l.locale}}">
-          <button aria-label="{{"closed_captions_in"|translate}} {{l.language}}" label="{{"closed_captions_in"|translate}} {{l.language}}" role="button" tabindex="1601">
-            {{l.language}}
+
+    {% if subtitleMenuWidget == 'menu' %}
+      <ul id="subtitleOptions" class="button-menu button-menu-selection">
+        {% for l in localesArray %}
+          <li {% if l.locale == subtitleLocale %}class="selected"{% endif %} click="$set:subtitleLocale:{{l.locale}}">
+            <button aria-label="{{"closed_captions_in"|translate}} {{l.language}}" label="{{"closed_captions_in"|translate}} {{l.language}}" role="button" tabindex="1601">
+              {{l.language}}
+            </button>
+          </li>
+        {% endfor %}
+        <li {% if subtitleLocale == empty %}class="selected"{% endif %} click="$set:subtitleLocale:">
+          <button aria-label="{{"disable_closed_captioning"|translate}}" label="{{"disable_closed_captioning"|translate}}" role="button" tabindex="1602">
+            {{"none"|translate}}
           </button>
         </li>
-      {% endfor %}
-      <li {% if subtitleLocale == empty %}class="selected"{% endif %} click="$set:subtitleLocale:">
-        <button aria-label="{{"disable_closed_captioning"|translate}}" label="{{"disable_closed_captioning"|translate}}" role="button" tabindex="1602">
-          {{"none"|translate}}
-        </button>
-      </li>
-    </ul>
+      </ul>
+    {% endif %}
   </div>
 {% endif %}
