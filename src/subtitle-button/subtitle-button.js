@@ -14,19 +14,25 @@ Player.provide('subtitle-button',
 
     // Update UI when subtitle changes
     Player.bind('player:subtitlechange', function(e){
-        $this.render(function(){
-            $this.button = $this.container.find(".subtitle-button");
-            $this.buttonMenu = $this.container.find(".button-menu");
-            var localeCount = Player.get('localesArray').length;
+      $this.render(function(){
+        if(Player.get('subtitleMenuWidget')=='menu') {
+          $this.button = $this.container.find(".subtitle-button");
+          $this.buttonMenu = $this.container.find(".button-menu");
+          var localeCount = Player.get('localesArray').length;
+          $this.buttonMenu.css({
+            fontSize: $this.container.find("li").height()*(localeCount+1)
+          });
+          $this.button.one("mouseenter", function(){
             $this.buttonMenu.css({
-                fontSize: $this.container.find("li").height()*(localeCount+1)
+              right: ($this.buttonMenu.width()-30)/-2
             });
-            $this.button.one("mouseenter", function(){
-                $this.buttonMenu.css({
-                    right: ($this.buttonMenu.width()-30)/-2
-                });
-            });
-        });
+          });
+        }
+      });
+    });
+
+    Player.getter('subtitleMenuWidget', function(){
+      return (Player.get('localesArray').length>4 ? 'select' : 'menu');
     });
       
     return $this;

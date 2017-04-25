@@ -1,19 +1,11 @@
 /* 
    MODULE: BIG PLAY BUTTON
    Show a play/pause button
-   
-   Listens for:
-   - player:video:play
-   - player:video:playing 
-   - player:video:pause 
-   - player:video:ended
-   
-   Answers properties:
-   - showBigPlay [get/set]
 */
 
 Player.provide('big-play-button', 
   {
+    hideBigPlay: false,
     bigPlaySource: ''
   },
   function(Player,$,opts){
@@ -22,7 +14,7 @@ Player.provide('big-play-button',
 
     // Get relevant settings
     Player.bind('player:settings', function(e,settings){
-        PlayerUtilities.mergeSettings($this, ['showBigPlay', 'bigPlaySource']);
+        PlayerUtilities.mergeSettings($this, ['hideBigPlay', 'bigPlaySource']);
         if($this.bigPlaySource.length>0 && !/\/\//.test($this.bigPlaySource)){
             $this.bigPlaySource = Player.get('url')+$this.bigPlaySource;
         }
@@ -42,7 +34,12 @@ Player.provide('big-play-button',
     var _prevShow = false;
     var _bigPlayTimeouts = [];
     var _updateBigPlay = function(){
-        var show = (!Player.get("playing") && Player.get("video_playable") && !Player.get("actionsShown"));
+        var show = (
+            !Player.get("playing") &&
+            Player.get("video_playable") &&
+            !Player.get("actionsShown") &&
+            !$this.hideBigPlay
+        );
         if(show != _prevShow){
             while(_bigPlayTimeouts.length > 0){
                 clearTimeout(_bigPlayTimeouts.pop());

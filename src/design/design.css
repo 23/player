@@ -71,6 +71,7 @@ p {
 }
 .button-container > button { /* standard button design */
     display: block;
+    overflow: hidden;
     position:relative;
     height:40px;
     width:40px;
@@ -79,6 +80,15 @@ p {
     cursor:pointer;
     font-size:0;
     border-radius: 2px;
+}
+.button-container > button select {
+    opacity:0;
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    z-index:99999;
 }
 ul.button-menu {
     position: absolute;

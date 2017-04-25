@@ -127,7 +127,7 @@ Player.provide('design',
               }else if(transition.currentPosition == 5 && !Player.get("actionsShown")){
                   if($this.endOn == "browse") {
                       Player.set("browseMode", true);
-                  }else if($this.endOn == "loop"){
+                  }else if($this.endOn == "loop" && Player.get("clips").length > 1){
                       Player.set("showLoop", true);
                   }else if($this.endOn == "share"){
                       Player.set("showSharing", true);

@@ -1,6 +1,6 @@
 window.VastHandler = function(videoActionHandler){
 
-    $this = this;
+    var $this = this;
 
     $this.initAd = function(action, callback){
         $this.action = action;
