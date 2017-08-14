@@ -149,7 +149,6 @@ Player.provide('sharing',
           if($this.showSharing){
               $this.showSharing = !Player.fire("player:module:overlayactivated", {name: "sharing", prevented: false}).prevented;
           }
-          if($this.showSharing) Player.fire('player:sharing:shareengaged', {});
           if($this.showSharing != _prevShow){
               while(_sharingTimeouts.length > 0){
                   clearTimeout(_sharingTimeouts.pop());
@@ -177,7 +176,7 @@ Player.provide('sharing',
           }
       });
       Player.setter('shareTo', function(service){
-          Player.fire('player:sharing:shareengaged', {});
+          Player.fire('player:sharing:shareengaged', service);
           if(service=='site') {
               Player.set('playing', false);
               window.open(Player.get('siteLink')+Player.get('video_one'));
