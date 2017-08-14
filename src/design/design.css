@@ -79,7 +79,7 @@ p {
     cursor:pointer;
     font-size:0;
 }
-.button-container > button select {
+.button-container > select {
     opacity:0;
     position:absolute;
     top:0;
