@@ -916,3 +916,7 @@ body.overlay-shown .button-container-share {
     height: 30px;
     background-size: 30px;
 }
+
+
+/* === Hide any cookie popup from HubSpot === */
+div#hs-eu-cookie-confirmation{display:none!important;}
