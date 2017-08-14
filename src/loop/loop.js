@@ -120,8 +120,8 @@ Player.provide('loop',{
     });
     Player.setter("playLoopVideo", function(){
         Player.set("video_photo_id", Player.get("nextVideo").photo_id);
-        Player.set("currentTime", 0);
         Player.set("playing", true);
+        Player.set("currentTime", 0);
     });
 
     Player.bind("player:module:overlayactivated", function(e, info){

@@ -79,7 +79,7 @@ p {
     cursor:pointer;
     font-size:0;
 }
-.button-container > button select {
+.button-container > select {
     opacity:0;
     position:absolute;
     top:0;
@@ -950,3 +950,7 @@ body.overlay-shown .button-container-share {
     height: 30px;
     background-size: 30px;
 }
+
+
+/* === Hide any cookie popup from HubSpot === */
+div#hs-eu-cookie-confirmation{display:none!important;}
