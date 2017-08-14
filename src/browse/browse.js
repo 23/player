@@ -1,4 +1,4 @@
-/* 
+/*
    MODULE: BROWSE (or recomendations)
    Let users browse for recommendations.
 
@@ -11,7 +11,7 @@
    Fires:
    - player:browse:updated
    - player:browse:loaded
-   
+
    Answers properties:
    - showBrowse [get/set]
    - browseMode [get/set]
@@ -21,9 +21,9 @@
    - browse_video_id [set]
 */
 
-Player.provide('browse', 
+Player.provide('browse',
   {
-    showBrowse: true,
+    showBrowse: false,
     browseMode: false,
     recommendationMethod: 'channel-popular',
     playlistClickMode:'inline',
@@ -39,7 +39,7 @@ Player.provide('browse',
       $this.loadRecommendations = function(overwrite){
           if(typeof(overwrite)=='undefined') overwrite = false;
           if(overwrite) $this.loadedRecommendations = false;
-          if ($this.loadedRecommendations || !Player.get('showBrowse')) return; 
+          if ($this.loadedRecommendations || !Player.get('showBrowse')) return;
           if (overwrite){
             var c = Player.get('clips');
             c = [];
@@ -110,9 +110,6 @@ Player.provide('browse',
               $this.firstLoad = false;
           }
         });
-      Player.bind('player:data:loaded', function(){
-          $this.loadRecommendations();
-      });
       Player.bind('player:video:playing', function(){
           Player.set('browseMode', false);
       });

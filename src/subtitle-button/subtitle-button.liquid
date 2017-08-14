@@ -9,16 +9,16 @@
       <div class="cc-icon"></div>
       <div class="cc-active-bar-icon"></div>
       <div class="cc-active-icon"></div>
-
-      {% if subtitleMenuWidget == 'select' %}
-        <select onchange="Player.set('subtitleLocale', this.options[this.selectedIndex].value);">
-          {% for l in localesArray %}
-            <option {% if l.locale == subtitleLocale %}selected{% endif %} value="{{l.locale}}">{{l.language}}</option>
-          {% endfor %}
-          <option {% if subtitleLocale == empty %}selected{% endif %} value="">{{"none"|translate}}</option>
-        </select>
-      {% endif %}
     </button>
+
+    {% if subtitleMenuWidget == 'select' %}
+      <select onchange="Player.set('subtitleLocale', this.options[this.selectedIndex].value);">
+        {% for l in localesArray %}
+          <option {% if l.locale == subtitleLocale %}selected{% endif %} value="{{l.locale}}">{{l.language}}</option>
+        {% endfor %}
+        <option {% if subtitleLocale == empty %}selected{% endif %} value="">{{"none"|translate}}</option>
+      </select>
+    {% endif %}
 
     {% if subtitleMenuWidget == 'menu' %}
       <ul id="subtitleOptions" class="button-menu button-menu-selection">

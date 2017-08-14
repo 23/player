@@ -140,6 +140,12 @@ Player.provide('design',
           return _playflowPosition;
       });
 
+      Player.bind('player:data:loaded', function(){
+          if ($this.endOn == "browse") {
+            Player.set('showBrowse', true);
+          }
+      });
+
 
       // Set .touch-class on body, if we're on iDevice or Android
       if(/iPad|iPhone|Android/.test(navigator.userAgent)){
@@ -176,7 +182,7 @@ Player.provide('design',
       });
 
       /* === TRAY HANDLING === */
-      
+
       /* Showing/hiding the tray */
       var _trayTimeoutId = null;
       var _showTray = function(){
@@ -190,8 +196,8 @@ Player.provide('design',
       };
       $(document).mousemove(_showTray);
       $(document).mouseleave(_hideTray);
-      
-      /* 
+
+      /*
          Allow modules to set "blocking" and "persisting" forcing classes on body.
          Usage: Player.set("forcer", {
            type: "force|block",
@@ -217,11 +223,11 @@ Player.provide('design',
               $("body").toggleClass(forcerClass, forcerArray.length > 0);
           });
       });
-      
+
       Player.getter('accentColor', function(){
           return $this.scrubberColor;
       });
-      
+
       /* === /TRAY HANDLING === */
 
       $this.hexToRGBA = function(hex, alpha){
@@ -236,7 +242,7 @@ Player.provide('design',
       };
       $this.applyDesignPreferences = function(){
           $("filter#icon_hover feFlood").attr("flood-color", $this.scrubberColor);
-          
+
           var css = "";
           // Background colors
           css += ".tray-left .button-container:hover > button { background-color: " + $this.scrubberColor + "; }";
@@ -264,10 +270,10 @@ Player.provide('design',
 
           // Border color
           css += ".loop-container-cell { border-color: " + $this.scrubberColor + "; }";
-          
+
           // Vertical and horisontal padding
           css += ".video-display { bottom: " + $this.verticalPadding + "px; left: " + $this.horizontalPadding + "px; }";
-          
+
           $this.applyStyle(css);
       }
       $this.applyStyle = function(css){
@@ -352,7 +358,7 @@ Player.provide('design',
               }
           },1000);
       }
-      
+
       $this.render();
 
       // Return a reference
