@@ -82,8 +82,7 @@ Player.provide('design',
             if(
               Player.get("mutedAutoPlay") &&
               !Player.get("videoElement").canAutoplay() &&
-              /iPhone|iPod|iPad/.test(navigator.userAgent) &&
-              parseInt(navigator.userAgent.match(/Version\/([0-9]*)\./)[1]) > 9
+              /iPhone|iPod|iPad/.test(navigator.userAgent)
             ) {
               Player.get("videoElement").video.get(0).muted = true;
               $("body").addClass("mute-autoplay");
