@@ -147,6 +147,7 @@ Player.provide('actions',
             var screen = $(document.createElement('a')).addClass('action-screen');
             if(/^\$/.test(action.link)){ // Is the link a Glue command? Run it!
               screen.click({command: action.link}, function(e){
+                Player.fire("player:action:click", action);
                 Player.runCommand(e);
                 e.preventDefault();
               });
