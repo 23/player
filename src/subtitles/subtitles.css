@@ -22,9 +22,6 @@
 }
 
 
-.size-tiny .subtitles-container, .size-small .subtitles-container {
-    display:none;
-}
 .size-large .subtitles-container {
     font-size:22px;
     line-height:34px;
@@ -38,4 +35,11 @@
 }
 .size-full .subtitles-container span {
     padding:6px 10px;
+}
+.size-tiny .subtitles-container, .size-small .subtitles-container {
+    font-size:14px;
+    line-height:20px;
+}
+.size-tiny .subtitles-container span, .size-small .subtitles-container span {
+    padding:2px 4px;
 }
