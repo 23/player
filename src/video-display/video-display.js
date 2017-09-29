@@ -130,7 +130,7 @@ Player.provide('video-display',
           }catch(e){}
 
           $this.canvas.html('');
-          $this.video = new Eingebaut($this.canvas, $this.displayDevice, '', callback, {inlinePlayback: $this.inlinePlayback});
+          $this.video = new Eingebaut($this.canvas, $this.displayDevice, '', callback, {inlinePlayback: $this.inlinePlayback, startMuted: $this.autoMute});
           $this.video.load();
           $this.video.showPosterOnEnd = $this.showThumbnailOnEnd;
           $this.video.setProgramDateHandling(true);
@@ -146,7 +146,13 @@ Player.provide('video-display',
       Player.bind('player:settings', function(e,s){
         PlayerUtilities.mergeSettings($this, ['autoPlay', 'mutedAutoPlay', 'autoMute', 'verticalPadding', 'horizontalPadding', 'displayDevice', 'fullscreenQuality', 'showThumbnailOnEnd', 'inlinePlayback']);
         if($this.video) $this.video.showPosterOnEnd = $this.showThumbnailOnEnd;
-        if($this.video&&$this.video.displayDevice!=$this.displayDevice) $this.loadEingebaut();
+        if(
+          ($this.video&&$this.video.displayDevice!=$this.displayDevice)
+          ||
+          $this.autoMute || $this.mutedAutoPlay
+        ) {
+          $this.loadEingebaut();
+        }
         $this.container.css({left:$this.horizontalPadding+'px', bottom:$this.verticalPadding+'px'});
       });
       Player.bind('player:video:playerready', function(){
@@ -255,6 +261,18 @@ Player.provide('video-display',
           Player.fail('Unknown video type loaded');
         }
 
+        if ($this.autoMute) {
+          // Auto-mute from property
+          Player.set("volumeMuted", true);
+        } else {
+          // Possibly load volume preference from previous session
+          if($this._loadVolumeCookie&&$this.video) {
+            var cookieVolume = Persist.get('playerVolume');
+            if(cookieVolume.length>0) Player.set('volume', new Number(cookieVolume));
+            $this._loadVolumeCookie = false;
+          }
+        }
+        
         Player.fire('player:video:qualitychange');
 
         // Set crossorigin attribute on 360 live streams playing through html5
@@ -279,18 +297,6 @@ Player.provide('video-display',
 
         if(newQuality!=''){
           Player.set('quality', newQuality);
-        }
-
-        if ($this.autoMute) {
-          // Auto-mute from property
-          Player.set("volumeMuted", true);
-        } else {
-          // Possibly load volume preference from previous session
-          if($this._loadVolumeCookie&&$this.video) {
-            var cookieVolume = Persist.get('playerVolume');
-            if(cookieVolume.length>0) Player.set('volume', new Number(cookieVolume));
-            $this._loadVolumeCookie = false;
-          }
         }
 
         // We're ready now
@@ -460,7 +466,7 @@ Player.provide('video-display',
 
           if(Player.get('video_playable')) {
             // Switch the source and jump to current spot
-            var playing = Player.get('playing');
+            var playing = Player.get('playing') || $this.mutedAutoPlay;
             $this.video.setContext(playableContext);
             playableContext = null;
             Player.fire('player:video:sourcechange');
