@@ -454,7 +454,7 @@ var PlayerUtilities = {
 
 // Persist object
 var Persist = {
-    set: function(name, value, daysToExpire) {LocalStorage.set(name,value); Cookie.set(name,value,daysToExpire);},
+    set: function(name, value, daysToExpire) {LocalStorage.set(name,value); Cookie.set(name,value,daysToExpire||730);},
     get: function(name) {return LocalStorage.get(name)||Cookie.get(name);},
     erase: function(name) {Cookie.erase(name); LocalStorage.erase(name);}
 };
