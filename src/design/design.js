@@ -77,6 +77,8 @@ Player.provide('design',
       Player.bind("player:action:autoplayfailed", function(){
         _currentObjectId = 0;
         _resetPlayflowPosition();
+        Player.set('autoPlay', false);
+        Player.set('reloadVideo', true);
       });
       Player.bind("player:video:ready", function(){
         // "player:video:ready is called as a response to "player:video:loaded"
