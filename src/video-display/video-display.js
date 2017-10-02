@@ -130,7 +130,7 @@ Player.provide('video-display',
           }catch(e){}
 
           $this.canvas.html('');
-          $this.video = new Eingebaut($this.canvas, $this.displayDevice, '', callback, {inlinePlayback: $this.inlinePlayback, startMuted: $this.autoMute});
+          $this.video = new Eingebaut($this.canvas, $this.displayDevice, '', callback, {inlinePlayback: $this.inlinePlayback, startMuted: ($this.autoMute || $this.mutedAutoPlay)});
           $this.video.load();
           $this.video.showPosterOnEnd = $this.showThumbnailOnEnd;
           $this.video.setProgramDateHandling(true);
