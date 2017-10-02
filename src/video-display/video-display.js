@@ -440,6 +440,12 @@ Player.provide('video-display',
         }
       });
 
+      Player.bind('player:action:autoplayfailed player:video:autoplayfailed', function(){
+        Player.set('autoPlay', false);
+        Player.set('reloadVideo', true);
+      });
+
+    
       /* SETTERS */
       var playableContext = null;
       Player.setter('quality', function(quality){
