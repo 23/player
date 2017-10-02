@@ -75,7 +75,9 @@ window.VideoActionHandler = function(actions, container, module, callback){
         if(!$this.currentAction) return;
         Player.fire("player:action:"+event);
         if($this.currentAction.type=="ad" && $this.vastHandler.eventHandlers[event]) $this.vastHandler.eventHandlers[event]();
-        if(event=="ended" || event=="error"){
+        if(event=="autoplayfailed"){
+            $this.skipAction();
+        }else if(event=="ended" || event=="error"){
             if($this.currentAction.type=="ad") $this.currentAction.adLoaded = false;
             $this.playNextAction();
         }else if(event=="timeupdate"){
@@ -104,6 +106,7 @@ window.VideoActionHandler = function(actions, container, module, callback){
         }
     };
     $this.skipAction = function(){
+        if(!$this.currentAction) return;
         Player.set("playing", false);
         if($this.currentAction.type=="ad") $this.vastHandler.eventHandlers["close"]();
         $this.playNextAction();
