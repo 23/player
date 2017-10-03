@@ -152,7 +152,7 @@ Player.provide('subtitles',
       });
       $this.fullscreenListenersBound = false;
       $this.bindFullscreenListeners = function(v){
-        if (/iPad/.test(navigator.userAgent) && !$this.fullscreenListenersBound) {
+        if (/iPad|iPhone/.test(navigator.userAgent) && !$this.fullscreenListenersBound) {
           var ve = v.get(0);
           // Possibly show track elements when we enter fullscreen
           ve.addEventListener('webkitbeginfullscreen', function(){
