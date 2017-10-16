@@ -75,11 +75,14 @@ Player.provide('design',
           }
       });
       Player.bind("player:action:autoplayfailed", function(){
-        _currentObjectId = 0;
-        _resetPlayflowPosition();
-        Player.set('autoPlay', false);
-        Player.set('reloadVideo', true);
-      });
+          if(!Player.get('autoPlay')) return;
+          Player.set('autoPlay', false);
+          window.setTimeout(function(){
+            _currentObjectId = 0;
+            _resetPlayflowPosition();
+            Player.set('reloadVideo', true);
+          }, 300);
+        });
       Player.bind("player:video:ready", function(){
         // "player:video:ready is called as a response to "player:video:loaded"
         // Here we timeout to allow handling of "player:video:loaded" to finish, before we autoplay
