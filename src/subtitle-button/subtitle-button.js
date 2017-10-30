@@ -19,12 +19,10 @@ Player.provide('subtitle-button',
           $this.button = $this.container.find(".subtitle-button");
           $this.buttonMenu = $this.container.find(".button-menu");
           var localeCount = Player.get('localesArray').length;
-          $this.buttonMenu.css({
-            fontSize: $this.container.find("li").height()*(localeCount+1)
-          });
           $this.button.one("mouseenter", function(){
             $this.buttonMenu.css({
-              right: ($this.buttonMenu.width()-30)/-2
+              right: ($this.buttonMenu.width()-30)/-2,
+              fontSize: $this.container.find("li").height()*(localeCount+1)
             });
           });
         }
