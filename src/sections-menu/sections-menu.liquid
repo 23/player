@@ -1,0 +1,18 @@
+{% if showSectionsMenu %}
+  {% if sections != empty %}
+    <div class="sections-menu-wrap">
+      <div id="section-menu-toggle" class="sections-menu-close" click="$set:toggleSectionMenu:"><span class="chevron right"></span></div>
+      <div class="sections-menu-container">
+        <h1 class="sections-top">{{sectionsMenuLabel}}</h1>
+        {% for section in sections %}
+          <div class="section-item" click="$set:pendingCurrentTime:{{section.start_time}};$set:playing:true;$set:toggleSectionMenu:0;">
+            <img class="section-thumb" src="{{url}}/{{section.thumbnail_tree_id}}/{{section.thumbnail_photo_id}}/{{section.thumbnail_token}}/60x34cr/thumbnail.png" />
+            <span class="section-item-time">{{section.start_time | formatTime}}</span><br />
+            <span class="section-item-title">{{section.title}}</span><br />
+            <div class="clear"></div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  {% endif %}
+{% endif %}
