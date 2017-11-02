@@ -236,8 +236,9 @@ Player.provide('design',
           return $this.scrubberColor;
       });
 
-      /* === /TRAY HANDLING === */
 
+      /* === END TRAY HANDLING === */
+    
       $this.hexToRGBA = function(hex, alpha){
           var colorTest = hex.match(/^\#(..)(..)(..)$/);
           if(colorTest && colorTest.length==4) {
@@ -248,6 +249,17 @@ Player.provide('design',
           }
           return false;
       };
+      function hexToRGB(hex, alpha) {
+        var r = parseInt(hex.slice(1, 3), 16),
+        g = parseInt(hex.slice(3, 5), 16),
+        b = parseInt(hex.slice(5, 7), 16);
+        
+        if (alpha) {
+          return "rgba(" + r + ", " + g + ", " + b + ", " + alpha + ")";
+        } else {
+          return "rgb(" + r + ", " + g + ", " + b + ")";
+        }
+      }
       $this.applyDesignPreferences = function(){
           $("filter#icon_hover feFlood").attr("flood-color", $this.scrubberColor);
 
@@ -261,6 +273,10 @@ Player.provide('design',
           css += ".sharing-info a:hover { color: " + $this.scrubberColor + "; }";
           css += ".protection-password input.submitbutton { background-color: " + $this.scrubberColor + "; }";
           css += ".protection-password input.submitbutton:hover { background-color: " + $this.hexToRGBA($this.scrubberColor, 0.9) + "; }";
+          css += ".glue-sections-menu:not(.sections-menu-open) .sections-menu-wrap:hover { background-color: " + $this.scrubberColor + "; }";
+          css += ".sections-menu-open #section-menu-toggle:hover { background-color: " + $this.scrubberColor + "; }";
+          css += ".section-item.active:hover { background-color: " + hexToRGB($this.scrubberColor, "0.6") + "; }";
+          css += ".section-item.active { background-color: " + hexToRGB($this.scrubberColor, "0.6") + "; }";
 
           // SVG filter
           css += ".tray-right .button-container:hover > button { -webkit-filter: url(#icon_hover); filter: url(#icon_hover); }";

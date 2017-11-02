@@ -1,0 +1,335 @@
+/* Design for sections-menu */
+
+.glue-sections-menu {
+  position: fixed;
+  top: 50%;
+  right: 0px;
+  transform: translateY(-50%);
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  height: 110px;
+  width: 40px;
+  overflow-y: hidden;
+  margin-right: -40px;
+  opacity: 0;
+  -webkit-transition: opacity 100ms linear, bottom 100ms linear, background 100ms linear;
+  -moz-transition: opacity 100ms linear, bottom 100ms linear, background 100ms linear;
+  -ms-transition: opacity 100ms linear, bottom 100ms linear, background 100ms linear;
+  -o-transition: opacity 100ms linear, bottom 100ms linear, background 100ms linear;
+  transition: opacity 100ms linear, bottom 100ms linear, background 100ms linear;
+}
+
+.tray-shown.playflow-position-3 .glue-sections-menu {
+  margin-right: 0px;
+  opacity: 1;
+}
+
+.glue-sections-menu:empty {
+  display: none;
+}
+
+.glue-sections-menu:not(.sections-menu-open) .sections-menu-wrap {
+  background-color: rgba(0,0,0,0.6);
+  -webkit-transition: background 100ms linear;
+  -moz-transition: background 100ms linear;
+  -ms-transition: background 100ms linear;
+  -o-transition: background 100ms linear;
+  transition: background 100ms linear;
+}
+
+
+.sections-menu-close:hover {
+  opacity: 0.8;
+}
+
+.section-thumb {
+  float: left;
+  margin: 5px 14px 15px 0;
+}
+
+#section-menu-toggle {
+  color: black;
+  border-radius: 0px;
+  padding: 10px 5px;
+  z-index:100;
+  position: absolute;
+  height: 110px;
+  opacity: 1 !important; 
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 33px;
+  font-size: 24px;
+  text-align: center;
+  cursor: pointer;
+  -webkit-transition: background 100ms linear;
+  -moz-transition: background 100ms linear;
+  -ms-transition: background 100ms linear;
+  -o-transition: background 100ms linear;
+  transition: background 100ms linear;
+}
+
+.sections-menu-open #section-menu-toggle {
+  position: fixed;
+  height: 24px;
+  width: 50px;
+  margin: 0px;
+  padding: 20px 0px;
+  background: transparent;
+  border-radius: 0px;
+  left: 0;
+  top: 0;
+  background-color: rgba(0,0,0,0.6);
+  -webkit-transition: background 0ms linear;
+  -moz-transition: background 0ms linear;
+  -ms-transition: background 0ms linear;
+  -o-transition: background 0ms linear;
+  transition: background 0ms linear;
+}
+
+.sections-menu-open {
+  height: auto;
+  max-height: 100%;
+  width: 40%;
+  overflow-y: auto;
+  margin-right: 0px;
+  opacity: 1;
+  -webkit-transition: width 200ms linear, opacity 100ms linear, bottom 100ms linear, background 0ms linear;
+  -moz-transition: width 200ms linear, opacity 100ms linear, bottom 100ms linear, background 0ms linear;
+  -ms-transition: width 200ms linear, opacity 100ms linear, bottom 100ms linear, background 0ms linear;
+  -o-transition: width 200ms linear, opacity 100ms linear, bottom 100ms linear, background 0ms linear;
+  transition: width 200ms linear, opacity 100ms linear, bottom 100ms linear, background 0ms linear;
+}
+
+.sections-menu-wrap {
+  padding-left: 50px;
+}
+
+.sections-menu-open .sections-menu-container {
+  background-color: rgba(0,0,0,0.6);
+}
+
+
+.sections-menu-open.fixed-to-top #section-menu-toggle {
+  left: auto;
+  right: 40%;
+}
+
+.sections-menu-open.fixed-to-top {
+  top: 0;
+  transform: unset;
+  bottom: 0px;
+  height: auto;
+}
+
+.tray-shown .sections-menu-open.fixed-to-top {
+  bottom: 40px;
+}
+
+.sections-menu-open.fixed-to-top .sections-menu-wrap {
+  padding-left: 0px;
+}
+
+.section-item {
+  opacity: 0;
+  cursor: pointer;
+  padding: 10px 14px 20px;
+  border-bottom: 1px solid #888;
+  -webkit-transition: all 200ms linear;
+  -moz-transition: all 200ms linear;
+  -ms-transition: all 200ms linear;
+  -o-transition: all 200ms linear;
+  transition: all 200ms linear;
+  height: 34px;
+  overflow-y: hidden;
+  -webkit-font-smoothing: subpixel-antialiased;
+  /* Weird opacity flicker fix */
+  -webkit-transform: rotate(0);
+  -moz-transform: rotate(0);
+  transform: rotate(0);
+  background: transparent;
+  color: #ddd;
+}
+
+.section-item.active {
+ color: #fff;
+}
+
+.section-item.active:hover {
+ color: #ddd;
+}
+
+.section-item:last-child {
+  border-bottom-width: 0px;
+}
+
+.sections-menu-open .section-item {
+  opacity: 1;
+}
+.sections-menu-open .section-item:hover {
+  background: black;
+  color: #fff;
+}
+
+.section-item-time {
+ font-size: 9px;
+}
+
+.section-item-title {
+ font-size: 12px;
+ font-weight: 300; 
+}
+
+.sections-top {
+  height: 40px;
+  line-height: 40px;
+  padding: 0 14px;
+  position: absolute;
+  top: 50px;
+  transform: rotate(90deg);
+  left: -20px;
+  opacity: 1;
+}
+
+.sections-menu-open .sections-top {
+  top: 10px;
+  transform: rotate(0deg);
+  left: 0px;
+  opacity: 0;
+}
+
+.chevron::before {
+  border-style: solid;
+  border-width: 0.10em 0.10em 0 0;
+  content: '';
+  display: inline-block;
+  height: 0.45em;
+  left: 0.15em;
+  position: relative;
+  top: 0.25em;
+  transform: rotate(-45deg);
+  vertical-align: top;
+  width: 0.45em;
+  color: white;
+  font-size: 24px;
+  transform: rotate(0deg);
+  opacity: 1;
+  font-size: 18px;
+}
+
+.chevron.right:before {
+  left: 0.25em;
+  transform: rotate(-135deg);
+}
+
+.sections-menu-open .chevron.right:before {
+  left: -0.05em;
+  transform: rotate(-315deg);
+}
+
+.chevron.bottom:before {
+  top: 0;
+  transform: rotate(135deg);
+}
+
+.chevron.left:before {
+  left: 0.25em;
+  transform: rotate(-135deg);
+}
+
+/* Responsiveness */
+
+@media screen and (min-width: 1450px) {
+  .sections-menu-open {
+    width: 30%;
+  }
+  .sections-menu-open.fixed-to-top #section-menu-toggle {
+    right: 30%;
+  }
+}
+
+@media screen and (min-width: 1600px) {
+  .sections-menu-open {
+    width: 25%;
+  }
+  .sections-menu-open.fixed-to-top #section-menu-toggle {
+    right: 25%;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .sections-menu-open {
+    width: 50%;
+  }
+  .sections-menu-open.fixed-to-top #section-menu-toggle {
+    right: 50%;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .sections-menu-open {
+    width: 66%;
+  }
+  .sections-menu-open.fixed-to-top #section-menu-toggle {
+    right: 66%;
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .sections-menu-open {
+    width: 80%;
+  }
+  .sections-menu-open.fixed-to-top #section-menu-toggle {
+    left: auto;
+    right: 80%;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .section-thumb {
+   display: none;
+  }
+}
+
+@media screen and (max-width: 300px) {
+ .glue-sections-menu {
+      display: none !important;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
