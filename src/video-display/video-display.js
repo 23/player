@@ -666,6 +666,9 @@ Player.provide('video-display',
           return $this.loadEingebaut;
       });
       Player.getter('autoPlay', function(){
+          if(!($this.autoMute || $this.mutedAutoPlay) && $this.video && $this.video.supportsAutoPlay && !$this.video.supportsAutoPlay()) {
+            $this.autoPlay = false;
+          }
           return $this.autoPlay;
       });
       Player.getter('mutedAutoPlay', function(){
