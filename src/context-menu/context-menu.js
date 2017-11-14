@@ -4,7 +4,7 @@
  */
 
 Player.provide('context-menu',{
-
+  enableContextMenu:true
 },function(Player,$,opts){
     var $this = this;
     $.extend($this, opts);
@@ -16,6 +16,11 @@ Player.provide('context-menu',{
 
     $this.linkBoxValue = Player.get("embedCode");
 
+    Player.bind('player:settings', function(){
+      PlayerUtilities.mergeSettings($this, ['enableContextMenu']);
+    });
+
+  
     /* GETTERS */
     Player.getter('showMenu', function(){ return $this.showMenu; });
     Player.getter('showLinkBox', function(){return $this.showLinkBox;});
@@ -35,7 +40,12 @@ Player.provide('context-menu',{
 
 
     /* SETTERS */
-    Player.setter('showMenu', function(e){
+    Player.setter('showMenu', function(e){        
+        if(!$this.enableContextMenu) {
+          $this.showMenu = false;
+          return;
+        }
+      
         $this.showMenu = !!e;
         if($this.showMenu){
             $this.advancedContextMenu = e.altKey;
@@ -100,6 +110,8 @@ Player.provide('context-menu',{
 
 
     $(document).on("contextmenu", function(e) {
+        if(!$this.enableContextMenu) return;
+      
         // If shift is pressed, display the browser's own context menu
         if(!e.shiftKey){
             e.preventDefault();
