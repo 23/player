@@ -1,23 +1,23 @@
 /* Design for sections-menu */
 
 .glue-sections-menu {
-  position: fixed;
+  position: absolute;
   top: 50%;
   right: 0px;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
   transform: translateY(-50%);
   overflow-x: hidden;
-  overflow-y: auto;
+  overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
   height: 110px;
   width: 40px;
-  overflow-y: hidden;
   margin-right: -40px;
   opacity: 0;
   -webkit-transition: opacity 100ms linear, bottom 100ms linear, background 100ms linear;
-  -moz-transition: opacity 100ms linear, bottom 100ms linear, background 100ms linear;
-  -ms-transition: opacity 100ms linear, bottom 100ms linear, background 100ms linear;
   -o-transition: opacity 100ms linear, bottom 100ms linear, background 100ms linear;
   transition: opacity 100ms linear, bottom 100ms linear, background 100ms linear;
+  z-index: 1000;
 }
 
 .tray-shown.playflow-position-3 .glue-sections-menu {
@@ -29,11 +29,13 @@
   display: none;
 }
 
+.glue-sections-menu.sections-menu-open .sections-menu-wrap {
+  background-color: transparent;
+}
 .glue-sections-menu:not(.sections-menu-open) .sections-menu-wrap {
   background-color: rgba(0,0,0,0.6);
+  background-color: rgba(0,0,0,0.6);
   -webkit-transition: background 100ms linear;
-  -moz-transition: background 100ms linear;
-  -ms-transition: background 100ms linear;
   -o-transition: background 100ms linear;
   transition: background 100ms linear;
 }
@@ -49,11 +51,9 @@
 }
 
 #section-menu-toggle {
-  color: black;
+  color: #000000;
   border-radius: 0px;
   padding: 10px 5px;
-  z-index:100;
-  position: absolute;
   height: 110px;
   opacity: 1 !important; 
   position: absolute;
@@ -64,40 +64,36 @@
   text-align: center;
   cursor: pointer;
   -webkit-transition: background 100ms linear;
-  -moz-transition: background 100ms linear;
-  -ms-transition: background 100ms linear;
   -o-transition: background 100ms linear;
   transition: background 100ms linear;
+  z-index: 1000;
 }
 
 .sections-menu-open #section-menu-toggle {
-  position: fixed;
+  position: absolute;
   height: 24px;
   width: 50px;
   margin: 0px;
   padding: 20px 0px;
-  background: transparent;
   border-radius: 0px;
   left: 0;
   top: 0;
+  background-color: black; //Fallback color
   background-color: rgba(0,0,0,0.6);
-  -webkit-transition: background 0ms linear;
-  -moz-transition: background 0ms linear;
-  -ms-transition: background 0ms linear;
-  -o-transition: background 0ms linear;
-  transition: background 0ms linear;
+  -webkit-transition: background 100ms linear;
+  -o-transition: background 100ms linear;
+  transition: background 100ms linear;
 }
 
 .sections-menu-open {
   height: auto;
   max-height: 100%;
   width: 40%;
+  -webkit-overflow-scrolling:touch;
   overflow-y: auto;
   margin-right: 0px;
   opacity: 1;
   -webkit-transition: width 200ms linear, opacity 100ms linear, bottom 100ms linear, background 0ms linear;
-  -moz-transition: width 200ms linear, opacity 100ms linear, bottom 100ms linear, background 0ms linear;
-  -ms-transition: width 200ms linear, opacity 100ms linear, bottom 100ms linear, background 0ms linear;
   -o-transition: width 200ms linear, opacity 100ms linear, bottom 100ms linear, background 0ms linear;
   transition: width 200ms linear, opacity 100ms linear, bottom 100ms linear, background 0ms linear;
 }
@@ -107,6 +103,7 @@
 }
 
 .sections-menu-open .sections-menu-container {
+  background-color: #000000;
   background-color: rgba(0,0,0,0.6);
 }
 
@@ -114,11 +111,21 @@
 .sections-menu-open.fixed-to-top #section-menu-toggle {
   left: auto;
   right: 40%;
+  position: fixed;
 }
 
+
+/* Safari iOS */
+.sections-menu-open.fixed-to-top.iphone-compat #section-menu-toggle {
+  left: 0;
+  right: auto;
+  position: absolute;
+}
 .sections-menu-open.fixed-to-top {
   top: 0;
-  transform: unset;
+  -webkit-transform: none;
+  -ms-transform: none;
+  transform: none;
   bottom: 0px;
   height: auto;
 }
@@ -130,6 +137,9 @@
 .sections-menu-open.fixed-to-top .sections-menu-wrap {
   padding-left: 0px;
 }
+.sections-menu-open.fixed-to-top.iphone-compat .sections-menu-wrap {
+  padding-left: 50px;
+}
 
 .section-item {
   opacity: 0;
@@ -137,16 +147,13 @@
   padding: 10px 14px 20px;
   border-bottom: 1px solid #888;
   -webkit-transition: all 200ms linear;
-  -moz-transition: all 200ms linear;
-  -ms-transition: all 200ms linear;
   -o-transition: all 200ms linear;
   transition: all 200ms linear;
   height: 34px;
   overflow-y: hidden;
   -webkit-font-smoothing: subpixel-antialiased;
   /* Weird opacity flicker fix */
-  -webkit-transform: rotate(0);
-  -moz-transform: rotate(0);
+  -ms-transform: rotate(0);
   transform: rotate(0);
   background: transparent;
   color: #ddd;
@@ -187,16 +194,15 @@
   padding: 0 14px;
   position: absolute;
   top: 50px;
+  -ms-transform: rotate(90deg);
+  -webkit-transform: rotate(90deg);
   transform: rotate(90deg);
   left: -20px;
   opacity: 1;
 }
 
 .sections-menu-open .sections-top {
-  top: 10px;
-  transform: rotate(0deg);
-  left: 0px;
-  opacity: 0;
+  display: none;
 }
 
 .chevron::before {
@@ -208,33 +214,47 @@
   left: 0.15em;
   position: relative;
   top: 0.25em;
+  -webkit-transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
   transform: rotate(-45deg);
   vertical-align: top;
   width: 0.45em;
   color: white;
   font-size: 24px;
+  -webkit-transform: rotate(0deg);
+  -ms-transform: rotate(0deg);
   transform: rotate(0deg);
   opacity: 1;
   font-size: 18px;
+  border-color: white;
 }
 
 .chevron.right:before {
   left: 0.25em;
+  -ms-transform: rotate(-135deg);
+  -webkit-transform: rotate(-135deg);
   transform: rotate(-135deg);
+  border-color: white;
 }
 
 .sections-menu-open .chevron.right:before {
   left: -0.05em;
+  -ms-transform: rotate(-315deg);
+  -webkit-transform: rotate(-315deg);
   transform: rotate(-315deg);
 }
 
 .chevron.bottom:before {
   top: 0;
+  -webkit-transform: rotate(135deg);
+  -ms-transform: rotate(135deg);
   transform: rotate(135deg);
 }
 
 .chevron.left:before {
   left: 0.25em;
+  -webkit-transform: rotate(-135deg);
+  -ms-transform: rotate(-135deg);
   transform: rotate(-135deg);
 }
 
@@ -299,37 +319,10 @@
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/* IE7 & IE8 */
+.ie-compat.glue-sections-menu  {top: 20%;}
+.ie-compat.glue-sections-menu.fixed-to-top.sections-menu-open  {top: 0%;}
+.ie-compat #section-menu-toggle { background-image: url('toggleSectionsMenuClosed.png'); }
+.ie-compat.sections-menu-open #section-menu-toggle { background-image: url('toggleSectionsMenuOpen.png');}
+.ie-compat .section-item { background-color: black; }
+.ie-compat .glue-sections-menu .chevron, .ie-compat .glue-sections-menu .chevron::before { display: none; }
