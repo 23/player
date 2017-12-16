@@ -52,7 +52,7 @@ Player.provide('sections-menu', {
   });
 
   
-  /* LISTEN TO SEVENTS */
+  /* LISTEN TO EVENTS */
   Player.bind('player:sectionschange player:video:loaded', function(){
     $this.render();
   });
@@ -72,6 +72,19 @@ Player.provide('sections-menu', {
       $this.currentSectionIndex = currentSectionIndex;
       $(".section-item").removeClass("active");
       $(".section-item").eq(currentSectionIndex).addClass("active");
+    }
+  });
+
+  Player.bind('player:loaded', function() {
+    var userAgent = window.navigator.userAgent.toLowerCase();
+    //iOS Safari compatability
+    if (userAgent.match(/ipad/i) || userAgent.match(/iphone/i)) {
+      $(".player-sections-pane").addClass("iphone-compat");
+    }
+    //IE 7 & 8 compatabilty
+    var isIE = (userAgent.indexOf('msie') != -1) ? parseInt(userAgent.split('msie')[1]) : false;
+    if(isIE && isIE <= 8) {
+      $(".player-sections-pane").addClass("ie-compat");
     }
   });
   
