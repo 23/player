@@ -29,7 +29,7 @@ Player.provide('sections-menu', {
 
   
   /* SETTERS */
-  Player.setter('toggleSectionMenu', function(show) {
+  Player.setter('toggleSectionsMenu', function(show) {
     $(".sections-menu-open").scrollTop(0);
     $(".player-sections-menu").toggleClass("sections-menu-open", show);
     $(window).trigger('resize');
@@ -79,12 +79,12 @@ Player.provide('sections-menu', {
     var userAgent = window.navigator.userAgent.toLowerCase();
     //iOS Safari compatability
     if (userAgent.match(/ipad/i) || userAgent.match(/iphone/i)) {
-      $(".player-sections-pane").addClass("iphone-compat");
+      $(".player-sections-menu").addClass("iphone-compat");
     }
     //IE 7 & 8 compatabilty
     var isIE = (userAgent.indexOf('msie') != -1) ? parseInt(userAgent.split('msie')[1]) : false;
     if(isIE && isIE <= 8) {
-      $(".player-sections-pane").addClass("ie-compat");
+      $(".player-sections-menu").addClass("ie-compat");
     }
   });
   
@@ -103,14 +103,3 @@ Player.provide('sections-menu', {
 Player.translate("sections",{
     en: "Sections"
 });
-
-
-
-
-
-
-
-
-
-
-
