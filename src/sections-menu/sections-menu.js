@@ -103,14 +103,3 @@ Player.provide('sections-menu', {
 Player.translate("sections",{
     en: "Sections"
 });
-
-
-
-
-
-
-
-
-
-
-
