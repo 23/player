@@ -320,9 +320,9 @@
 
 /* IE7 & IE8 */
 .ie-compat.glue-sections-menu  {top: 50%; margin-top: -55px;}
-.ie-compat.glue-sections-menu.sections-menu-open   {top: 0%;}
+.ie-compat.glue-sections-menu.sections-menu-open   {top: 0%; margin-top: 0px;}
 .ie-compat.glue-sections-menu.fixed-to-top.sections-menu-open  {top: 0%;} 
-.ie-compat #section-menu-toggle { background-image: url('toggleSectionsPaneClosed.png'); }
-.ie-compat.sections-menu-open #section-menu-toggle { background-image: url('toggleSectionsPaneOpen.png');}
+.ie-compat #section-menu-toggle { background-image: url('toggleSectionsMenuClosed.png'); }
+.ie-compat.sections-menu-open #section-menu-toggle { background-image: url('toggleSectionsMenuOpen.png');}
 .ie-compat .section-item { background-color: black; }
 .ie-compat .glue-sections-menu .chevron, .ie-compat .glue-sections-menu .chevron::before { display: none; }
