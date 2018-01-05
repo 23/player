@@ -22,9 +22,23 @@ Player.provide('sections-menu', {
   $this.showInProgress = false;
   $this.currentSectionIndex = null;
 
+  $this.onRender = function() {
+    /* Set compatability classes */
+    var userAgent = window.navigator.userAgent.toLowerCase();
+    //iOS Safari compatability
+    if (userAgent.match(/ipad/i) || userAgent.match(/iphone/i)) {
+      $(".player-sections-menu").addClass("iphone-compat");
+    }
+    //IE 7 & 8 compatabilty
+    var isIE = (userAgent.indexOf('msie') != -1) ? parseInt(userAgent.split('msie')[1]) : false;
+    if(isIE && isIE <= 8) {
+      $(".player-sections-menu").addClass("ie-compat");
+    }
+  };
+
   Player.bind('player:settings', function(e){
     PlayerUtilities.mergeSettings($this, ['sectionsMenuLabel','showSectionsMenu']);
-    $this.render();
+    $this.render($this.onRender);
   });
 
   
@@ -36,11 +50,11 @@ Player.provide('sections-menu', {
   });
   Player.setter('showSectionsMenu', function(ssm){
     $this.showSectionsMenu = ssm;
-    $this.render();
+    $this.render($this.onRender);
   });
   Player.setter('sectionsMenuLabel', function(sml){
     $this.sectionsMenuLabel = sml;
-    $this.render();
+    $this.render($this.onRender);
   });
 
   /* GETTERS */
@@ -54,7 +68,7 @@ Player.provide('sections-menu', {
   
   /* LISTEN TO EVENTS */
   Player.bind('player:sectionschange player:video:loaded', function(){
-    $this.render();
+    $this.render($this.onRender);
   });
   
   Player.bind("player:video:timeupdate", function() {    
@@ -74,19 +88,6 @@ Player.provide('sections-menu', {
       $(".section-item").eq(currentSectionIndex).addClass("active");
     }
   });
-
-  Player.bind('player:loaded', function() {
-    var userAgent = window.navigator.userAgent.toLowerCase();
-    //iOS Safari compatability
-    if (userAgent.match(/ipad/i) || userAgent.match(/iphone/i)) {
-      $(".player-sections-menu").addClass("iphone-compat");
-    }
-    //IE 7 & 8 compatabilty
-    var isIE = (userAgent.indexOf('msie') != -1) ? parseInt(userAgent.split('msie')[1]) : false;
-    if(isIE && isIE <= 8) {
-      $(".player-sections-menu").addClass("ie-compat");
-    }
-  });
   
   $(window).resize(function() {
     if($(window).outerHeight()-40 <= $(".sections-menu-container").outerHeight()) {
@@ -96,6 +97,7 @@ Player.provide('sections-menu', {
     }
   });
 
+  $this.render($this.onRender);
   return $this;
 });
 
