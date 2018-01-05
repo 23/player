@@ -1,9 +1,9 @@
-/* 
+/*
    MODULE: SECTIONS-MENU
    Show a menu with clickable sections
 
    Listens for:
-   - player:sectionschange 
+   - player:sectionschange
    - player:video:loaded
    - player:video:timeupdate
 
@@ -20,7 +20,7 @@ Player.provide('sections-menu', {
   var $this = this;
   $.extend($this, opts);
   $this.showInProgress = false;
-  $this.currentSectionIndex = null;
+  $this.currentSectionIndex = -1;
 
   $this.onRender = function() {
     /* Set compatability classes */
@@ -41,7 +41,7 @@ Player.provide('sections-menu', {
     $this.render($this.onRender);
   });
 
-  
+
   /* SETTERS */
   Player.setter('toggleSectionsMenu', function(show) {
     $(".sections-menu-open").scrollTop(0);
@@ -65,30 +65,30 @@ Player.provide('sections-menu', {
     return $this.showSectionsMenu;
   });
 
-  
+
   /* LISTEN TO EVENTS */
   Player.bind('player:sectionschange player:video:loaded', function(){
     $this.render($this.onRender);
   });
-  
-  Player.bind("player:video:timeupdate", function() {    
+
+  Player.bind("player:video:timeupdate", function() {
     var currentTime = Player.get('currentTime');
     var sections = Player.get('sections');
-    var currentSectionIndex = null;
-    
+    var currentSectionIndex = -1;
+
     for(i = 0; i < sections.length; i++) {
       if(currentTime >= sections[i].start_time) {
         currentSectionIndex = i;
       }
     }
-    
+
     if(currentSectionIndex != $this.currentSectionIndex) {
       $this.currentSectionIndex = currentSectionIndex;
       $(".section-item").removeClass("active");
       $(".section-item").eq(currentSectionIndex).addClass("active");
     }
   });
-  
+
   $(window).resize(function() {
     if($(window).outerHeight()-40 <= $(".sections-menu-container").outerHeight()) {
       $(".player-sections-menu").addClass("fixed-to-top");
