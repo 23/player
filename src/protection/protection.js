@@ -64,6 +64,7 @@ Player.provide('protection',
         });
         break;
       case 'custom':
+      case 'login':
       case 'geoblocking':
         $this.maxRetries = 1;
         callback('');
