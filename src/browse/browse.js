@@ -106,6 +106,7 @@ Player.provide('browse',
       Player.bind('player:video:loaded', function(){
           if($this.firstLoad) {
               PlayerUtilities.mergeSettings($this, ['showBrowse', 'browseMode', 'recommendationMethod', 'playlistClickMode']);
+              if($this.showBrowse) $this.loadRecommendations();
               Player.fire('player:browse:updated');
               $this.firstLoad = false;
           }
