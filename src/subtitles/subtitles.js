@@ -136,10 +136,8 @@ Player.provide('subtitles',
             track.attr("src", o.href.replace(/\.srt|\.websrt/,".vtt"));
             track.attr("srclang", o.locale.match(/^([^_]+)_/)[1]);
             track.attr("label", o.language.match( /^([^\(]+)\(/ )[1]);
-            if (o.default_p && _onByDefault && !/iPad/.test(navigator.userAgent)) {
-              track.prop("default", true);
-            }
-            v.append(track);
+            track.prop("mode", "disabled");
+           v.append(track);
           });
           $this.bindFullscreenListeners(v);
         }
