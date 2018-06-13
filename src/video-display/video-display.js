@@ -98,6 +98,7 @@ Player.provide('video-display',
 
       // Logic to load the display device with Eingebaut
       $this._queuePlay = false;
+      $this.muteVideoElementEvents = false;
       $this.loadEingebaut = function(displayDevice, callback){
           if (displayDevice) {$this.displayDevice = displayDevice;}
           var callback = callback || function(e){
@@ -120,7 +121,7 @@ Player.provide('video-display',
             // Modify event names slightly
             if(e=='loaded'||e=='ready') e = 'player'+e;
             // Fire the player event
-            Player.fire('player:video:' + e);
+            if(!Player.get('muteVideoElementEvents')) Player.fire('player:video:' + e);
           };
 
           // Safari 6.1+ should just go with HTML5
@@ -136,6 +137,8 @@ Player.provide('video-display',
           $this.video.setProgramDateHandling(true);
           $this.displayDevice = $this.video.displayDevice;
       };
+      Player.setter('muteVideoElementEvents', function(mvee){$this.muteVideoElementEvents = mvee;});
+      Player.getter('muteVideoElementEvents', function(){return $this.muteVideoElementEvents;});
 
       // When the module has been loaded in to the DOM, load the display device
       $this.onAppend = function(){
