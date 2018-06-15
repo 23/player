@@ -427,8 +427,7 @@ Player.provide('actions',
         var data = (v.type == "clip" ? {photo_id: v.photo_id} : {live_id: v.live_id});
         $.extend(data, {
           token:v.token,
-          player_id: Player.get("player_id"),
-          cb: (new Date()).getTime()
+          player_id: Player.get("player_id")
         });
         Player.get('api').action.get(data, function(data){
           v.actions = data.actions;
