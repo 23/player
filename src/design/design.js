@@ -75,7 +75,6 @@ Player.provide('design',
           }
       });
       Player.bind("player:action:autoplayfailed", function(){
-          if(!Player.get('autoPlay')) return;
           Player.set('autoPlay', false);
           window.setTimeout(function(){
             _currentObjectId = 0;
