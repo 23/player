@@ -65,14 +65,14 @@ var registerActionHandlers = function($this){
             action.aspect_ratio = action.image_width / action.image_height;
             if(action.aspect_ratio>action.container.get(0).clientWidth/action.container.get(0).clientHeight){
                 img.css({
-                    width: Math.min(action.container.get(0).clientWidth, action.image_width),
+                    width: action.container.get(0).clientWidth,
                     height: "auto",
                     visibility: "visible"
                 });
             }else{
                 img.css({
                     width: "auto",
-                    height: Math.min(action.container.get(0).clientHeight, action.image_height),
+                    height: action.container.get(0).clientHeight,
                     visibility: "visible"
                 });
             }
