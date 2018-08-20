@@ -17,8 +17,6 @@ window.VideoActionHandler = function(actions, container, module, callback){
 
     $this.playNextAction = function(){
 
-        $this.eingebaut.setPlaying(false);
-
         $this.currentActionIndex += 1;
         $this.currentAction = actions[$this.currentActionIndex];
 
@@ -60,6 +58,7 @@ window.VideoActionHandler = function(actions, container, module, callback){
             $this.currentAction.video = Player.get("url") + $this.currentAction.video;
         }
 
+        $this.eingebaut.setPlaying(false);
         $this.eingebaut.setContext({
             source: $this.currentAction.video,
             startTime: 0,
