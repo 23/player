@@ -35,7 +35,7 @@ Player.provide('info',
       Player.bind('player:video:loaded', function(e,video){
           $this.render($this.onRender);
       });
-      Player.bind('player:video:play', function(e,video){
+      Player.bind('player:video:play player:video:playing', function(e,video){
           Player.set('infoShown', false);
       });
 

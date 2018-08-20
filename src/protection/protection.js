@@ -163,7 +163,7 @@ Player.provide('protection',
         // If transitioning to position 2, playback has been initated by the user or autoplay
         // Run verification if the video is protected
         var video = Player.get("video");
-        if(video.protected_p == "1" && transition.nextPosition == 2 && !transition.blocked && !_protectionHandled){
+        if(video.protected_p == "1" && transition.nextPosition >= 2 && !transition.blocked && !_protectionHandled){
             Player.set("forcer", {type: "block", element: "tray", from: "protection", active: true});
             transition.blocked = true;
             _verifiedCallback = transition.performTransition;
