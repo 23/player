@@ -11,8 +11,8 @@
       </div>
     {% else %}
       <button class="big-play-button" click="$set:playing:true" aria-label="{{"play_video"|translate}}" label="{{"play_video"|translate}}">
-      
-        <img src="{{bigPlaySource}}" alt="" />
+        
+        <img src="{{bigPlaySource|url_encode}}" alt="" />
         
         <span class="hide-visually">
           {{"play_video"|translate}}
