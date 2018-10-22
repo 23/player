@@ -112,7 +112,7 @@ Player.provide('sharing',
           return Player.get('mainUrl');
       });
       Player.getter('showDownload', function(){
-          return ($this.showDownload && Player.get("video_type") == "clip" && !Player.get("isTouchDevice"));
+          return ($this.showDownload && Player.get("video_type") == "clip");
       });
       Player.getter('downloadUrl', function(){
           var v = Player.get("video");

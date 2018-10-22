@@ -6,5 +6,5 @@
 {% endif %}
 
 {% if showLivePreview %}
-  <iframe class="live-banner-iframe" src="{{url}}/banner/live/{{video_live_id}}/{{video_token}}.html?size=player&forever=1&source={{source}}" frameborder="0" border="0" scrolling="no"></iframe>
+  <iframe class="live-banner-iframe" src="{{url}}/banner/live/{{video_live_id}}/{{video_token}}.html?size=player&forever=1&source={{source|url_encode}}" frameborder="0" border="0" scrolling="no"></iframe>
 {% endif %}
