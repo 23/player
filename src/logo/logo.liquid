@@ -1,7 +1,7 @@
 {% if showLogo == true and logoSource != empty and video_is_360 != true %}
   <div class="logo">
-    <a href="{{siteLink|url_encode}}">
-      <img src="{{logoSource|url_encode}}" />
+    <a href="{{siteLink|escape}}">
+      <img src="{{logoSource|escape}}" />
     </a>
   </div>
 {% endif %}
