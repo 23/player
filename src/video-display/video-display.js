@@ -135,8 +135,8 @@ Player.provide('video-display',
 
           $this.canvas.html('');
           $this.video = new Eingebaut($this.canvas, $this.displayDevice, '', callback, {inlinePlayback: $this.inlinePlayback, startMuted: ($this.autoMute || $this.mutedAutoPlay)});
+          $this.video.hlsjsConfig = {debug:($this.hlsjsDebug?true:false), abrBandWidthFactor:$this.hlsjsAbrBandWidthFactor, abrBandWidthUpFactor:$this.hlsjsAbrBandWidthUpFactor};
           $this.video.load();
-          $this.video.hlsjsConfig = {debug:$this.hlsjsDebug, abrBandWidthFactor:$this.hlsjsAbrBandWidthFactor, abrBandWidthUpFactor:$this.hlsjsAbrBandWidthUpFactor};
           $this.video.showPosterOnEnd = $this.showThumbnailOnEnd;
           $this.video.setProgramDateHandling(true);
           $this.displayDevice = $this.video.displayDevice;
@@ -152,7 +152,7 @@ Player.provide('video-display',
       // Merge in player settings
       Player.bind('player:settings', function(e,s){
         PlayerUtilities.mergeSettings($this, ['autoPlay', 'mutedAutoPlay', 'autoMute', 'verticalPadding', 'horizontalPadding', 'displayDevice', 'fullscreenQuality', 'showThumbnailOnEnd', 'inlinePlayback','hlsjsDebug','hlsjsAbrBandWidthFactor','hlsjsAbrBandWidthUpFactor']);
-        if($this.video) $this.video.hlsjsConfig = {debug:$this.hlsjsDebug, abrBandWidthFactor:$this.hlsjsAbrBandWidthFactor, abrBandWidthUpFactor:$this.hlsjsAbrBandWidthUpFactor};
+        if($this.video) $this.video.hlsjsConfig = {debug:($this.hlsjsDebug?true:false), abrBandWidthFactor:$this.hlsjsAbrBandWidthFactor, abrBandWidthUpFactor:$this.hlsjsAbrBandWidthUpFactor};
         if($this.video) $this.video.showPosterOnEnd = $this.showThumbnailOnEnd;
         if(
           ($this.video&&$this.video.displayDevice!=$this.displayDevice)
