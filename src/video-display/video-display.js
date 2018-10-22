@@ -67,7 +67,10 @@ Player.provide('video-display',
     verticalPadding:0,
     horizontalPadding:0,
     maxLengthDVR:10800,
-    liveBufferRegion:60
+    liveBufferRegion:60,
+    hlsjsDebug:false,
+    hlsjsAbrBandWidthFactor:0.95,
+    hlsjsAbrBandWidthUpFactor:0.7
   },
   function(Player,$,opts){
       var $this = this;
@@ -147,7 +150,8 @@ Player.provide('video-display',
 
       // Merge in player settings
       Player.bind('player:settings', function(e,s){
-        PlayerUtilities.mergeSettings($this, ['autoPlay', 'mutedAutoPlay', 'autoMute', 'verticalPadding', 'horizontalPadding', 'displayDevice', 'fullscreenQuality', 'showThumbnailOnEnd', 'inlinePlayback']);
+        PlayerUtilities.mergeSettings($this, ['autoPlay', 'mutedAutoPlay', 'autoMute', 'verticalPadding', 'horizontalPadding', 'displayDevice', 'fullscreenQuality', 'showThumbnailOnEnd', 'inlinePlayback','hlsjsDebug','hlsjsAbrBandWidthFactor','hlsjsAbrBandWidthUpFactor']);
+        if($this.video) $this.video.hlsjsConfig = {debug:$this.hlsjsDebug, abrBandWidthFactor:$this.hlsjsAbrBandWidthFactor, abrBandWidthUpFactor:$this.hlsjsAbrBandWidthUpFactor};
         if($this.video) $this.video.showPosterOnEnd = $this.showThumbnailOnEnd;
         if(
           ($this.video&&$this.video.displayDevice!=$this.displayDevice)
