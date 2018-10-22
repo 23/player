@@ -2,7 +2,7 @@
 {% if identityCountdown or identityAllowClose %}
   <div class="action-countdown-container {% if identityAllowClose %}action-allow-close{% endif %}" {% if identityAllowClose %}click="$set:closeIdentity:true"{% endif %}>
     {% if identityCountdown %}
-      <div class="action-countdown-text">{{ identityCountdownText }}</div>
+      <div class="action-countdown-text">{{ identityCountdownText|escape }}</div>
     {% endif %}
     {% if identityAllowClose %}
       <div class="action-skip-icon"></div>
