@@ -1,5 +1,5 @@
 {% if hasSubtitles and enableSubtitles %}
-<div class="subtitles-container" style="padding-bottom:{{verticalPadding}}px">
+<div class="subtitles-container" style="padding-bottom:{{verticalPadding|escape}}px">
   {% for line in subtitleText %} 
     <span>{{line}}</span>
     <br/>
