@@ -81,10 +81,10 @@ Player.provide('live-preview',
           });
         }
 
-        // If the stream is set to go live within the next 10 minutes, we'll reload every 20 seconds. Otherwise give it a minute.
-        window.setTimeout(reloadStream, ($this.nextStartTime!='' && $this.nextStartTime-(new Date)<10*60*1000 ? 20000 : 60000));
+        // If the stream is set to go live within the next 15 minutes, we'll reload every 10 seconds. Otherwise give it 20 seconds.
+        window.setTimeout(reloadStream, ($this.nextStartTime!='' && $this.nextStartTime-(new Date)<15*60*1000 ? 10000 : 20000));
       };
-      window.setTimeout(reloadStream, 30);
+      window.setTimeout(reloadStream, 20000);
 
       return $this;
   }
