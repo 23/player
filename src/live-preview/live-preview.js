@@ -11,10 +11,13 @@
 */
 
 Player.provide('live-preview',
-  {},
+  {
+    showStreamingPreviewLabel:true
+  },
   function(Player,$,opts){
       var $this = this;
       $.extend($this, opts);
+      PlayerUtilities.mergeSettings($this, ['showStreamingPreviewLabel']);
       $this.showAnimation = [{opacity:'show'}, 400];
 
       $this.showLivePreview = false;
@@ -48,7 +51,7 @@ Player.provide('live-preview',
               });
           }
       };
-
+    
       // Bind to events
       Player.bind('player:video:loaded', function(e, video){
           var prevShowLivePreview = $this.showLivePreview;
@@ -70,7 +73,7 @@ Player.provide('live-preview',
 
       /* GETTERS */
       Player.getter('showLivePreview', function(){return $this.showLivePreview;});
-      Player.getter('showStreamNotLive', function(){return $this.showStreamNotLive;});
+      Player.getter('showStreamNotLive', function(){return $this.showStreamNotLive && $this.showStreamingPreviewLabel;});
 
       /* Reload the stream every now an then to see if it has gone live */
       var reloadStream = function(){
