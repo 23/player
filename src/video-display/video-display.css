@@ -18,21 +18,6 @@
     width:100%; 
     height:100%; 
 }
-.video-display .toggle-mute-button {
-    display: none;
-    position: absolute;
-    left: 20px;
-    bottom: 20px;
-    height: 26px;
-    line-height: 26px;
-    padding: 0 10px 0 30px;
-    font-size: 12px;
-    border-radius: 13px;
-    background-color: rgba(0,0,0,0.7);
-}
-body.mute-autoplay .video-display .toggle-mute-button {
-    display: block;
-}
 
 body.displaying-360 .player-actions {
     display: none;

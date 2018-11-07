@@ -87,14 +87,6 @@ Player.provide('design',
         // Here we timeout to allow handling of "player:video:loaded" to finish, before we autoplay
         window.setTimeout(function(){
           if( Player.get("autoPlay") ) {
-            if(
-              Player.get("mutedAutoPlay") &&
-              !Player.get("videoElement").canAutoplay() &&
-              /iPhone|iPod|iPad/.test(navigator.userAgent)
-            ) {
-              Player.get("videoElement").video.get(0).muted = true;
-              $("body").addClass("mute-autoplay");
-            }
             if( Player.get("videoElement").canAutoplay() ){
               Player.set("playing", true);
             }

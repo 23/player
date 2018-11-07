@@ -28,6 +28,7 @@
         "sections",
         "big-play-button",
         "play-button",
+        "muted-auto-play-button",
         "volume-button",
         "share-button",
         "browse",

@@ -59,7 +59,7 @@ Player.provide('actions',
       if(e.handled||e.target!=this) return;
       if(Player.get("displayDevice") == "html5" && Player.get("videoElement").video.get(0).muted){
         Player.get("videoElement").video.get(0).muted = false;
-        $("body").removeClass("mute-autoplay");
+        Player.set("mutedAutoPlay", false);
       } else {
         Player.set("playing", !Player.get("playing"));
       }
