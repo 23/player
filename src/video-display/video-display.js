@@ -683,7 +683,7 @@ Player.provide('video-display',
         $this.mutedAutoPlay = map;
         Player.set("volumeMuted", $this.mutedAutoPlay);
       });
-      Player.bind('video:autoplayfailed', function(){
+      Player.bind('player:video:autoplayfailed', function(){
         if(Player.getter('mutedAutoPlay')) {
           // Running with muted auto play
           Player.set('volumeMuted', true);
