@@ -188,9 +188,6 @@ ul.button-menu-selection li.selected:hover button { color: #000000; }
 .tray-shown .scrubber-container .time-container {
     opacity: 1;
 }
-.block-tray #tray, body.mute-autoplay #tray {
-    bottom: -50px !important;
-}
 .block-tray .tray-left,
 .block-tray .tray-right,
 .block-tray .scrubber-container .time-container {
@@ -853,11 +850,24 @@ body.overlay-shown .button-container-share {
 }
 
 /* Muted autoplay button */
-.video-display .toggle-mute-button {
-    background-image: url('volume-on.svg');
-    background-size: 20px;
-    background-position: 6px center;
+.muted-auto-play {
+    text-align:center;
+}
+.muted-auto-play-button {
+    display:inline-block;
+    border-radius:24px;
+    margin-bottom:20px;
+    background:rgb(0,0,0);
+    background:rgba(0,0,0,.6);
+    color:white;
+    height:48px;
+    line-height:49px;
+    font-size:15px;
+    background-image: url('volume-off.svg');
+    background-size: 30px;
+    background-position: 10px center;
     background-repeat: no-repeat;
+    padding:0 18px 0 40px;
 }
 
 /* Sharing buttons */
