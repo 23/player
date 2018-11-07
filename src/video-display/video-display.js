@@ -269,6 +269,11 @@ Player.provide('video-display',
           Player.fail('Unknown video type loaded');
         }
 
+        // The video can play with muting for auto-play
+        if($this.video.supportsAutoPlay && $this.video.supportsAutoPlay()) {
+          $this.mutedAutoPlay = false;
+        }
+        
         if ($this.autoMute || $this.mutedAutoPlay) {
           // Auto-mute from property
           Player.set("volumeMuted", true);
