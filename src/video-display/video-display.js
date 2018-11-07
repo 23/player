@@ -269,12 +269,7 @@ Player.provide('video-display',
           Player.fail('Unknown video type loaded');
         }
 
-        // The video can play with muting for auto-play
-        if($this.video.supportsAutoPlay && $this.video.supportsAutoPlay()) {
-          $this.mutedAutoPlay = false;
-        }
-        
-        if ($this.autoMute || $this.mutedAutoPlay) {
+        if ($this.autoMute) {
           // Auto-mute from property
           Player.set("volumeMuted", true);
         } else {
@@ -480,7 +475,7 @@ Player.provide('video-display',
 
           if(Player.get('video_playable')) {
             // Switch the source and jump to current spot
-            var playing = Player.get('playing') || $this.mutedAutoPlay;
+            var playing = Player.get('playing');
             $this.video.setContext(playableContext);
             playableContext = null;
             Player.fire('player:video:sourcechange');
@@ -679,9 +674,6 @@ Player.provide('video-display',
           return $this.loadEingebaut;
       });
       Player.getter('autoPlay', function(){
-          if(!($this.autoMute || $this.mutedAutoPlay) && $this.video && $this.video.supportsAutoPlay && !$this.video.supportsAutoPlay()) {
-            $this.autoPlay = false;
-          }
           return $this.autoPlay;
       });
       Player.getter('mutedAutoPlay', function(){
@@ -690,6 +682,13 @@ Player.provide('video-display',
       Player.setter('mutedAutoPlay', function(map){
         $this.mutedAutoPlay = map;
         Player.set("volumeMuted", $this.mutedAutoPlay);
+      });
+      Player.bind('video:autoplayfailed', function(){
+        if(Player.getter('mutedAutoPlay')) {
+          // Running with muted auto play
+          Player.set('volumeMuted', true);
+          Player.set('playing', true);
+        }
       });
 
       // Property used for livestreams that does not have a finite value for duration
