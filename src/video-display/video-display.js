@@ -269,6 +269,11 @@ Player.provide('video-display',
           Player.fail('Unknown video type loaded');
         }
 
+        // The video can play with muting for auto-play
+        if($this.video.supportsAutoPlay && $this.video.supportsAutoPlay()) {
+          $this.mutedAutoPlay = false;
+        }
+        
         if ($this.autoMute || $this.mutedAutoPlay) {
           // Auto-mute from property
           Player.set("volumeMuted", true);
@@ -681,6 +686,10 @@ Player.provide('video-display',
       });
       Player.getter('mutedAutoPlay', function(){
           return $this.mutedAutoPlay;
+      });
+      Player.setter('mutedAutoPlay', function(map){
+        $this.mutedAutoPlay = map;
+        Player.set("volumeMuted", $this.mutedAutoPlay);
       });
 
       // Property used for livestreams that does not have a finite value for duration
