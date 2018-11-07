@@ -682,6 +682,10 @@ Player.provide('video-display',
       Player.getter('mutedAutoPlay', function(){
           return $this.mutedAutoPlay;
       });
+      Player.setter('mutedAutoPlay', function(map){
+        $this.mutedAutoPlay = map;
+        Player.set("volumeMuted", $this.mutedAutoPlay);
+      });
 
       // Property used for livestreams that does not have a finite value for duration
       $this.maxBufferTime = 0;
