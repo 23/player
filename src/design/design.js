@@ -87,9 +87,7 @@ Player.provide('design',
         // Here we timeout to allow handling of "player:video:loaded" to finish, before we autoplay
         window.setTimeout(function(){
           if( Player.get("autoPlay") ) {
-            if( Player.get("videoElement").canAutoplay() ){
-              Player.set("playing", true);
-            }
+            Player.set("playing", true);
           }
         }, 1);
       });
