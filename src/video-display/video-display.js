@@ -134,7 +134,7 @@ Player.provide('video-display',
           }catch(e){}
 
           $this.canvas.html('');
-          $this.video = new Eingebaut($this.canvas, $this.displayDevice, '', callback, {inlinePlayback: $this.inlinePlayback, startMuted: ($this.autoMute || $this.mutedAutoPlay)});
+          $this.video = new Eingebaut($this.canvas, $this.displayDevice, '', callback, {inlinePlayback: $this.inlinePlayback, startMuted: $this.autoMute});
           $this.video.hlsjsConfig = {debug:($this.hlsjsDebug?true:false), abrBandWidthFactor:$this.hlsjsAbrBandWidthFactor, abrBandWidthUpFactor:$this.hlsjsAbrBandWidthUpFactor};
           $this.video.load();
           $this.video.showPosterOnEnd = $this.showThumbnailOnEnd;
