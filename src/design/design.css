@@ -843,20 +843,24 @@ body.overlay-shown .button-container-share {
     text-align:center;
 }
 .muted-auto-play-button {
-    display:inline-block;
+    position:absolute;
+    top:6px;
+    right:6px;
+    display:block;
+    cursor:pointer;
     border-radius:24px;
     margin-bottom:20px;
     background:rgb(0,0,0);
     background:rgba(0,0,0,.6);
     color:white;
-    height:48px;
-    line-height:49px;
-    font-size:15px;
+    height:32px;
+    line-height:33px;
+    font-size:14px;
     background-image: url('volume-off.svg');
-    background-size: 30px;
-    background-position: 10px center;
+    background-size: 24px;
+    background-position: 7px center;
     background-repeat: no-repeat;
-    padding:0 18px 0 40px;
+    padding:0 15px 0 30px;
 }
 
 /* Sharing buttons */
