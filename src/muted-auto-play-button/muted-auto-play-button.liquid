@@ -1,4 +1,4 @@
-{% if playing and volumeMuted and mutedAutoPlay %}
+{% if playing and volumeMuted and mutedAutoPlay and ambient == false %}
   <div class="muted-auto-play">
     <div click="$toggle:mutedAutoPlay" class="muted-auto-play-button">Click to unmute</div>
   </div>
