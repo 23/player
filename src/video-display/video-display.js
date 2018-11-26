@@ -60,6 +60,7 @@ Player.provide('video-display',
     quality: '',
     autoPlay: false,
     autoMute: false,
+    ambient: false,
     mutedAutoPlay: false,
     inlinePlayback: true,
     showThumbnailOnEnd: false,
@@ -151,7 +152,7 @@ Player.provide('video-display',
 
       // Merge in player settings
       Player.bind('player:settings', function(e,s){
-        PlayerUtilities.mergeSettings($this, ['autoPlay', 'mutedAutoPlay', 'autoMute', 'verticalPadding', 'horizontalPadding', 'displayDevice', 'fullscreenQuality', 'showThumbnailOnEnd', 'inlinePlayback','hlsjsDebug','hlsjsAbrBandWidthFactor','hlsjsAbrBandWidthUpFactor']);
+        PlayerUtilities.mergeSettings($this, ['autoPlay', 'mutedAutoPlay', 'autoMute', 'ambient', 'verticalPadding', 'horizontalPadding', 'displayDevice', 'fullscreenQuality', 'showThumbnailOnEnd', 'inlinePlayback','hlsjsDebug','hlsjsAbrBandWidthFactor','hlsjsAbrBandWidthUpFactor']);
         if($this.video) $this.video.hlsjsConfig = {debug:($this.hlsjsDebug?true:false), abrBandWidthFactor:$this.hlsjsAbrBandWidthFactor, abrBandWidthUpFactor:$this.hlsjsAbrBandWidthUpFactor};
         if($this.video) $this.video.showPosterOnEnd = $this.showThumbnailOnEnd;
         if(
@@ -678,6 +679,9 @@ Player.provide('video-display',
       });
       Player.getter('mutedAutoPlay', function(){
           return $this.mutedAutoPlay;
+      });
+      Player.getter('ambient', function(){
+          return $this.ambient;
       });
       Player.setter('mutedAutoPlay', function(map){
         $this.mutedAutoPlay = map;
