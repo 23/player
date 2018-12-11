@@ -211,6 +211,16 @@ Player.provide('video-display',
             $this.qualities['auto'] = {format:'video_hls', codec:'hls', displayName:'Auto', displayQuality:'Auto', source:Player.get('url') + v.video_hls_download, sortkey: 6};
           }
 
+          // Mischung
+          if (typeof(Mischung)!='undefined' && typeof(v.mischung_p)!='undefined' && v.mischung_p && $this.displayDevice!='mischung') {
+            Player.set('loading', true);
+            $this.displayDevice = 'mischung';
+            $this.loadEingebaut();
+            if($this.displayDevice!='mischung') {
+              Player.set('error', "this_clip_requires");
+            }
+          }
+
           if( ($this.displayDevice!='html5' || $this.video.canPlayType('video/mp4; codecs="avc1.42E01E"')) && !preferWebM ) {
             // H.264
             if (typeof(v.video_4k_download)!='undefined' && v.video_4k_download.length>0 && v.video_4k_size>0 && !/iPhone|Android/.test(navigator.userAgent))
@@ -242,7 +252,7 @@ Player.provide('video-display',
           var _fallback = 'standard'; //$this.qualities['auto'] ? 'auto' : 'standard';
           $this.quality = $this.quality || s.defaultQuality || _fallback;
           if($this.quality=='high') $this.quality = 'hd';
-
+          
         } else if (v.type=='stream') {
           // LIVE VIDEO
           if($this.displayDevice=='html5' && $this.video.canPlayType('application/vnd.apple.mpegurl')) {
