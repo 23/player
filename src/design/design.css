@@ -169,6 +169,9 @@ ul.button-menu-selection li.selected:hover button { color: #FFFFFF; }
     bottom: 0;
     opacity: 1;
 }
+.block-tray #tray {
+    bottom: -40px !important;
+}
 .persist-tray #tray {
     bottom: 0 !important;
     opacity: 1 !important;
