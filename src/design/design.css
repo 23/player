@@ -192,7 +192,6 @@ ul.button-menu-selection li.selected:hover button { color: #000000; }
 .block-tray .tray-right,
 .block-tray .scrubber-container .time-container {
     opacity: 0 !important;
-}
 .persist-tray #tray {
     bottom: 0 !important;
 }
