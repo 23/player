@@ -164,6 +164,9 @@ ul.button-menu-selection li.selected:hover button { color: #000000; }
     transition: all 100ms linear;
     z-index: 100;
 }
+.block-tray #tray {
+    display:none !important;
+}
 #traysub {
     padding-bottom: 10px;
     margin: 0 auto;
@@ -192,6 +195,7 @@ ul.button-menu-selection li.selected:hover button { color: #000000; }
 .block-tray .tray-right,
 .block-tray .scrubber-container .time-container {
     opacity: 0 !important;
+}
 .persist-tray #tray {
     bottom: 0 !important;
 }
