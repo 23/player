@@ -1,16 +1,16 @@
-/* 
+/*
    MODULE: LOGO
    Show a logo in the player
-   
+
    Listens for:
    - player:settings: The app was loaded, time to show the logo
-   
+
    Answers properties:
    - showLogo [get/set]
    - logoSource [get]
 */
 
-Player.provide('logo', 
+Player.provide('logo',
   {
     logoSource:'',
     showLogo:true
@@ -43,7 +43,7 @@ Player.provide('logo',
               }
           }
       };
-      
+
       // Bind to events
       Player.bind('player:settings', function(e,settings){
           // Load in settings from API if they haven't been overwritten by liquid "with ..."

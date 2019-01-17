@@ -4,6 +4,10 @@
     left:20px;
     opacity:.8;
 }
+.logo.align-right {
+    left: auto;
+    right: 20px;
+}
 .logo img {
     display: none;
     width: auto;
