@@ -9,9 +9,15 @@ Player.provide('muted-auto-play-button',
     var $this = this;
     $.extend($this, opts);
 
+    PlayerUtilities.mergeSettings($this, ['unmuteButtonPosition']);
+
     // Update element on play, pause and more
     Player.bind('player:video:volumechange player:video:play player:video:pause player:video:loaded', function(e){
       $this.render();
+    });
+
+    Player.getter('unmuteButtonPosition', function() {
+      return $this.unmuteButtonPosition || 'rightTop';
     });
 
     return $this;
