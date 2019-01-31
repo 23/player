@@ -62,6 +62,7 @@ Player.provide('video-display',
     autoMute: false,
     ambient: false,
     mutedAutoPlay: false,
+    unmuteButtonPosition: 'rightTop',
     inlinePlayback: true,
     showThumbnailOnEnd: false,
     fullscreenQuality: '',
@@ -129,10 +130,12 @@ Player.provide('video-display',
           };
 
           // Safari 6.1+ should just go with HTML5
-          try {
-            var m = navigator.appVersion.match(/Version\/(\d+\.\d+(\.\d+)?) Safari/);
-            if(m && parseFloat(m[1])>=6.1) $this.displayDevice = 'html5';
-          }catch(e){}
+          if($this.displayDevice=='flash') {
+            try {
+              var m = navigator.appVersion.match(/Version\/(\d+\.\d+(\.\d+)?) Safari/);
+              if(m && parseFloat(m[1])>=6.1) $this.displayDevice = 'html5';
+            }catch(e){}
+          }
 
           $this.canvas.html('');
           $this.video = new Eingebaut($this.canvas, $this.displayDevice, '', callback, {inlinePlayback: $this.inlinePlayback, startMuted: $this.autoMute});
