@@ -877,6 +877,11 @@ body.overlay-shown .button-container-share {
     padding:0 15px 0 30px;
 }
 
+.muted-auto-play-button.align-left-top {
+    right: auto;
+    left: 6px;
+}
+
 /* Sharing buttons */
 .share-button {
     background-image: url('share.png');
