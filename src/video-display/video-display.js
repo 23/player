@@ -214,17 +214,25 @@ Player.provide('video-display',
             $this.qualities['auto'] = {format:'video_hls', codec:'hls', displayName:'Auto', displayQuality:'Auto', source:Player.get('url') + v.video_hls_download, sortkey: 6};
           }
 
-          // Mischung
+          // Turn on Mischung when applicable either if the source is admin, or if there's no transcoded version
           if (typeof(Mischung)!='undefined' && typeof(v.mischung_p)!='undefined' && v.mischung_p && $this.displayDevice!='mischung') {
-            Player.set('loading', true);
-            $this.displayDevice = 'mischung';
-            $this.loadEingebaut();
-            if($this.displayDevice!='mischung') {
-              Player.set('error', "this_clip_requires");
+            if(
+              (typeof(v.video_original_download)!='undefined' && v.video_original_download.length>0)
+              &&
+              (Player.get('source')=='admin' || typeof(v.video_medium_download)=='undefined' || v.video_medium_download.length=='')
+            ) {
+              Player.set('loading', true);
+              $this.displayDevice = 'mischung';
+              $this.loadEingebaut();
+              if($this.displayDevice!='mischung') {
+                Player.set('error', "this_clip_requires");
+              }
             }
           }
 
-          if( ($this.displayDevice!='html5' || $this.video.canPlayType('video/mp4; codecs="avc1.42E01E"')) && !preferWebM ) {
+          if ($this.displayDevice=='mischung') {
+            $this.qualities['standard'] = {format:'video_original', displayName:'Preview', displayQuality:'720p', codec:'h264', source:Player.get('url') + v.video_original_download, sortkey: 2};
+          } else if( ($this.displayDevice!='html5' || $this.video.canPlayType('video/mp4; codecs="avc1.42E01E"')) && !preferWebM ) {
             // H.264
             if (typeof(v.video_4k_download)!='undefined' && v.video_4k_download.length>0 && v.video_4k_size>0 && !/iPhone|Android/.test(navigator.userAgent))
               $this.qualities['4k'] = {format:'video_4k', codec:'h264', displayName:'4K', displayQuality:'4K', source:Player.get('url') + v.video_4k_download, sortkey: 5};
