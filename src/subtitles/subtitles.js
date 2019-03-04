@@ -58,6 +58,14 @@ Player.provide('subtitles',
           return ret;
         });
       Player.getter('subtitleLocale', function(){return $this.subtitleLocale;});
+      Player.getter('subtitleDirection', function(){
+        try {
+          return Player.get('locales')[Player.get('subtitleLocale')].direction||'ltr';
+        } catch(e) {
+         return 'ltr';
+        }
+      });
+      
       /* SETTERS */
       Player.setter('enableSubtitles', function(es){
           $this.enableSubtitles = es;
@@ -90,6 +98,11 @@ Player.provide('subtitles',
           $this.possiblyRender();
         });
 
+      // Listen to events
+      Player.bind('player:subtitlechange', function(){
+        $this.container.css({direction:Player.get('subtitleDirection')});
+      });
+    
       // Subtitle rendering
       // Listens to events and rerenders accordingly
       var _onByDefault = false;
