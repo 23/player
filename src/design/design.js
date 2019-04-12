@@ -178,7 +178,11 @@ Player.provide('design',
               active: !$this.showTray
           });
           $this.applyDesignPreferences();
-          if($this.alwaysShowTray) _showTray();
+          if($this.alwaysShowTray) {
+            window.setTimeout(function(){
+              Player.set('alwaysShowTray', true);
+            }, 500);
+          }
       });
 
       /* === TRAY HANDLING === */
@@ -205,6 +209,8 @@ Player.provide('design',
       Player.setter('alwaysShowTray', function(ast){
         $this.alwaysShowTray = ast;
         if($this.alwaysShowTray) {
+          Player.set('infoShown', false);
+          Player.set("forcer", {type: "block", element: "tray", from: "design", active: false});
           _showTray();
         } else {
           _hideTray();
