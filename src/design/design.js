@@ -5,6 +5,7 @@
 Player.provide('design',
   {
     showTray: true,
+    alwaysShowTray: false,
     verticalPadding:0,
     horizontalPadding:0,
     trayFont:'Helvetica',
@@ -168,7 +169,7 @@ Player.provide('design',
       });
 
       Player.bind('player:settings', function(e){
-          PlayerUtilities.mergeSettings($this, ['verticalPadding', 'horizontalPadding', 'trayFont', 'scrubberColor', 'showTray', 'endOn', 'start', 'loop']);
+          PlayerUtilities.mergeSettings($this, ['verticalPadding', 'horizontalPadding', 'trayFont', 'scrubberColor', 'showTray', 'endOn', 'start', 'loop', 'alwaysShowTray']);
           Player.set("forcer", {
               type: "block",
               element: "tray",
@@ -176,6 +177,7 @@ Player.provide('design',
               active: !$this.showTray
           });
           $this.applyDesignPreferences();
+          if($this.alwaysShowTray) _showTray();
       });
 
       /* === TRAY HANDLING === */
@@ -188,11 +190,25 @@ Player.provide('design',
           _trayTimeoutId = window.setTimeout(_hideTray, 5000);
       };
       var _hideTray = function(){
+          if($this.alwaysShowTray) return;
           window.clearTimeout(_trayTimeoutId);
           $('body').removeClass("tray-shown");
       };
       $(document).mousemove(_showTray);
       $(document).mouseleave(_hideTray);
+
+      /* Setter + Getter for alwaysShowTray */
+      Player.getter('alwaysShowTray', function(){
+        return $this.alwaysShowTray;
+      });
+      Player.setter('alwaysShowTray', function(ast){
+        $this.alwaysShowTray = ast;
+        if($this.alwaysShowTray) {
+          _showTray();
+        } else {
+          _hideTray();
+        }
+      });
 
       /*
          Allow modules to set "blocking" and "persisting" forcing classes on body.

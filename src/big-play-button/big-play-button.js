@@ -30,6 +30,18 @@ Player.provide('big-play-button',
     Player.getter('bigPlaySource', function(){
         return $this.bigPlaySource;
     });
+    Player.getter('hideBigPlay', function(){
+        return $this.hideBigPlay;
+    });
+    /* SETTERS */
+    Player.setter('bigPlaySource', function(bps){
+        $this.bigPlaySource = bps;
+        $this.render(_onRender);
+    });
+    Player.setter('hideBigPlay', function(hbp){
+        $this.hideBigPlay = hbp;
+        _updateBigPlay();
+    });
 
     var _prevShow = false;
     var _bigPlayTimeouts = [];
