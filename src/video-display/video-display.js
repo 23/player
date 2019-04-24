@@ -741,6 +741,20 @@ Player.provide('video-display',
           _seekEnded = true;
       });
 
+
+      /* Option to block playback entirely */
+      $this.blockPlayback = false;
+      Player.setter('blockPlayback', function(bp) {
+        $this.blockPlayback = bp;
+        if($this.blockPlayback) Player.set('playing', false);
+      });
+      Player.getter('blockPlayback', function() {
+        return $this.blockPlayback;
+      });
+      Player.bind('player:video:beforeplay', function(e,allowPlayback){
+        return !$this.blockPlayback&&allowPlayback;
+      });
+    
       // Reconnect for livestream
       $this.reconnectIntervals = [3,5,8,20];
       $this.reconnectIntervalIndex = 0;
