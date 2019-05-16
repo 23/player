@@ -756,7 +756,7 @@ Player.provide('video-display',
       });
     
       // Reconnect for livestream
-      $this.reconnectIntervals = [3,5,8,20];
+      $this.reconnectIntervals = [2,2,2,4,4,4,6,6,6,8,8,10,10,20,20,20];
       $this.reconnectIntervalIndex = 0;
       $this.reconnectTimeoutId = 0;
       $this.handleStalled = function(){
@@ -764,14 +764,16 @@ Player.provide('video-display',
           var v = Player.get("video");
           if(!v||v.type!="stream") return;
           $this.reconnectTimeoutId = window.setTimeout(function(){
-              if(Player.get("videoElement").getStalled()){
-                  if($this.reconnectIntervalIndex <=2){
+              if(Player.get("videoElement").getStalled()||Player.get("videoElement").hlsjsFatalError){
+                  console.log('Attempting reconnecting to live stream, reconnectIntervalIndex =', $this.reconnectIntervalIndex);
+                  if($this.reconnectIntervalIndex <= 15){
                       Player.get("videoElement").setSource(Player.get("videoElement").getSource(), null, null, false);
                       if(Player.get("video_playable")){
                           Player.set("playing",true);
                       }
-                  }else{
-                      Player.set("playing", true);
+                  } else {
+                      console.log('Attempting reconnecting to live stream by full reload');
+                      Player.set("playing", false);
                       Player.get("video").reload();
                   }
                   if($this.reconnectIntervalIndex<$this.reconnectIntervals.length-1){
