@@ -744,13 +744,12 @@ Player.provide('video-display',
 
       /* Mischung overload */
       Player.setter('overloadMischungFile', function(misch) {
-        console.log('misch =', misch);
+        console.log('overloadMischungFile, misch =', misch);
         if ($this.displayDevice=='mischung' && $this.video && $this.video.mischung) {
           if(typeof(misch)=='string') {
             misch = JSON.parse(misch);
           }
-          console.log('$this.video.mischung.setSource()');
-          $this.video.mischung.setSource(JSON.parse(misch), 0);
+          $this.video.mischung.setSource(misch, 0);
         }
       });
 
