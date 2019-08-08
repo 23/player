@@ -189,7 +189,6 @@ Player.provide('core',
                   data:{
                     player_id:$this.settings.player_id,
                     parameters:Player.parametersString,
-                    _ap:(typeof(_AP)=='undefined'||_AP||''==''?'':(_AP||''?'1':'0')),
                     _li:(Cookie.get('local_cache_user_p')=='1'?'1':'0')
                   },
                   callback: $this.onSettingsLoaded
