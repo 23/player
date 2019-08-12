@@ -83,7 +83,7 @@ var ThreeSixtyController = (function(){
     camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
     camera.position.set(0,0,0);
 
-    renderer = new THREE.WebGLRenderer();
+    renderer = new THREE.WebGLRenderer({antialias: true});
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.domElement.addEventListener('mousedown', function() {
       $(renderer.domElement).addClass("mouse-dragging");
