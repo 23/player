@@ -156,6 +156,7 @@ Player.provide('video-display',
       // Merge in player settings
       Player.bind('player:settings', function(e,s){
         PlayerUtilities.mergeSettings($this, ['autoPlay', 'mutedAutoPlay', 'autoMute', 'ambient', 'verticalPadding', 'horizontalPadding', 'displayDevice', 'fullscreenQuality', 'showThumbnailOnEnd', 'inlinePlayback','hlsjsDebug','hlsjsAbrBandWidthFactor','hlsjsAbrBandWidthUpFactor']);
+        if(typeof(_AP)!='undefined' && _AP===false && $this.autoPlay && !($this.autoMute || $this.mutedAutoPlay)) $this.autoPlay = false;
         if($this.video) $this.video.hlsjsConfig = {debug:($this.hlsjsDebug?true:false), abrBandWidthFactor:$this.hlsjsAbrBandWidthFactor, abrBandWidthUpFactor:$this.hlsjsAbrBandWidthUpFactor};
         if($this.video) $this.video.showPosterOnEnd = $this.showThumbnailOnEnd;
         if(
