@@ -189,7 +189,8 @@ Player.provide('core',
                   data:{
                     player_id:$this.settings.player_id,
                     parameters:Player.parametersString,
-                    _li:(Cookie.get('local_cache_user_p')=='1'?'1':'0')
+                    _li:(Cookie.get('local_cache_user_p')=='1'?'1':'0'),
+                    _bot:(/bot|googlebot|crawler|spider|robot|crawling/i.test(navigator.userAgent)?'1':'0')
                   },
                   callback: $this.onSettingsLoaded
               });
