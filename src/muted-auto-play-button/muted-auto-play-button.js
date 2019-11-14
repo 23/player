@@ -17,7 +17,7 @@ Player.provide('muted-auto-play-button',
     });
 
     Player.getter('unmuteButtonPosition', function() {
-      return $this.unmuteButtonPosition || 'rightTop';
+      return $this.unmuteButtonPosition || 'bottomCenter';
     });
 
     return $this;

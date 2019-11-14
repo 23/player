@@ -854,6 +854,24 @@ body.overlay-shown .button-container-share {
     left: 6px;
 }
 
+/* Muted big centered */
+.muted-auto-play-center {
+    height:100%;    
+    bottom:0 !important;
+}
+.muted-auto-play-center .muted-auto-play-button-center {
+    margin-top:100px;
+    margin-top:50vh;
+    height: 66px;
+    border-radius: 33px;
+    line-height: 70px;
+    font-size: 22px;
+    background-size: 42px;
+    background-position: 15px center;
+    padding: 0 38px 0 54px;
+}
+
+
 /* Sharing buttons */
 .share-button {
     background-image: url('share.png');
