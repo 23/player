@@ -63,7 +63,7 @@ Player.provide('status-display',
 
     /* Seeking or stalled */
     Player.bind('player:video:progress player:video:timeupdate player:video:flashloaded player:video:seeking player:video:seeked player:video:stalled player:video:play player:video:pause player:video:playing', function(e){
-      if(Player.get('showSeeking')||Player.get('displayDevice')=='none'||(Player.get('error')&&Player.get('error')!='')||Player.get('loading')){
+      if(Player.get('showSeeking')||Player.get('displayDevice')=='none'||(Player.get('error')&&Player.get('error')!='')||Player.get('loading')||Player.get('warning')){
         $this.render();
         $this.rendered = true;
       }else{
