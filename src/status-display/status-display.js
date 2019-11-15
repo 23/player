@@ -37,20 +37,29 @@ Player.provide('status-display',
     Player.getter('loading', function(){
         return $this.loading;
       });
-
-    /* Error handling */
     Player.bind('player:video:loaded', function(e){
         $this.render();
       });
+
+    /* Error handling + Warning messages */
     $this.errorMessage = "";
     Player.setter('error', function(errorMessage){
-        Player.set('loading', false);
-        $this.errorMessage = errorMessage;
-        $this.render();
-      });
+      Player.set('loading', false);
+      $this.errorMessage = errorMessage;
+      $this.render();
+    });
     Player.getter('error', function(){
-        return $this.errorMessage;
-      });
+      return $this.errorMessage;
+    });
+
+    $this.warningMessage = "";
+    Player.setter('warning', function(warningMessage){
+      $this.warningMessage = warningMessage;
+      $this.render();
+    });
+    Player.getter('warning', function(){
+      return $this.warningMessage;
+    });
 
     /* Seeking or stalled */
     Player.bind('player:video:progress player:video:timeupdate player:video:flashloaded player:video:seeking player:video:seeked player:video:stalled player:video:play player:video:pause player:video:playing', function(e){
