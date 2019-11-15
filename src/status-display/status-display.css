@@ -37,3 +37,21 @@
 .error-display a {
     color:white;
 }
+
+.warning-display {
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    background:black;
+    background:rgba(0,0,0,.35);
+    z-index:9996;
+}
+.warning-display p {
+    font-size:13px;
+    padding: 6px 14px;
+}
+.warning-display p,
+.warning-display a {
+    color:white;
+}
