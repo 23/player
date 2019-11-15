@@ -63,6 +63,7 @@ Player.provide('protection',
           });
         });
         break;
+      case 'expiration':
       case 'custom':
       case 'login':
       case 'geoblocking':
@@ -158,6 +159,12 @@ Player.provide('protection',
         _lastObjectId = _objectId;
         _protectionHandled = false;
       }
+      if(Player.get('videoProtected')) {
+        Player.fire('player:protection:protected', video);
+        Player.fire('player:protection:protected:'+video.protection_method, video);
+      } else {
+        Player.fire('player:protection:unprotected', video);
+      }
     });
     Player.bind("player:playflow:beforetransition", function(e, transition){
         // If transitioning to position 2, playback has been initated by the user or autoplay
@@ -184,6 +191,17 @@ Player.provide('protection',
       }
     });
 
+    // Show messages about expiration prior to playback
+    Player.bind('player:protection:protected:expiration', function(event, video){
+      if(video.protection_message) {
+        if(video.protection_message_style=='warning') {
+          Player.set('warning', video.protection_message);
+        } else {
+          Player.set('error', video.protection_message);
+        }
+      }
+    });
+    
     /* GETTERS */
     // Is the video currently protected?
     Player.getter('videoProtected', function(){
