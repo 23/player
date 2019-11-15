@@ -17,6 +17,12 @@
   </div>
 {% endif %}
 
+{% if warning != empty %}
+  <div class="warning-display">
+    <p>{{warning}}</p>
+  </div>
+{% endif %}
+
 {% if displayDevice != 'none' and error == empty and loading == true %}
   <div class="loading-indicator"></div>
 {% endif %}
