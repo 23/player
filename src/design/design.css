@@ -842,8 +842,7 @@ body.overlay-shown .button-container-share {
     margin-bottom:20px;
     cursor:pointer;
     border-radius:24px;
-    background:rgb(0,0,0);
-    background:rgba(0,0,0,.6);
+    background-color:#181818;
     color:white;
     height:48px;
     line-height:49px;
@@ -852,7 +851,11 @@ body.overlay-shown .button-container-share {
     background-size: 32px;
     background-position: 9px center;
     background-repeat: no-repeat;
+    border:1px solid #555;
     padding:0 22px 0 40px;
+}
+.muted-auto-play-button:hover {
+    background-color:#303030;
 }
 
 .muted-auto-play-button.align-left-top {
@@ -869,12 +872,12 @@ body.overlay-shown .button-container-share {
     margin-top:100px;
     margin-top:50vh;
     height: 66px;
-    border-radius: 33px;
-    line-height: 70px;
-    font-size: 22px;
+    border-radius: 34px;
+    line-height: 68px;
+    font-size: 20px;
     background-size: 42px;
     background-position: 15px center;
-    padding: 0 38px 0 54px;
+    padding: 0 30px 0 54px;
 }
 
 
