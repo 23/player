@@ -886,27 +886,32 @@ body.overlay-shown .button-container-share {
     background-color:#303030;
 }
 
-.muted-auto-play-button.align-left-top {
-    right: auto;
-    left: 6px;
+.muted-auto-play-topRight, .muted-auto-play-rightTop {
+    left:auto;
+    width:auto;
+    bottom:auto;
+    top:6px;
+    right:6px;
+}
+.muted-auto-play-topRight .muted-auto-play-button, .muted-auto-play-rightTop .muted-auto-play-button {
+    height:38px;
+    line-height:39px;
+    font-size:14px;
 }
 
-/* Muted big centered */
-.muted-auto-play-center {
-    height:100%;    
-    bottom:0 !important;
+.muted-auto-play-topLeft, .muted-auto-play-leftTop {
+    width:auto;
+    bottom:auto;
+    top:6px;
+    left:6px;
 }
-.muted-auto-play-center .muted-auto-play-button-center {
-    margin-top:100px;
-    margin-top:50vh;
-    height: 66px;
-    border-radius: 34px;
-    line-height: 68px;
-    font-size: 20px;
-    background-size: 42px;
-    background-position: 15px center;
-    padding: 0 30px 0 54px;
+.muted-auto-play-topLeft .muted-auto-play-button, .muted-auto-play-leftTop .muted-auto-play-button {
+    height:38px;
+    line-height:39px;
+    font-size:14px;
 }
+
+
 
 
 /* Sharing buttons */
