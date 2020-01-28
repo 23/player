@@ -26,6 +26,7 @@ Player.provide('subtitles',
   {
     enableSubtitles: true,
     subtitlesOnByDefault: false,
+    includeDraftSubtitles: false,
     subtitlesDesign: 'bars'
   },
   function(Player,$,opts){
@@ -107,7 +108,7 @@ Player.provide('subtitles',
       // Listens to events and rerenders accordingly
       var _onByDefault = false;
       Player.bind('player:settings', function(e,s){
-          PlayerUtilities.mergeSettings($this, ['enableSubtitles', 'subtitlesOnByDefault', 'subtitlesDesign']);
+          PlayerUtilities.mergeSettings($this, ['enableSubtitles', 'subtitlesOnByDefault', 'subtitlesDesign', 'includeDraftSubtitles']);
           $this.container.removeClass('design-bars').removeClass('design-outline');
           $this.container.addClass('design-' + $this.subtitlesDesign||'bars');
           _onByDefault = s.subtitlesOnByDefault||false;
@@ -200,27 +201,38 @@ Player.provide('subtitles',
 
       // Load some list of available subtitles
       // Uses the /api/photo/subtitle/list API endpoint
-      Player.bind('player:video:loaded', function(e,v){
-          _reset();
-          if(typeof(v.subtitles_p)!='undefined' && v.subtitles_p) {
-            Player.get('api').photo.subtitle.list(
-                {photo_id:Player.get('video_photo_id'), token:Player.get('video_token')},
-                function(data){
-                    // Load a list of languages to support
-                    $this.defaultLocale = '';
-                    $this.hasSubtitles = false;
-                    $.each(data.subtitles, function(i,o){
-                        $this.hasSubtitles = true;
-                        if(o.default_p) $this.defaultLocale = o.locale;
-                        $this.locales[o.locale] = o;
-                      });
-                    Player.set('subtitleLocale', (_onByDefault?$this.defaultLocale:''));
-                    $this.pendingSubtitleTracks = true;
-                },
-                Player.fail
-            );
-          }
-        });
+      var loadSubtitlesFromApi = function(){
+        var v = Player.get('video');
+        if(typeof(v.subtitles_p)!='undefined' && v.subtitles_p) {
+          Player.get('api').photo.subtitle.list(
+            {photo_id:Player.get('video_photo_id'), token:Player.get('video_token'), include_drafts_p:($this.includeDraftSubtitles?1:0)},
+            function(data){
+              // Load a list of languages to support
+              $this.hasSubtitles = false;
+              $.each(data.subtitles, function(i,o){
+                $this.hasSubtitles = true;
+                if(o.default_p&&$this.defaultLocale=='') $this.defaultLocale = o.locale;
+                $this.locales[o.locale] = o;
+              });
+              Player.set('subtitleLocale', (_onByDefault?$this.defaultLocale:''));
+              $this.pendingSubtitleTracks = true;
+            },
+            Player.fail
+          );
+        }
+      }
+      Player.bind('player:video:loaded', function(){
+        _reset();
+        loadSubtitlesFromApi();
+      });
+      Player.setter('reloadSubtitles', function(){
+        var locale = Player.get('subtitleLocale');
+        if(locale) {
+          _onByDefault = true;
+          $this.defaultLocale = locale;
+        }
+        loadSubtitlesFromApi();
+      });
 
       // Load subtitle data for individual locales, includes local caching
       // Uses the /api/photo/subtitle/data API endpoint

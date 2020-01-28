@@ -3,6 +3,12 @@ window.VideoActionHandler = function(actions, container, module, callback){
 
     var $this = this;
     $this.currentActionIndex = -1;
+
+    var autoplayFailedAndPendingRestore = false;
+    Player.bind('player:video:autoplayfailed', function(){
+      autoplayFailedAndPendingRestore = true;
+    });
+
     $this.vastHandler = new window.VastHandler($this);
 
     if(actions.length < 1){
@@ -16,6 +22,11 @@ window.VideoActionHandler = function(actions, container, module, callback){
     };
 
     $this.playNextAction = function(){
+
+       if(autoplayFailedAndPendingRestore) {
+          autoplayFailedAndPendingRestore = false;
+          $this.currentActionIndex = -1;
+        }
 
         $this.currentActionIndex += 1;
         $this.currentAction = actions[$this.currentActionIndex];
