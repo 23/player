@@ -27,6 +27,7 @@ Player.provide('subtitles',
     enableSubtitles: true,
     subtitlesOnByDefault: false,
     includeDraftSubtitles: false,
+    defaultLocale: '',
     subtitlesDesign: 'bars'
   },
   function(Player,$,opts){
@@ -39,7 +40,6 @@ Player.provide('subtitles',
         $this.subtitleLocale = '';
         $this.subtitles = [];
         $this.subtitleText = '';
-        $this.defaultLocale = '';
         $this.hasSubtitles = false;
         Player.set('subtitles', '');
         Player.fire('player:subtitlechange');
@@ -108,7 +108,7 @@ Player.provide('subtitles',
       // Listens to events and rerenders accordingly
       var _onByDefault = false;
       Player.bind('player:settings', function(e,s){
-          PlayerUtilities.mergeSettings($this, ['enableSubtitles', 'subtitlesOnByDefault', 'subtitlesDesign', 'includeDraftSubtitles']);
+          PlayerUtilities.mergeSettings($this, ['enableSubtitles', 'subtitlesOnByDefault', 'subtitlesDesign', 'includeDraftSubtitles', 'defaultLocale']);
           $this.container.removeClass('design-bars').removeClass('design-outline');
           $this.container.addClass('design-' + $this.subtitlesDesign||'bars');
           _onByDefault = s.subtitlesOnByDefault||false;
@@ -121,8 +121,8 @@ Player.provide('subtitles',
           Player.set('subtitleText', '');
         });
       $this.possiblyRender = function(){
-        if(Player.get('playing') && $this.subtitles.length>0) {
-          var time = Player.get('currentTime');
+        var time = Player.get('currentTime');
+        if(time>0 && $this.subtitles.length>0) {
           var text = '';
           $.each($this.subtitles, function(i,s){
               if(time>=s.timestamp_begin && time<s.timestamp_end) {
