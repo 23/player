@@ -969,7 +969,6 @@ body.overlay-shown .button-container-share {
 
 /* Hide a number of elements in very small players */
 .size-tiny .quality-button,
-.size-tiny .subtitle-button,
 .size-tiny .slides-button,
 .size-tiny .scrubber,
 .size-tiny .player-browse #browse,
@@ -982,7 +981,6 @@ body.overlay-shown .button-container-share {
 }
 
 /* Hide some elements in slightly small players */
-.size-small .subtitle-button,
 .size-small .slides-button,
 .size-small .sharing-info,
 .size-small .recommendation-meta .recommendation-title {
