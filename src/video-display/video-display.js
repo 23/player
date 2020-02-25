@@ -769,7 +769,7 @@ Player.provide('video-display',
       });
     
       // Reconnect for livestream
-      $this.reconnectIntervals = [2,2,2,4,4,4,6,6,6,8,8,10,10,20,20,20];
+      $this.reconnectIntervals = [6,6,6,6,8,8,8,8,10,10,10,10,20,20,20];
       $this.reconnectIntervalIndex = 0;
       $this.reconnectTimeoutId = 0;
       $this.handleStalled = function(){
