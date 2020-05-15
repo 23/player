@@ -1,6 +1,6 @@
 {% if playing and volumeMuted and mutedAutoPlay and ambient == false %}
   <div class="muted-auto-play muted-auto-play-{{unmuteButtonPosition}}">
-    <div click="$toggle:mutedAutoPlay" class="muted-auto-play-button muted-auto-play-button-{{unmuteButtonPosition}}">
+    <div click="$toggle:mutedAutoPlay" class="muted-auto-play-button muted-auto-play-button-{{unmuteButtonPosition}}" tabindex="990">
       Click to unmute
     </div>
   </div>
