@@ -18,7 +18,7 @@ Player.provide('quality-button',
             $this.button = $this.container.find(".quality-button");
             $this.buttonMenu = $this.container.find(".button-menu");
             var qualityCount = Player.get('qualitiesArray').length;
-            $this.button.one("mouseenter", function(){
+            $this.button.one("mouseenter", function(){            
                 $this.buttonMenu.css({
                     right: ($this.buttonMenu.width()-30)/-2,
                     fontSize: $this.container.find("li").height()*qualityCount
