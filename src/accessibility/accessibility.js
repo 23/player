@@ -38,6 +38,14 @@ Player.provide('accessibility',
               // and reestablish focus afterwards.
               var glueParent = $(document.activeElement).parent('.glue-element');
               if(!document.activeElement.tagName=="BUTTON"||e.keyCode==13||e.charCode==13){
+                // Handle button menus
+                var active = $('.button-container-active').removeClass('button-container-active');
+                var parent = $(document.activeElement).parent();
+                if(parent.hasClass('button-container') && parent.get(0)!=active.get(0)) {
+                  parent.addClass('button-container-active');
+                  $(document.activeElement).mouseenter();
+                }
+                // Emulate click
                 $(document.activeElement).click();
               }
               window.setTimeout(function(){
