@@ -159,6 +159,25 @@ Player.provide('accessibility',
       }
     });
 
+    //
+    var updateTabIndex = function(){
+      // Store tab index
+      $('[tabindex]').each(function(i,el){
+        if(!$(el).attr('data-tabindex')) $(el).attr('data-tabindex', $(el).attr('tabindex'));
+      });
+      $('[data-tabindex]').each(function(i,el){
+        var visible = $(el).is(':visible') && $(el).width()>0 && $(el).height()>0;
+        if($(el).parents('.button-menu') && $(el).parents('.button-menu').height()==0) visible = false;
+        if(visible) {
+          $(el).attr('tabindex', $(el).attr('data-tabindex'));
+        } else {
+          $(el).attr('tabindex', '');
+        }
+      });
+    }
+    updateTabIndex();
+    window.setInterval(updateTabIndex,300);
+
     $this.loadShortcuts();
     return $this;
   }
