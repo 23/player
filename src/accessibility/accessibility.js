@@ -38,6 +38,14 @@ Player.provide('accessibility',
               // and reestablish focus afterwards.
               var glueParent = $(document.activeElement).parent('.glue-element');
               if(!document.activeElement.tagName=="BUTTON"||e.keyCode==13||e.charCode==13){
+                // Handle button menus
+                var active = $('.button-container-active').removeClass('button-container-active');
+                var parent = $(document.activeElement).parent();
+                if(parent.hasClass('button-container') && parent.get(0)!=active.get(0)) {
+                  parent.addClass('button-container-active');
+                  $(document.activeElement).mouseenter();
+                }
+                // Emulate click
                 $(document.activeElement).click();
               }
               window.setTimeout(function(){
@@ -150,6 +158,25 @@ Player.provide('accessibility',
         $('head').append('<style>body.tabbed [tabindex]:focus {outline: 3px solid '+$this.scrubberColor+' !important;}</style>');
       }
     });
+
+    //
+    var updateTabIndex = function(){
+      // Store tab index
+      $('[tabindex]').each(function(i,el){
+        if(!$(el).attr('data-tabindex')) $(el).attr('data-tabindex', $(el).attr('tabindex'));
+      });
+      $('[data-tabindex]').each(function(i,el){
+        var visible = $(el).is(':visible') && $(el).width()>0 && $(el).height()>0;
+        if($(el).parents('.button-menu') && $(el).parents('.button-menu').height()==0) visible = false;
+        if(visible) {
+          $(el).attr('tabindex', $(el).attr('data-tabindex'));
+        } else {
+          $(el).attr('tabindex', '');
+        }
+      });
+    }
+    updateTabIndex();
+    window.setInterval(updateTabIndex,300);
 
     $this.loadShortcuts();
     return $this;
