@@ -216,6 +216,7 @@ Player.provide('subtitles',
               });
               Player.set('subtitleLocale', (_onByDefault?$this.defaultLocale:''));
               $this.pendingSubtitleTracks = true;
+              Player.fire('player:subtitlechange');
             },
             Player.fail
           );
@@ -231,6 +232,7 @@ Player.provide('subtitles',
           _onByDefault = true;
           $this.defaultLocale = locale;
         }
+        _reset();
         loadSubtitlesFromApi();
       });
 

@@ -168,8 +168,6 @@ Player.provide('analytics',
           _report('event', {event:e.event});
         });
 
-      Cookie.set('_visual_swf_referer', document.referrer);
-
       return $this;
   }
 );
