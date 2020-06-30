@@ -359,7 +359,7 @@ Player.provide('core',
       $this.uuid = Persist.get('uuid');
       if(!$this.uuid.length) {
         $this.uuid = 'xxxxxxxx-xxxx-0xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);return v.toString(16);});
-        if(window.ALLOW_TRACKING_COOKIES!==false) Persist.set('uuid', $this.uuid, 120);
+        if(ConsentStatus.trackingCokiesEnabled()) Persist.set('uuid', $this.uuid, 120);
       }
       Player.getter('uuid', function(){return $this.uuid;});
 
@@ -457,6 +457,50 @@ var PlayerUtilities = {
   }
 };
 
+// Consent management
+var consentReloadQueue = [];
+var ConsentStatus = {
+  trackingCokiesEnabled: function(){
+    return window.ALLOW_TRACKING_COOKIES;
+  },
+  get:function(){
+    return Cookie.get('player_content_status');
+  },
+  set:function(pcs){
+    if(pcs!=='given') pcs = 'denied';
+    Cookie.set('player_content_status', pcs);
+    if(pcs=='denied') {
+      window.ALLOW_TRACKING_COOKIES = false;
+      Persist.erase('uuid');
+      Persist.erase('_visual_swf_referer');
+      Persist.erase('ad_session_id');
+      Persist.erase('playerVolume');
+      if(typeof(aud)==='function') aud('clear');
+    } else {
+      window.ALLOW_TRACKING_COOKIES = false;
+      var uuid = Player.get('uuid');
+      if(uuid) Persist.set('uuid', uuid, 120);
+      for(var i=0; i<consentReloadQueue.length; i++) {
+        console.log('Load from consent', consentReloadQueue[i]);
+        Player.use(consentReloadQueue[i]);
+
+      }
+      consentReloadQueue = [];
+    }
+  },
+  queue:function(m){
+    consentReloadQueue.push(m);
+  }
+}
+window.addEventListener("hashchange", function(h){
+  if(location.hash=='#consentdenied') {
+    ConsentStatus.set('denied');
+  } else if(location.hash=='#consentgiven') {
+    ConsentStatus.set('given');
+  } 
+}, false);
+
+
 // Persist object
 var Persist = {
     set: function(name, value, daysToExpire) {LocalStorage.set(name,value); Cookie.set(name,value,daysToExpire||360);},
@@ -497,3 +541,5 @@ var LocalStorage = {
         }
     }
 }());
+
+
