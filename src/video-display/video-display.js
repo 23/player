@@ -571,7 +571,7 @@ Player.provide('video-display',
           volume = Math.max(0, Math.min(1, volume));
           if($this.video) {
             $this.video.setVolume(volume);
-            if(window.ALLOW_TRACKING_COOKIES!==false && volume>0) Persist.set('playerVolume', new String(volume));
+            if(ConsentStatus.trackingCokiesEnabled() && volume>0) Persist.set('playerVolume', new String(volume));
           }
       });
       Player.setter('volumeMuted', function(muted){
