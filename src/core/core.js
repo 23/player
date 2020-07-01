@@ -457,49 +457,6 @@ var PlayerUtilities = {
   }
 };
 
-// Consent management
-var consentReloadQueue = [];
-var ConsentStatus = {
-  trackingCokiesEnabled: function(){
-    return window.ALLOW_TRACKING_COOKIES;
-  },
-  get:function(){
-    return Cookie.get('player_content_status');
-  },
-  set:function(pcs){
-    if(pcs!=='given') pcs = 'denied';
-    Cookie.set('player_content_status', pcs);
-    if(pcs=='denied') {
-      window.ALLOW_TRACKING_COOKIES = false;
-      Persist.erase('uuid');
-      Persist.erase('_visual_swf_referer');
-      Persist.erase('ad_session_id');
-      Persist.erase('playerVolume');
-      if(typeof(aud)==='function') aud('clear');
-    } else {
-      window.ALLOW_TRACKING_COOKIES = false;
-      var uuid = Player.get('uuid');
-      if(uuid) Persist.set('uuid', uuid, 120);
-      for(var i=0; i<consentReloadQueue.length; i++) {
-        console.log('Load from consent', consentReloadQueue[i]);
-        Player.use(consentReloadQueue[i]);
-
-      }
-      consentReloadQueue = [];
-    }
-  },
-  queue:function(m){
-    consentReloadQueue.push(m);
-  }
-}
-window.addEventListener("hashchange", function(h){
-  if(location.hash=='#consentdenied') {
-    ConsentStatus.set('denied');
-  } else if(location.hash=='#consentgiven') {
-    ConsentStatus.set('given');
-  } 
-}, false);
-
 
 // Persist object
 var Persist = {
@@ -541,5 +498,48 @@ var LocalStorage = {
         }
     }
 }());
+
+// Consent management
+var ConsentStatus = {
+  trackingCokiesEnabled: function(){
+    return window.ALLOW_TRACKING_COOKIES;
+  },
+  get:function(){
+    return Cookie.get('player_content_status');
+  },
+  readHash:function(reload){
+    if(typeof(reload)=='undefined') reload = true;
+    if(location.hash=='#consentdenied') {
+      ConsentStatus.set('denied', reload);
+      location.hash = '';
+    } else if(location.hash=='#consentgiven') {
+      ConsentStatus.set('given', reload);
+      location.hash = '';
+    }
+  },
+  set:function(pcs, reload){
+    console.log('ConsentStatus.set', pcs, reload);
+    if(typeof(reload)=='undefined') reload = true;
+    if(pcs!=='given') pcs = 'denied';
+    Cookie.set('player_content_status', pcs);
+    if(pcs=='denied') {
+      window.ALLOW_TRACKING_COOKIES = false;
+      Persist.erase('uuid');
+      Persist.erase('_visual_swf_referer');
+      Persist.erase('ad_session_id');
+      Persist.erase('playerVolume');
+      if(typeof(aud)==='function') aud('clear');
+    } else {
+      window.ALLOW_TRACKING_COOKIES = false;
+      var uuid = Player.get('uuid');
+      if(uuid) Persist.set('uuid', uuid, 120);
+    }
+    if(reload) location.reload();
+  }
+}
+window.addEventListener("hashchange", function(){
+  ConsentStatus.readHash(true);
+}, false);
+ConsentStatus.readHash(false);
 
 
