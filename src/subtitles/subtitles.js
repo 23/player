@@ -233,24 +233,27 @@ Player.provide('subtitles',
           $this.defaultLocale = locale;
         }
         _reset();
+        forceSubtitleReload = true;
         loadSubtitlesFromApi();
       });
 
       // Load subtitle data for individual locales, includes local caching
       // Uses the /api/photo/subtitle/data API endpoint
       var _loadedSubtitleObjects = {};
+      var forceSubtitleReload = false;
       var _loadSubtitleLocale = function(locale){
         var key = Player.get('video_photo_id') + '-' + locale;
         Player.set('subtitles', '');
-        if(_loadedSubtitleObjects[key]) {
+        if(!forceSubtitleReload && _loadedSubtitleObjects[key]) {
           Player.set('subtitles', _loadedSubtitleObjects[key]);
         } else {
           Player.get('api').photo.subtitle.data(
-              {photo_id:Player.get('video_photo_id'), token:Player.get('video_token'), locale:locale, subtitle_format:'json'},
+              {photo_id:Player.get('video_photo_id'), token:Player.get('video_token'), locale:locale, subtitle_format:'json', forceReload:(forceSubtitleReload?0:Math.random())},
               function(data){
                 var s = $.parseJSON(data.data.json);
                 _loadedSubtitleObjects[key] = s.subtitles;
                 Player.set('subtitles', s.subtitles);
+                forceSubtitleReload = false;
               },
               Player.fail
           );
