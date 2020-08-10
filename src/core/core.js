@@ -537,9 +537,11 @@ var ConsentStatus = {
     if(reload) location.reload();
   }
 }
-window.addEventListener("hashchange", function(){
-  ConsentStatus.readHash(true);
-}, false);
+if(window.addEventListener) {
+  window.addEventListener("hashchange", function(){
+    ConsentStatus.readHash(true);
+  }, false);
+};
 ConsentStatus.readHash(false);
 
 
