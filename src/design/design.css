@@ -765,6 +765,28 @@ body.overlay-shown .button-container-share {
 }
 /* === /Subtitle button === */
 
+/* === Audiodescription button === */
+.audiodescription-button .cc-active-icon,
+.audiodescription-button .cc-active-bar-icon {
+    display: none;
+}
+.audiodescription-button-active .cc-active-icon,
+.audiodescription-button-active .cc-active-bar-icon {
+    display: block;
+}
+.audiodescription-button-active .cc-icon {
+    display: none;
+}
+.audiodescription-button .audiodescription-icon,
+.audiodescription-button .audiodescription-active-icon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+/* === /Audiodescription button === */
+
 /* === Button graphics === */
 
 /* Tray left buttons */
@@ -826,6 +848,18 @@ body.overlay-shown .button-container-share {
     background-image: url('cc-active-bar.png');
     background-image: linear-gradient(transparent, transparent), url('cc-active-bar.svg');
     background-size: 28px;
+    background-position: center center;
+}
+.audiodescription-button .audiodescription-icon {
+    background-image: url('audiodescription.png');
+    background-image: linear-gradient(transparent, transparent), url('audiodescription.svg');
+    background-size: 30px;
+    background-position: center center;
+}
+.audiodescription-button .audiodescription-active-icon {
+    background-image: url('audiodescription.png');
+    background-image: linear-gradient(transparent, transparent), url('audiodescription.svg');
+    background-size: 30px;
     background-position: center center;
 }
 .slides-button  {
