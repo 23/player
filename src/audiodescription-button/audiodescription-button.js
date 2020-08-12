@@ -16,7 +16,6 @@ Player.provide('audiodescription-button',
           $this.button = $this.container.find(".audiodescription-button");
           $this.buttonMenu = $this.container.find(".button-menu");
           var localeCount = Player.get('audioDescriptionTracksArray').length;
-          console.log('localeCount', localeCount);
           $this.button.one("mouseenter", function(){
             $this.buttonMenu.css({
               right: ($this.buttonMenu.width()-30)/-2,
