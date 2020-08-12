@@ -298,6 +298,7 @@ Player.provide('design',
           css += ".tray-left .button-container:hover > button { -webkit-filter: url(#icon_hover); filter: url(#icon_hover); }";
           css += ".tray-right .button-container:hover > button { -webkit-filter: url(#icon_hover); filter: url(#icon_hover); }";
           css += ".subtitle-button-active .cc-active-bar-icon { -webkit-filter: url(#icon_hover); filter: url(#icon_hover); }";
+          css += ".audiodescription-button-active .audiodescription-active-icon { -webkit-filter: url(#icon_hover); filter: url(#icon_hover); }";
           css += ".more-button:hover, .download-button:hover { -webkit-filter: url(#icon_hover); filter: url(#icon_hover); }";
           css += ".video-display .controls-360 div:hover { -webkit-filter: url(#icon_hover); filter: url(#icon_hover); }";
 
