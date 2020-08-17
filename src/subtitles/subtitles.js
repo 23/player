@@ -348,7 +348,7 @@ Player.provide('subtitles',
     var loadTrackFromApi = function(locale, type, callback){
       var key = [Player.get('video_photo_id'), locale, type].join(':');
       if(localTrackCache[key]) {
-        callback(localTrackCache[key], locale, type, );
+        callback(localTrackCache[key], locale, type);
       } else {
         Player.get('api').photo.subtitle.data(
           {photo_id:Player.get('video_photo_id'), token:Player.get('video_token'), locale:locale, type:type, subtitle_format:'json'},
