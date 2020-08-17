@@ -20,6 +20,12 @@
    - locales [get]
    - localesArray [get]
    - subtitleLocale [get/set]
+   - supportsAudioDescriptions [get]
+   - hasAudioDescriptions [get]
+   - audioDescriptionTracks [get]
+   - audioDescriptionTracksArray [get]
+   - audioDescriptionLocale [get/set]
+   - audioDescriptionLocaleMessages [get]
 */
 
 Player.provide('subtitles', 
@@ -76,8 +82,15 @@ Player.provide('subtitles',
       }
     });
     Player.getter('supportsAudioDescriptions', function(){return $this.supportsAudioDescriptions;});
-    Player.getter('hasAudioDescriptions', function(){return $this.hasAudioDescriptions;});
+    Player.getter('hasAudioDescriptions', function(){return $this.supportsAudioDescriptions && $this.hasAudioDescriptions;});
     Player.getter('audioDescriptionTracks', function(){return $this.audioDescriptionTracks;});
+    Player.getter('audioDescriptionTracksArray', function(){
+      var ret = [];
+      $.each($this.audioDescriptionTracks, function(i,o){
+        ret.push(o);
+      });
+      return ret;
+    });
     Player.getter('audioDescriptionLocale', function(){return $this.audioDescriptionLocale;});
     Player.getter('audioDescriptionLocaleMessages', function(){return $this.audioDescriptionLocaleMessages;});
     
@@ -129,13 +142,12 @@ Player.provide('subtitles',
       $this.audioDescriptionLocaleMessages = [];
       loadTrackFromApi($this.audioDescriptionLocale, 'audiodescriptions', function(data){
         var messages = [];
-        console.log(data);
         for(var i = 0; i<data.length; i++) {
           var text = data[i].text.join('\n');
           var utterance = new SpeechSynthesisUtterance(text);
           utterance.lang = $this.audioDescriptionLocale.replace(/_/, '-');
           utterance.pitch = 1.0;
-          utterance.rate = 1.3;
+          utterance.rate = 1.2;
           messages.push({start:data[i].timestamp_begin, end:data[i].timestamp_end, queued:false, utterance:utterance, text:text});
         }
         $this.audioDescriptionLocaleMessages = messages;
@@ -152,14 +164,12 @@ Player.provide('subtitles',
         for(var i=0; i<messages.length; i++) {
           if(messages[i].queued) continue;
           if(messages[i].start<=ct && ct<=messages[i].end) {
-            console.log('Queued', messages[i].text, ct, messages[i].start);
             speech.speak(messages[i].utterance);
             messages[i].queued = true;
           }
         }
       };
       var cancelSpeechQueue = function(){
-        console.log('cancelSpeechQueue');
         // Cancel speaking
         speech.cancel();
         // Reset status on messages
@@ -168,7 +178,7 @@ Player.provide('subtitles',
       };
 
 
-      Player.bind('player:audiodescriptionsupdated player:video:seeked', cancelSpeechQueue);
+      Player.bind('player:audiodescriptionsupdated player:audiodescriptionchanged player:video:seeked', cancelSpeechQueue);
       Player.bind('player:video:timeupdate', queueSpeech);
       Player.bind('player:video:pause', function(){
         speech.pause();
