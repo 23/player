@@ -11,7 +11,7 @@
   <ul id="qualityOptions" class="button-menu button-menu-selection">
     {% for q in qualitiesArray %}
       <li {% if q.quality == quality %}class="selected"{% endif %} click="$set:quality:{{q.quality}}; $set:playing:true">
-        <button aria-label="{{q.quality}} {{"quality_2"|translate}}" label="{{q.{{"quality_2"|translate}}}} quality" role="button" tabindex="1401">{{q.displayQuality}}</button>
+        <button aria-label="{{q.quality}} {{"quality_2"|translate}}" label="{{q.quality}} {{"quality_2"|translate}}" role="button" tabindex="1401">{{q.displayQuality}}</button>
       </li>
     {% endfor %}
   </ul>
