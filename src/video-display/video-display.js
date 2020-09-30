@@ -295,13 +295,6 @@ Player.provide('video-display',
         if ($this.autoMute) {
           // Auto-mute from property
           Player.set("volumeMuted", true);
-        } else {
-          // Possibly load volume preference from previous session
-          if($this._loadVolumeCookie&&$this.video) {
-            var cookieVolume = Persist.get('playerVolume');
-            if(cookieVolume.length>0) Player.set('volume', new Number(cookieVolume));
-            $this._loadVolumeCookie = false;
-          }
         }
         
         Player.fire('player:video:qualitychange');
@@ -571,7 +564,6 @@ Player.provide('video-display',
           volume = Math.max(0, Math.min(1, volume));
           if($this.video) {
             $this.video.setVolume(volume);
-            if(ConsentStatus.trackingCokiesEnabled() && volume>0) Persist.set('playerVolume', new String(volume));
           }
       });
       Player.setter('volumeMuted', function(muted){
@@ -579,9 +571,7 @@ Player.provide('video-display',
               if(muted){
                   $this.video.setVolume(0);
               }else{
-                  var volume = Persist.get('playerVolume');
-                  if(volume === 0 || volume === '0' || volume === ''){ volume = 1;}
-                  Player.set("volume", parseFloat(volume));
+                  Player.set("volume", 1);
               }
           }
       });
