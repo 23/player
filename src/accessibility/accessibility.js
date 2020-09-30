@@ -171,7 +171,7 @@ Player.provide('accessibility',
         if(visible) {
           $(el).attr('tabindex', $(el).attr('data-tabindex'));
         } else {
-          $(el).attr('tabindex', '');
+          $(el).attr('tabindex', '-1');
         }
       });
     }
