@@ -383,7 +383,7 @@ Player.provide('core',
                       loadStreamsByDefault = true; // there are no recordings, the stream is the best thing to show
                   }
                   if(Player.get("source")!="site"){
-                      loadStreamsByDefault = true; // if player is embedded outside of the video site, let the live banner handle display
+                      //loadStreamsByDefault = true; // if player is embedded outside of the video site, let the live banner handle display
                   }
               }
           } else if (typeof(Player.parameters.photo_id)!='undefined'||typeof(Player.parameters.album_id)!='undefined'||typeof(Player.parameters.tag)!='undefined') {
