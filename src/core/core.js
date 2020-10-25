@@ -136,6 +136,8 @@ Player.provide('core',
           "/api/deck/timeline/list-slides"
       ]);
       $this.api.protocol = $this.protocol;
+      $this.api.crossDomain = (document.domain!=$this.domain);
+      $this.api.preferredHttpMethod = 'GET';
       $this.permission_level = "none"; // Will be overwritten when player settings are loaded
       $this.video = null;
       $this.streams = [];
