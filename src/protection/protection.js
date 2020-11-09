@@ -113,7 +113,9 @@ Player.provide('protection',
           } else {
             var endpoint = '/api/protection/verify';
           }
-          Player.get('api').call(endpoint, data, function(r){
+          var api = Player.get('api');
+          api.crossDomain = true; // switch to using json-p
+          api.call(endpoint, data, function(r){
             if(!r || !r.protectedtoken) {
               console.debug('Protection error', 'Could not resolve protection token for the ressource', r);
               updateState(v, 'denied', v.protection_method);
