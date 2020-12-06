@@ -36,9 +36,12 @@ Player.provide('live-preview',
                           $(element).on("click", function(e){
                               var id = $(this).data("id");
                               if(id){
+                                var clipIds = $.map(Player.get('clips'), function(clips) {return clip.photo_id+'';});
+                                if(clipIds.indexOf(ids+'')>=0) {
                                   Player.set("video_photo_id", id);
                                   Player.set("playing", true);
                                   e.preventDefault();
+                                }
                               }
                           });
                       });
