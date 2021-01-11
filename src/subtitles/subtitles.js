@@ -240,8 +240,8 @@ Player.provide('subtitles',
           var track = $("<track>");
           track.attr("kind", "subtitles");
           track.attr("src", o.href.replace(/\.srt|\.websrt/,".vtt"));
-          track.attr("srclang", o.locale.match(/^([^_]+)_/)[1]);
-          track.attr("label", o.language.match( /^([^\(]+)\(/ )[1]);
+          track.attr("srclang", o.locale.replace(/_/, '-'));
+          track.attr("label", o.language);
           track.prop("mode", "disabled");
           v.append(track);
         });
