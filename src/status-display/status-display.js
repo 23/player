@@ -44,6 +44,7 @@ Player.provide('status-display',
     /* Error handling + Warning messages */
     $this.errorMessage = "";
     Player.setter('error', function(errorMessage){
+      if(Player.get('embeddedCompatibility')) return;
       Player.set('loading', false);
       $this.errorMessage = errorMessage;
       $this.render();
@@ -77,6 +78,11 @@ Player.provide('status-display',
         return Player.get('video_playable') && (Player.get('seeking') || Player.get('stalled'))
       });
 
+
+    Player.getter('embeddedCompatibility', function(){
+      return (window.parent !== window && /MSIE ([6-9])/.test(navigator.userAgent))
+    });
+
     return $this;
   }
           
@@ -87,5 +93,5 @@ Player.translate("browser_does_not_support",{
     en: "Your browser does not support video playback."
 });
 Player.translate("to_view_this_content",{
-    en: "To view this content, either upgrade your browser or <a href=\"http://get.adobe.com/flashplayer/\" target=\"_top\">install Adobe Flash</a>."
+    en: "To view this content, you will need to upgrade your browser."
 });

@@ -4,11 +4,24 @@
 
 {% if displayDevice == 'none' %}
   <div class="error-display">
-    <p>
-      {{"browser_does_not_support"|translate}}<br/>
-      {{"to_view_this_content"|translate}}
-    </p>
-  </div
+    {% if embeddedCompatibility %}
+      <p>
+        This page has been configured to load using a very old version of Internet Explorer.
+        You can <a href="#" onclick="window.open(window.location.href,'video','menubar=no,location=no,resizable=no,scrollbars=no,status=no,width=640,height=360'); return false;">play the video in a new window</a>
+        
+        <br/><br/>
+        
+        <small>
+          You can read find out more about compatibility mode in <a target="_new" href="https://www.twentythree.net/help/manage-ie-compatibility-mode">the TwentyThree Help Center</a>.
+        </small>
+      </p>
+    {% else %}
+      <p>
+        {{"browser_does_not_support"|translate}}<br/>
+        {{"to_view_this_content"|translate}}
+      </p>
+    {% endif %}
+  </div>
 {% endif %}
 
 {% if error != empty %}
