@@ -74,46 +74,61 @@ Player.provide('scrubber',
       // METHODS
       // Methods to handle scrubber updates
       $this.updateScrubber = function(){
-          var duration = Player.get('duration');
+        var duration = Player.get('duration');
 
-          if (!Player.get('isLive')) {
-              if (isNaN(duration) || duration <= 0) return;
+        // Sanity check for duration
+        if (!Player.get('isLive')) {
+          if (isNaN(duration) || duration <= 0) return;
+        }
+
+        // Handle three different kinds of scrubbers: video, dvr, live
+        var scrubberType = 'video';
+        if(Player.get('quality')=='dvr') {
+          scrubberType = 'dvr';
+        } else if(Player.get('isLive')) {
+          scrubberType = 'live';
+        }
+
+
+        try {
+          switch(scrubberType) {
+          case 'video':
+            $this.bufferContainer.css({
+              width: (100.0 * Player.get('bufferTime') / duration) + '%'
+            });
+            $this.playContainer.css({
+              width: (100.0 * Player.get('displayPlayProgress') / duration) + '%'
+            });
+            $this.timeContainer.text( formatTime(Player.get('displayPlayProgress')) );
+            $(".scrubber, .sections").css({
+              marginRight: $this.timeContainer.width() + 10
+            });
+            break;
+          case 'dvr':
+            $this.bufferContainer.css({
+              width: (100.0 * Player.get('bufferTime') / duration) + '%'
+            });
+            $this.playContainer.css({
+              width: (100.0 * Player.get('displayPlayProgress') / duration) + '%'
+            });
+            $(".scrubber, .sections").css({
+              marginRight: $this.timeContainer.width() + 16
+            });
+            $this.timeContainer.html( "<span>Live</span>" + Player.get('displayDvrTime') );
+            break;
+          case 'live':
+            $this.bufferContainer.css({
+              width: '100%'
+            });
+            $this.playContainer.css({
+              width: '100%'
+            });
+            if($this.timeContainer && $this.timeContainer.size() > 0) {
+              $this.timeContainer.html( "<span>Live</span>" + formatTime(Player.get('displayPlayProgress')) );
+            }
+            break;
           }
-
-          // Update buffer and play progress
-          try {
-              if (!Player.get('isLive')) {
-                  $this.bufferContainer.css({
-                      width: (100.0 * Player.get('bufferTime') / duration) + '%'
-                  });
-              } else {
-                  $this.bufferContainer.css({
-                      width: '100%'
-                  });
-              }
-          } catch (e) {}
-          try {
-              if (!Player.get('isLive')) {
-                  $this.playContainer.css({
-                      width: (100.0 * Player.get('displayPlayProgress') / duration) + '%'
-                  });
-              } else {
-                  $this.playContainer.css({
-                      width: '100%'
-                  });
-              }
-          } catch (e) {}
-
-          if(!Player.get("isLive")){
-              $this.timeContainer.text( formatTime(Player.get('displayPlayProgress')) + " / " + formatTime(duration) );
-              $(".scrubber, .sections").css({
-                  marginRight: $this.timeContainer.width() + 10
-              });
-          }else{
-              if($this.timeContainer && $this.timeContainer.size() > 0) {
-                  $this.timeContainer.html( "<span>Live</span> " + formatTime(Player.get('displayPlayProgress')) );
-              }
-          }
+        }catch(e){}
       }
       
       var _thumbnailWidth, _thumbnailHeight;
@@ -203,6 +218,10 @@ Player.provide('scrubber',
               return Player.get('currentTime');
           }
       });
+      Player.getter('displayDvrTime', function(){
+        return (new Date(Player.get('videoElement').getProgramDate())).toLocaleTimeString()
+      });
+
 
       return $this;
   }
