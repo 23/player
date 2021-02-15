@@ -536,10 +536,10 @@ Player.provide('video-display',
               // Stream scrubber
               if (Player.get('quality') === 'standard') {
                   // Currently on live
-                  if (currentTime < (Player.get('duration') - Player.get('liveBufferRegion'))) {
-                      Player.set('quality', 'dvr');
-                      Player.set('pendingCurrentTime', currentTime);
-                  }
+                  Player.set('quality', 'dvr');
+                  window.setTimeout(function(){
+                    Player.set('pendingCurrentTime', currentTime);
+                  }, 600);
               } else {
                   // Currently on DVR
                   if (currentTime > (Player.get('duration') - Player.get('liveBufferRegion'))) {
