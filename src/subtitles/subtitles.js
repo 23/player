@@ -140,19 +140,21 @@ Player.provide('subtitles',
 
       // Load messages
       $this.audioDescriptionLocaleMessages = [];
-      loadTrackFromApi($this.audioDescriptionLocale, 'audiodescriptions', function(data){
-        var messages = [];
-        for(var i = 0; i<data.length; i++) {
-          var text = data[i].text.join('\n');
-          var utterance = new SpeechSynthesisUtterance(text);
-          utterance.lang = $this.audioDescriptionLocale.replace(/_/, '-');
-          utterance.pitch = 1.0;
-          utterance.rate = 1.2;
-          messages.push({start:data[i].timestamp_begin, end:data[i].timestamp_end, queued:false, utterance:utterance, text:text});
-        }
-        $this.audioDescriptionLocaleMessages = messages;
-        Player.fire("player:audiodescriptionsupdated");
-      });
+      if($this.audioDescriptionLocale!='') {
+        loadTrackFromApi($this.audioDescriptionLocale, 'audiodescriptions', function(data){
+          var messages = [];
+          for(var i = 0; i<data.length; i++) {
+            var text = data[i].text.join('\n');
+            var utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = $this.audioDescriptionLocale.replace(/_/, '-');
+            utterance.pitch = 1.0;
+            utterance.rate = 1.2;
+            messages.push({start:data[i].timestamp_begin, end:data[i].timestamp_end, queued:false, utterance:utterance, text:text});
+          }
+          $this.audioDescriptionLocaleMessages = messages;
+          Player.fire("player:audiodescriptionsupdated");
+        });
+      }
     });
 
     if(window.speechSynthesis&&true) {
@@ -261,7 +263,11 @@ Player.provide('subtitles',
         // Possibly show track elements when we enter fullscreen
         ve.addEventListener('webkitbeginfullscreen', function(){
           for (var i = 0; i < ve.textTracks.length; i += 1) {
-            if (ve.textTracks[i].language == Player.get("subtitleLocale").substr(0,2)) {
+            if (
+              ve.textTracks[i].language.substr(0,2) == Player.get("subtitleLocale").substr(0,2)
+              ||
+              ve.textTracks[i].language == Player.get("subtitleLocale").replace(/_/, '-')
+            ) {
               ve.textTracks[i].mode = "showing";
             } else {
               ve.textTracks[i].mode = "disabled";
