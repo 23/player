@@ -108,13 +108,13 @@ var PlayerVideo = function(Player,$,type,data){
 
 Player.provide('core',
   {
-    domain:'',
     player_id: 0
   },
   function(Player,$,opts){
       var $this = this;
       $.extend($this, opts);
 
+      if(document.domain=='localhost') $this.domain = Player.parameters.domain||'video.twentythree.com';
       $this.protocol = (/^https/.test(location.href) ? 'https' : 'http');
 
       // PROPERTIES
@@ -122,7 +122,8 @@ Player.provide('core',
       PlayerUtilities.normalizeSettings($this.settings);
 
       // Build domain
-      if($this.domain=='') $this.domain = $this.settings.domain||document.domain;
+      if(!$this.domain || $this.domain=='') $this.domain = $this.settings.domain||document.domain;
+
       // Build player_id if we're loadin for examaple 1234.ithml
       if($this.settings.player_id==0) {
           var p=location.pathname.match(/\/([0-9]+)\.i?html/);
