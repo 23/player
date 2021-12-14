@@ -72,13 +72,17 @@ Player.provide('accessibility',
         if(Player.get('shortcutsDisabled')) return;
         if(!e.ctrlKey && !e.altKey && !e.metaKey) {
           var matched = false;
-          // Increase volume on +/up
-          if(e.charCode==43 || e.keyCode==38) {
+          // Increase volume
+          // 38  up arrow
+          // 187 equal sign
+          if(e.keyCode==38 || e.keyCode==187) {
             Player.set('volume', Player.get('volume')+0.2);
             matched = true;
           }
-          // Decrease volume on -/down
-          if(e.charCode==45 || e.keyCode==40) {
+          // Decrease volume
+          // 40  down arrow
+          // 189 dash
+          if(e.keyCode==40 || e.keyCode==189) {
             Player.set('volume', Player.get('volume')-0.2);
             matched = true;
           }
