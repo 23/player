@@ -17,7 +17,7 @@ Not you can start a server on `localhost` to bootstrap the code from:
 
     python -m SimpleHTTPServer
     
-Now, open up http://localhost:8000/player/src/player.html?domain=video.twentythree.net in a browser, possibly using your own domain for TwentyThree instead.
+Now, open up http://localhost:8000/player/src/player.html in a browser, possibly using your own domain for TwentyThree instead.
 
 This will get you most of the relevant code, although jQuery and the TwentyThree version of Liquid.js are still loaded remotely. You shouldn't need to modify these, although you might want to create Liquid filters for your purposes.
 

@@ -272,6 +272,7 @@ var ThreeSixtyController = (function(){
   function renderImage(imgSrc) {
     var image = document.createElement("img");
     image.src = imgSrc;
+    image.crossOrigin = "anonymous";
     media = image;
     start();
   }
