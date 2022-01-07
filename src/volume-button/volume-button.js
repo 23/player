@@ -80,5 +80,5 @@ Player.provide('volume-button',
 
 /* Translations for this module */
 Player.translate("toggle_volume",{
-    en: "Toogle volume"
+    en: "Toggle volume"
 });
