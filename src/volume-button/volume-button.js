@@ -13,13 +13,15 @@ Player.provide('volume-button',
     $.extend($this, opts);
 
     Player.bind("player:video:ready", function(){
-      $this.render(function(){
-        $this.buttonContainer = $this.container.find(".button-container");
-        $this.button = $this.buttonContainer.find("button");
-        $this.volumeSlider = $this.container.find(".volume-slider-inner");
-        $this.volumeLevel = $this.volumeSlider.find(".volume-level");
-        $this.initVolumeSlider();
-      });
+        if (!/iPad|iPhone|Android/.test(navigator.userAgent)) {
+            $this.render(function(){
+                $this.buttonContainer = $this.container.find(".button-container");
+                $this.button = $this.buttonContainer.find("button");
+                $this.volumeSlider = $this.container.find(".volume-slider-inner");
+                $this.volumeLevel = $this.volumeSlider.find(".volume-level");
+                $this.initVolumeSlider();
+            });
+        }
     });
 
     var _buttonClass = "";
