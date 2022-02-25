@@ -1,7 +1,7 @@
 <div class="scrubber-container">
   {% if video_type == "clip" or stream_has_dvr %}
     <div class="scrubber">
-      <div class="scrubber-track">
+      <div class="scrubber-track" tabindex="1010" role="slider" aria-label="seek_slider" aria-valuetext="">
         <div class="scrubber-buffer"></div>
         <div class="scrubber-play"></div>
       </div>
@@ -16,3 +16,4 @@
   {% endif %}
   <div class="time-container">00:00 / 00:00</div>
 </div>
+ 
