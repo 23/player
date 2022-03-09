@@ -103,6 +103,7 @@ Player.provide('scrubber',
             $(".scrubber, .sections").css({
               marginRight: $this.timeContainer.width() + 10
             });
+            $('.scrubber-track').attr('aria-valuetext', formatTimeToReadable(Player.get('displayPlayProgress')))
             break;
           case 'dvr':
             $this.bufferContainer.css({
@@ -226,3 +227,7 @@ Player.provide('scrubber',
       return $this;
   }
 );
+
+Player.translate("seek_slider",{
+  en: "Seek slider"
+});

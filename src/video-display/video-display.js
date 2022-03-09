@@ -51,6 +51,7 @@
 
   Liquid filters:
   - formatTime: Formats number of seconds as a nice readable timestamp
+  - formatTimeToReadable: Formats number of seconds as a nice readable time, mentioning the words minutes and seconds
 */
 
 Player.provide('video-display',
@@ -806,8 +807,32 @@ var formatTime = function(time) {
   return(Math.floor(time/60).toString() +':'+ (time%60<10?'0':'') + Math.round(time%60).toString());
 }
 
+var formatTimeToReadable = function(time){
+  if (isNaN(time)||time<0) return("");
+  time = Math.round(time);
+
+  minute = Math.floor(time/60).toString();
+  if(Math.floor(time/60).toString() == 1){
+    minute += 'min';
+  }else if (Math.floor(time/60).toString() > 1){
+    minute += 'mins';
+  } else {
+    minute = '';
+  }
+
+  second = Math.round(time%60).toString();
+  if(Math.round(time%60).toString() == 1){
+    second += 'sec';
+  }else if (Math.round(time%60).toString() != 1){
+    second += 'secs';
+  }
+  
+  return(minute + second);
+}
+
 Liquid.Template.registerFilter({
-    formatTime: formatTime
+    formatTime: formatTime,
+    formatTimeToReadable : formatTimeToReadable
   });
 
 /* Translations for this module */
@@ -822,4 +847,16 @@ Player.translate("live_streaming_requires",{
 });
 Player.translate("this_video_is_being_prepared",{
     en: "This video is currently being prepared for playback."
+});
+Player.translate("min",{
+  en: " minute "
+});
+Player.translate("mins",{
+  en: " minutes "
+});
+Player.translate("sec",{
+  en: "second"
+});
+Player.translate("secs",{
+  en: "seconds"
 });
