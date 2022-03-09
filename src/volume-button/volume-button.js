@@ -17,6 +17,7 @@ Player.provide('volume-button',
             $this.render(function(){
                 $this.buttonContainer = $this.container.find(".button-container");
                 $this.button = $this.buttonContainer.find("button");
+                $this.volumeContainer = $this.container.find(".volume-slider");
                 $this.volumeSlider = $this.container.find(".volume-slider-inner");
                 $this.volumeLevel = $this.volumeSlider.find(".volume-level");
                 $this.initVolumeSlider();
@@ -73,6 +74,7 @@ Player.provide('volume-button',
       $this.volumeLevel.css({
         height: (Player.get("volume")*100)+"%"
       });
+      $this.volumeContainer.attr("aria-valuetext", (Player.get("volume")*100)+"%")
     };
       
     return $this;
@@ -83,4 +85,7 @@ Player.provide('volume-button',
 /* Translations for this module */
 Player.translate("toggle_volume",{
     en: "Toggle volume"
+});
+Player.translate("volume_slider",{
+    en: "Volume slider"
 });

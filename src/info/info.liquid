@@ -1,6 +1,6 @@
 <div class="info-overlay">
   <div class="info-overlay-text">
-    {% if video_title != empty%}<h1 class="info-overlay-title">{{video_title|truncatewords:15}}</h1>{% endif %}
+    {% if video_title != empty%}<h3 class="info-overlay-title">{{video_title|truncatewords:15}}</h3>{% endif %}
     {% if showDomain and source != "site" %}
       {% if video.published_p != 0 && video.published_p != "0" %}
         <a href="{{url}}{{video_one}}" class="info-overlay-domain">{{domain|escape}}</a>
