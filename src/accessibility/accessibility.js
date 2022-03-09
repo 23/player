@@ -76,6 +76,7 @@ Player.provide('accessibility',
           // 38  up arrow
           // 187 equal sign
           if(e.keyCode==38 || e.keyCode==187) {
+            arrowVolumeChangeHandler();
             Player.set('volume', Player.get('volume')+0.2);
             matched = true;
           }
@@ -83,16 +84,19 @@ Player.provide('accessibility',
           // 40  down arrow
           // 189 dash
           if(e.keyCode==40 || e.keyCode==189) {
+            arrowVolumeChangeHandler();
             Player.set('volume', Player.get('volume')-0.2);
             matched = true;
           }
           // Scrub on right arrow
           if(e.keyCode==39) {
+            arrowScrubHandler();
             Player.set('currentTime', Player.get('currentTime')+30);
             matched = true;
           }
           // Scrub on left arrow
           if(e.keyCode==37) {
+            arrowScrubHandler();
             Player.set('currentTime', Player.get('currentTime')-30);
             matched = true;
           }
@@ -105,6 +109,17 @@ Player.provide('accessibility',
               from: "accessibility",
               active: true
             });
+            
+            if(document.activeElement.tabIndex == 1100 && !e.shiftKey){
+              e.preventDefault();
+              showVolumeSlider();
+            }else if(document.activeElement.tabIndex == 1400 && e.shiftKey){
+              e.preventDefault();
+              showVolumeSlider();
+            }else if(document.activeElement.tabIndex == 1110){
+              hideVolumeSlider();
+            }
+            
           }
           if(e.keyCode==27) {
             // Destroy menus
@@ -162,6 +177,38 @@ Player.provide('accessibility',
         $('head').append('<style>body.tabbed [tabindex]:focus {outline: 3px solid '+$this.scrubberColor+' !important;}</style>');
       }
     });
+
+    var arrowScrubHandler = function(){
+      $('body').addClass('tray-shown');
+      $('.scrubber-track').focus();
+      if(!$('body').hasClass('tabbed')){
+        if(this.timeoutId != undefined){
+          clearTimeout(this.timeoutId);
+        }
+        this.timeoutId = setTimeout(function(){$('body').removeClass('tray-shown');}, 5000)
+      }
+    }
+
+    var arrowVolumeChangeHandler = function(){
+      showVolumeSlider();
+      if(!$('body').hasClass('tabbed')){
+        if(this.timeoutId != undefined){
+          clearTimeout(this.timeoutId);
+        }
+        this.timeoutId = setTimeout(hideVolumeSlider, 5000)
+      }
+    }
+
+    var showVolumeSlider = function(){
+      $('body').addClass('tray-shown');
+      $('.player-volume-button').children('.button-container').addClass('button-container-active');
+      $('.volume-slider').focus();
+    }
+
+    var hideVolumeSlider = function(){
+      $('body').removeClass('tray-shown');
+      $('.player-volume-button').children('.button-container').removeClass('button-container-active');
+    }
 
     //
     var updateTabIndex = function(){
