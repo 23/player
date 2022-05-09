@@ -468,6 +468,9 @@ Player.provide('video-display',
     
       /* SETTERS */
       var playableContext = null;
+      Player.setter('qualities', function(qualities){
+          $this.qualities = qualities;
+      });
       Player.setter('quality', function(quality){
           // Sanity check
           if(!$this.qualities[quality]) return;
