@@ -26,13 +26,13 @@
 
 {% if error != empty %}
   <div class="error-display">
-    <p>{{error|translate}}</p>
+    <p>{{error|translate|escape}}</p>
   </div>
 {% endif %}
 
 {% if warning != empty %}
   <div class="warning-display">
-    <p>{{warning}}</p>
+    <p>{{warning|escape}}</p>
   </div>
 {% endif %}
 
