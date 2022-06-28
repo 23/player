@@ -94,7 +94,7 @@ ul.button-menu {
     right: 0px;
     height: 0;
     background:rgb(255,255,255);
-    background:rgba(255,255,255,.6);
+    background:rgba(255,255,255,.72);
     padding: 0px;
     font-size: 0;
     overflow: hidden;
@@ -363,14 +363,15 @@ ul.button-menu-selection li.selected:hover button { color: #000000; }
     height:10px; 
     margin-left: -2px;
     background: rgb(255,255,255);
-    background: rgba(255,255,255,0.6);
+    background: rgba(255,255,255,0.72);
     cursor:pointer;
     transition: background 200ms linear;
 }
 .section:hover {
     background: rgba(255,255,255,1);
 }
-.section-title {
+
+.section-pop-up {
     display:none;
     opacity: 0;
     visibility: hidden\9;
@@ -384,18 +385,36 @@ ul.button-menu-selection li.selected:hover button { color: #000000; }
     white-space: nowrap;
     color: #FFF;
     background: rgb(34,34,34);
-    background: rgba(34,34,34,0.7);
+    background: rgba(34,34,34,0.8);
     border: 1px solid rgb(64,64,64);
     overflow: hidden;
-    text-overflow: ellipsis;
-    transition: opacity 200ms linear;
 }
 .sections-container:hover .section-title {
     display: block;
-}
-.section:hover .section-title {
     opacity: 1;
     visibility: visible;
+}
+.section .section-pop-up img {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: auto;
+}
+.section-title-container {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+}
+.section-title {
+    padding: 4px;
+    background: #222222;
+    background: rgba(34,34,34,0.8);
+    font-size: 10px;
+    line-height: 1em;
 }
 /* === /Sections === */
 
@@ -540,7 +559,7 @@ body.overlay-shown .button-container-share {
     height: 100%;
     color: #FFF;
     background:rgb(0,0,0);
-    background:rgba(0,0,0,.6);
+    background:rgba(0,0,0,.72);
     transition: opacity 200ms linear;
 }
 .sharing-container-active {
@@ -634,7 +653,7 @@ body.overlay-shown .button-container-share {
     height: 100%;
     color: #FFFFFF;
     background:rgb(0,0,0);
-    background:rgba(0,0,0,.6);
+    background:rgba(0,0,0,.72);
     transition: opacity 200ms linear;
 }
 .browse-container-activated {
