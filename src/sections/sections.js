@@ -37,7 +37,8 @@ Player.provide('sections',
         });
 
       /* GETTERS */
-      Player.getter('sections', function(){return $this.sections;});
+      Player.getter('sections', function(){
+        return $this.sections;});
       /* SETTERS */
       Player.setter('sections', function(s){
           $this.sections = [];
@@ -52,10 +53,14 @@ Player.provide('sections',
               $this.container.find(".section").each(function(i, section){
                   var $section = $(section);
                   $section.one("mouseenter", function(){
-                      var $title = $section.find(".section-title");
-                      $title.css({
-                          left: $title.outerWidth() / -2
-                      });
+                    $sectionPopUpContainer = $this.container.find('.section-pop-up');
+                    _thumbnailWidth = 94;
+                    _thumbnailHeight = Player.get("video_frames_height") * _thumbnailWidth / Player.get("video_frames_width");
+                    $sectionPopUpContainer.css({
+                        width:_thumbnailWidth,
+                        height:_thumbnailHeight-2,
+                        left: $sectionPopUpContainer.outerWidth() / -2,
+                    });
                   });
               });
           });
