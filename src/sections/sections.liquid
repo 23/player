@@ -1,9 +1,9 @@
 <div class="sections-container">
   <div class="sections">
     {% for section in sections %} 
-      {% if section.start_time > 0  %} 
+      {% if section.start_time > 0  %}
         <div class="section" style="left:{{section.positionPct}};" click="$set:currentTime:{{section.start_time}}; $set:playing:true" title="{{section.title|escape}}">
-          {% if isTouchDevice == false %}<div class="section-title">{{section.title|escape}}</div>{% endif %}
+          {% if isTouchDevice == false %}<div class="section-pop-up"><img src="{{'https://'}}{{ domain}}{{section.small_download}}" alt="section-thumbnail" /><div class="section-title-container"><span class="section-title">{{section.title|escape|truncate: 10}}</span></div></div>{% endif %}
         </div>
       {% endif %} 
     {% endfor %}
