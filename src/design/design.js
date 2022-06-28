@@ -291,8 +291,8 @@ Player.provide('design',
           css += ".protection-password input.submitbutton:hover { background-color: " + $this.hexToRGBA($this.scrubberColor, 0.9) + "; }";
           css += ".glue-sections-menu:not(.sections-menu-open) .sections-menu-wrap:hover { background-color: " + $this.scrubberColor + "; }";
           css += ".sections-menu-open #section-menu-toggle:hover { background-color: " + $this.scrubberColor + "; }";
-          css += ".section-item.active:hover { background-color: " + hexToRGB($this.scrubberColor, "0.6") + "; }";
-          css += ".section-item.active { background-color: " + hexToRGB($this.scrubberColor, "0.6") + "; }";
+          css += ".section-item.active:hover { background-color: " + hexToRGB($this.scrubberColor, "0.72") + "; }";
+          css += ".section-item.active { background-color: " + hexToRGB($this.scrubberColor, "0.72") + "; }";
 
           // SVG filter
           css += ".tray-right .button-container:hover > button { -webkit-filter: url(#icon_hover); filter: url(#icon_hover); }";

@@ -94,7 +94,7 @@ ul.button-menu {
     right: 0px;
     height: 0;
     background:rgb(0,0,0);
-    background:rgba(0,0,0,.6);
+    background:rgba(0,0,0,.72);
     padding: 0px;
     font-size: 0;
     overflow: hidden;
@@ -117,7 +117,7 @@ ul.button-menu li button { /* menu items */
     white-space:nowrap;
     color: white;
     cursor: pointer;
-    color: #AAAAAA;
+    color: #BBBBBB;
     width: auto; /* Display buttons with correct width in IE7 http://jehiah.cz/a/button-width-in-ie */
     overflow: visible; /* See above */
 }
@@ -180,7 +180,7 @@ ul.button-menu-selection li.selected:hover button { color: #FFFFFF; }
     max-width: 1200px;
     margin: 0 auto;
     background: rgb(0,0,0);
-    background: rgba(0,0,0,0.6);
+    background: rgba(0,0,0,0.72);
 }
 @media all and (min-width: 1200px) {
     #traysub {
@@ -331,7 +331,7 @@ ul.button-menu-selection li.selected:hover button { color: #FFFFFF; }
     height:4px; 
     margin-left: -2px;
     background: rgb(255,255,255);
-    background: rgba(255,255,255,0.6);
+    background: rgba(255,255,255,0.72);
     cursor:pointer;
     transition: background 200ms linear;
 }
@@ -374,7 +374,7 @@ ul.button-menu-selection li.selected:hover button { color: #FFFFFF; }
     width: 100%;
     height: 0;
     background: rgb(0,0,0);
-    background: rgba(0,0,0,0.6);
+    background: rgba(0,0,0,0.72);
     overflow: hidden;
     transition: height 200ms ease;
 }
@@ -506,7 +506,7 @@ body.overlay-shown .button-container-share {
     width: 100%;
     height: 100%;
     background:rgb(0,0,0);
-    background:rgba(0,0,0,.6);
+    background:rgba(0,0,0,.72);
     transition: opacity 200ms linear;
 }
 .sharing-container-active {
@@ -599,7 +599,7 @@ body.overlay-shown .button-container-share {
     width: 100%;
     height: 100%;
     background:rgb(0,0,0);
-    background:rgba(0,0,0,.6);
+    background:rgba(0,0,0,.72);
     transition: opacity 200ms linear;
 }
 .browse-container-activated {
