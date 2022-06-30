@@ -31,10 +31,13 @@ Player.provide('volume-button',
         $this.button.removeClass("volume-button-on volume-button-off");
         if(Player.get("volumeMuted")){
             _buttonClass = "volume-button-off";
+            _arialabel = Player.translate("muted")
         }else{
             _buttonClass = "volume-button-on";
+            _arialabel = Player.translate("unmuted")
         }
         $this.button.addClass(_buttonClass);
+        $this.button.attr("aria-label", _arialabel)
         $this.updateVolumeSlider();
     });
 
