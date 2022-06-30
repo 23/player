@@ -84,8 +84,14 @@ Player.provide('volume-button',
 
 /* Translations for this module */
 Player.translate("toggle_volume",{
-    en: "Toggle volume"
+    en: "Muted volume. Use up and down keys to change volume, and enter key to mute or unmute"
+});
+Player.translate("muted",{
+    en: "Muted volume. Press enter key to unmute, and up and down keys to change volume"
+});
+Player.translate("unmuted",{
+    en: "Volume turned on. Press enter key to mute, and up and down keys to change volume"
 });
 Player.translate("volume_slider",{
-    en: "Volume slider"
+    en: "Volume slider. Use up and down keys to change volume"
 });
