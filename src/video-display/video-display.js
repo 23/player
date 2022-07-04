@@ -66,6 +66,7 @@ Player.provide('video-display',
     unmuteButtonPosition: 'rightTop',
     inlinePlayback: true,
     showThumbnailOnEnd: false,
+    qualityMenuExpanded: false,
     fullscreenQuality: '',
     verticalPadding:0,
     horizontalPadding:0,
@@ -579,6 +580,9 @@ Player.provide('video-display',
               }
           }
       });
+      Player.setter('qualityMenuExpanded', function(expand){
+        $this.qualityMenuExpanded = expand
+      });
       Player.setter('autoPlay', function(ap){
         $this.autoPlay = ap;
       });
@@ -619,6 +623,9 @@ Player.provide('video-display',
           try {
               return $this.video.supportsVolumeChange();
           }catch(e) {return true;}
+      });
+      Player.getter('qualityMenuExpanded', function(){
+          return $this.qualityMenuExpanded
       });
       Player.getter('ended', function(){
           return ($this.video ? $this.video.getEnded() : false);
