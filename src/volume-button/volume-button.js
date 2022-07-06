@@ -31,10 +31,13 @@ Player.provide('volume-button',
         $this.button.removeClass("volume-button-on volume-button-off");
         if(Player.get("volumeMuted")){
             _buttonClass = "volume-button-off";
+            _arialabel = Player.translate("muted")
         }else{
             _buttonClass = "volume-button-on";
+            _arialabel = Player.translate("unmuted")
         }
         $this.button.addClass(_buttonClass);
+        $this.button.attr("aria-label", _arialabel)
         $this.updateVolumeSlider();
     });
 
@@ -84,8 +87,14 @@ Player.provide('volume-button',
 
 /* Translations for this module */
 Player.translate("toggle_volume",{
-    en: "Toggle volume"
+    en: "Muted volume. Use up and down keys to change volume, and enter key to mute or unmute"
+});
+Player.translate("muted",{
+    en: "Muted volume. Press enter key to unmute, and up and down keys to change volume"
+});
+Player.translate("unmuted",{
+    en: "Volume turned on. Press enter key to mute, and up and down keys to change volume"
 });
 Player.translate("volume_slider",{
-    en: "Volume slider"
+    en: "Volume slider. Use up and down keys to change volume"
 });

@@ -1,5 +1,5 @@
 {% if showLogo == true and logoSource != empty and video_is_360 != true %}
-  <div class="logo{% if unmuteButtonPosition == 'leftTop' %} align-right{% endif %}">
+  <div class="logo{% if unmuteButtonPosition == 'leftTop' %} align-right{% endif %}" tabindex="998">
     <a href="{{siteLink|escape}}">
       <img src="{{logoSource|escape}}" />
     </a>
