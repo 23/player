@@ -40,10 +40,18 @@ Player.provide('accessibility',
               if(!document.activeElement.tagName=="BUTTON"||e.keyCode==13||e.charCode==13){
                 // Handle button menus
                 var active = $('.button-container-active').removeClass('button-container-active');
+                if($(document.activeElement).hasClass('quality-button')){
+                  Player.set('qualityMenuExpanded', false) 
+                  $(document.activeElement).attr("aria-label", Player.translate("collapsed"))
+                }
                 var parent = $(document.activeElement).parent();
                 if(parent.hasClass('button-container') && parent.get(0)!=active.get(0)) {
                   parent.addClass('button-container-active');
                   $(document.activeElement).mouseenter();
+                  if($(document.activeElement).hasClass('quality-button')){
+                    Player.set('qualityMenuExpanded', true)
+                    $(document.activeElement).attr("aria-label", Player.translate("expanded"))
+                  }
                 }
                 // Emulate click
                 $(document.activeElement).click();
