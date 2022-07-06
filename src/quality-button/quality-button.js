@@ -39,5 +39,11 @@ Player.translate("quality",{
     en: "Quality"
 });
 Player.translate("quality_2",{
-    en: "quality"
+    en: "quality. Press enter key to choose this quality."
+});
+Player.translate("expanded",{
+    en: "Expanded quality popup button. Use tab to navigate between quality options. Press enter key to collapse."
+});
+Player.translate("collapsed",{
+    en: "Collapsed quality popup button. Press enter key to expand."
 });
