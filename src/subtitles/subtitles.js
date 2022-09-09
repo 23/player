@@ -1,4 +1,4 @@
-/* 
+/*
   MODULE: SUBTITLES
   Show subtitles for the video
 
@@ -26,9 +26,9 @@
    - audioDescriptionTracksArray [get]
    - audioDescriptionLocale [get/set]
    - audioDescriptionLocaleMessages [get]
-*/
+ */
 
-Player.provide('subtitles', 
+Player.provide('subtitles',
   {
     enableSubtitles: true,
     subtitlesOnByDefault: false,
@@ -37,73 +37,73 @@ Player.provide('subtitles',
     defaultAudioDescripionLocale: '',
     subtitlesDesign: 'bars'
   },
-  function(Player,$,opts){
+  function (Player, $, opts) {
     var $this = this;
     $.extend($this, opts);
-    
+
     // Properties
-    var _reset = function(){
+    var _reset = function () {
       $this.locales = {};
       $this.subtitleLocale = '';
       $this.subtitles = [];
       $this.subtitleText = '';
       $this.hasSubtitles = false;
-      
+
       // Make audio descriptions available through the same load procedures
-      $this.supportsAudioDescriptions = window.speechSynthesis&&true;;
+      $this.supportsAudioDescriptions = window.speechSynthesis && true;;
       $this.hasAudioDescriptions = false;
       $this.audioDescriptionTracks = {};
       $this.audioDescriptionLocale = '';
       $this.audioDescriptionLocaleMessages = [];
-        
+
       Player.set('subtitles', '');
       Player.fire('player:subtitlechange');
     };
 
     /* GETTERS */
-    Player.getter('enableSubtitles', function(){return $this.enableSubtitles;});
-    Player.getter('hasSubtitles', function(){return $this.hasSubtitles;});
-    Player.getter('subtitleText', function(){return $this.subtitleText;});
-    Player.getter('subtitles', function(){return $this.subtitles;});
-    Player.getter('locales', function(){return $this.locales;});
-    Player.getter('localesArray', function(){
+    Player.getter('enableSubtitles', function () { return $this.enableSubtitles; });
+    Player.getter('hasSubtitles', function () { return $this.hasSubtitles; });
+    Player.getter('subtitleText', function () { return $this.subtitleText; });
+    Player.getter('subtitles', function () { return $this.subtitles; });
+    Player.getter('locales', function () { return $this.locales; });
+    Player.getter('localesArray', function () {
       var ret = [];
-      $.each($this.locales, function(i,o){
+      $.each($this.locales, function (i, o) {
         ret.push(o);
       });
       return ret;
     });
-    Player.getter('subtitleLocale', function(){return $this.subtitleLocale;});
-    Player.getter('subtitleDirection', function(){
+    Player.getter('subtitleLocale', function () { return $this.subtitleLocale; });
+    Player.getter('subtitleDirection', function () {
       try {
-        return Player.get('locales')[Player.get('subtitleLocale')].direction||'ltr';
-      } catch(e) {
+        return Player.get('locales')[Player.get('subtitleLocale')].direction || 'ltr';
+      } catch (e) {
         return 'ltr';
       }
     });
-    Player.getter('supportsAudioDescriptions', function(){return $this.supportsAudioDescriptions;});
-    Player.getter('hasAudioDescriptions', function(){return $this.supportsAudioDescriptions && $this.hasAudioDescriptions;});
-    Player.getter('audioDescriptionTracks', function(){return $this.audioDescriptionTracks;});
-    Player.getter('audioDescriptionTracksArray', function(){
+    Player.getter('supportsAudioDescriptions', function () { return $this.supportsAudioDescriptions; });
+    Player.getter('hasAudioDescriptions', function () { return $this.supportsAudioDescriptions && $this.hasAudioDescriptions; });
+    Player.getter('audioDescriptionTracks', function () { return $this.audioDescriptionTracks; });
+    Player.getter('audioDescriptionTracksArray', function () {
       var ret = [];
-      $.each($this.audioDescriptionTracks, function(i,o){
+      $.each($this.audioDescriptionTracks, function (i, o) {
         ret.push(o);
       });
       return ret;
     });
-    Player.getter('audioDescriptionLocale', function(){return $this.audioDescriptionLocale;});
-    Player.getter('audioDescriptionLocaleMessages', function(){return $this.audioDescriptionLocaleMessages;});
-    
+    Player.getter('audioDescriptionLocale', function () { return $this.audioDescriptionLocale; });
+    Player.getter('audioDescriptionLocaleMessages', function () { return $this.audioDescriptionLocaleMessages; });
+
     /* SETTERS */
-    Player.setter('enableSubtitles', function(es){
+    Player.setter('enableSubtitles', function (es) {
       $this.enableSubtitles = es;
       $this.render();
       Player.fire('player:subtitlechange');
     });
-    Player.setter('subtitleLocale', function(sl){
-      if($this.locales[sl]) {
+    Player.setter('subtitleLocale', function (sl) {
+      if ($this.locales[sl]) {
         Player.set('subtitles', '');
-        loadTrackFromApi(sl, 'general', function(subtitles){
+        loadTrackFromApi(sl, 'general', function (subtitles) {
           Player.set('subtitles', subtitles);
         });
         $this.subtitleLocale = sl;
@@ -116,40 +116,40 @@ Player.provide('subtitles',
       }
       Player.fire('player:subtitlechange');
     });
-    Player.setter('subtitleText', function(st){
-      if(typeof(st)!='object') st = (st=='' ? [] : [st]);
-      if($this.subtitleText!=st){
+    Player.setter('subtitleText', function (st) {
+      if (typeof (st) != 'object') st = (st == '' ? [] : [st]);
+      if ($this.subtitleText != st) {
         $this.subtitleText = st;
         $this.render();
       }
     });
-    Player.setter('subtitles', function(s){
+    Player.setter('subtitles', function (s) {
       $this.subtitles = s;
       Player.fire('player:subtitlechange');
       $this.possiblyRender();
     });
-    Player.setter('audioDescriptionLocale', function(adl){
-      if(!$this.supportsAudioDescriptions) {
+    Player.setter('audioDescriptionLocale', function (adl) {
+      if (!$this.supportsAudioDescriptions) {
         $this.audioDescriptionLocale = '';
         return;
       }
-      
-      if(!$this.audioDescriptionTracks[adl]) adl = '';
+
+      if (!$this.audioDescriptionTracks[adl]) adl = '';
       $this.audioDescriptionLocale = adl;
       Player.fire("player:audiodescriptionchanged");
 
       // Load messages
       $this.audioDescriptionLocaleMessages = [];
-      if($this.audioDescriptionLocale!='') {
-        loadTrackFromApi($this.audioDescriptionLocale, 'audiodescriptions', function(data){
+      if ($this.audioDescriptionLocale != '') {
+        loadTrackFromApi($this.audioDescriptionLocale, 'audiodescriptions', function (data) {
           var messages = [];
-          for(var i = 0; i<data.length; i++) {
+          for (var i = 0; i < data.length; i++) {
             var text = data[i].text.join('\n');
             var utterance = new SpeechSynthesisUtterance(text);
             utterance.lang = $this.audioDescriptionLocale.replace(/_/, '-');
             utterance.pitch = 1.0;
             utterance.rate = 1.2;
-            messages.push({start:data[i].timestamp_begin, end:data[i].timestamp_end, queued:false, utterance:utterance, text:text});
+            messages.push({ start: data[i].timestamp_begin, end: data[i].timestamp_end, queued: false, utterance: utterance, text: text });
           }
           $this.audioDescriptionLocaleMessages = messages;
           Player.fire("player:audiodescriptionsupdated");
@@ -157,69 +157,68 @@ Player.provide('subtitles',
       }
     });
 
-    if(window.speechSynthesis&&true) {
+    if (window.speechSynthesis && true) {
       var speech = window.speechSynthesis;
-      var queueSpeech = function(){
-        if(!Player.get('playing')) return;
+      var queueSpeech = function () {
+        if (!Player.get('playing')) return;
         var ct = Player.get('currentTime');
         var messages = $this.audioDescriptionLocaleMessages;
-        for(var i=0; i<messages.length; i++) {
-          if(messages[i].queued) continue;
-          if(messages[i].start<=ct && ct<=messages[i].end) {
+        for (var i = 0; i < messages.length; i++) {
+          if (messages[i].queued) continue;
+          if (messages[i].start <= ct && ct <= messages[i].end) {
             speech.speak(messages[i].utterance);
             messages[i].queued = true;
           }
         }
       };
-      var cancelSpeechQueue = function(){
+      var cancelSpeechQueue = function () {
         // Cancel speaking
         speech.cancel();
         // Reset status on messages
         var messages = $this.audioDescriptionLocaleMessages;
-        for(var i=0; i<messages.length; i++) messages[i].queued = false;
+        for (var i = 0; i < messages.length; i++) messages[i].queued = false;
       };
 
 
       Player.bind('player:audiodescriptionsupdated player:audiodescriptionchanged player:video:seeked', cancelSpeechQueue);
       Player.bind('player:video:timeupdate', queueSpeech);
-      Player.bind('player:video:pause', function(){
+      Player.bind('player:video:pause', function () {
         speech.pause();
       });
-      Player.bind('player:video:play', function(){
+      Player.bind('player:video:play', function () {
         speech.resume();
       });
     }
 
-    
-  
+
+
 
     // Listen to events
-    Player.bind('player:subtitlechange', function(){
-      $this.container.css({direction:Player.get('subtitleDirection')});
+    Player.bind('player:subtitlechange', function () {
+      $this.container.css({ direction: Player.get('subtitleDirection') });
     });
 
     // Subtitle rendering
     // Listens to events and rerenders accordingly
-    var _onByDefault = false;
-    Player.bind('player:settings', function(e,s){
+    Player.bind('player:settings', function (e, s) {
       PlayerUtilities.mergeSettings($this, ['enableSubtitles', 'subtitlesOnByDefault', 'subtitlesDesign', 'includeDraftSubtitles', 'defaultLocale', 'defaultAudioDescripionLocale']);
       $this.container.removeClass('design-bars').removeClass('design-outline');
-      $this.container.addClass('design-' + $this.subtitlesDesign||'bars');
-      _onByDefault = s.subtitlesOnByDefault||false;
+      $this.container.addClass('design-' + $this.subtitlesDesign || 'bars');
+      _onByDefault = s.subtitlesOnByDefault || false;
       Player.fire('player:subtitlechange');
     });
-    Player.bind('player:video:play play:video:playing player:video:pause player:video:progress player:video:timeupdate player:video:seeked', function(e,o){
+    Player.bind('player:video:play play:video:playing player:video:pause player:video:progress player:video:timeupdate player:video:seeked', function (e, o) {
       $this.possiblyRender();
     });
-    Player.bind('player:video:ended', function(e,o){
+    Player.bind('player:video:ended', function (e, o) {
       Player.set('subtitleText', '');
     });
-    $this.possiblyRender = function(){
+    $this.possiblyRender = function () {
       var time = Player.get('currentTime');
-      if(time>0 && $this.subtitles.length>0) {
+      if (time > 0 && $this.subtitles.length > 0) {
         var text = '';
-        $.each($this.subtitles, function(i,s){
-          if(time>=s.timestamp_begin && time<s.timestamp_end) {
+        $.each($this.subtitles, function (i, s) {
+          if (time >= s.timestamp_begin && time < s.timestamp_end) {
             text = s.text;
           }
         });
@@ -228,43 +227,43 @@ Player.provide('subtitles',
         Player.set('subtitleText', '');
       }
     };
-    $this.possiblyInsertSubtitleTracks = function(){
+    $this.possiblyInsertSubtitleTracks = function () {
       if (/iPhone|iPad/.test(navigator.userAgent)) {
         var ve = Player.get("videoElement");
         var v;
-        if (typeof(ve) != "undefined") {
+        if (typeof (ve) != "undefined") {
           v = $(ve.video[0]);
         } else {
           return;
         }
         v.find("track").remove();
-        $.each($this.locales, function(i,o){
+        $.each($this.locales, function (i, o) {
           var track = $("<track>");
           track.attr("kind", "subtitles");
-          track.attr("src", o.href.replace(/\.srt|\.websrt/,".vtt"));
+          track.attr("src", o.href.replace(/\.srt|\.websrt/, ".vtt"));
           track.attr("srclang", o.locale.replace(/_/, '-'));
-          track.attr("label", o.language.match( /^([^\(]+)\(/ )[1]);
+          track.attr("label", o.language.match(/^([^\(]+)\(/)[1]);
           track.prop("mode", "disabled");
           v.append(track);
         });
         $this.bindFullscreenListeners(v);
       }
     };
-    Player.bind("player:video:loadedmetadata", function(){
+    Player.bind("player:video:loadedmetadata", function () {
       if ($this.pendingSubtitleTracks) {
         $this.possiblyInsertSubtitleTracks();
         $this.pendingSubtitleTracks = false;
       }
     });
     $this.fullscreenListenersBound = false;
-    $this.bindFullscreenListeners = function(v){
+    $this.bindFullscreenListeners = function (v) {
       if (/iPad|iPhone/.test(navigator.userAgent) && !$this.fullscreenListenersBound) {
         var ve = v.get(0);
         // Possibly show track elements when we enter fullscreen
-        ve.addEventListener('webkitbeginfullscreen', function(){
+        ve.addEventListener('webkitbeginfullscreen', function () {
           for (var i = 0; i < ve.textTracks.length; i += 1) {
             if (
-              ve.textTracks[i].language.substr(0,2) == Player.get("subtitleLocale").substr(0,2)
+              ve.textTracks[i].language.substr(0, 2) == Player.get("subtitleLocale").substr(0, 2)
               ||
               ve.textTracks[i].language == Player.get("subtitleLocale").replace(/_/, '-')
             ) {
@@ -276,12 +275,12 @@ Player.provide('subtitles',
         }, false);
         // Disable native track elements when we leave fullscreen
         // and mirror showing/disabled subtitles in the subtitles module
-        ve.addEventListener('webkitendfullscreen', function(){
+        ve.addEventListener('webkitendfullscreen', function () {
           var _showingSubtitlesFound = false;
           for (var i = 0; i < ve.textTracks.length; i += 1) {
             if (ve.textTracks[i].mode == "showing") {
-              $.each($this.locales, function(a,o){
-                if (ve.textTracks[i].language == o.locale.substr(0,2)) {
+              $.each($this.locales, function (a, o) {
+                if (ve.textTracks[i].language == o.locale.substr(0, 2)) {
                   Player.set("subtitleLocale", o.locale);
                   _showingSubtitlesFound = true;
                 }
@@ -299,26 +298,31 @@ Player.provide('subtitles',
 
     // Load some list of available subtitles
     // Uses the /api/photo/subtitle/list API endpoint
-    var loadSubtitlesFromApi = function(){
+    var loadSubtitlesFromApi = function () {
       var v = Player.get('video');
-      if(typeof(v.subtitles_p)!='undefined' && v.subtitles_p) {
+      var includeDraftSubtitles = ($this.includeDraftSubtitles ? 1 : 0)
+      if ((typeof (v.subtitles_p) != 'undefined' && v.subtitles_p) || includeDraftSubtitles) {
         Player.get('api').photo.subtitle.list(
-          {photo_id:Player.get('video_photo_id'), token:Player.get('video_token'), include_drafts_p:($this.includeDraftSubtitles?1:0)},
-          function(data){
-            // Load a list of languages to support              
+          { photo_id: Player.get('video_photo_id'), token: Player.get('video_token'), include_drafts_p: includeDraftSubtitles },
+          function (data) {
+            // Load a list of languages to support
             $this.hasSubtitles = false;
             $this.hasAudioDescriptions = false;
-            $.each(data.subtitles, function(i,o){
-              if(o.type!='audiodescriptions') {
+            $.each(data.subtitles, function (i, o) {
+              if (o.type != 'audiodescriptions') {
                 $this.hasSubtitles = true;
-                if(o.default_p&&$this.defaultLocale=='') $this.defaultLocale = o.locale;
+                if (o.default_p && !o.draft_p && $this.defaultLocale == '') {
+                  $this.defaultLocale = o.locale;
+                } else if (o.draft_p && $this.defaultLocale == o.locale) {
+                  //_onByDefault = false
+                }
                 $this.locales[o.locale] = o;
               } else {
                 $this.hasAudioDescriptions = true;
                 $this.audioDescriptionTracks[o.locale] = o;
               }
             });
-            Player.set('subtitleLocale', (_onByDefault?$this.defaultLocale:''));
+            Player.set('subtitleLocale', (_onByDefault ? $this.defaultLocale : ''));
             Player.set('audioDescriptionLocale', $this.defaultAudioDescripionLocale);
             $this.pendingSubtitleTracks = true;
             Player.fire('player:subtitlechange');
@@ -328,37 +332,37 @@ Player.provide('subtitles',
         );
       }
     }
-    Player.bind('player:video:loaded', function(){
+    Player.bind('player:video:loaded', function () {
       _reset();
       loadSubtitlesFromApi();
     });
-    Player.setter('reloadSubtitles', function(){
+    Player.setter('reloadSubtitles', function () {
       // clear cache
       localTrackCache = {};
-      
+
       var locale = Player.get('subtitleLocale');
-      if(locale) {
+      if (locale) {
         _onByDefault = true;
         $this.defaultLocale = locale;
       }
-      if($this.audioDescriptionLocale!='') {
+      if ($this.audioDescriptionLocale != '') {
         $this.defaultAudioDescripionLocale = $this.audioDescriptionLocale;
       }
       _reset();
       loadSubtitlesFromApi();
-      
+
     });
 
     // Load track data from the API with local caching
     var localTrackCache = {};
-    var loadTrackFromApi = function(locale, type, callback){
+    var loadTrackFromApi = function (locale, type, callback) {
       var key = [Player.get('video_photo_id'), locale, type].join(':');
-      if(localTrackCache[key]) {
+      if (localTrackCache[key]) {
         callback(localTrackCache[key], locale, type);
       } else {
         Player.get('api').photo.subtitle.data(
-          {photo_id:Player.get('video_photo_id'), token:Player.get('video_token'), locale:locale, type:type, subtitle_format:'json'},
-          function(data){
+          { photo_id: Player.get('video_photo_id'), token: Player.get('video_token'), locale: locale, type: type, subtitle_format: 'json' },
+          function (data) {
             var s = $.parseJSON(data.data.json);
             localTrackCache[key] = s.subtitles;
             callback(s.subtitles, locale, type);
