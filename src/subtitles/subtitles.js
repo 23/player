@@ -26,7 +26,7 @@
    - audioDescriptionTracksArray [get]
    - audioDescriptionLocale [get/set]
    - audioDescriptionLocaleMessages [get]
- */
+*/
 
 Player.provide('subtitles',
   {
@@ -190,9 +190,6 @@ Player.provide('subtitles',
       });
     }
 
-
-
-
     // Listen to events
     Player.bind('player:subtitlechange', function () {
       $this.container.css({ direction: Player.get('subtitleDirection') });
@@ -204,7 +201,6 @@ Player.provide('subtitles',
       PlayerUtilities.mergeSettings($this, ['enableSubtitles', 'subtitlesOnByDefault', 'subtitlesDesign', 'includeDraftSubtitles', 'defaultLocale', 'defaultAudioDescripionLocale']);
       $this.container.removeClass('design-bars').removeClass('design-outline');
       $this.container.addClass('design-' + $this.subtitlesDesign || 'bars');
-      _onByDefault = s.subtitlesOnByDefault || false;
       Player.fire('player:subtitlechange');
     });
     Player.bind('player:video:play play:video:playing player:video:pause player:video:progress player:video:timeupdate player:video:seeked', function (e, o) {
@@ -313,8 +309,6 @@ Player.provide('subtitles',
                 $this.hasSubtitles = true;
                 if (o.default_p && !o.draft_p && $this.defaultLocale == '') {
                   $this.defaultLocale = o.locale;
-                } else if (o.draft_p && $this.defaultLocale == o.locale) {
-                  //_onByDefault = false
                 }
                 $this.locales[o.locale] = o;
               } else {
@@ -322,7 +316,7 @@ Player.provide('subtitles',
                 $this.audioDescriptionTracks[o.locale] = o;
               }
             });
-            Player.set('subtitleLocale', (_onByDefault ? $this.defaultLocale : ''));
+            Player.set('subtitleLocale', (!!$this.defaultLocale ? $this.defaultLocale : ''));
             Player.set('audioDescriptionLocale', $this.defaultAudioDescripionLocale);
             $this.pendingSubtitleTracks = true;
             Player.fire('player:subtitlechange');
@@ -342,7 +336,6 @@ Player.provide('subtitles',
 
       var locale = Player.get('subtitleLocale');
       if (locale) {
-        _onByDefault = true;
         $this.defaultLocale = locale;
       }
       if ($this.audioDescriptionLocale != '') {
