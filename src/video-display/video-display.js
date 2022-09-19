@@ -44,6 +44,10 @@
   - isLive [get]
   - maxLengthDVR [get]
   - liveBufferRegion [get]
+  - liveLatencyMode [get/set]
+  - liveLatency [get]
+  - liveSyncDuration [get]
+  - maxLiveSyncPlaybackRate [get]
   - displayDevice [get]
   - verticalPadding [get]
   - horizontalPadding [get]
@@ -56,8 +60,8 @@
 
 Player.provide('video-display',
   {
-    className:'video-display',
-    displayDevice:'html5',
+    className: 'video-display',
+    displayDevice: 'html5',
     quality: '',
     autoPlay: false,
     autoMute: false,
@@ -68,15 +72,16 @@ Player.provide('video-display',
     showThumbnailOnEnd: false,
     qualityMenuExpanded: false,
     fullscreenQuality: '',
-    verticalPadding:0,
-    horizontalPadding:0,
-    maxLengthDVR:10800,
-    liveBufferRegion:60,
-    hlsjsDebug:false,
-    hlsjsAbrBandWidthFactor:0.95,
-    hlsjsAbrBandWidthUpFactor:0.7
+    verticalPadding: 0,
+    horizontalPadding: 0,
+    maxLengthDVR: 10800,
+    liveBufferRegion: 60,
+    hlsjsDebug: false,
+    liveLatencyMode: 'medium',
+    hlsjsAbrBandWidthFactor: 0.95,
+    hlsjsAbrBandWidthUpFactor: 0.7
   },
-  function(Player,$,opts){
+  function (Player, $, opts) {
       var $this = this;
       $.extend($this, opts);
       $this.seekedTime = 0;
@@ -141,7 +146,13 @@ Player.provide('video-display',
 
           $this.canvas.html('');
           $this.video = new Eingebaut($this.canvas, $this.displayDevice, '', callback, {inlinePlayback: $this.inlinePlayback, startMuted: $this.autoMute});
-          $this.video.hlsjsConfig = {debug:($this.hlsjsDebug?true:false), abrBandWidthFactor:$this.hlsjsAbrBandWidthFactor, abrBandWidthUpFactor:$this.hlsjsAbrBandWidthUpFactor};
+          $this.video.hlsjsConfig = {
+              debug: ($this.hlsjsDebug ? true : false),
+              abrBandWidthFactor: $this.hlsjsAbrBandWidthFactor,
+              abrBandWidthUpFactor: $this.hlsjsAbrBandWidthUpFactor,
+              maxLiveSyncPlaybackRate: Player.get('maxLiveSyncPlaybackRate'),
+              liveSyncDuration: Player.get('liveSyncDuration')
+          };
           $this.video.load();
           $this.video.showPosterOnEnd = $this.showThumbnailOnEnd;
           $this.video.setProgramDateHandling(true);
@@ -157,8 +168,8 @@ Player.provide('video-display',
 
       // Merge in player settings
       Player.bind('player:settings', function(e,s){
-        PlayerUtilities.mergeSettings($this, ['autoPlay', 'mutedAutoPlay', 'autoMute', 'ambient', 'verticalPadding', 'horizontalPadding', 'displayDevice', 'fullscreenQuality', 'showThumbnailOnEnd', 'inlinePlayback','hlsjsDebug','hlsjsAbrBandWidthFactor','hlsjsAbrBandWidthUpFactor']);
-        if(typeof(_AP)!='undefined' && _AP===false && $this.autoPlay && !($this.autoMute || $this.mutedAutoPlay)) $this.autoPlay = false;
+        PlayerUtilities.mergeSettings($this, ['autoPlay', 'mutedAutoPlay', 'autoMute', 'ambient', 'verticalPadding', 'horizontalPadding', 'displayDevice', 'fullscreenQuality', 'showThumbnailOnEnd', 'inlinePlayback', 'hlsjsDebug', 'hlsjsAbrBandWidthFactor', 'hlsjsAbrBandWidthUpFactor', 'liveLatencyMode']);
+        if (typeof (_AP) != 'undefined' && _AP === false && $this.autoPlay && !($this.autoMute || $this.mutedAutoPlay)) $this.autoPlay = false;
         if($this.video) $this.video.hlsjsConfig = {debug:($this.hlsjsDebug?true:false), abrBandWidthFactor:$this.hlsjsAbrBandWidthFactor, abrBandWidthUpFactor:$this.hlsjsAbrBandWidthUpFactor};
         if($this.video) $this.video.showPosterOnEnd = $this.showThumbnailOnEnd;
         if(
@@ -266,7 +277,7 @@ Player.provide('video-display',
           var _fallback = 'standard'; //$this.qualities['auto'] ? 'auto' : 'standard';
           $this.quality = $this.quality || s.defaultQuality || _fallback;
           if($this.quality=='high') $this.quality = 'hd';
-          
+
         } else if (v.type=='stream') {
           // LIVE VIDEO
           if($this.displayDevice=='html5' && $this.video.canPlayType('application/vnd.apple.mpegurl')) {
@@ -298,7 +309,7 @@ Player.provide('video-display',
           // Auto-mute from property
           Player.set("volumeMuted", true);
         }
-        
+
         Player.fire('player:video:qualitychange');
 
         // Set crossorigin attribute on 360 live streams playing through html5
@@ -357,7 +368,7 @@ Player.provide('video-display',
         // 360 degree video is supported when we have WebGL and html5 video...
         if (ThreeSixtyController.isSupported() && $this.displayDevice === "html5") {
           // ...with a few exceptions for Safari:
-        
+
           var is_chrome = navigator.userAgent.indexOf('Chrome') > -1;
           var is_safari = navigator.userAgent.indexOf("Safari") > -1;
           if (is_chrome && is_safari) { is_safari=false; }
@@ -399,7 +410,7 @@ Player.provide('video-display',
 
         if (Player.get("video_is_360")) {
           $("body").addClass("video-360");
-          
+
           if (Player.get("360Supported")) {
 
             /* Switch to highest possible quality */
@@ -466,7 +477,7 @@ Player.provide('video-display',
         }
       });
 
-    
+
       /* SETTERS */
       var playableContext = null;
       Player.setter('qualities', function(qualities){
@@ -586,10 +597,26 @@ Player.provide('video-display',
       Player.setter('autoPlay', function(ap){
         $this.autoPlay = ap;
       });
+      Player.setter('liveLatencyMode', function (llm) {
+          if (['high', 'medium', 'low', 'ultra-low'].indexOf(llm) < 0) {
+            llm = 'medium';
+          }
+          $this.liveLatencyMode = llm;
+
+          var ve = Player.get('videoElement');
+          if (ve && ve.hls && ve.hls.latencyController && ve.hls.latencyController.config) {
+              ve.hls.latencyController.config.maxLiveSyncPlaybackRate = Player.get('maxLiveSyncPlaybackRate');
+              ve.hls.latencyController.config.liveSyncDuration = Player.get('liveSyncDuration');
+          }
+          if ($this.video.hlsjsConfig && $this.video.hlsjsConfig) {
+              $this.video.hlsjsConfig.maxLiveSyncPlaybackRate = Player.get('maxLiveSyncPlaybackRate');
+              $this.video.hlsjsConfig.liveSyncDuration = Player.get('liveSyncDuration');
+          }
+      });
 
       /* GETTERS */
-      Player.getter('seekedTime', function(){
-          return $this.seekedTime||0;
+      Player.getter('seekedTime', function () {
+          return $this.seekedTime || 0;
       });
       Player.getter('quality', function(){
           return $this.quality;
@@ -678,7 +705,30 @@ Player.provide('video-display',
       Player.getter('liveBufferRegion', function() {
           return $this.liveBufferRegion;
       });
-      Player.getter('src', function(){
+      Player.getter('liveLatencyMode', function () {
+          return $this.liveLatencyMode;
+      });
+      Player.getter('liveLatency', function () {
+          var ve = Player.get('videoElement');
+          return (ve && ve.hls && ve.hls.latency || null);
+      });
+      Player.getter('maxLiveSyncPlaybackRate', function () {
+          return ($this.liveLatencyMode === 'ultra-low' ? 1.2 : 0);
+      });
+      Player.getter('liveSyncDuration', function () {
+          switch ($this.liveLatencyMode) {
+              case 'ultra-low':
+                  return 2;
+              case 'low':
+                  return 4;
+              case 'medium':
+                  return 8;
+              case 'low':
+              default:
+                  return 14;
+          }
+      });
+      Player.getter('src', function () {
           return ($this.video ? $this.video.getSource() : '');
       });
       Player.getter('videoElement', function(){
@@ -755,7 +805,7 @@ Player.provide('video-display',
         }
       });
 
-    
+
       /* Option to block playback entirely */
       $this.blockPlayback = false;
       Player.setter('blockPlayback', function(bp) {
@@ -768,7 +818,7 @@ Player.provide('video-display',
       Player.bind('player:video:beforeplay', function(e,allowPlayback){
         return !$this.blockPlayback&&allowPlayback;
       });
-    
+
       // Reconnect for livestream
       $this.reconnectIntervals = [10,10,10,8,8,8,8,8,10,10,10,10,20,20,20];
       $this.reconnectIntervalIndex = 0;
@@ -836,7 +886,7 @@ var formatTimeToReadable = function(time){
   }else if (Math.round(time%60).toString() != 1){
     second += 'secs';
   }
-  
+
   return(minute + second);
 }
 
