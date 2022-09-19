@@ -44,7 +44,7 @@
   - isLive [get]
   - maxLengthDVR [get]
   - liveBufferRegion [get]
-  -  [get/set]
+  - liveLatencyMode [get/set]
   - liveLatency [get]
   - liveSyncDuration [get]
   - maxLiveSyncPlaybackRate [get]
