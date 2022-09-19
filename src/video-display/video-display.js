@@ -77,6 +77,7 @@ Player.provide('video-display',
     maxLengthDVR: 10800,
     liveBufferRegion: 60,
     hlsjsDebug: false,
+    liveLatencyMode: 'medium',
     hlsjsAbrBandWidthFactor: 0.95,
     hlsjsAbrBandWidthUpFactor: 0.7
   },
@@ -597,10 +598,10 @@ Player.provide('video-display',
         $this.autoPlay = ap;
       });
       Player.setter('liveLatencyMode', function (llm) {
-          if (['high', 'medium', 'low', 'verylow'].indexOf(llm) < 0) {
+          if (['high', 'medium', 'low', 'ultra-low'].indexOf(llm) < 0) {
             llm = 'medium';
           }
-          $this.liveLatencyMode = 'llm';
+          $this.liveLatencyMode = llm;
 
           var ve = Player.get('videoElement');
           if (ve && ve.hls && ve.hls.latencyController && ve.hls.latencyController.config) {
@@ -712,11 +713,11 @@ Player.provide('video-display',
           return (ve && ve.hls && ve.hls.latency || null);
       });
       Player.getter('maxLiveSyncPlaybackRate', function () {
-          return ($this.liveLatencyMode === 'verylow' ? 1.2 : 0);
+          return ($this.liveLatencyMode === 'ultra-low' ? 1.2 : 0);
       });
       Player.getter('liveSyncDuration', function () {
           switch ($this.liveLatencyMode) {
-              case 'verylow':
+              case 'ultra-low':
                   return 2;
               case 'low':
                   return 4;
