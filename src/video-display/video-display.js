@@ -713,12 +713,21 @@ Player.provide('video-display',
           return (ve && ve.hls && ve.hls.latency || null);
       });
       Player.getter('maxLiveSyncPlaybackRate', function () {
-          return ($this.liveLatencyMode === 'ultra-low' ? 1.2 : 0);
+          switch ($this.liveLatencyMode) {
+              case 'ultra-low':
+                  return 1.15;
+              case 'low':
+                  return 1.05;
+              case 'medium':
+              case 'low':
+              default:
+                  return 1;
+          }
       });
       Player.getter('liveSyncDuration', function () {
           switch ($this.liveLatencyMode) {
               case 'ultra-low':
-                  return 2;
+                  return 2.4;
               case 'low':
                   return 4;
               case 'medium':
