@@ -46,7 +46,7 @@
   - liveBufferRegion [get]
   - liveLatencyMode [get/set]
   - liveLatency [get]
-  - liveSyncDuration [get]
+  - liveSyncDurationCount [get]
   - maxLiveSyncPlaybackRate [get]
   - displayDevice [get]
   - verticalPadding [get]
@@ -151,7 +151,7 @@ Player.provide('video-display',
               abrBandWidthFactor: $this.hlsjsAbrBandWidthFactor,
               abrBandWidthUpFactor: $this.hlsjsAbrBandWidthUpFactor,
               maxLiveSyncPlaybackRate: Player.get('maxLiveSyncPlaybackRate'),
-              liveSyncDuration: Player.get('liveSyncDuration')
+              liveSyncDurationCount: Player.get('liveSyncDurationCount')
           };
           $this.video.load();
           $this.video.showPosterOnEnd = $this.showThumbnailOnEnd;
@@ -606,11 +606,11 @@ Player.provide('video-display',
           var ve = Player.get('videoElement');
           if (ve && ve.hls && ve.hls.latencyController && ve.hls.latencyController.config) {
               ve.hls.latencyController.config.maxLiveSyncPlaybackRate = Player.get('maxLiveSyncPlaybackRate');
-              ve.hls.latencyController.config.liveSyncDuration = Player.get('liveSyncDuration');
+              ve.hls.latencyController.config.liveSyncDurationCount = Player.get('liveSyncDurationCount');
           }
           if ($this.video.hlsjsConfig && $this.video.hlsjsConfig) {
               $this.video.hlsjsConfig.maxLiveSyncPlaybackRate = Player.get('maxLiveSyncPlaybackRate');
-              $this.video.hlsjsConfig.liveSyncDuration = Player.get('liveSyncDuration');
+              $this.video.hlsjsConfig.liveSyncDurationCount = Player.get('liveSyncDurationCount');
           }
       });
 
@@ -715,26 +715,26 @@ Player.provide('video-display',
       Player.getter('maxLiveSyncPlaybackRate', function () {
           switch ($this.liveLatencyMode) {
               case 'ultra-low':
-                  return 1.15;
+                  return 1.11;
               case 'low':
-                  return 1.05;
+                  return 1.04;
               case 'medium':
-              case 'low':
+              case 'high':
               default:
                   return 1;
           }
       });
-      Player.getter('liveSyncDuration', function () {
+      Player.getter('liveSyncDurationCount', function () {
           switch ($this.liveLatencyMode) {
               case 'ultra-low':
-                  return 2.4;
+                  return 2;
               case 'low':
-                  return 4;
+                  return 3;
               case 'medium':
-                  return 8;
-              case 'low':
+                  return 4;
+              case 'high':
               default:
-                  return 14;
+                  return 64;
           }
       });
       Player.getter('src', function () {
