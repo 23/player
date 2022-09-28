@@ -613,6 +613,9 @@ Player.provide('video-display',
               $this.video.hlsjsConfig.liveSyncDurationCount = Player.get('liveSyncDurationCount');
           }
       });
+      Player.setter('playbackRate', function(rate) {
+        $this.video && $this.video.setPlaybackRate(rate);
+      });
 
       /* GETTERS */
       Player.getter('seekedTime', function () {
@@ -764,6 +767,9 @@ Player.provide('video-display',
       });
       Player.getter('ambient', function(){
           return $this.ambient;
+      });
+      Player.getter('playbackRate', function() {
+          return ($this.video ? $this.video.getPlaybackRate() : 1);
       });
       Player.setter('mutedAutoPlay', function(map){
         $this.mutedAutoPlay = map;
