@@ -316,7 +316,7 @@ Player.provide('subtitles',
                 $this.audioDescriptionTracks[o.locale] = o;
               }
             });
-            Player.set('subtitleLocale', (!!$this.defaultLocale ? $this.defaultLocale : ''));
+            Player.set('subtitleLocale', (!!$this.defaultLocale && !!$this.subtitlesOnByDefault ? $this.defaultLocale : ''));
             Player.set('audioDescriptionLocale', $this.defaultAudioDescripionLocale);
             $this.pendingSubtitleTracks = true;
             Player.fire('player:subtitlechange');
