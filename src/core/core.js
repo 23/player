@@ -362,7 +362,7 @@ Player.provide('core',
       $this.uuid = Persist.get('uuid');
       if(!$this.uuid.length) {
         $this.uuid = 'xxxxxxxx-xxxx-0xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);return v.toString(16);});
-        if(ConsentStatus.trackingCokiesEnabled()) Persist.set('uuid', $this.uuid, 120);
+        if(ConsentStatus.hasConsent()) Persist.set('uuid', $this.uuid, 120);
       }
       Player.getter('uuid', function(){return $this.uuid;});
 
@@ -505,47 +505,45 @@ var LocalStorage = {
 
 // Consent management
 var ConsentStatus = {
-  trackingCokiesEnabled: function(){
-    return window.ALLOW_TRACKING_COOKIES;
+  key: 'player_consent_status',
+  hasDefaultConsent: function () {
+    return !!window.DEFAULT_CONSENT_MODE && window.DEFAULT_CONSENT_MODE === 'given'
   },
-  get:function(){
-    return Cookie.get('player_content_status');
+  hasConsent: function () {
+    return ConsentStatus.hasDefaultConsent() || ConsentStatus.get() === 'given'
   },
-  readHash:function(reload){
-    if(typeof(reload)=='undefined') reload = true;
-    if(location.hash=='#consentdenied') {
-      ConsentStatus.set('denied', reload);
-      location.hash = '';
-    } else if(location.hash=='#consentgiven') {
-      ConsentStatus.set('given', reload);
-      location.hash = '';
-    }
+  get: function () {
+    return LocalStorage.get(ConsentStatus.key)
   },
-  set:function(pcs, reload){
-    console.log('ConsentStatus.set', pcs, reload);
-    if(typeof(reload)=='undefined') reload = true;
-    if(pcs!=='given') pcs = 'denied';
-    Cookie.set('player_content_status', pcs);
-    if(pcs=='denied') {
-      window.ALLOW_TRACKING_COOKIES = false;
+  set: function (consent) {
+    if (consent !== 'given')
+      consent = 'denied';
+
+    LocalStorage.set(ConsentStatus.key, consent);
+
+    if (consent === 'denied') {
       Persist.erase('uuid');
+      Persist.erase('session_referer');
       Persist.erase('_visual_swf_referer');
-      Persist.erase('ad_session_id');
-      Persist.erase('playerVolume');
-      if(typeof(aud)==='function') aud('clear');
-    } else {
-      window.ALLOW_TRACKING_COOKIES = false;
-      var uuid = Player.get('uuid');
-      if(uuid) Persist.set('uuid', uuid, 120);
+      if (typeof(aud) === 'function')
+        aud('clear');
     }
-    if(reload) location.reload();
+
+    if (consent === 'given') {
+      var uuid = Player.get('uuid');
+      if (!!uuid)
+        Persist.set('uuid', uuid, 120);
+    }
+
+    // Only reload the page if consent has been changed
+    if (consent !== ConsentStatus.get())
+      location.reload()
   }
 }
-if(window.addEventListener) {
-  window.addEventListener("hashchange", function(){
-    ConsentStatus.readHash(true);
+
+// Listen for consent changes through postMessage
+if (window.addEventListener)
+  window.addEventListener("message", (event) => {
+    if (event.data.cookieConsent !== 'undefined')
+      CookieConsent.set(event.data.cookieConsent ? 'given' : 'denied');
   }, false);
-};
-ConsentStatus.readHash(false);
-
-
