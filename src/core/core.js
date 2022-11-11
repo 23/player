@@ -505,11 +505,17 @@ var LocalStorage = {
 
 // Consent management
 var ConsentStatus = {
-  key: 'tt_player_consent_status',
-  hasTrackingEnabled: () => !!window.ALLOW_TRACKING_COOKIES,
-  hasConsent: () => ConsentStatus.hasTrackingEnabled() && ConsentStatus.get() === 'given',
-  get: () => LocalStorage.get(ConsentStatus.key),
-  set: (consent) => {
+  key: 'player_consent_status',
+  hasDefaultConsent: function () {
+    return !!window.DEFAULT_CONSENT_MODE && window.DEFAULT_CONSENT_MODE === 'given'
+  },
+  hasConsent: function () {
+    return ConsentStatus.hasDefaultConsent() || ConsentStatus.get() === 'given'
+  },
+  get: function () {
+    return LocalStorage.get(ConsentStatus.key)
+  },
+  set: function (consent) {
     if (consent !== 'given')
       consent = 'denied';
 
@@ -517,9 +523,8 @@ var ConsentStatus = {
 
     if (consent === 'denied') {
       Persist.erase('uuid');
+      Persist.erase('session_referer');
       Persist.erase('_visual_swf_referer');
-      Persist.erase('ad_session_id');
-      Persist.erase('playerVolume');
       if (typeof(aud) === 'function')
         aud('clear');
     }
@@ -537,6 +542,8 @@ var ConsentStatus = {
 }
 
 // Listen for consent changes through postMessage
-window.addEventListener("message", (event) => {
-    CookieConsent.set(event.data?.cookieConsent ?? false ? 'given' : 'denied');
-}, false);
+if (window.addEventListener)
+  window.addEventListener("message", (event) => {
+    if (event.data.cookieConsent !== 'undefined')
+      CookieConsent.set(event.data.cookieConsent ? 'given' : 'denied');
+  }, false);
