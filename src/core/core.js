@@ -510,7 +510,7 @@ var ConsentStatus = {
     return !!window.DEFAULT_CONSENT_MODE && window.DEFAULT_CONSENT_MODE === 'given'
   },
   hasConsent: function () {
-    return ConsentStatus.hasDefaultConsent() || ConsentStatus.get() === 'given'
+    return ConsentStatus.get() ? ConsentStatus.get(ConsentStatus.key) === 'given' : ConsentStatus.hasDefaultConsent()
   },
   get: function () {
     return LocalStorage.get(ConsentStatus.key)
