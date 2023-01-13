@@ -32,6 +32,8 @@
   - volume [get/set]
   - supportsVolumeChange [get]
   - quality [get/set]
+  - qualityMenuExpanded [get/set]
+  - subtitleMenuExpanded [get/set]
   - qualities [get]
   - ended [get]
   - seeking [get]
@@ -71,6 +73,7 @@ Player.provide('video-display',
     inlinePlayback: true,
     showThumbnailOnEnd: false,
     qualityMenuExpanded: false,
+    subtitleMenuExpanded: false,
     fullscreenQuality: '',
     verticalPadding: 0,
     horizontalPadding: 0,
@@ -594,6 +597,9 @@ Player.provide('video-display',
       Player.setter('qualityMenuExpanded', function(expand){
         $this.qualityMenuExpanded = expand
       });
+      Player.setter('subtitleMenuExpanded', function(expand){
+        $this.subtitleMenuExpanded = expand
+      });
       Player.setter('autoPlay', function(ap){
         $this.autoPlay = ap;
       });
@@ -657,6 +663,9 @@ Player.provide('video-display',
       Player.getter('qualityMenuExpanded', function(){
           return $this.qualityMenuExpanded
       });
+      Player.getter('subtitleMenuExpanded', function(){
+        return $this.subtitleMenuExpanded
+    });
       Player.getter('ended', function(){
           return ($this.video ? $this.video.getEnded() : false);
       });
