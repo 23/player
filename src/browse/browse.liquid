@@ -5,13 +5,13 @@
       {% for rec in recommendations %}
         {% if rec.type == "stream" %}
           <div class="recommendation recommendation-live recommendation-{{forloop.index0}}" click="$set:browse_live_id:{{rec.live_id}}" aria-label="{{rec.name}}" label="{{rec.name}}" role="button" tabindex="2101">
-            <img src="{{url}}{{rec.browseThumbnailUrl}}" />
+            <img crossorigin="anonymous" src="{{url}}{{rec.browseThumbnailUrl}}" />
             <div class="recommendation-meta"><div class="recommendation-title">Live: {{rec.name | truncate: 40}}</div></div>
           </div>
         {% endif %}
         {% if rec.type == "clip" %}
           <div class="recommendation recommendation-live recommendation-{{forloop.index0}}" click="$set:browse_photo_id:{{rec.photo_id}}" aria-label="{{rec.title}}" label="{{rec.title}}" role="button" tabindex="2102">
-            <img src="{{url}}{{rec.browseThumbnailUrl}}" />
+            <img crossorigin="anonymous" src="{{url}}{{rec.browseThumbnailUrl}}" />
             <div class="recommendation-meta"><div class="recommendation-title">{{rec.title | truncate: 40}}</div><div class="recommendation-duration">{{ rec.video_length | formatTime }}</div></div>
           </div>
         {% endif %}
