@@ -44,6 +44,12 @@ Player.provide('accessibility',
                   Player.set('qualityMenuExpanded', false) 
                   $(document.activeElement).attr("aria-label", Player.translate("collapsed"))
                 }
+                if($(document.activeElement).hasClass('subtitle-button')){
+                  Player.set('subtitleMenuExpanded', false) 
+                  var subtitleOn = Player.get('subtitleLocale') != "";
+                  if(subtitleOn) $(document.activeElement).attr("aria-label", Player.translate("subtitle_on_collapsed"))
+                  else $(document.activeElement).attr("aria-label", Player.translate("subtitle_off_collapsed"))
+                }
                 var parent = $(document.activeElement).parent();
                 if(parent.hasClass('button-container') && parent.get(0)!=active.get(0)) {
                   parent.addClass('button-container-active');
@@ -51,6 +57,10 @@ Player.provide('accessibility',
                   if($(document.activeElement).hasClass('quality-button')){
                     Player.set('qualityMenuExpanded', true)
                     $(document.activeElement).attr("aria-label", Player.translate("expanded"))
+                  }
+                  if($(document.activeElement).hasClass('subtitle-button')){
+                    Player.set('subtitleMenuExpanded', true)
+    $(document.activeElement).attr("aria-label", Player.translate( Player.get('subtitleLocale') != "" ? "subtitle_on_expanded" : "subtitle_off_expanded"))
                   }
                 }
                 // Emulate click

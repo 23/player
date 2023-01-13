@@ -32,6 +32,15 @@ Player.provide('subtitle-button',
     Player.getter('subtitleMenuWidget', function(){
       return (Player.get('localesArray').length>4 ? 'select' : 'menu');
     });
+
+    Player.getter('initialSubtitleAriaLabel', function(){
+      var subtitleExpanded = Player.get('subtitleMenuExpanded') 
+      var subtitleOn = Player.get('subtitleLocale') != "";
+      if (subtitleExpanded && subtitleOn) return "subtitle_on_expanded";
+      if (subtitleExpanded && !subtitleOn) return "subtitle_off_expanded";
+      if (!subtitleExpanded && subtitleOn) return "subtitle_on_collapsed";
+      if (!subtitleExpanded && !subtitleOn) return "subtitle_off_collapsed";
+    });
       
     return $this;
   }
@@ -49,4 +58,17 @@ Player.translate("disable_closed_captioning",{
 });
 Player.translate("none",{
     en: "None"
+});
+
+Player.translate("subtitle_on_expanded",{
+  en: "Captions are turned on. Expanded subtitle popup button. Use tab to navigate between the options. Press enter key to collapse."
+});
+Player.translate("subtitle_off_expanded",{
+  en: "Captions are turned off. Expanded subtitle popup button. Use tab to navigate between the options. Press enter key to collapse."
+});
+Player.translate("subtitle_on_collapsed",{
+  en: "Captions are turned on. Collapsed subtitle popup button. Press enter key to expand."
+});
+Player.translate("subtitle_off_collapsed",{
+  en: "Captions are turned off. Collapsed subtitle popup button. Press enter key to expand."
 });
