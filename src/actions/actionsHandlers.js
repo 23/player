@@ -30,6 +30,7 @@ var registerActionHandlers = function($this){
     $this.showHandlers['image'] = function(action){
         // Create image element and a table to display it in
         var img = $(document.createElement('img'));
+        img.attr({ "crossorigin": "anonymous" });
         var table = $("<table><tr><td></td></tr></table>");
         var cell = table.find("td");
         // Set alignments of cell content
@@ -113,7 +114,7 @@ var registerActionHandlers = function($this){
         }
         // Place product image inside the action container
         if(typeof action.image!='undefined' && action.image!=''){
-            var img = $(document.createElement('img')).attr({'src': Player.get("url")+action.image});
+            var img = $(document.createElement('img')).attr({ "crossorigin": "anonymous", "src": Player.get("url") + action.image });
             img.appendTo(action.container);
         }
         // Append product name and description
