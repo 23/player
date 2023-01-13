@@ -60,9 +60,7 @@ Player.provide('accessibility',
                   }
                   if($(document.activeElement).hasClass('subtitle-button')){
                     Player.set('subtitleMenuExpanded', true)
-                    var subtitleOn = Player.get('subtitleLocale') != "";
-                    if(subtitleOn) $(document.activeElement).attr("aria-label", Player.translate("subtitle_on_expanded"))
-                    else $(document.activeElement).attr("aria-label", Player.translate("subtitle_off_expanded"))
+    $(document.activeElement).attr("aria-label", Player.translate( Player.get('subtitleLocale') != "" ? "subtitle_on_expanded" : "subtitle_off_expanded"))
                   }
                 }
                 // Emulate click
