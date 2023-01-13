@@ -131,7 +131,7 @@ Player.provide('scrubber',
           }
         }catch(e){}
       }
-      
+
       var _thumbnailWidth, _thumbnailHeight;
       $this.showFrame = function(playhead, offsetPct) {
           // The frame is calculated by the playhead position and the number of total frames.
@@ -156,7 +156,7 @@ Player.provide('scrubber',
           if(!Player.get("video_has_frames")){
               return $this.thumbnailContainer.hide();
           }
-          
+
           // Set thumbnail dimensions
           _thumbnailWidth = 94;
           _thumbnailHeight = Player.get("video_frames_height") * _thumbnailWidth / Player.get("video_frames_width");
@@ -168,7 +168,10 @@ Player.provide('scrubber',
           var thumbnail = $("<img />");
           thumbnail.load(function(){
               $this.thumbnailContainer.css({"display": ""});
-          }).attr("src",Player.get("video_frames_src"));
+          }).attr({
+            crossorigin:"anonymous",
+            src: Player.get("video_frames_src")
+          });
           $this.thumbnailContainer.prepend(thumbnail);
 
           // Update and position on mousemove
