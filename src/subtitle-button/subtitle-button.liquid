@@ -26,13 +26,17 @@
     {% endif %}
 
     {% if subtitleMenuWidget == 'menu' %}
-      <ul id="subtitleOptions" class="button-menu button-menu-selection">
+      <ul
+        id="subtitleOptions"
+        class="button-menu button-menu-selection"
+        role="menu">
         {% for l in localesArray %}
           <li {% if l.locale == subtitleLocale %}class="selected"{% endif %} click="$set:subtitleLocale:{{l.locale}}">
             <button
+              {% if l.locale == subtitleLocale %}aria-checked="true"{% else %}aria-checked="false"{% endif %}
               aria-label="{{"closed_captions_in"|translate}} {{l.language}}"
               label="{{"closed_captions_in"|translate}} {{l.language}}"
-              role="button"
+              role="menuitemradio"
               tabindex="1051">
               {{ l.language }}
             </button>
@@ -40,9 +44,10 @@
         {% endfor %}
         <li {% if subtitleLocale == empty %}class="selected"{% endif %} click="$set:subtitleLocale:">
           <button
+            {% if subtitleLocale == empty %}aria-checked="true"{% else %}aria-checked="false"{% endif %}
             aria-label="{{"disable_closed_captioning"|translate}}"
             label="{{"disable_closed_captioning"|translate}}"
-            role="button"
+            role="menuitemradio"
             tabindex="1052">
             {{ "none" | translate }}
           </button>
