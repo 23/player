@@ -354,7 +354,7 @@ Player.provide('design',
       }
       $(window).resize(_resize);
       Player.bind('glue:render', _resize);
-
+      Player.bind('glue:localechange', function(evt,lang){$('html').attr({lang:lang})});
       // Force IE 7,8,9 to constantly check for window resize
       // Needed when iframe is not visible when it loads
       if(/IE (7|8|9)/.test(navigator.userAgent)){
