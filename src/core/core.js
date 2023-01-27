@@ -155,6 +155,7 @@ Player.provide('core',
               PlayerUtilities.normalizeSettings($this.settings);
               $this.mainUrl = "http://"+data.site.domain;
               Player.setDefaultLocale(data.settings.locale);
+              Player.fire('glue:localechange', data.settings.locale)
               Player.fire('player:settings', $this.settings);
           }
       };

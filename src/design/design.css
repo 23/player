@@ -170,7 +170,7 @@ ul.button-menu-selection li.selected:hover button { color: #FFFFFF; }
     opacity: 1;
 }
 .block-tray #tray {
-    bottom: -60px !important;
+    bottom: -61px !important;
 }
 .persist-tray #tray {
     bottom: 0 !important;
@@ -347,7 +347,7 @@ ul.button-menu-selection li.selected:hover button { color: #FFFFFF; }
     position:relative;
 }
 .section {
-    position:absolute; 
+    position:absolute;
     top:0;
     width:8px;
     height:8px; 
