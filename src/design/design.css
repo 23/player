@@ -236,7 +236,7 @@ ul.button-menu-selection li.selected:hover button { color: #000000; }
 
 /* === Module: Scrubber === */
 .scrubber-container {
-    position:relative; 
+    position:relative;
     height:40px;
 }
 .scrubber {
