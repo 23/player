@@ -181,7 +181,7 @@ ul.button-menu-selection li.selected:hover button { color: #FFFFFF; }
     opacity: 1;
 }
 .block-tray #tray {
-    bottom: -41px !important;
+    visibility: hidden;
 }
 .persist-tray #tray {
     bottom: 5px !important;

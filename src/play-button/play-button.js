@@ -57,8 +57,8 @@ Player.provide('play-button',
 
 /* Translations for this module */
 Player.translate("play_video",{
-    en: "Play video"
+    en: "The video is paused. Press enter or space to play the video"
 });
 Player.translate("pause_video",{
-    en: "Pause video"
+    en: "The video is playing. Press enter or space to pause video"
 });
