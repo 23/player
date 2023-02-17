@@ -64,3 +64,7 @@ Player.provide('logo',
       return $this;
   }
 );
+
+Player.translate("logo-link",{
+    en: "You are on a link press enter to open the the link"
+});

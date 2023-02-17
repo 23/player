@@ -9,6 +9,7 @@
 
 Player.provide('accessibility', 
   {
+    showTray: true,
     scrubberColor:'#aaa'
   },
   function(Player,$,opts){
@@ -26,13 +27,16 @@ Player.provide('accessibility',
         if(!document.activeElement||$(document.activeElement).parent('form').length) return;
         if(!e.ctrlKey && !e.altKey && !e.metaKey) {
           var matched = false;
-
+          
           // Click action element
           if(e.charCode==32 || e.keyCode==13 || e.keyCode==32) {
-            if($(document.activeElement).is('body')) {
+            if($(document.activeElement).is('body') || $(document.activeElement).is('video')) {
               // No explicit focus is set, toggle playback.
               Player.set('playing', !Player.get('playing'));
+            } else if ($(document.activeElement).hasClass('muted-auto-play-button')) {
+              $(document.activeElement).click();
             } else {
+              if(Player.get('shortcutsDisabled') ||  !$this.showTray) return;
               // We assume that the Glue item will be r-erendered after click.
               // To accomocate for this, we remember the glue container for the item
               // and reestablish focus afterwards.
@@ -60,7 +64,7 @@ Player.provide('accessibility',
                   }
                   if($(document.activeElement).hasClass('subtitle-button')){
                     Player.set('subtitleMenuExpanded', true)
-    $(document.activeElement).attr("aria-label", Player.translate( Player.get('subtitleLocale') != "" ? "subtitle_on_expanded" : "subtitle_off_expanded"))
+                    $(document.activeElement).attr("aria-label", Player.translate( Player.get('subtitleLocale') != "" ? "subtitle_on_expanded" : "subtitle_off_expanded"))
                   }
                 }
                 // Emulate click
@@ -87,7 +91,7 @@ Player.provide('accessibility',
         }
       });
       $(document).keydown(function(e){
-        if(Player.get('shortcutsDisabled')) return;
+        if(Player.get('shortcutsDisabled') || !$this.showTray) return;
         if(!e.ctrlKey && !e.altKey && !e.metaKey) {
           var matched = false;
           // Increase volume
@@ -190,7 +194,7 @@ Player.provide('accessibility',
 
     // Modify highlight color to match the player scrubber
     Player.bind('player:settings', function(e){
-      PlayerUtilities.mergeSettings($this, ['scrubberColor']);
+      PlayerUtilities.mergeSettings($this, ['showTray', 'scrubberColor']);
       if($this.scrubberColor.length>0) {
         $('head').append('<style>body.tabbed [tabindex]:focus {outline: 3px solid '+$this.scrubberColor+' !important;}</style>');
       }

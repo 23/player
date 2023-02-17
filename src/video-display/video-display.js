@@ -159,6 +159,7 @@ Player.provide('video-display',
           $this.video.load();
           $this.video.showPosterOnEnd = $this.showThumbnailOnEnd;
           $this.video.setProgramDateHandling(true);
+          $this.video.video.attr({'aria-label': Player.translate("video_element_play_pause")});
           $this.displayDevice = $this.video.displayDevice;
       };
       Player.setter('muteVideoElementEvents', function(mvee){$this.muteVideoElementEvents = mvee;});
@@ -920,6 +921,9 @@ Liquid.Template.registerFilter({
   });
 
 /* Translations for this module */
+Player.translate("video_element_play_pause",{
+  en: "You are currently on a video element, press space to play or pause"
+});
 Player.translate("this_player_requires",{
     en: "This player requires a modern web browser with video playback support."
 });

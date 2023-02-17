@@ -170,7 +170,7 @@ ul.button-menu-selection li.selected:hover button { color: #FFFFFF; }
     opacity: 1;
 }
 .block-tray #tray {
-    bottom: -61px !important;
+    visibility: hidden;
 }
 .persist-tray #tray {
     bottom: 0 !important;

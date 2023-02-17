@@ -1,18 +1,30 @@
 {% if supportsVolumeChange %}
   <div class="button-container">
-    <button class="volume-button {% if volumeMuted %}volume-button-off{% else %}volume-button-on{% endif %}" click="$toggle:volumeMuted" aria-label="{% if volumeMuted %}{{"muted"|translate}}{% else %}{{"unmuted"|translate}}{% endif %}"" label="{{"toggle_volume"|translate}}" tabindex="1100">
-    
+    <button
+      class="volume-button {% if volumeMuted %}volume-button-off{% else %}volume-button-on{% endif %}"
+      click="$toggle:volumeMuted"
+      aria-label="{% if volumeMuted %}{{"muted"|translate}}{% else %}{{"unmuted"|translate}}{% endif %}"
+      aria-live="polite"
+      label="{{ "toggle_volume" | translate }}"
+      tabindex="1100">
       <span class="hide-visually">
-        {{"toggle_volume"|translate}}
+        {{ "toggle_volume" | translate }}
       </span>
-      
+
     </button>
 
-    <div class="volume-slider" tabindex="1110" role="slider" aria-label="{{"volume_slider"|translate}}" aria-valuetext="">
+    <div
+      class="volume-slider"
+      tabindex="1110"
+      role="slider"
+      aria-label="{{"volume_slider"|translate}}"
+      aria-valuetext="">
       <div class="volume-slider-inner">
-        <div class="volume-track"><div class="volume-level"></div></div>
+        <div class="volume-track">
+          <div class="volume-level"></div>
+        </div>
       </div>
     </div>
-  
+
   </div>
 {% endif %}
