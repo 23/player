@@ -1,6 +1,11 @@
 {% if playing and volumeMuted and mutedAutoPlay and ambient == false %}
   <div class="muted-auto-play muted-auto-play-{{unmuteButtonPosition|escape}}">
-    <div click="$toggle:mutedAutoPlay" class="muted-auto-play-button muted-auto-play-button-{{unmuteButtonPosition|escape}}" tabindex="990">
+    <div
+      click="$toggle:mutedAutoPlay"
+      class="muted-auto-play-button muted-auto-play-button-{{unmuteButtonPosition|escape}}"
+      aria-label="{{"muted-autoplay"|translate}}"
+      role="button"
+      tabindex="990">
       Click to unmute
     </div>
   </div>
