@@ -22,5 +22,9 @@ Player.provide('muted-auto-play-button',
 
     return $this;
   }
-          
+
 );
+
+Player.translate("muted-autoplay",{
+  en: "Muted volume. Press enter or space key to unmute."
+});
