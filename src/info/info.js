@@ -1,20 +1,20 @@
-/* 
+/*
    MODULE: INFO
    Show title and description for the video
-   
+
    Listens for:
    - player:settings: The app was loaded, time to show the info pane
    - player:video:loaded: New title and description to show
 
    Listens for:
    - player:infoengaged: Info pane was toggles somehow
-   
+
    Answers properties:
    - showDescriptions [get/set]
    - infoTimeout [get]
 */
 
-Player.provide('info', 
+Player.provide('info',
   {
       showDescriptions: true,
       showDomain: true
@@ -44,12 +44,12 @@ Player.provide('info',
           return $this.infoShown;
       });
       Player.getter('showDomain', function(){ return $this.showDomain; });
-     
+
       /* SETTERS */
       Player.setter('infoShown', function(is){
           $this.infoShown = is;
           Player.set("forcer", {type: "block", element: "tray", from: "info", active: $this.infoShown});
-          $this.container.find(".info-overlay").toggle($this.infoShown);
+          $this.container.find(".info-overlay").css({ display: ($this.infoShown ? 'block' : 'none') });
       });
 
       $this.render();
