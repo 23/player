@@ -1,9 +1,8 @@
 {
-    "glueVersion":"1",
-    "name":"player",
-    "object":"Player",
-    "bootstrapModule":"design",
-
+    "glueVersion": "1",
+    "name": "player",
+    "object": "Player",
+    "bootstrapModule": "design",
     "glueLocation": "../glue/",
     "dependencies": [
         "http://video.twentythree.net/resources/um/script/swfobject/swfobject.js",
@@ -11,10 +10,10 @@
         "../eingebaut/eingebaut.js",
         "../visualplatform.js/visualplatform.js"
     ],
-
     "modules": [
         "design",
         "core",
+        "consent-status",
         "status-display",
         "analytics",
         "sharing",
