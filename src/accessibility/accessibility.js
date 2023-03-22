@@ -44,9 +44,13 @@ Player.provide('accessibility',
               if(!document.activeElement.tagName=="BUTTON"||e.keyCode==13||e.charCode==13){
                 // Handle button menus
                 var active = $('.button-container-active').removeClass('button-container-active');
+                if($(document.activeElement).hasClass('playback-rate-button')){
+                  Player.set('playbackRateMenuExpanded', false) 
+                  $(document.activeElement).attr("aria-label", Player.translate("collapsed_playback"))
+                }
                 if($(document.activeElement).hasClass('quality-button')){
                   Player.set('qualityMenuExpanded', false) 
-                  $(document.activeElement).attr("aria-label", Player.translate("collapsed"))
+                  $(document.activeElement).attr("aria-label", Player.translate("collapsed_quality"))
                 }
                 if($(document.activeElement).hasClass('subtitle-button')){
                   Player.set('subtitleMenuExpanded', false) 
@@ -58,9 +62,13 @@ Player.provide('accessibility',
                 if(parent.hasClass('button-container') && parent.get(0)!=active.get(0)) {
                   parent.addClass('button-container-active');
                   $(document.activeElement).mouseenter();
+                  if($(document.activeElement).hasClass('playback-rate-button')){
+                    Player.set('playbackRateMenuExpanded', true)
+                    $(document.activeElement).attr("aria-label", Player.translate("expanded_playback"))
+                  }
                   if($(document.activeElement).hasClass('quality-button')){
                     Player.set('qualityMenuExpanded', true)
-                    $(document.activeElement).attr("aria-label", Player.translate("expanded"))
+                    $(document.activeElement).attr("aria-label", Player.translate("expanded_quality"))
                   }
                   if($(document.activeElement).hasClass('subtitle-button')){
                     Player.set('subtitleMenuExpanded', true)
@@ -135,7 +143,7 @@ Player.provide('accessibility',
             if(document.activeElement.tabIndex == 1100 && !e.shiftKey){
               e.preventDefault();
               showVolumeSlider();
-            }else if(document.activeElement.tabIndex == 1400 && e.shiftKey){
+            }else if(document.activeElement.tabIndex == 1398 && e.shiftKey){
               e.preventDefault();
               showVolumeSlider();
             }else if(document.activeElement.tabIndex == 1110){

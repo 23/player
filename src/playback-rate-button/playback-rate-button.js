@@ -31,7 +31,7 @@ Player.provide('playback-rate-button',
       PlayerUtilities.mergeSettings($this, ['enablePlaybackRate']);
       $this.render(onRender);
     });
-    Player.bind('player:video:playbackratechange', function (e) {
+    Player.bind('player:video:  ', function (e) {
       $this.render(onRender);
     });
 
@@ -75,9 +75,9 @@ Player.translate("playbackRate", {
 Player.translate("playbackRate_2", {
     en: "Play-back speed. Press enter key to change the speed."
 });
-Player.translate("expanded", {
-    en: "Expanded play-back speed options. Use tab to navigate between speeds options. Press enter key to collapse."
+Player.translate("expanded_playback", {
+    en: "Expanded play-back speed options. Use tab to navigate between speed options. Press enter key to collapse."
 });
-Player.translate("collapsed", {
+Player.translate("collapsed_playback", {
     en: "Collapsed play-back speed options. Press enter key to expand."
 });
