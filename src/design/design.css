@@ -360,10 +360,10 @@ ul.button-menu-selection li.selected:hover button { color: #000000; }
     bottom: 0 !important;
 }
 .section {
-    position:absolute; 
+    position:absolute;
     bottom:0;
     width:4px;
-    height:10px; 
+    height:10px;
     margin-left: -2px;
     background: rgb(255,255,255);
     background: rgba(255,255,255,0.72);
@@ -884,9 +884,9 @@ body.overlay-shown .button-container-share {
     background-position: center center;
 }
 .playback-rate-button {
-    background-image: url('playback-rate.png');
-    background-image: linear-gradient(transparent, transparent), url('playback-rate.svg');
-    background-size: 26px;
+    background-image: url('playback-rate-dark.png');
+    background-image: linear-gradient(transparent, transparent), url('playback-rate-dark.svg');
+    background-size: 24px;
 }
 .player-playback-rate-button ul.button-menu li {
     text-align:left;
