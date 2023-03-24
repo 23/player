@@ -622,6 +622,7 @@ Player.provide('video-display',
       });
       Player.setter('playbackRate', function(rate) {
         $this.video && $this.video.setPlaybackRate(rate);
+        Player.fire('player:video:playbackratechange');
       });
 
       /* GETTERS */

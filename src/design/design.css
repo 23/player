@@ -243,7 +243,7 @@ ul.button-menu-selection li.selected:hover button { color: #FFFFFF; }
 
 /* === Module: Scrubber === */
 .scrubber-container {
-    position:relative; 
+    position:relative;
     height:20px;
 }
 .scrubber {
@@ -350,7 +350,7 @@ ul.button-menu-selection li.selected:hover button { color: #FFFFFF; }
     position:absolute;
     top:0;
     width:8px;
-    height:8px; 
+    height:8px;
     margin-left: -4px;
     background: rgb(255,255,255);
     background: rgba(255,255,255,0.72);
@@ -869,6 +869,14 @@ body.overlay-shown .button-container-share {
     background-image: linear-gradient(transparent, transparent), url('cc-active-bar.svg');
     background-size: 30px;
     background-position: center center;
+}
+.playback-rate-button {
+    background-image: url('playback-rate.png');
+    background-image: linear-gradient(transparent, transparent), url('playback-rate.svg');
+    background-size: 24px;
+}
+.player-playback-rate-button ul.button-menu li {
+    text-align:left;
 }
 .audiodescription-button .audiodescription-icon {
     background-image: url('audiodescription.png');
