@@ -31,7 +31,7 @@ Player.provide('playback-rate-button',
       PlayerUtilities.mergeSettings($this, ['enablePlaybackRate']);
       $this.render(onRender);
     });
-    Player.bind('player:video:  ', function (e) {
+    Player.bind('player:video:playbackratechange', function (e) {
       $this.render(onRender);
     });
 
