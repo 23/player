@@ -883,6 +883,14 @@ body.overlay-shown .button-container-share {
     background-size: 30px;
     background-position: center center;
 }
+.playback-rate-button {
+    background-image: url('playback-rate.png');
+    background-image: linear-gradient(transparent, transparent), url('playback-rate.svg');
+    background-size: 26px;
+}
+.player-playback-rate-button ul.button-menu li {
+    text-align:left;
+}
 .audiodescription-button .audiodescription-icon {
     background-image: url('audiodescription-dark.png');
     background-image: linear-gradient(transparent, transparent), url('audiodescription-dark.svg');
