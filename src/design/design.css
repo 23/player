@@ -246,7 +246,7 @@ ul.button-menu-selection li.selected:hover button { color: #FFFFFF; }
 
 /* === Module: Scrubber === */
 .scrubber-container {
-    position:relative; 
+    position:relative;
     height:30px;
 }
 .scrubber {
@@ -870,7 +870,7 @@ body.overlay-shown .button-container-share {
 .playback-rate-button {
     background-image: url('playback-rate.png');
     background-image: linear-gradient(transparent, transparent), url('playback-rate.svg');
-    background-size: 26px;
+    background-size: 22px;
 }
 .player-playback-rate-button ul.button-menu li {
     text-align:left;
