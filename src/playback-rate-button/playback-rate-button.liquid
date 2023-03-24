@@ -1,0 +1,32 @@
+{% if enablePlaybackRate %}
+  <div class="button-container">
+    <button
+      class="playback-rate-button"
+      aria-controls="playbackRateOptions"
+      aria-label="{% if playbackRateMenuExpanded %}{{"expanded_playback"|translate}}{% else %}{{"collapsed_playback"|translate}}{% endif %}"
+      label="{{ "playbackRate" | translate }}"
+      aria-live="polite"
+      tabindex="1398">
+      <span class="hide-visually">
+        {{ "playbackRate" | translate }}
+      </span>
+
+    </button>
+
+    <ul
+      id="playbackRateOptions"
+      class="button-menu button-menu-selection"
+      role="menu">
+      {% for pr in playbackRatesArray %}
+        <li {% if pr.rate == playbackRate %}class="selected"{% endif %} click="$set:playbackRate:{{pr.rate}}; $set:playing:true">
+          <button
+            {% if pr.rate == playbackRate %}aria-checked="true"{% else %}aria-checked="false"{% endif %}
+            aria-label="{{pr.rate}} {{"playbackRate_2"|translate}}"
+            label="{{pr.rate}} {{"playbackRate_2"|translate}}"
+            role="menuitemradio"
+            tabindex="1399">{{ pr.label }}</button>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+{% endif %}
