@@ -1,4 +1,4 @@
-/* 
+/*
    MODULE: ACCESSIBILITY
    Utility module to handle accessibility interaction with the player.
 
@@ -7,7 +7,7 @@
   - focus [set]
 */
 
-Player.provide('accessibility', 
+Player.provide('accessibility',
   {
     showTray: true,
     scrubberColor:'#aaa'
@@ -17,7 +17,7 @@ Player.provide('accessibility',
     $.extend($this, opts);
 
     $this.shortcutsDisabled = false;
-    
+
     /* EVENT HANDLERS */
     var _togglePlayback = function(){};
     $this.loadShortcuts = function(){
@@ -27,7 +27,7 @@ Player.provide('accessibility',
         if(!document.activeElement||$(document.activeElement).parent('form').length) return;
         if(!e.ctrlKey && !e.altKey && !e.metaKey) {
           var matched = false;
-          
+
           // Click action element
           if(e.charCode==32 || e.keyCode==13 || e.keyCode==32) {
             if($(document.activeElement).is('body') || $(document.activeElement).is('video')) {
@@ -45,15 +45,15 @@ Player.provide('accessibility',
                 // Handle button menus
                 var active = $('.button-container-active').removeClass('button-container-active');
                 if($(document.activeElement).hasClass('playback-rate-button')){
-                  Player.set('playbackRateMenuExpanded', false) 
+                  Player.set('playbackRateMenuExpanded', false)
                   $(document.activeElement).attr("aria-label", Player.translate("collapsed_playback"))
                 }
                 if($(document.activeElement).hasClass('quality-button')){
-                  Player.set('qualityMenuExpanded', false) 
+                  Player.set('qualityMenuExpanded', false)
                   $(document.activeElement).attr("aria-label", Player.translate("collapsed_quality"))
                 }
                 if($(document.activeElement).hasClass('subtitle-button')){
-                  Player.set('subtitleMenuExpanded', false) 
+                  Player.set('subtitleMenuExpanded', false)
                   var subtitleOn = Player.get('subtitleLocale') != "";
                   if(subtitleOn) $(document.activeElement).attr("aria-label", Player.translate("subtitle_on_collapsed"))
                   else $(document.activeElement).attr("aria-label", Player.translate("subtitle_off_collapsed"))
@@ -121,13 +121,13 @@ Player.provide('accessibility',
           // Scrub on right arrow
           if(e.keyCode==39) {
             arrowScrubHandler();
-            Player.set('currentTime', Player.get('currentTime')+30);
+            Player.set('currentTime', Player.get('currentTime')+10);
             matched = true;
           }
           // Scrub on left arrow
           if(e.keyCode==37) {
             arrowScrubHandler();
-            Player.set('currentTime', Player.get('currentTime')-30);
+            Player.set('currentTime', Player.get('currentTime')-5);
             matched = true;
           }
           // Disable tray timeout on tab
@@ -139,7 +139,7 @@ Player.provide('accessibility',
               from: "accessibility",
               active: true
             });
-            
+
             if(document.activeElement.tabIndex == 1100 && !e.shiftKey){
               e.preventDefault();
               showVolumeSlider();
@@ -149,7 +149,7 @@ Player.provide('accessibility',
             }else if(document.activeElement.tabIndex == 1110){
               hideVolumeSlider();
             }
-            
+
           }
           if(e.keyCode==27) {
             // Destroy menus
