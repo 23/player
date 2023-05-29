@@ -40,6 +40,7 @@ Player.provide('subtitles',
   function (Player, $, opts) {
     var $this = this;
     $.extend($this, opts);
+    var forceReloadSubtitles = false;
 
     // Properties
     var _reset = function () {
@@ -294,12 +295,12 @@ Player.provide('subtitles',
 
     // Load some list of available subtitles
     // Uses the /api/photo/subtitle/list API endpoint
-    var loadSubtitlesFromApi = function (forceReload) {
+    var loadSubtitlesFromApi = function () {
       var v = Player.get('video');
       var includeDraftSubtitles = ($this.includeDraftSubtitles ? 1 : 0)
       if ((typeof (v.subtitles_p) != 'undefined' && v.subtitles_p) || includeDraftSubtitles) {
         var query = { photo_id: Player.get('video_photo_id'), token: Player.get('video_token'), include_drafts_p: includeDraftSubtitles };
-        if (typeof (forceReload) != 'undefined' && forceReload) {
+        if (forceReloadSubtitles) {
           query['cache_bust'] = Math.random()
         }
         Player.get('api').photo.subtitle.list(
@@ -335,6 +336,7 @@ Player.provide('subtitles',
       loadSubtitlesFromApi(false);
     });
     Player.setter('reloadSubtitles', function () {
+      forceReloadSubtitles = true;
       // clear cache
       localTrackCache = {};
 
@@ -356,8 +358,12 @@ Player.provide('subtitles',
       if (localTrackCache[key]) {
         callback(localTrackCache[key], locale, type);
       } else {
+        var query = { photo_id: Player.get('video_photo_id'), token: Player.get('video_token'), locale: locale, type: type, subtitle_format: 'json' }
+        if (forceReloadSubtitles) {
+          query['cache_bust'] = Math.random()
+        }
         Player.get('api').photo.subtitle.data(
-          { photo_id: Player.get('video_photo_id'), token: Player.get('video_token'), locale: locale, type: type, subtitle_format: 'json' },
+          query,
           function (data) {
             var s = $.parseJSON(data.data.json);
             localTrackCache[key] = s.subtitles;
