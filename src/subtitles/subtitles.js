@@ -294,12 +294,16 @@ Player.provide('subtitles',
 
     // Load some list of available subtitles
     // Uses the /api/photo/subtitle/list API endpoint
-    var loadSubtitlesFromApi = function () {
+    var loadSubtitlesFromApi = function (forceReload) {
       var v = Player.get('video');
       var includeDraftSubtitles = ($this.includeDraftSubtitles ? 1 : 0)
       if ((typeof (v.subtitles_p) != 'undefined' && v.subtitles_p) || includeDraftSubtitles) {
+        var query = { photo_id: Player.get('video_photo_id'), token: Player.get('video_token'), include_drafts_p: includeDraftSubtitles };
+        if (typeof (forceReload) != 'undefined' && forceReload) {
+          query['cache_bust'] = Math.random()
+        }
         Player.get('api').photo.subtitle.list(
-          { photo_id: Player.get('video_photo_id'), token: Player.get('video_token'), include_drafts_p: includeDraftSubtitles },
+          query,
           function (data) {
             // Load a list of languages to support
             $this.hasSubtitles = false;
@@ -328,7 +332,7 @@ Player.provide('subtitles',
     }
     Player.bind('player:video:loaded', function () {
       _reset();
-      loadSubtitlesFromApi();
+      loadSubtitlesFromApi(false);
     });
     Player.setter('reloadSubtitles', function () {
       // clear cache
@@ -342,8 +346,7 @@ Player.provide('subtitles',
         $this.defaultAudioDescripionLocale = $this.audioDescriptionLocale;
       }
       _reset();
-      loadSubtitlesFromApi();
-
+      loadSubtitlesFromApi(true);
     });
 
     // Load track data from the API with local caching
