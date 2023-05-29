@@ -40,6 +40,7 @@ Player.provide('subtitles',
   function (Player, $, opts) {
     var $this = this;
     $.extend($this, opts);
+    var forceReloadSubtitles = false;
 
     // Properties
     var _reset = function () {
@@ -298,8 +299,12 @@ Player.provide('subtitles',
       var v = Player.get('video');
       var includeDraftSubtitles = ($this.includeDraftSubtitles ? 1 : 0)
       if ((typeof (v.subtitles_p) != 'undefined' && v.subtitles_p) || includeDraftSubtitles) {
+        var query = { photo_id: Player.get('video_photo_id'), token: Player.get('video_token'), include_drafts_p: includeDraftSubtitles };
+        if (forceReloadSubtitles) {
+          query['cache_bust'] = Math.random()
+        }
         Player.get('api').photo.subtitle.list(
-          { photo_id: Player.get('video_photo_id'), token: Player.get('video_token'), include_drafts_p: includeDraftSubtitles },
+          query,
           function (data) {
             // Load a list of languages to support
             $this.hasSubtitles = false;
@@ -328,9 +333,10 @@ Player.provide('subtitles',
     }
     Player.bind('player:video:loaded', function () {
       _reset();
-      loadSubtitlesFromApi();
+      loadSubtitlesFromApi(false);
     });
     Player.setter('reloadSubtitles', function () {
+      forceReloadSubtitles = true;
       // clear cache
       localTrackCache = {};
 
@@ -342,8 +348,7 @@ Player.provide('subtitles',
         $this.defaultAudioDescripionLocale = $this.audioDescriptionLocale;
       }
       _reset();
-      loadSubtitlesFromApi();
-
+      loadSubtitlesFromApi(true);
     });
 
     // Load track data from the API with local caching
@@ -353,8 +358,12 @@ Player.provide('subtitles',
       if (localTrackCache[key]) {
         callback(localTrackCache[key], locale, type);
       } else {
+        var query = { photo_id: Player.get('video_photo_id'), token: Player.get('video_token'), locale: locale, type: type, subtitle_format: 'json' }
+        if (forceReloadSubtitles) {
+          query['cache_bust'] = Math.random()
+        }
         Player.get('api').photo.subtitle.data(
-          { photo_id: Player.get('video_photo_id'), token: Player.get('video_token'), locale: locale, type: type, subtitle_format: 'json' },
+          query,
           function (data) {
             var s = $.parseJSON(data.data.json);
             localTrackCache[key] = s.subtitles;
