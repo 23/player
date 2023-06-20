@@ -298,6 +298,7 @@ Player.provide('subtitles',
     var loadSubtitlesFromApi = function () {
       var v = Player.get('video');
       var includeDraftSubtitles = ($this.includeDraftSubtitles ? 1 : 0)
+      if (includeDraftSubtitles) forceReloadSubtitles = true;
       if ((typeof (v.subtitles_p) != 'undefined' && v.subtitles_p) || includeDraftSubtitles) {
         var query = { photo_id: Player.get('video_photo_id'), token: Player.get('video_token'), include_drafts_p: includeDraftSubtitles };
         if (forceReloadSubtitles) {
