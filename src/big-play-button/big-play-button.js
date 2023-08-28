@@ -1,9 +1,9 @@
-/* 
+/*
    MODULE: BIG PLAY BUTTON
    Show a play/pause button
 */
 
-Player.provide('big-play-button', 
+Player.provide('big-play-button',
   {
     hideBigPlay: false,
     bigPlaySource: ''
@@ -22,8 +22,8 @@ Player.provide('big-play-button',
     });
 
     // Update element on play, pause and more
-    Player.bind('player:video:loaded player:video:play player:video:seeked player:video:pause player:video:ended player:action:loaded player:action:dispatched', function(e){
-        _updateBigPlay();
+    Player.bind('player:video:loaded player:video:loadstart player:video:play player:video:seeked player:video:pause player:video:ended player:action:loaded player:action:dispatched', function (e) {
+      _updateBigPlay();
     });
 
     /* GETTERS */
@@ -48,11 +48,12 @@ Player.provide('big-play-button',
     var _updateBigPlay = function(){
         var show = (
             !Player.get("playing") &&
+            !Player.get("seeking") &&
             Player.get("video_playable") &&
             !Player.get("actionsShown") &&
             !$this.hideBigPlay
         );
-        if(show != _prevShow){
+        if (show != _prevShow) {
             while(_bigPlayTimeouts.length > 0){
                 clearTimeout(_bigPlayTimeouts.pop());
             }
@@ -94,8 +95,8 @@ Player.provide('big-play-button',
       });
     };
     $(window).resize(_resize);
-      
+
     return $this;
   }
-          
+
 );
