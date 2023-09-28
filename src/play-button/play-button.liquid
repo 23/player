@@ -5,7 +5,7 @@
     aria-label="{% if playing %}{{"pause_video"|translate}}{% else %}{{"play_video"|translate}}{% endif %}"
     aria-live="polite"
     label="{% if playing %}{{"pause_video"|translate}}{% else %}{{"play_video"|translate}}{% endif %}"
-    tabindex="1000">
+    tabindex="0">
     {% if playing %}
       <span class="hide-visually">
         {{ "pause_video" | translate }}
