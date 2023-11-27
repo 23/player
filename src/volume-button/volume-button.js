@@ -32,7 +32,7 @@ Player.provide('volume-button',
         if(Player.get("volumeMuted")){
             _buttonClass = "volume-button-off";
             _arialabel = Player.translate("muted")
-        }else{
+        }else{ 
             _buttonClass = "volume-button-on";
             _arialabel = Player.translate("unmuted")
         }

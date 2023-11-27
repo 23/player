@@ -1,8 +1,15 @@
 <div class="button-container button-container-share">
-  <button class="share-button" click="$toggle:showSharing" aria-controls="sharing" aria-label="{{"share_video"|translate}}" label="{{"share_video"|translate}}" aria-expanded="{% if showSharing %}true{% else %}false{% endif %}" tabindex="1800">
-  
+  <button
+    class="share-button"
+    click="$toggle:showSharing"
+    aria-controls="sharing"
+    aria-label="{{"share_video"|translate}}"
+    label="{{"share_video"|translate}}"
+    aria-expanded="{% if showSharing %}true{% else %}false{% endif %}"
+    tabindex="0">
+
     <span class="hide-visually">
-      {{"share_video"|translate}}
+      {{ "share_video" | translate }}
     </span>
 
   </button>
