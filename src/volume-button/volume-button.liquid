@@ -6,7 +6,7 @@
       aria-label="{% if volumeMuted %}{{"muted"|translate}}{% else %}{{"unmuted"|translate}}{% endif %}"
       aria-live="polite"
       label="{{ "toggle_volume" | translate }}"
-      tabindex="1100">
+      tabindex="0">
       <span class="hide-visually">
         {{ "toggle_volume" | translate }}
       </span>
@@ -15,7 +15,6 @@
 
     <div
       class="volume-slider"
-      tabindex="1110"
       role="slider"
       aria-label="{{"volume_slider"|translate}}"
       aria-valuetext="">

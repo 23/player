@@ -6,7 +6,7 @@
       aria-label="{% if qualityMenuExpanded %}{{"expanded_quality"|translate}}{% else %}{{"collapsed_quality"|translate}}{% endif %}"
       label="{{ "quality" | translate }}"
       aria-live="polite"
-      tabindex="1400">
+      tabindex="0">
       <span class="hide-visually">
         {{ "quality" | translate }}
       </span>
@@ -24,7 +24,7 @@
             aria-label="{{q.quality}} {{"quality_2"|translate}}"
             label="{{q.quality}} {{"quality_2"|translate}}"
             role="menuitemradio"
-            tabindex="1401">{{ q.displayQuality }}</button>
+            tabindex="0">{{ q.displayQuality }}</button>
         </li>
       {% endfor %}
     </ul>

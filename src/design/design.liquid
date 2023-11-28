@@ -2,15 +2,13 @@
 {% player accessibility %}
 {% player consent-status %}
 
-<div id="player">
+  <div id="player">
   <!-- Video display -->
   {% player video-display %}
   {% player actions %}
   {% player info %}
 
   {% player slides %}
-
-  {% player big-play-button %}
 
   {% player live-preview %}
 
@@ -22,30 +20,34 @@
   {% player loop %}
   {% player sharing %}
 
+  {% player big-play-button %}
+
   {% player video-360-button %}
   {% player muted-auto-play-button %}
 
   <!-- Control bar or tray -->
   <div id="tray">
     <div id="traysub">
-        <div class="tray-left">
+      <div class="tray-left">
         {% player play-button %}
-      </div>
-
-      <div class="tray-right">
-        {% player fullscreen-button %}
-        {% player quality-button %}
-        {% player playback-rate-button %}
-        {% player volume-button %}
-        {% player audiodescription-button %}
-        {% player subtitle-button %}
-        {% player slides-button %}
       </div>
 
       <div class="tray-scrubber">
         {% player scrubber %}
         {% player sections %}
       </div>
+
+      <div class="tray-right">
+        {% player slides-button %}
+        {% player subtitle-button %}
+        {% player audiodescription-button %}
+        {% player volume-button %}
+        {% player playback-rate-button %}
+        {% player quality-button %}
+        {% player fullscreen-button %}
+      </div>
+
+
 
       <div class="clear"></div>
     </div>

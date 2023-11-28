@@ -1,11 +1,16 @@
 {% if supportsFullscreen %}
   <div class="button-container">
-    <button class="tray-button button fullscreen-button {% if fullscreen %}fullscreen-button-off{% else %}fullscreen-button-on{% endif %}" click="$toggle:fullscreen" aria-label="{{"toggle_fullscreen"|translate}}" label="{{"toggle_fullscreen"|translate}}" tabindex="1700">
-    
+    <button
+      class="tray-button button fullscreen-button {% if fullscreen %}fullscreen-button-off{% else %}fullscreen-button-on{% endif %}"
+      click="$toggle:fullscreen"
+      aria-label="{{"toggle_fullscreen"|translate}}"
+      label="{{"toggle_fullscreen"|translate}}"
+      tabindex="0">
+
       <span class="hide-visually">
-        {{"toggle_fullscreen"|translate}}
+        {{ "toggle_fullscreen" | translate }}
       </span>
-      
-  </button>
-</div>
+
+    </button>
+  </div>
 {% endif %}

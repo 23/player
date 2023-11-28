@@ -183,11 +183,8 @@ ul.button-menu-selection li.selected:hover button { color: #FFFFFF; }
 .block-tray #tray {
     visibility: hidden;
 }
-.persist-tray #tray {
-    bottom: 5px !important;
-    opacity: 1 !important;
-}
 #traysub {
+    display: flex;
     max-width: 1200px;
     margin: 0 5px;
     margin: 0 auto;
@@ -201,6 +198,7 @@ ul.button-menu-selection li.selected:hover button { color: #FFFFFF; }
     }
 }
 .tray-left {
+    flex: 0;
     float:left;
 }
 .tray-left .button-container button {
@@ -209,19 +207,19 @@ ul.button-menu-selection li.selected:hover button { color: #FFFFFF; }
     transition: background-color 200ms linear;
 }
 .tray-right {
-    padding-right: 0px;
-}
-.tray-right .button-container { /* buttons right of scrubber */
-    float:right;
+    display: flex;
+    float: right;
+    flex: 0;
+    padding-right: 5px;
 }
 .tray-right .button-container > button, .tray-right .button-container > button img {
     width: 30px;
     height: 30px;
 }
 .tray-scrubber {  /* scrubber position */
+    flex: 1;
     position: relative;
     margin: 0;
-    margin-left: 35px; /* Width of play/pause button */
     margin-right: 0; /* Width of buttons to the right of the scrubber. Updated in js. */
     padding: 0 10px;
     border-radius: 2px;
@@ -407,6 +405,7 @@ ul.button-menu-selection li.selected:hover button { color: #FFFFFF; }
 
 /* === Module: Volume button === */
 .volume-slider {
+    visibility: hidden;
     position: absolute;
     bottom: 100%;
     left: 0;
@@ -416,7 +415,11 @@ ul.button-menu-selection li.selected:hover button { color: #FFFFFF; }
     padding-bottom: 0;
     transition: height 200ms ease, padding-bottom 200ms ease;
 }
-.tray-shown .button-container:hover .volume-slider, .tray-shown .button-container-active .volume-slider {
+.tray-shown .button-container:hover .volume-slider, 
+.tray-shown .button-container:focus .volume-slider, 
+.tray-shown .button-container:focus-visible .volume-slider, 
+.tray-shown .button-container:focus-within .volume-slider{
+    visibility: visible;
     display: block;
     height: 100px;
     padding-bottom: 5px;
@@ -474,7 +477,6 @@ ul.button-menu-selection li.selected:hover button { color: #FFFFFF; }
     right: 0;
     padding: 7% 6%;
     background:transparent url(info-gradient.png) left bottom repeat-x;
-    *background:rgb(0,0,0); /* IE 7 */
     background-size: auto 100%;
 }
 .info-overlay-live {
