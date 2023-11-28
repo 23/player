@@ -197,6 +197,9 @@ ul.button-menu-selection li.selected:hover button { color: #FFFFFF; }
     height: 36px;
     transition: background-color 200ms linear;
 }
+.tray-right{
+    display: inline-flex;
+}
 .tray-right .button-container { /* buttons right of scrubber */
     display: flex;
     float: right;
