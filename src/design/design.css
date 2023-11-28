@@ -168,6 +168,7 @@ ul.button-menu-selection li.selected:hover button { color: #000000; }
     display:none !important;
 }
 #traysub {
+    display: flex;
     padding-bottom: 10px;
     margin: 0 auto;
     background: transparent;
@@ -193,18 +194,6 @@ ul.button-menu-selection li.selected:hover button { color: #000000; }
 }
 .block-tray #tray {
     visibility: hidden;
-}
-#traysub {
-    display: flex;
-    max-width: 1200px;
-    margin: 0 auto;
-    background: rgb(0,0,0);
-    background: rgba(0,0,0,0.72);
-}
-@media all and (min-width: 1200px) {
-    #traysub {
-        width: 800px;
-    }
 }
 .tray-left {
     flex: 0;
