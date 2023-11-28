@@ -1,15 +1,18 @@
 <div id="sharing" class="sharing-container">
-  
+
   <div class="sharing-info">
-    <h3>{{"share"|translate}} "{{video_title}}"</h3>
-    <a href="{{videoLink}}" target="_blank" class="sharing-link selectable">{{videoLink}}</a>
+    <h3>{{ "share" | translate }} "{{ video_title }}"</h3>
+    <a
+      href="{{videoLink}}"
+      target="_blank"
+      class="sharing-link selectable">{{ videoLink }}</a>
     <div class="current-time-select">
       {% if is_dev %}
-        <div class="checkbox"><img src="design/checkmark.png" srcset="design/checkmark.svg"  /></div>
+        <div class="checkbox"><img src="design/checkmark.png" srcset="design/checkmark.svg" /></div>
       {% else %}
-        <div class="checkbox"><img src="checkmark.png" srcset="checkmark.svg"  /></div>
+        <div class="checkbox"><img src="checkmark.png" srcset="checkmark.svg" /></div>
       {% endif %}
-      {{"share_from_current_time"|translate}}
+      {{ "share_from_current_time" | translate }}
     </div>
   </div>
 
@@ -18,36 +21,58 @@
   </div>
 
   <table class="share-buttons-container">
-    <tr><td class="share-buttons">
-      <div class="button-container">
-        <button click="$set:shareTo:facebook" class="facebook-button" aria-label="{{"share_on_facebook"|translate}}" label="{{"share_on_facebook"|translate}}" tabindex="1303">
-          {{"share_on_facebook"|translate}}
-        </button>
-      </div>
-      <div class="button-container">
-        <button click="$set:shareTo:twitter" class="twitter-button" aria-label="{{"tweet_this_video"|translate}}" label="{{"tweet_this_video"|translate}}" tabindex="1304">
-          {{"tweet_this_video"|translate}}
-        </button>
-      </div>
-      <div class="button-container">
-        <button click="$set:shareTo:linkedin" class="linkedin-button" aria-label="Share on LinkedIn" label="Share on LinkedIn" tabindex="1304">
-          {{"share_on_linkedin"|translate}}
-        </button>
-      </div>
-      {% if source != "site" %}
-      <div class="button-container">
-        <button click="$set:shareTo:site" class="more-button" aria-label="{{"see_on_site"|translate}}" label="{{"see_on_site"|translate}}" tabindex="1306">
-          {{"more_sharing_options"|translate}}
-        </button>
-      </div>
-      {% endif %}
-      {% if showDownload and downloadUrl != "" %}
-      <div class="button-container">
-        <button onclick="window.location = '{{downloadUrl}}';" class="download-button">
-          {{"download_video"|translate}}
-        </button>
-      </div>
-      {% endif %}
-    </td></tr>
+    <tr>
+      <td class="share-buttons">
+        <div class="button-container">
+          <button
+            click="$set:shareTo:facebook"
+            class="facebook-button"
+            aria-label="{{"share_on_facebook"|translate}}"
+            label="{{"share_on_facebook"|translate}}"
+            tabindex="0">
+            {{ "share_on_facebook" | translate }}
+          </button>
+        </div>
+        <div class="button-container">
+          <button
+            click="$set:shareTo:twitter"
+            class="twitter-button"
+            aria-label="{{"tweet_this_video"|translate}}"
+            label="{{"tweet_this_video"|translate}}"
+            tabindex="0">
+            {{ "tweet_this_video" | translate }}
+          </button>
+        </div>
+        <div class="button-container">
+          <button
+            click="$set:shareTo:linkedin"
+            class="linkedin-button"
+            aria-label="Share on LinkedIn"
+            label="Share on LinkedIn"
+            tabindex="0">
+            {{ "share_on_linkedin" | translate }}
+          </button>
+        </div>
+        {% if source != "site" %}
+          <div class="button-container">
+            <button
+              click="$set:shareTo:site"
+              class="more-button"
+              aria-label="{{"see_on_site"|translate}}"
+              label="{{"see_on_site"|translate}}"
+              tabindex="0">
+              {{ "more_sharing_options" | translate }}
+            </button>
+          </div>
+        {% endif %}
+        {% if showDownload and downloadUrl != "" %}
+          <div class="button-container">
+            <button onclick="window.location = '{{downloadUrl}}';" class="download-button">
+              {{ "download_video" | translate }}
+            </button>
+          </div>
+        {% endif %}
+      </td>
+    </tr>
   </table>
 </div>
