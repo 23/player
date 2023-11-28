@@ -160,7 +160,6 @@ Player.provide('video-display',
           $this.video.load();
           $this.video.showPosterOnEnd = $this.showThumbnailOnEnd;
           $this.video.setProgramDateHandling(true);
-          $this.video.video.attr({'aria-label': Player.translate("video_element_play_pause")});
           $this.displayDevice = $this.video.displayDevice;
       };
       Player.setter('muteVideoElementEvents', function(mvee){$this.muteVideoElementEvents = mvee;});
@@ -344,6 +343,7 @@ Player.provide('video-display',
 
         // We're ready now
         Player.fire('player:video:ready', $this.video);
+        $this.video.video.attr({'aria-label': Player.translate("video_element_play_pause"), src: Player.get('src')});
       }
       Player.bind('player:video:loaded', $this.loadContent);
 

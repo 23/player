@@ -62,3 +62,6 @@ Player.translate("play_video",{
 Player.translate("pause_video",{
     en: "The video is playing. Press enter or space to pause video"
 });
+Player.translate("replay_video", {
+  en: "The video has ended. Press enter or space to play it again.",
+});

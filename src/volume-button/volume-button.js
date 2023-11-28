@@ -78,6 +78,7 @@ Player.provide('volume-button',
         height: (Player.get("volume")*100)+"%"
       });
       $this.volumeContainer.attr("aria-valuetext", (Player.get("volume")*100)+"%")
+      $this.volumeContainer.attr("aria-valuenow", (Player.get("volume")*100))
     };
       
     return $this;
