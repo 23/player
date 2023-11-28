@@ -210,7 +210,6 @@ ul.button-menu-selection li.selected:hover button { color: #FFFFFF; }
     display: flex;
     float: right;
     flex: 0;
-    padding-right: 5px;
 }
 .tray-right .button-container > button, .tray-right .button-container > button img {
     width: 30px;
