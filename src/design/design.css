@@ -194,20 +194,20 @@ ul.button-menu-selection li.selected:hover button { color: #000000; }
 .block-tray #tray {
     visibility: hidden;
 }
-.block-tray .tray-left,
-.block-tray .tray-right,
-.block-tray .scrubber-container .time-container {
-    opacity: 0 !important;
+#traysub {
+    display: flex;
+    max-width: 1200px;
+    margin: 0 auto;
+    background: rgb(0,0,0);
+    background: rgba(0,0,0,0.72);
 }
-.persist-tray #tray {
-    bottom: 0 !important;
-}
-.persist-tray .tray-left,
-.persist-tray .tray-right,
-.persist-tray .scrubber-container .time-container {
-    opacity: 1 !important;
+@media all and (min-width: 1200px) {
+    #traysub {
+        width: 800px;
+    }
 }
 .tray-left {
+    flex: 0;
     float:left;
 }
 .tray-left .button-container button {
@@ -215,19 +215,20 @@ ul.button-menu-selection li.selected:hover button { color: #000000; }
     transition: background-color 200ms linear;
 }
 .tray-right {
+    display: flex;
+    float: right;
+    flex: 0;
     padding-right: 5px;
-}
-.tray-right .button-container { /* buttons right of scrubber */
-    float:right;
 }
 .tray-right .button-container > button, .tray-right .button-container > button img {
     width: 30px;
     height: 40px;
 }
 .tray-scrubber {  /* scrubber position */
+    flex: 1;
     position: relative;
     margin: 0;
-    margin-left: 71px; /* Width of play/pause button */
+    /* margin-left: 71px; */
     margin-right: 0; /* Width of buttons to the right of the scrubber. Updated in js. */
     padding: 0 10px;
 }
@@ -423,6 +424,7 @@ ul.button-menu-selection li.selected:hover button { color: #000000; }
 
 /* === Module: Volume button === */
 .volume-slider {
+    visibility: hidden;
     position: absolute;
     bottom: 100%;
     left: 0;
@@ -433,7 +435,11 @@ ul.button-menu-selection li.selected:hover button { color: #000000; }
     overflow: hidden;
     transition: height 200ms ease;
 }
-.tray-shown .button-container:hover .volume-slider, .tray-shown .button-container-active .volume-slider {
+.tray-shown .button-container:hover .volume-slider, 
+.tray-shown .button-container:focus .volume-slider, 
+.tray-shown .button-container:focus-visible .volume-slider, 
+.tray-shown .button-container:focus-within .volume-slider{
+    visibility: visible;
     display: block;
     height: 100px;
 }
@@ -488,7 +494,6 @@ ul.button-menu-selection li.selected:hover button { color: #000000; }
     right: 0;
     padding: 7% 6%;
     background:transparent url(info-gradient.png) left bottom repeat-x;
-    *background:rgb(0,0,0); /* IE 7 */
     background-size: auto 100%;
 }
 .info-overlay-live {

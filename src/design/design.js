@@ -341,20 +341,6 @@ Player.provide('design',
           }
       });
 
-      // RESIZE HANDLING
-      var _resize = function(){
-          // This is a pretty fancy fix for an IE7 bug:
-          // Empty elements are given layout, causing all kinds of buttons the .tray-right
-          // and tray-left to go flying. Very litterally: Hide empty stuff, show other.
-          $('.tray-right>div:empty').hide();
-          $('.tray-right>div:parent').show();
-
-          var buttonWidth = 30;
-          var r = $('.tray-right .button-container > button:visible').length * buttonWidth + 5;
-          $('.tray-scrubber').css({marginRight:r+'px'});
-      }
-      $(window).resize(_resize);
-      Player.bind('glue:render', _resize);
       Player.bind('glue:localechange', function(evt,lang){$('html').attr({lang:lang})});
       // Force IE 7,8,9 to constantly check for window resize
       // Needed when iframe is not visible when it loads

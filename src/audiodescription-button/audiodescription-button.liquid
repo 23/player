@@ -1,9 +1,14 @@
 {% if hasAudioDescriptions %}
   <div class="button-container">
-    <button class="audiodescription-button{% if audioDescriptionLocale != empty %} audiodescription-button-active{% endif %}" aria-controls="audioDescriptionOptions" aria-label="{{"audiodescriptions"|translate}}" label="{{"audiodescriptions"|translate}}" tabindex="1060">
-      
+    <button
+      class="audiodescription-button{% if audioDescriptionLocale != empty %} audiodescription-button-active{% endif %}"
+      aria-controls="audioDescriptionOptions"
+      aria-label="{{"audiodescriptions"|translate}}"
+      label="{{"audiodescriptions"|translate}}"
+      tabindex="0">
+
       <span class="hide-visually">
-        {{"audiodescriptions"|translate}}
+        {{ "audiodescriptions" | translate }}
       </span>
 
       <div class="audiodescription-icon"></div>
@@ -13,9 +18,9 @@
     {% if audioDescriptionsMenuWidget == 'select' %}
       <select onchange="Player.set('audioDescriptionLocale', this.options[this.selectedIndex].value);">
         {% for l in audioDescriptionTracksArray %}
-          <option {% if l.locale == audioDescriptionLocale %}selected{% endif %} value="{{l.locale}}">{{l.language}}</option>
+          <option {% if l.locale == audioDescriptionLocale %}selected{% endif %} value="{{l.locale}}">{{ l.language }}</option>
         {% endfor %}
-        <option {% if audioDescriptionLocale == empty %}selected{% endif %} value="">{{"none"|translate}}</option>
+        <option {% if audioDescriptionLocale == empty %}selected{% endif %} value="">{{ "none" | translate }}</option>
       </select>
     {% endif %}
 
@@ -23,14 +28,22 @@
       <ul id="audioDescriptionOptions" class="button-menu button-menu-selection">
         {% for l in audioDescriptionTracksArray %}
           <li {% if l.locale == audioDescriptionLocale %}class="selected"{% endif %} click="$set:audioDescriptionLocale:{{l.locale}}">
-            <button aria-label="{{"audio_descriptions_in"|translate}} {{l.language}}" label="{{"audio_descriptions_in"|translate}} {{l.language}}" role="button" tabindex="1061">
-              {{l.language}}
+            <button
+              aria-label="{{"audio_descriptions_in"|translate}} {{l.language}}"
+              label="{{"audio_descriptions_in"|translate}} {{l.language}}"
+              role="button"
+              tabindex="0">
+              {{ l.language }}
             </button>
           </li>
         {% endfor %}
         <li {% if audioDescriptionLocale == empty %}class="selected"{% endif %} click="$set:audioDescriptionLocale:">
-          <button aria-label="{{"disable_audio_descriptions"|translate}}" label="{{"disable_audio_descriptions"|translate}}" role="button" tabindex="1062">
-            {{"none"|translate}}
+          <button
+            aria-label="{{"disable_audio_descriptions"|translate}}"
+            label="{{"disable_audio_descriptions"|translate}}"
+            role="button"
+            tabindex="0">
+            {{ "none" | translate }}
           </button>
         </li>
       </ul>
