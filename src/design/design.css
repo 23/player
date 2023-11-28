@@ -195,9 +195,10 @@ ul.button-menu-selection li.selected:hover button { color: #FFFFFF; }
     transition: background-color 200ms linear;
 }
 .tray-right-container {
+    flex: 1;
     position: relative;
     height: 50px;
-    margin-left: 65px;
+    margin-left: 5px;
     background: rgb(0,0,0);
     background: rgba(0,0,0,0.6);
 }
@@ -213,7 +214,7 @@ ul.button-menu-selection li.selected:hover button { color: #FFFFFF; }
 }
 .tray-scrubber {  /* scrubber position */
     flex: 1;
-    position: relative;
+    position: absolute;
     left: 0;
     right: 0;
     bottom: 0;
