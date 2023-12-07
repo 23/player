@@ -144,7 +144,7 @@ Player.provide('core',
       $this.streams = [];
       $this.clips = [];
 
-      Player.bind('glue:localechange', function (locale) {
+      Player.bind('glue:localechange', function (e, locale) {
         if (locale) {
           var htmlLang = locale.toLowerCase().replace(/_/, '-');
           $('html').attr({lang: htmlLang})
