@@ -144,8 +144,15 @@ Player.provide('core',
       $this.streams = [];
       $this.clips = [];
 
-      $this.onSettingsLoaded = function(data){
-          if(data.status=='ok') {
+      Player.bind('glue:localechange', function (locale) {
+        if (locale) {
+          var htmlLang = locale.toLowerCase().replace(/_/, '-');
+          $('html').attr({lang: htmlLang})
+        }
+      });
+
+      $this.onSettingsLoaded = function (data) {
+          if (data.status == 'ok') {
               // Save //TODO: he user's permission level
               $this.permission_level = data.permission_level;
               // Merge in settings API, then from player parameter
