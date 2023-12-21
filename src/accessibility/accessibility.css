@@ -1,9 +1,11 @@
 [tabindex]:focus {
    outline: none !important;
 }
+
 *:active {
    outline: none !important;
 }
+
 body.tabbed [tabindex]:focus {
    outline: 3px solid #aaa !important;
    outline-offset:-3px;
