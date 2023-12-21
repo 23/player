@@ -4,7 +4,6 @@
       class="volume-button {% if volumeMuted %}volume-button-off{% else %}volume-button-on{% endif %}"
       click="$toggle:volumeMuted"
       aria-label="{% if volumeMuted %}{{"muted"|translate}}{% else %}{{"unmuted"|translate}}{% endif %}"
-      aria-live="polite"
       label="{{ "toggle_volume" | translate }}"
       tabindex="0">
       <span class="hide-visually">
@@ -16,8 +15,10 @@
     <div
       class="volume-slider"
       role="slider"
+      tabindex="0"
       aria-label="{{"volume_slider"|translate}}"
-      aria-valuetext="">
+      aria-valuetext=""
+      aria-valuenow="">
       <div class="volume-slider-inner">
         <div class="volume-track">
           <div class="volume-level"></div>

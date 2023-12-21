@@ -66,5 +66,5 @@ Player.provide('logo',
 );
 
 Player.translate("logo-link",{
-    en: "You are on a link press enter to open the the link"
+    en: "You are on a link press enter to open the company website",
 });
