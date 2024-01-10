@@ -15,11 +15,13 @@
   - identityAllowClose [get]
   - identityCountdownText [get]
   - closeIdentity [set]
+  - showActions  [get]
   - videoActions [get] (before, relative time from 0 to 1, after)
 */
 
 Player.provide('actions',
   {
+    showActions: 1,
     identityCountdown: false,
     identityAllowClose: false,
     identityAllowCloseAfterSeconds: 0,
@@ -35,10 +37,10 @@ Player.provide('actions',
     $this.hideHandlers = {};
     $this.dispatcherActive = false;
     $this.activeActions = {};
-      
+
     // Build default properties and merge in player settings
     Player.bind('player:settings', function(){
-        PlayerUtilities.mergeSettings($this, ['identityCountdown', 'identityAllowClose', 'identityAllowCloseAfterSeconds', 'identityCountdownTextSingular', 'identityCountdownTextPlural', 'closeCountdownTextSingular', 'closeCountdownTextPlural', 'start']);
+        PlayerUtilities.mergeSettings($this, ['showActions', 'identityCountdown', 'identityAllowClose', 'identityAllowCloseAfterSeconds', 'identityCountdownTextSingular', 'identityCountdownTextPlural', 'closeCountdownTextSingular', 'closeCountdownTextPlural', 'start']);
         $this.identityAllowCloseAfterSeconds = parseInt($this.identityAllowCloseAfterSeconds,10);
     });
 
@@ -257,7 +259,7 @@ Player.provide('actions',
       $.each(Player.get("videoActions"), function(i, action){
         isVideo = (action.type == "video" || action.type == "ad");
         if(isVideo && action.normalizedStartTime == position) {
-          foundRoll = true;            
+          foundRoll = true;
           $this.createActionContainer(action);
           return $this.showHandlers[action.type](action);
         }
@@ -367,8 +369,13 @@ Player.provide('actions',
 
     // GETTERS EXPOSING GENERIC PROPERTIES OF THE MODULE
     Player.getter('videoActions', function(){
+      if(!Player.get('showActions')) return;
+
       var v = Player.get('video');
-      return (v && v.actions ? v.actions : {});
+      return (v && v.actions ? v.actions : []);
+    });
+    Player.getter('showActions', function(){
+      return $this.showActions;
     });
     Player.getter('identityCountdown', function(){return $this.identityCountdown;});
     Player.getter('identityAllowClose', function(){
@@ -420,6 +427,8 @@ Player.provide('actions',
     // LOAD ACTIONS DATA
     // forceLoad forces reloading of actions even they have already been loaded once for the current video
     Player.setter("loadActions", function(forceLoad){
+      if(!Player.get('showActions')) return;
+
       $this.container.html("");
       $this.activeActions={};
       var v = Player.get("video");
