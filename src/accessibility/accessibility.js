@@ -34,7 +34,7 @@ Player.provide(
           var matched = false;
 
           // Click action element
-          if (e.charCode == 32 || e.keyCode == 13 || e.keyCode == 32) {
+          if (e.keyCode == 13 || e.keyCode == 32) {
             if (
               $(document.activeElement).is("body") ||
               $(document.activeElement).is("video")
@@ -50,100 +50,54 @@ Player.provide(
               // We assume that the Glue item will be r-erendered after click.
               // To accomocate for this, we remember the glue container for the item
               // and reestablish focus afterwards.
-              var glueParent = $(document.activeElement).parent(
+              var glueParent = $(document.activeElement).closest(
                 ".glue-element"
               );
               if (
                 !document.activeElement.tagName == "BUTTON" ||
-                e.keyCode == 13 ||
-                e.charCode == 13
+                e.keyCode == 13
               ) {
                 // Handle button menus
                 var active = $(".button-container-active").removeClass(
                   "button-container-active"
                 );
-                if (
-                  $(document.activeElement).hasClass("playback-rate-button")
-                ) {
-                  Player.set("playbackRateMenuExpanded", false);
-                  $(document.activeElement).attr(
-                    "aria-label",
-                    Player.translate("collapsed_playback")
-                  );
-                }
-                if ($(document.activeElement).hasClass("quality-button")) {
-                  Player.set("qualityMenuExpanded", false);
-                  $(document.activeElement).attr(
-                    "aria-label",
-                    Player.translate("collapsed_quality")
-                  );
-                }
-                if ($(document.activeElement).hasClass("subtitle-button")) {
-                  Player.set("subtitleMenuExpanded", false);
-                  var subtitleOn = Player.get("subtitleLocale") != "";
-                  if (subtitleOn)
-                    $(document.activeElement).attr(
-                      "aria-label",
-                      Player.translate("subtitle_on_collapsed")
-                    );
-                  else
-                    $(document.activeElement).attr(
-                      "aria-label",
-                      Player.translate("subtitle_off_collapsed")
-                    );
-                }
+              
                 var parent = $(document.activeElement).parent();
+                // Opening a menu
                 if (
-                  parent.hasClass("button-container") &&
+                  parent.hasClass("button-menu-container") &&
                   parent.get(0) != active.get(0)
                 ) {
                   parent.addClass("button-container-active");
-                  $(document.activeElement).mouseenter();
-                  if (
-                    $(document.activeElement).hasClass("playback-rate-button")
-                  ) {
-                    Player.set("playbackRateMenuExpanded", true);
-                    $(document.activeElement).attr(
-                      "aria-label",
-                      Player.translate("expanded_playback")
-                    );
-                  }
-                  if ($(document.activeElement).hasClass("quality-button")) {
-                    Player.set("qualityMenuExpanded", true);
-                    $(document.activeElement).attr(
-                      "aria-label",
-                      Player.translate("expanded_quality")
-                    );
-                  }
-                  if ($(document.activeElement).hasClass("subtitle-button")) {
-                    Player.set("subtitleMenuExpanded", true);
-                    $(document.activeElement).attr(
-                      "aria-label",
-                      Player.translate(
-                        Player.get("subtitleLocale") != ""
-                          ? "subtitle_on_expanded"
-                          : "subtitle_off_expanded"
-                      )
-                    );
-                  }
+                  if($(document.activeElement).hasClass("menu-trigger-button")) $(document.activeElement).attr("aria-expanded", "true");
+                  $(document.activeElement).mouseover();
+                  var menu = parent.find(".button-menu");
+                  if (menu.length > 0) {
+                    menu.children().first().children().focus();
+                    matched = true;
+                  }                   
+                } else {
+                  // Clicking a menu item or a button without a menu
+                  $(document.activeElement).click();
+                  matched = true;
+                  window.setTimeout(function () {
+                    if (glueParent.length > 0) {
+                      glueParent.find("button.menu-trigger-button").focus();
+                    }
+                  }, 200);
                 }
-                // Emulate click
-                $(document.activeElement).click();
               }
-              window.setTimeout(function () {
-                Player.set("focus", glueParent);
-              }, 200);
             }
             matched = true;
           }
 
           // Mute on 0 press
-          if (e.charCode == 48 || e.keyCode == 48) {
+          if (e.keyCode == 48) {
             Player.set("volume", 0);
             matched = true;
           }
           // Full volume on 1 press
-          if (e.charCode == 49 || e.keyCode == 49) {
+          if (e.keyCode == 49) {
             Player.set("volume", 1);
             matched = true;
           }
@@ -156,16 +110,20 @@ Player.provide(
           var matched = false;
           // Increase volume
           // 38  up arrow
-          // 187 equal sign
-          if (e.keyCode == 38 || e.keyCode == 187) {
-            Player.set("volume", Player.get("volume") + 0.2);
+          if (e.keyCode == 38) {
+            if($(document.activeElement).hasClass("button-menu-item")) {
+              $(document.activeElement).parent('li').prev().children(".button-menu-item").focus();
+            }
+            else Player.set("volume", Player.get("volume") + 0.2);
             matched = true;
           }
           // Decrease volume
           // 40  down arrow
-          // 189 dash
-          if (e.keyCode == 40 || e.keyCode == 189) {
-            Player.set("volume", Player.get("volume") - 0.2);
+          if (e.keyCode == 40) {
+            if($(document.activeElement).hasClass("button-menu-item")) {
+              $(document.activeElement).parent('li').next().children(".button-menu-item").focus();
+            }
+            else Player.set("volume", Player.get("volume") - 0.2);
             matched = true;
           }
           // Scrub on right arrow
@@ -185,10 +143,14 @@ Player.provide(
           }
           if (e.keyCode == 27) {
             // Destroy menus
-            $(".activebutton")
-              .removeClass("activebutton")
-              .parent()
-              .removeClass("activebutton-container");
+            var active = $(".button-container-active");
+            if (active.length > 0) {
+              active.removeClass("button-container-active");
+              matched = true;
+              var trigger = active.children("button.menu-trigger-button");
+              trigger.focus();
+              trigger.attr("aria-expanded", false);
+            }
           }
 
           if (matched) e.preventDefault();
@@ -246,23 +208,16 @@ Player.provide(
     });
 
     var updateTabIndex = function () {
-      // Store tab index
-      $("[tabindex]").each(function (i, el) {
-        if (!$(el).attr("data-tabindex"))
-          $(el).attr("data-tabindex", $(el).attr("tabindex"));
-      });
-      $("[data-tabindex]").each(function (i, el) {
-        var visible =
-          $(el).is(":visible") && $(el).width() > 0 && $(el).height() > 0;
-        if (
-          $(el).parents(".button-menu") &&
-          $(el).parents(".button-menu").height() == 0
-        )
-          visible = false;
-        if (visible) {
-          $(el).attr("tabindex", $(el).attr("data-tabindex"));
-        } else {
-          $(el).attr("tabindex", "-1");
+      $(".button-menu").each(function (i, el) {
+        if ($(el).height() == 0) {
+          $(el).find(".button-menu-item").each(function(j, item){
+            $(item).attr("tabindex", "-1");
+          });
+        }
+        else {
+          $(el).find(".button-menu-item").each(function(j, item){
+            $(item).attr("tabindex", "0");
+          });
         }
       });
     };

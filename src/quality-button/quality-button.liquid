@@ -1,11 +1,12 @@
 {% if hasQualitySwitching and isStream == false %}
-  <div class="button-container">
+  <div class="button-container button-menu-container">
     <button
-      class="quality-button"
+      class="quality-button menu-trigger-button"
       aria-controls="qualityOptions"
-      aria-label="{% if qualityMenuExpanded %}{{"expanded_quality"|translate}}{% else %}{{"collapsed_quality"|translate}}{% endif %}"
+      aria-label="{{ "quality" | translate }}"
       label="{{ "quality" | translate }}"
       aria-live="polite"
+      aria-expanded="false"
       tabindex="0">
       <span class="hide-visually">
         {{ "quality" | translate }}
@@ -16,10 +17,13 @@
     <ul
       id="qualityOptions"
       class="button-menu button-menu-selection"
-      role="menu">
+      role="menu"
+      >
       {% for q in qualitiesArray %}
-        <li {% if q.quality == quality %}class="selected"{% endif %} click="$set:quality:{{q.quality}}; $set:playing:true">
+        <li {% if q.quality == quality %}class="selected"{% endif %}>
           <button
+            class="button-menu-item"
+            click="$set:quality:{{q.quality}}; $set:playing:true"
             {% if q.quality == quality %}aria-checked="true"{% else %}aria-checked="false"{% endif %}
             aria-label="{{q.quality}} {{"quality_2"|translate}}"
             label="{{q.quality}} {{"quality_2"|translate}}"
