@@ -21,6 +21,7 @@
       {% for pr in playbackRatesArray %}
         <li {% if pr.rate == playbackRate %}class="selected"{% endif %}>
           <button
+            class="button-menu-item"
             {% if pr.rate == playbackRate %}aria-checked="true"{% else %}aria-checked="false"{% endif %}
             click="$set:playbackRate:{{pr.rate}}; $set:playing:true"
             aria-label="{{pr.rate}} {{"playbackRate_2"|translate}}"
