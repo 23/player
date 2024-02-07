@@ -1,9 +1,12 @@
 {% if hasSlides %}
-  <div class="button-container">
+  <div class="button-container button-menu-container">
     <button
-      class="slides-button"
+      class="slides-button menu-trigger-button"
+      aria-controls="slideOptions"
       aria-label="{{"Toggle slide overview"|translate}}"
       label="{{"Toggle slide overview"|translate}}"
+      aria-expanded="false"
+      aria-live="polite"
       tabindex="0">
 
       <span class="hide-visually">
@@ -12,13 +15,16 @@
 
     </button>
 
-    <ul id="slideOptions" class="button-menu button-menu-selection">
+    <ul id="slideOptions" class="button-menu button-menu-selection" role="menu">
       {% for mode in slideModes %}
-        <li {% if mode.key == slideMode %}class="selected"{% endif %} click="$set:slideMode:{{mode.key}};">
+        <li {% if mode.key == slideMode %}class="selected"{% endif %}>
           <button
+            class="button-menu-item"
+            click="$set:slideMode:{{mode.key}};"
             aria-label="{{mode.display}}"
             label="{{mode.display}}"
-            role="button"
+            {% if mode.key == slideMode %}aria-checked="true"{% else %}aria-checked="false"{% endif %}
+            role="menuitemradio"
             tabindex="0">{{ mode.display }}</button>
         </li>
       {% endfor %}
