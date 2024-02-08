@@ -50,9 +50,7 @@ Player.provide(
               // We assume that the Glue item will be r-erendered after click.
               // To accomocate for this, we remember the glue container for the item
               // and reestablish focus afterwards.
-              var glueParent = $(document.activeElement).closest(
-                ".glue-element"
-              );
+              var glueParent = $(document.activeElement).parents(".glue-element:first");
               if (
                 !document.activeElement.tagName == "BUTTON" ||
                 e.keyCode == 13
