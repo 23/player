@@ -75,9 +75,4 @@ Player.translate("playbackRate", {
 Player.translate("playbackRate_2", {
     en: "Play-back speed. Press enter key to change the speed."
 });
-Player.translate("expanded_playback", {
-    en: "Expanded play-back speed options. Use tab to navigate between speed options. Press enter key to collapse."
-});
-Player.translate("collapsed_playback", {
-    en: "Collapsed play-back speed options. Press enter key to expand."
-});
+

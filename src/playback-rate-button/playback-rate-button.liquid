@@ -1,9 +1,10 @@
 {% if enablePlaybackRate %}
-  <div class="button-container">
+  <div class="button-container button-menu-container">
     <button
-      class="playback-rate-button"
+      class="playback-rate-button menu-trigger-button"
       aria-controls="playbackRateOptions"
-      aria-label="{% if playbackRateMenuExpanded %}{{"expanded_playback"|translate}}{% else %}{{"collapsed_playback"|translate}}{% endif %}"
+      aria-label="{{ "playbackRate" | translate }}"
+      aria-expanded="false"
       label="{{ "playbackRate" | translate }}"
       aria-live="polite"
       tabindex="0">
@@ -18,9 +19,11 @@
       class="button-menu button-menu-selection"
       role="menu">
       {% for pr in playbackRatesArray %}
-        <li {% if pr.rate == playbackRate %}class="selected"{% endif %} click="$set:playbackRate:{{pr.rate}}; $set:playing:true">
+        <li {% if pr.rate == playbackRate %}class="selected"{% endif %}>
           <button
+            class="button-menu-item"
             {% if pr.rate == playbackRate %}aria-checked="true"{% else %}aria-checked="false"{% endif %}
+            click="$set:playbackRate:{{pr.rate}}; $set:playing:true"
             aria-label="{{pr.rate}} {{"playbackRate_2"|translate}}"
             label="{{pr.rate}} {{"playbackRate_2"|translate}}"
             role="menuitemradio"
