@@ -34,12 +34,9 @@ Player.provide('subtitle-button',
     });
 
     Player.getter('initialSubtitleAriaLabel', function(){
-      var subtitleExpanded = Player.get('subtitleMenuExpanded') 
       var subtitleOn = Player.get('subtitleLocale') != "";
-      if (subtitleExpanded && subtitleOn) return "subtitle_on_expanded";
-      if (subtitleExpanded && !subtitleOn) return "subtitle_off_expanded";
-      if (!subtitleExpanded && subtitleOn) return "subtitle_on_collapsed";
-      if (!subtitleExpanded && !subtitleOn) return "subtitle_off_collapsed";
+      if (subtitleOn) return "subtitle_on";
+      else return "subtitle_off";
     });
       
     return $this;
@@ -60,15 +57,9 @@ Player.translate("none",{
     en: "None"
 });
 
-Player.translate("subtitle_on_expanded",{
-  en: "Captions are turned on. Expanded subtitle popup button. Use tab to navigate between the options. Press enter key to collapse."
+Player.translate("subtitle_on",{
+  en: "Captions button. The captions are turned on."
 });
-Player.translate("subtitle_off_expanded",{
-  en: "Captions are turned off. Expanded subtitle popup button. Use tab to navigate between the options. Press enter key to collapse."
-});
-Player.translate("subtitle_on_collapsed",{
-  en: "Captions are turned on. Collapsed subtitle popup button. Press enter key to expand."
-});
-Player.translate("subtitle_off_collapsed",{
-  en: "Captions are turned off. Collapsed subtitle popup button. Press enter key to expand."
+Player.translate("subtitle_off",{
+  en: "Captions button. The captions are turned off."
 });

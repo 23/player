@@ -1,10 +1,11 @@
 {% if hasSubtitles and enableSubtitles %}
-  <div class="button-container">
+  <div class="button-container button-menu-container">
     <button
-      class="subtitle-button{% if subtitleLocale != empty %} subtitle-button-active{% endif %}"
+      class="menu-trigger-button subtitle-button{% if subtitleLocale != empty %} subtitle-button-active{% endif %}"
       aria-controls="subtitleOptions"
       aria-label="{{initialSubtitleAriaLabel|translate}}"
       label="{{"initialSubtitleAriaLabel"|translate}}"
+      aria-expanded="false"
       tabindex="0">
 
       <span class="hide-visually">
@@ -31,9 +32,11 @@
         class="button-menu button-menu-selection"
         role="menu">
         {% for l in localesArray %}
-          <li {% if l.locale == subtitleLocale %}class="selected"{% endif %} click="$set:subtitleLocale:{{l.locale}}">
+          <li {% if l.locale == subtitleLocale %}class="selected"{% endif %}>
             <button
               {% if l.locale == subtitleLocale %}aria-checked="true"{% else %}aria-checked="false"{% endif %}
+              class="button-menu-item"
+              click="$set:subtitleLocale:{{l.locale}}"
               aria-label="{{"closed_captions_in"|translate}} {{l.language}}"
               label="{{"closed_captions_in"|translate}} {{l.language}}"
               role="menuitemradio"
@@ -42,9 +45,11 @@
             </button>
           </li>
         {% endfor %}
-        <li {% if subtitleLocale == empty %}class="selected"{% endif %} click="$set:subtitleLocale:">
+        <li {% if subtitleLocale == empty %}class="selected"{% endif %}>
           <button
             {% if subtitleLocale == empty %}aria-checked="true"{% else %}aria-checked="false"{% endif %}
+            class="button-menu-item"
+            click="$set:subtitleLocale:"
             aria-label="{{"disable_closed_captioning"|translate}}"
             label="{{"disable_closed_captioning"|translate}}"
             role="menuitemradio"
