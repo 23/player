@@ -86,7 +86,7 @@ Player.provide('sharing',
 
       /* GETTERS */
       Player.getter('socialSharing', function(){
-          return (typeof($this.socialSharing)!='undefined'&&$this.socialSharing&&$this.socialSharing!='0') && Player.get('video_sharable') && !Player.get('mutedAutoPlay');
+          return (typeof($this.socialSharing)!='undefined'&&$this.socialSharing&&$this.socialSharing!='0') && Player.get('video_sharable');
         });
       Player.getter('showSharing', function(){
           if(!Player.get('socialSharing')) return(false);
