@@ -98,10 +98,15 @@ ul.button-menu {
     padding: 0px;
     font-size: 0;
     overflow: hidden;
-    transition: height 200ms ease;
+    scrollbar-color: #aaa rgba(0,0,0,.72);
+    scrollbar-width: thin;
+    scrollbar-gutter: stable;
+    transition: height 200ms ease, overflow 1ms ease 0s allow-discrete;
 }
 .button-container:hover ul.button-menu, .button-container-active ul.button-menu {
     height: 1em;
+    overflow: auto;
+    transition-delay: 0s,200ms;
 }
 ul.button-menu li {
     display: block;

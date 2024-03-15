@@ -17,47 +17,36 @@
       <div class="cc-active-icon"></div>
     </button>
 
-    {% if subtitleMenuWidget == 'select' %}
-      <select onchange="Player.set('subtitleLocale', this.options[this.selectedIndex].value);">
-        {% for l in localesArray %}
-          <option {% if l.locale == subtitleLocale %}selected{% endif %} value="{{l.locale}}">{{ l.language }}</option>
-        {% endfor %}
-        <option {% if subtitleLocale == empty %}selected{% endif %} value="">{{ "none" | translate }}</option>
-      </select>
-    {% endif %}
-
-    {% if subtitleMenuWidget == 'menu' %}
-      <ul
-        id="subtitleOptions"
-        class="button-menu button-menu-selection"
-        role="menu">
-        {% for l in localesArray %}
-          <li {% if l.locale == subtitleLocale %}class="selected"{% endif %}>
-            <button
-              {% if l.locale == subtitleLocale %}aria-checked="true"{% else %}aria-checked="false"{% endif %}
-              class="button-menu-item"
-              click="$set:subtitleLocale:{{l.locale}}"
-              aria-label="{{"closed_captions_in"|translate}} {{l.language}}"
-              label="{{"closed_captions_in"|translate}} {{l.language}}"
-              role="menuitemradio"
-              tabindex="0">
-              {{ l.language }}
-            </button>
-          </li>
-        {% endfor %}
-        <li {% if subtitleLocale == empty %}class="selected"{% endif %}>
+    <ul
+      id="subtitleOptions"
+      class="button-menu button-menu-selection"
+      role="menu">
+      {% for l in localesArray %}
+        <li {% if l.locale == subtitleLocale %}class="selected"{% endif %}>
           <button
-            {% if subtitleLocale == empty %}aria-checked="true"{% else %}aria-checked="false"{% endif %}
+            {% if l.locale == subtitleLocale %}aria-checked="true"{% else %}aria-checked="false"{% endif %}
             class="button-menu-item"
-            click="$set:subtitleLocale:"
-            aria-label="{{"disable_closed_captioning"|translate}}"
-            label="{{"disable_closed_captioning"|translate}}"
+            click="$set:subtitleLocale:{{l.locale}}"
+            aria-label="{{"closed_captions_in"|translate}} {{l.language}}"
+            label="{{"closed_captions_in"|translate}} {{l.language}}"
             role="menuitemradio"
             tabindex="0">
-            {{ "none" | translate }}
+            {{ l.language }}
           </button>
         </li>
-      </ul>
-    {% endif %}
+      {% endfor %}
+      <li {% if subtitleLocale == empty %}class="selected"{% endif %}>
+        <button
+          {% if subtitleLocale == empty %}aria-checked="true"{% else %}aria-checked="false"{% endif %}
+          class="button-menu-item"
+          click="$set:subtitleLocale:"
+          aria-label="{{"disable_closed_captioning"|translate}}"
+          label="{{"disable_closed_captioning"|translate}}"
+          role="menuitemradio"
+          tabindex="0">
+          {{ "none" | translate }}
+        </button>
+      </li>
+    </ul>
   </div>
 {% endif %}
