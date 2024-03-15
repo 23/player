@@ -98,7 +98,7 @@ ul.button-menu {
     padding: 0px;
     font-size: 0;
     overflow: hidden;
-    scrollbar-color: #aaa rgba(0,0,0,.72);
+    scrollbar-color: rgba(0,0,0,.72) #aaa;
     scrollbar-width: thin;
     scrollbar-gutter: stable;
     transition: height 200ms ease, overflow 1ms ease 0s allow-discrete;
