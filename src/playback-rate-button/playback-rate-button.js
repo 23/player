@@ -70,9 +70,9 @@ Player.provide('playback-rate-button',
 
 /* Translations for this module */
 Player.translate("playbackRate", {
-    en: "Play-back speed"
+    en: "Play-back speed."
 });
 Player.translate("playbackRate_2", {
-    en: "Play-back speed. Press enter key to change the speed."
+    en: "Play-back speed."
 });
 
