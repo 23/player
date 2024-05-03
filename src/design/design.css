@@ -870,12 +870,14 @@ body.overlay-shown .button-container-share {
     background-image: linear-gradient(transparent, transparent), url('audiodescription.svg');
     background-size: 30px;
     background-position: center center;
+    background-repeat: no-repeat;
 }
 .audiodescription-button .audiodescription-active-icon {
     background-image: url('audiodescription.png');
     background-image: linear-gradient(transparent, transparent), url('audiodescription.svg');
     background-size: 30px;
     background-position: center center;
+    background-repeat: no-repeat;
 }
 .slides-button  {
     background-image: url('slides.png');
