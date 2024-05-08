@@ -1,17 +1,17 @@
 /*
-  MODULE: SRUBBER
-  Show time line for the video currently being played.
+   MODULE: SRUBBER
+   Show time line for the video currently being played.
 
-  Listens for:
-  - player:video:progress
-  - player:video:timeupdate
-  - player:video:seeked
-  - player:video:ended
-  - player:video:loaded
+   Listens for:
+   - player:video:progress
+   - player:video:timeupdate
+   - player:video:seeked
+   - player:video:ended
+   - player:video:loaded
 
-  Answers properties:
-  - scrubberTime [get]
-*/
+   Answers properties:
+   - scrubberTime [get]
+ */
 
 Player.provide('scrubber',
   {
@@ -37,7 +37,7 @@ Player.provide('scrubber',
       // Update the scrubber contents
       $this.updateScrubber();
       // Load the video frame image
-      $this.initScrubberThumbnail();
+      $this.scrubberContainer.on("mouseenter", $this.initScrubberThumbnail);
 
       if($this.scrubber.size() > 0){
         // Handle clicks on the time line
