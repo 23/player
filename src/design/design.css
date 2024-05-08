@@ -779,19 +779,19 @@ body.overlay-shown .button-container-share {
 /* Tray left buttons */
 .play-button {
     background-image: url('play.svg');
-    background-size: 48px;
+    background-size: 54px;
 }
 .pause-button {
     background-image: url('pause.svg');
-    background-size: 48px;
+    background-size: 54px;
 }
 .stop-button {
     background-image: url('stop.svg');
-    background-size: 48px;
+    background-size: 54px;
 }
 .replay-button {
     background-image: url('replay.svg');
-    background-size: 48px;
+    background-size: 54px;
 }
 
 /* Tray right buttons */
