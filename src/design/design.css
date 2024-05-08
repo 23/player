@@ -917,45 +917,42 @@ body.overlay-shown .button-container-share {
 
 /* Sharing buttons */
 .share-button {
-    background-image: url('share.svg');
-    background-size: 40px;
-    transition: background-color 200ms linear;
+  background-image: url('share.svg');
+  background-size: 40px;
+  transition: background-color 200ms linear;
+  transition: background-color 200ms linear;
 }
 .facebook-button {
-    background-image: url('facebook.svg');
-    background-size: 40px;
-}
-.facebook-button:hover {
-    background-image: url('facebook-colored.svg');
+  background-image: url('facebook.svg');
+  background-size: 40px;
+  transition: background-color 200ms linear;
 }
 .twitter-button {
-    background-image: url('twitter.svg');
-    background-size: 40px;
-}
-.twitter-button:hover {
-    background-image: url('twitter-colored.svg');
+  background-image: url('twitter.svg');
+  background-size: 40px;
+  transition: background-color 200ms linear;
 }
 .linkedin-button {
-    background-image: url('linkedin.svg');
-    background-size: 40px;
-}
-.linkedin-button:hover {
-    background-image: url('linkedin-colored.svg');
+  background-image: url('linkedin.svg');
+  background-size: 40px;
+  transition: background-color 200ms linear;
 }
 .more-button {
-    background-image: url('more.svg');
-    background-size: 40px;
+  background-image: url('more.svg');
+  background-size: 40px;
+  transition: background-color 200ms linear;
 }
 .download-button {
-    background-image: url('download.svg');
-    background-size: 40px;
+  background-image: url('download.svg');
+  background-size: 40px;
+  transition: background-color 200ms linear;
 }
 /* Hover state of .more-button & .download-button is handled through design.js */
 
 .close-button {
-    background-image: url('close.svg');
-    background-size: 40px;
-    transition: background-color 200ms linear;
+  background-image: url('close.svg');
+  background-size: 40px;
+  transition: background-color 200ms linear;
 }
 
 /* Hide a number of elements in very small players */
