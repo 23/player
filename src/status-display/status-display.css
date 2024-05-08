@@ -29,8 +29,7 @@
     padding: 40px 0 40px 70px;
     margin: 0 auto;
     max-width: 80%;
-    background: transparent url('warning.png') left center no-repeat;
-    background-image: linear-gradient(transparent, transparent), url('warning.svg');
+    background: transparent url('warning.svg') left center no-repeat;
     background-size: 50px;
 }
 .error-display p,
