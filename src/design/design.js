@@ -250,7 +250,7 @@ Player.provide('design',
 
 
       /* === END TRAY HANDLING === */
-    
+
       $this.hexToRGBA = function(hex, alpha){
           var colorTest = hex.match(/^\#(..)(..)(..)$/);
           if(colorTest && colorTest.length==4) {
@@ -265,7 +265,7 @@ Player.provide('design',
         var r = parseInt(hex.slice(1, 3), 16),
         g = parseInt(hex.slice(3, 5), 16),
         b = parseInt(hex.slice(5, 7), 16);
-        
+
         if (alpha) {
           return "rgba(" + r + ", " + g + ", " + b + ", " + alpha + ")";
         } else {
@@ -296,7 +296,6 @@ Player.provide('design',
 
           // SVG filter
           css += ".tray-right .button-container:hover > button { -webkit-filter: url(#icon_hover); filter: url(#icon_hover); }";
-          css += ".subtitle-button-active .cc-active-bar-icon { -webkit-filter: url(#icon_hover); filter: url(#icon_hover); }";
           css += ".audiodescription-button-active .audiodescription-active-icon { -webkit-filter: url(#icon_hover); filter: url(#icon_hover); }";
           css += ".more-button:hover, .download-button:hover { -webkit-filter: url(#icon_hover); filter: url(#icon_hover); }";
           css += ".video-display .controls-360 div:hover { -webkit-filter: url(#icon_hover); filter: url(#icon_hover); }";
