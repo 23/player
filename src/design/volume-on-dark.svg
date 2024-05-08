@@ -1,16 +1,3 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg width="30px" height="40px" viewBox="0 0 30 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 3.7.2 (28276) - http://www.bohemiancoding.com/sketch -->
-    <title>volume-on-dark</title>
-    <desc>Created with Sketch.</desc>
-    <defs></defs>
-    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="volume-on-dark" fill="#000000">
-            <g transform="translate(9.000000, 12.000000)">
-                <polygon id="Shape" points="0 5 0 13 3 13 9 17 9 0 3 5"></polygon>
-                <rect id="Rectangle-path" x="10" y="5" width="1" height="8"></rect>
-                <rect id="Rectangle-path" x="12" y="3" width="1" height="12"></rect>
-            </g>
-        </g>
-    </g>
+<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M13.5601 18.0475V22.5475H16.5601L20.3101 26.2975V14.2975L16.5601 18.0475H13.5601ZM23.6851 20.2975C23.6851 18.97 22.9201 17.83 21.8101 17.275V23.3125C22.9201 22.765 23.6851 21.625 23.6851 20.2975ZM21.8101 13.72V15.265C23.9776 15.91 25.5601 17.92 25.5601 20.2975C25.5601 22.675 23.9776 24.685 21.8101 25.33V26.875C24.8176 26.1925 27.0601 23.5075 27.0601 20.2975C27.0601 17.0875 24.8176 14.4025 21.8101 13.72Z" fill="black"/>
 </svg>

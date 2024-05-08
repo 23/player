@@ -730,7 +730,7 @@ body.overlay-shown .button-container-share {
     width: 50px;
     height: 50px;
     background-image: url('vr.svg');
-    background-size: 40px;
+    background-size: 50px;
     background-color: rgba(0,0,0,0.5);
 }
 
@@ -779,78 +779,68 @@ body.overlay-shown .button-container-share {
 /* Tray left buttons */
 .play-button {
     background-image: url('play.svg');
-    background-size: 40px;
+    background-size: 54px;
 }
 .pause-button {
     background-image: url('pause.svg');
-    background-size: 40px;
+    background-size: 54px;
 }
 .stop-button {
     background-image: url('stop.svg');
-    background-size: 40px;
+    background-size: 54px;
 }
 .replay-button {
     background-image: url('replay.svg');
-    background-size: 40px;
+    background-size: 54px;
 }
 
 /* Tray right buttons */
 .fullscreen-button {
-    background-image: url('fullscreen.svg');
-    background-size: 30px;
+  background-image: url('fullscreen.svg');
 }
 .quality-button {
   background-image: url('gear.svg');
-  background-size: 30px;
 }
 .button-container .quality-button { transform: rotate(0deg); transition: transform 200ms linear; }
 .button-container:hover .quality-button { transform: rotate(20deg); } /* Rotate quality icon on hover */
 .volume-button-on {
     background-image: url('volume-on.svg');
-    background-size: 30px;
 }
 .volume-button-off {
     background-image: url('volume-off.svg');
-    background-size: 30px;
 }
 .subtitle-button .cc-icon {
     background-image: url('cc.svg');
-    background-size: 30px;
     background-position: center center;
 }
 .subtitle-button .cc-active-icon {
-    background-image: url('cc-active.svg');
-    background-size: 30px;
+    background-image: url('cc.svg');
     background-position: center center;
 }
 .playback-rate-button {
     background-image: url('playback-rate.svg');
-    background-size: 26px;
 }
 .player-playback-rate-button ul.button-menu li {
     text-align:left;
 }
 .audiodescription-button .audiodescription-icon {
     background-image: url('audiodescription.svg');
-    background-size: 30px;
     background-position: center center;
     background-repeat: no-repeat;
 }
 .audiodescription-button .audiodescription-active-icon {
     background-image: url('audiodescription.svg');
-    background-size: 30px;
     background-position: center center;
     background-repeat: no-repeat;
 }
 .slides-button  {
     background-image: url('slides.svg');
-    background-size: 30px;
 }
 
 /* Big play */
 .big-play-button, .loop-play-button {
     background-image: url('big-play.svg');
-    background-size: 40px;
+    background-size: 60px;
 }
 
 /* Muted autoplay button */
@@ -877,7 +867,6 @@ body.overlay-shown .button-container-share {
     line-height:49px;
     font-size:16px;
     background-image: url('volume-off.svg');
-    background-size: 32px;
     background-position: 9px center;
     background-repeat: no-repeat;
     border:1px solid #555;
@@ -918,40 +907,38 @@ body.overlay-shown .button-container-share {
 /* Sharing buttons */
 .share-button {
   background-image: url('share.svg');
-  background-size: 40px;
   transition: background-color 200ms linear;
   transition: background-color 200ms linear;
 }
 .facebook-button {
   background-image: url('facebook.svg');
-  background-size: 40px;
+  background-size: 60px;
   transition: background-color 200ms linear;
 }
 .twitter-button {
   background-image: url('twitter.svg');
-  background-size: 40px;
+  background-size: 60px;
   transition: background-color 200ms linear;
 }
 .linkedin-button {
   background-image: url('linkedin.svg');
-  background-size: 40px;
+  background-size: 60px;
   transition: background-color 200ms linear;
 }
 .more-button {
   background-image: url('more.svg');
-  background-size: 40px;
+  background-size: 60px;
   transition: background-color 200ms linear;
 }
 .download-button {
   background-image: url('download.svg');
-  background-size: 40px;
+  background-size: 60px;
   transition: background-color 200ms linear;
 }
 /* Hover state of .more-button & .download-button is handled through design.js */
 
 .close-button {
   background-image: url('close.svg');
-  background-size: 40px;
   transition: background-color 200ms linear;
 }
 
