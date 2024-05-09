@@ -1,12 +1,10 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 39.1 (31720) - http://www.bohemiancoding.com/sketch -->
-    <title>arrow-left-dark</title>
-    <desc>Created with Sketch.</desc>
-    <defs></defs>
-    <g id="Standard" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="arrow-left-dark" fill="#000000">
-            <polygon id="Shape" points="12.948946 18 5 10.5158634 12.948946 3 15 5.12532105 9.16360472 10.5468349 15 15.9045173"></polygon>
-        </g>
-    </g>
+<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_14_102)">
+<path d="M6.96875 9.96875L11.9688 4.96875L13.0312 6.03125L9.09375 9.96875L13.0312 13.9062L11.9687 14.9687L6.96875 9.96875Z" fill="black"/>
+</g>
+<defs>
+<clipPath id="clip0_14_102">
+<rect width="20" height="20" fill="white"/>
+</clipPath>
+</defs>
 </svg>
