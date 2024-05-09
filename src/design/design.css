@@ -193,8 +193,6 @@ ul.button-menu-selection li.selected:hover button { color: #FFFFFF; }
     max-width: 1200px;
     margin: 0 5px;
     margin: 0 auto;
-    background: rgb(0,0,0);
-    background: rgba(0,0,0,0.72);
 }
 @media all and (min-width: 1200px) {
     #traysub {
@@ -825,33 +823,33 @@ body.overlay-shown .button-container-share {
 /* Tray right buttons */
 .fullscreen-button {
     background-image: url('fullscreen.svg');
-    background-size: 38px;
+    background-size: 40px;
 }
 .quality-button {
     background-image: url('gear.svg');
-    background-size: 38px;
+    background-size: 40px;
 }
 .volume-button-on {
     background-image: url('volume-on.svg');
-    background-size: 38px;
+    background-size: 40px;
 }
 .volume-button-off {
     background-image: url('volume-off.svg');
-    background-size: 38px;
+    background-size: 40px;
 }
 .subtitle-button .cc-icon {
     background-image: url('cc.svg');
-    background-size: 38px;
+    background-size: 40px;
     background-position: center center;
 }
 .subtitle-button .cc-active-icon {
     background-image: url('cc.svg');
-    background-size: 38px;
+    background-size: 40px;
     background-position: center center;
 }
 .playback-rate-button {
     background-image: url('playback-rate.svg');
-    background-size: 38px;
+    background-size: 40px;
 }
 .player-playback-rate-button ul.button-menu li {
     text-align:left;
@@ -860,17 +858,17 @@ body.overlay-shown .button-container-share {
     background-image: url('audiodescription.svg');
     background-position: center center;
     background-repeat: no-repeat;
-    background-size: 38px;
+    background-size: 40px;
 }
 .audiodescription-button .audiodescription-active-icon {
     background-image: url('audiodescription.svg');
     background-position: center center;
     background-repeat: no-repeat;
-    background-size: 38px;
+    background-size: 40px;
 }
 .slides-button  {
     background-image: url('slides.svg');
-    background-size: 38px;
+    background-size: 40px;
 }
 
 /* Big play */
