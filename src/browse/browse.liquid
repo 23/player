@@ -11,7 +11,7 @@
             label="{{rec.name}}"
             role="button"
             tabindex="0">
-            <img crossorigin="anonymous" src="{{url}}{{rec.browseThumbnailUrl}}" />
+            <img crossorigin="anonymous" loading="lazy" src="{{url}}{{rec.browseThumbnailUrl}}" />
             <div class="recommendation-meta">
               <div class="recommendation-title">Live: {{ rec.name | truncate: 40 }}</div>
             </div>
@@ -25,7 +25,7 @@
             label="{{rec.title}}"
             role="button"
             tabindex="0">
-            <img crossorigin="anonymous" src="{{url}}{{rec.browseThumbnailUrl}}" />
+            <img crossorigin="anonymous" loading="lazy" src="{{url}}{{rec.browseThumbnailUrl}}" />
             <div class="recommendation-meta">
               <div class="recommendation-title">{{ rec.title | truncate: 40 }}</div>
               <div class="recommendation-duration">{{ rec.video_length | formatTime }}</div>

@@ -7,6 +7,7 @@
     line-height:29px;
     text-align:center;
     transition: bottom 100ms linear;
+    text-wrap:balance;
 }
 /* Raise the subtitles to not overlap with the tray */
 .tray-shown .subtitles-container, .force-tray .subtitles-container { bottom: 45px; }
@@ -14,7 +15,7 @@
 .subtitles-container span {
     padding:3px 5px;
     margin:0 auto;
-    text-shadow: -1px -1px 0 #333, 1px -1px 0 #333, -1px 1px 0 #333, 1px 1px 0 #333;  
+    text-shadow: -1px -1px 0 #333, 1px -1px 0 #333, -1px 1px 0 #333, 1px 1px 0 #333;
     color:white;
 }
 .design-bars .subtitles-container span {
