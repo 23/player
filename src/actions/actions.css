@@ -52,7 +52,7 @@
   right:0;
   width:30px;
   height:30px;
-  background:url('close-icon.png') center center no-repeat;
+  background:url('close-icon.svg') center center no-repeat;
   cursor:pointer;
 }
 
@@ -235,8 +235,7 @@ body.video-action-playing .video-canvas {
     right: 15px;
     width: 15px;
     height: 100%;
-    background: transparent url(skip.png) center center no-repeat;
-    background-image: linear-gradient(transparent, transparent), url(skip.svg);
+    background: transparent url(skip.svg) center center no-repeat;
     background-width: 15px;
 }
 .action-allow-close .action-skip-icon {
@@ -260,11 +259,11 @@ body.video-action-playing .video-canvas {
   right:0;
   width:30px;
   height:30px;
-  background:url('close-icon.png') center center no-repeat;
+  background:url('close-icon.svg') center center no-repeat;
   cursor:pointer;
 }
 @media
   (-webkit-min-device-pixel-ratio: 2),
   (min-resolution: 192dpi) {
-  .action-close {background-image:url('close-icon@2x.png'); background-size:30px;}
+  .action-close {background-image:url('close-icon.svg'); background-size:30px;}
 }
