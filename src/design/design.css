@@ -153,7 +153,11 @@ ul.button-menu {
 }
 
 /* Menu with selection */
-ul.button-menu-selection li.selected { background-image:url('checkmark.svg');}
+ul.button-menu-selection li.selected {
+  background-image:url('checkmark.svg');
+  filter: url(#icon_color);
+  -webkit-filter: url(#icon_color);
+}
 ul.button-menu-selection li.selected button { color: #FFFFFF; }
 ul.button-menu-selection li button { padding-left: 30px; }
 ul.button-menu-selection li.selected:hover button { color: #FFFFFF; }
@@ -589,13 +593,10 @@ body.overlay-shown .button-container-share {
   border: 1px solid #AAAAAA;
   text-align: center;
 }
-.sharing-info .current-time-select .checkbox img {
-  display: none;
-  height: 10px;
-}
-.sharing-info .current-time-select .checked img {
-  display: inline;
-  vertical-align: text-top;
+.sharing-info .current-time-select .checkbox.checked  {
+  background-image:url('checkmark.svg');
+  background-repeat:no-repeat;
+  background-position:center center;
 }
 .share-buttons-container {
   display: table;
@@ -818,7 +819,7 @@ body.overlay-shown .button-container-share {
   filter: url(#icon_color);
   -webkit-filter: url(#icon_color);
 }
-.tray-right button::after:hover {
+.tray-right button:hover::after {
   filter: url(#icon_hover);
   -webkit-filter: url(#icon_hover);
 }
@@ -863,6 +864,8 @@ body.overlay-shown .button-container-share {
 .big-play-button::after, .loop-play-button::after {
   background-image: url('big-play.svg');
   background-size: 64px;
+  filter: url(#icon_white) !important;
+  -webkit-filter: url(#icon_white) !important;
 }
 
 /* Muted autoplay button */
@@ -933,8 +936,8 @@ body.overlay-shown .button-container-share {
 .share-button {
   background-image: url('share.svg');
   transition: background-color 200ms linear;
-  filter: url(#icon_color);
-  -webkit-filter: url(#icon_color);
+  filter: url(#icon_white);
+  -webkit-filter: url(#icon_white);
 }
 .close-button:hover,
 .share-button:hover {
@@ -950,8 +953,8 @@ body.overlay-shown .button-container-share {
 .share-buttons button {
   background-size: 60px;
   transition: background-color 200ms linear;
-  filter: url(#icon_color);
-  -webkit-filter: url(#icon_color);
+  filter: url(#icon_white);
+  -webkit-filter: url(#icon_white);
 }
 .share-buttons button:hover {
   filter: url(#icon_hover);
