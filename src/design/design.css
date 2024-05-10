@@ -830,7 +830,7 @@ body.overlay-shown .button-container-share {
 /* Tray left buttons */
 .tray-left button::after {
   background-size: 54px;
-  filter: url(#icon_hover);
+  filter: url(#icon_color);
   -webkit-filter: url(#icon_color);
 }
 .tray-left button::after:hover {
