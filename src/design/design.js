@@ -274,7 +274,7 @@ Player.provide('design',
                  }
                  $this.applyDesignPreferences = function(){
                    $("filter#icon_hover feFlood").attr("flood-color", $this.scrubberColor);
-                   $("filter#icon_color feFlood").attr("flood-color", "yellow");
+                   $("filter#icon_color feFlood").attr("flood-color", "white");
 
                    var css = "";
                    // Background colors
