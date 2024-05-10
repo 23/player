@@ -916,13 +916,20 @@ body.overlay-shown .button-container-share {
   height:40px;
   line-height:41px;
   font-size:14px;
+  border:1px solid #555;
+  padding:0 20px 0 10px;
+}
+.muted-auto-play-button::before {
+  content:'';
+  display:inline-block;
+  float:left;
+  height:40px;
+  width:30px;
   background-image: url('volume-off.svg');
   filter: url(#icon_color);
   -webkit-filter: url(#icon_color);
-  background-position: 5px center;
+  background-position: center center;
   background-repeat: no-repeat;
-  border:1px solid #555;
-  padding:0 22px 0 40px;
 }
 .muted-auto-play-button:hover {
   background-color:#303030;
