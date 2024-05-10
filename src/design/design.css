@@ -129,6 +129,7 @@ ul.button-menu li {
   display: block;
   text-align: right;
   font-size: 11px;
+  background: transparent none 10px center no-repeat;
 }
 ul.button-menu li:first-child {
   border-radius: 2px 2px 0 0;

@@ -1,10 +1,10 @@
-/* 
+/*
    MODULE: SUBTITLE BUTTON
    Handle subtitle button
 */
 
-Player.provide('audiodescription-button', 
-  {}, 
+Player.provide('audiodescription-button',
+  {},
   function(Player,$,opts){
     var $this = this;
     $.extend($this, opts);
@@ -17,7 +17,6 @@ Player.provide('audiodescription-button',
           var localeCount = Player.get('audioDescriptionTracksArray').length;
           $this.button.one("mouseenter", function(){
             $this.buttonMenu.css({
-              right: ($this.buttonMenu.width()-30)/-2,
               fontSize: $this.container.find("li").height()*(localeCount+1),
               maxHeight: $this.container.find("li").height()*4
             });
@@ -30,7 +29,7 @@ Player.provide('audiodescription-button',
       if (descriptionOn) return "description_on";
       else return "description_off";
     });
-      
+
     return $this;
   }
 );

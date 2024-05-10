@@ -22,7 +22,6 @@ Player.provide('playback-rate-button',
       var playbackRatesCount = Player.get('playbackRatesArray').length;
       $this.button.one("mouseenter", function () {
         $this.buttonMenu.css({
-          right: ($this.buttonMenu.width() - 30) / -2,
           fontSize: $this.container.find("li").height() * playbackRatesCount
         });
       });
@@ -75,4 +74,3 @@ Player.translate("playbackRate", {
 Player.translate("playbackRate_2", {
     en: "Play-back speed."
 });
-

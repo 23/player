@@ -19,11 +19,6 @@ Player.provide('slides-button',{
             $this.buttonMenu.css({
                 fontSize: $this.container.find("li").height()*slidemodeCount
             });
-            $this.button.one("mouseenter", function(){
-                $this.buttonMenu.css({
-                    right: ($this.buttonMenu.width()-30)/-2
-                });
-            });
         });
     });
 
