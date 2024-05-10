@@ -925,12 +925,12 @@ body.overlay-shown .button-container-share {
   margin-bottom:20px;
   cursor:pointer;
   border-radius:20px;
-  background-color:#181818;
-  color:white;
+  background-color:rgba(255, 255, 255, 0.9);
+  color:#333;
   height:40px;
   line-height:41px;
   font-size:14px;
-  border:1px solid #555;
+  border:1px solid #ddd;
   padding:0 20px 0 10px;
 }
 .muted-auto-play-button::before {
@@ -946,7 +946,7 @@ body.overlay-shown .button-container-share {
   background-repeat: no-repeat;
 }
 .muted-auto-play-button:hover {
-  background-color:#303030;
+  background-color:rgba(255, 255, 255, 0.95);
 }
 
 .muted-auto-play-topRight, .muted-auto-play-rightTop {
