@@ -273,18 +273,17 @@ Player.provide('design',
                  }
                  $this.applyDesignPreferences = function(){
                    $("filter#icon_hover feFlood").attr("flood-color", $this.scrubberColor);
+                   $("filter#icon_color feFlood").attr("flood-color", "#333");
 
                    var css = "";
                    // Background colors
                    if($this.backgroundColor) {
                      css += "html, body, .player-design, #player, .video-display { background-color: " + $this.backgroundColor + "; }";
                    }
-                   css += ".tray-left .button-container:hover > button { background-color: " + $this.scrubberColor + "; }";
                    css += ".scrubber-buffer, .scrubber-play { background-color: " + $this.scrubberColor + "; }";
                    css += ".volume-slider .volume-level { background-color: " + $this.scrubberColor + "; }";
                    css += ".big-play-button, .button-container > .loop-play-button { background-color: " + $this.scrubberColor + "; }";
                    css += ".big-play-button:hover, .button-container:hover > .loop-play-button { background-color: " + $this.hexToRGBA( $this.scrubberColor, 0.85 ) + "; }";
-                   css += ".share-button:hover, .close-button:hover { background-color: " + $this.scrubberColor + "; }";
                    css += ".sharing-info a:hover { color: " + $this.scrubberColor + "; }";
                    css += ".protection-password input.submitbutton { background-color: " + $this.scrubberColor + "; }";
                    css += ".protection-password input.submitbutton:hover { background-color: " + $this.hexToRGBA($this.scrubberColor, 0.9) + "; }";
@@ -292,14 +291,6 @@ Player.provide('design',
                    css += ".sections-menu-open #section-menu-toggle:hover { background-color: " + $this.scrubberColor + "; }";
                    css += ".section-item.active:hover { background-color: " + hexToRGB($this.scrubberColor, "0.72") + "; }";
                    css += ".section-item.active { background-color: " + hexToRGB($this.scrubberColor, "0.72") + "; }";
-
-                   // SVG filter
-                   css += ".tray-right .button-container:hover > button { -webkit-filter: url(#icon_hover); filter: url(#icon_hover); }";
-                   css += ".audiodescription-active-button .audiodescription-active-icon { -webkit-filter: url(#icon_hover); filter: url(#icon_hover); }";
-                   css += ".subtitle-button-active .cc-active-icon { -webkit-filter: url(#icon_hover); filter: url(#icon_hover); }";
-                   css += ".subtitle-button-active .cc-active-icon { -webkit-filter: url(#icon_hover); filter: url(#icon_hover); }";
-                   css += ".more-button:hover, .download-button:hover, .facebook-button:hover, .twitter-button:hover, .linkedin-button:hover { -webkit-filter: url(#icon_hover); filter: url(#icon_hover); }";
-                   css += ".video-display .controls-360 div:hover { -webkit-filter: url(#icon_hover); filter: url(#icon_hover); }";
 
                    // Text color
                    css += "ul.button-menu li:hover button { color: " + $this.scrubberColor + "; }";
