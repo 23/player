@@ -33,8 +33,7 @@
   background-color: transparent;
 }
 .glue-sections-menu:not(.sections-menu-open) .sections-menu-wrap {
-  background-color: rgba(0,0,0,0.72);
-  background-color: rgba(0,0,0,0.72);
+  background-color: rgba(255,255,255,0.72);
   -webkit-transition: background 100ms linear;
   -o-transition: background 100ms linear;
   transition: background 100ms linear;
@@ -78,8 +77,7 @@
   border-radius: 0px;
   left: 0;
   top: 0;
-  background-color: black; //Fallback color
-  background-color: rgba(0,0,0,0.72);
+  background-color: rgba(255,255,255,.72);
   -webkit-transition: background 100ms linear;
   -o-transition: background 100ms linear;
   transition: background 100ms linear;
@@ -103,8 +101,7 @@
 }
 
 .sections-menu-open .sections-menu-container {
-  background-color: #000000;
-  background-color: rgba(0,0,0,0.6);
+  background-color: rgba(255,255,255,0.6);
 }
 
 
@@ -131,7 +128,7 @@
 }
 
 .tray-shown .sections-menu-open.fixed-to-top {
-  bottom: 40px;
+  bottom: 50px;
 }
 
 .sections-menu-open.fixed-to-top .sections-menu-wrap {
@@ -156,15 +153,15 @@
   -ms-transform: rotate(0);
   transform: rotate(0);
   background: transparent;
-  color: #ddd;
+  color: #333;
 }
 
 .section-item.active {
- color: #fff;
+ color: #222;
 }
 
 .section-item.active:hover {
- color: #ddd;
+ color: #222;
 }
 
 .section-item:last-child {
@@ -175,8 +172,7 @@
   opacity: 1;
 }
 .sections-menu-open .section-item:hover {
-  background: black;
-  color: #fff;
+  color: #222;
 }
 
 .section-item-time {
@@ -226,7 +222,7 @@
   transform: rotate(0deg);
   opacity: 1;
   font-size: 18px;
-  border-color: white;
+  border-color: black;
 }
 
 .chevron.right:before {
@@ -234,7 +230,7 @@
   -ms-transform: rotate(-135deg);
   -webkit-transform: rotate(-135deg);
   transform: rotate(-135deg);
-  border-color: white;
+  border-color: black;
 }
 
 .sections-menu-open .chevron.right:before {
