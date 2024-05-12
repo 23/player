@@ -57,15 +57,15 @@ body.displaying-360 .video-display canvas {
 }
 
 .video-display .controls-360 {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    width: 60px;
-    height: 60px;
-    border: 1px solid #444444;
-    border-radius: 30px;
-    background-color: rgba(34,34,34,0.7);
-    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  width: 60px;
+  height: 60px;
+  border: 1px solid #444444;
+  border-radius: 30px;
+  background-color: rgba(255,255,255,0.7);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
 }
 .video-display .controls-360 div {
     position: absolute;
@@ -78,24 +78,32 @@ body.displaying-360 .video-display canvas {
     background-repeat: no-repeat;
 }
 .video-display .controls-360 .controls-360-up {
-    top: 0;
-    left: 20px;
-    background-image: url(arrow-up.svg);
+  top: 0;
+  left: 20px;
+  background-image: url(arrow-up.svg);
+  filter: url(#icon_color);
+  -webkit-filter: url(#icon_color);
 }
 .video-display .controls-360 .controls-360-down {
-    bottom: 0;
-    left: 20px;
-    background-image: url(arrow-down.svg);
+  bottom: 0;
+  left: 20px;
+  background-image: url(arrow-down.svg);
+  filter: url(#icon_color);
+  -webkit-filter: url(#icon_color);
 }
 .video-display .controls-360 .controls-360-right {
-    top: 20px;
-    right: 0;
-    background-image: url(arrow-right.svg);
+  top: 20px;
+  right: 0;
+  background-image: url(arrow-right.svg);
+  filter: url(#icon_color);
+  -webkit-filter: url(#icon_color);
 }
 .video-display .controls-360 .controls-360-left {
-    top: 20px;
-    left: 0;
-    background-image: url(arrow-left.svg);
+  top: 20px;
+  left: 0;
+  background-image: url(arrow-left.svg);
+  filter: url(#icon_color);
+  -webkit-filter: url(#icon_color);
 }
 .video-display .controls-360 .controls-360-center {
     top: 20px;
@@ -110,7 +118,7 @@ body.displaying-360 .video-display canvas {
     padding-left: 70px;
     font-size: 14px;
     line-height: 1.4em;
-    background: rgba(0,0,0,0.5) url(360.svg) 10px center no-repeat;
+    background: rgba(255,255,255,0.4) url(360.svg) 10px center no-repeat;
 }
 .size-small .notice-360,
 .size-tiny .notice-360{
