@@ -7,7 +7,7 @@
         {% for section in sections %}
           <div class="section-item" click="$set:pendingCurrentTime:{{section.start_time}};$set:playing:true;$set:toggleSectionsMenu:0;">
             {% if section.thumbnail_photo_id != empty %}
-              <img class="section-thumb" src="{{url}}/{{section.thumbnail_tree_id}}/{{section.thumbnail_photo_id}}/{{section.thumbnail_token}}/60x34cr/thumbnail.png" />
+              <img loading="lazy" class="section-thumb" src="{{url}}/{{section.thumbnail_tree_id}}/{{section.thumbnail_photo_id}}/{{section.thumbnail_token}}/60x34cr/thumbnail.png" />
             {% endif %}
             <span class="section-item-time">{{section.start_time | formatTime}}</span><br />
             <span class="section-item-title">{{section.title}}</span><br />
