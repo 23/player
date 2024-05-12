@@ -3,7 +3,7 @@
     {% for section in sections %}
       {% if section.start_time > 0  %}
         <div class="section" style="left:{{section.positionPct}};" click="$set:currentTime:{{section.start_time}}; $set:playing:true" title="{{section.title|escape}}">
-          {% if isTouchDevice == false %}<div class="section-pop-up">{% if section.thumbnail_photo_id != empty %}<img crossorigin="anonymous" src="{{'https://'}}{{ domain}}{{section.small_download}}" alt="section-thumbnail" />{% endif %}<div class="section-title-container"><span class="section-title">{{section.title|escape|truncate: 10}}</span></div></div>{% endif %}
+          {% if isTouchDevice == false %}<div class="section-pop-up">{% if section.thumbnail_photo_id != empty %}<img loading="lazy" crossorigin="anonymous" src="{{'https://'}}{{ domain}}{{section.small_download}}" alt="section-thumbnail" />{% endif %}<div class="section-title-container"><span class="section-title">{{section.title|escape|truncate: 10}}</span></div></div>{% endif %}
         </div>
       {% endif %}
     {% endfor %}
