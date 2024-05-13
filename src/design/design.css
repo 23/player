@@ -1,10 +1,11 @@
 :root {
   --tray-font: 'Helvetica';
-  --player-vertical-padding: 0px;
-  --player-horizontal-padding: 0px;
 
   --player-border-radius: 0px;
   --player-background-color: black;
+  --player-vertical-padding: 0px;
+  --player-horizontal-padding: 0px;
+
   --menu-gap: 0px;
   --menu-border-radius: 0px;
   --menu-background-color: #1e1e1e;
@@ -14,6 +15,12 @@
   --scrubber-color-lighter: #1EC95B85;
   --scrubber-color-lightest: #1EC95B72;
 
+  --tray-margin: 0px;
+  --tray-play-button-gap: 0px;
+  --tray-outer-border-radius: 0px;
+  --tray-inner-border-radius: 0px;
+  --tray-play-button-width: 38px;
+  --tray-play-button-border-radius: 0px;
   --spacing-above-tray: 50px;
 }
 
@@ -227,9 +234,8 @@ ul.button-menu-selection li.selected button,
 #tray {
   position:absolute;
   bottom:-20px;
-  bottom:-40px\9;
-  left:0;
-  width:100%;
+  left:var(--tray-margin);
+  right:var(--tray-margin);
   opacity: 0;
   transition: all 100ms linear;
   z-index: 100;
@@ -244,12 +250,35 @@ ul.button-menu-selection li.selected button,
 #traysub {
   display: flex;
   max-width: 1200px;
-  margin: 0 auto;
+  margin: 0 auto var(--tray-margin) auto;
+}
+.tray-left,
+.tray-scrubber,
+.tray-right {
   background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAkCAYAAABIdFAMAAAAO0lEQVR42mXEOQ0AQAgAMKzwPxsC8O/nFNxKQofCzDzo7gdVdcrMXUSc3H1nZidV3YnIiZl3RLRDxNUH4uQyVoLXb7MAAAAASUVORK5CYII=') repeat-x;
   -webkit-box-shadow: 0 4px 6px #000;
   -moz-box-shadow: 0 4px 6px #000;
   box-shadow: 0 4px 6px #000;
 }
+
+.tray-left, .tray-left .button-container {
+  border-radius:var(--tray-outer-border-radius) var(--tray-inner-border-radius) var(--tray-inner-border-radius) var(--tray-outer-border-radius);
+}
+.tray-left .button-container button {
+  border-radius:
+    calc(max(var(--tray-outer-border-radius), var(--tray-play-button-border-radius)))
+  calc(max(var(--tray-inner-border-radius), var(--tray-play-button-border-radius)))
+  calc(max(var(--tray-inner-border-radius), var(--tray-play-button-border-radius)))
+  calc(max(var(--tray-outer-border-radius), var(--tray-play-button-border-radius)));
+  overflow:hidden;
+}
+.tray-scrubber {
+  border-radius:var(--tray-inner-border-radius) 0 0 var(--tray-inner-border-radius);
+}
+.tray-right {
+  border-radius:0 var(--tray-outer-border-radius) var(--tray-outer-border-radius) 0;
+}
+
 @media all and (min-width: 1200px) {
   #traysub {
     width: 960px;
@@ -258,13 +287,14 @@ ul.button-menu-selection li.selected button,
 .tray-left {
   flex: 0;
   float:left;
+  margin-right:var(--tray-play-button-gap);
 }
 .tray-left .button-container {
   border-right: 1px solid #000;
 }
 .tray-left .button-container button {
-  width: 38px;
   height: 36px;
+  width: var(--tray-play-button-width);
   transition: background-color 200ms linear;
 }
 .tray-right{
