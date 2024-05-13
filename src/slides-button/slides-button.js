@@ -17,7 +17,7 @@ Player.provide('slides-button',{
             $this.buttonMenu = $this.container.find(".button-menu");
             var slidemodeCount = Player.get('slideModes').length;
             $this.buttonMenu.css({
-                fontSize: $this.container.find("li").height()*slidemodeCount
+                fontSize: $this.container.find("li").height()*slidemodeCount + 12
             });
             $this.button.one("mouseenter", function(){
                 $this.buttonMenu.css({
