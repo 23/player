@@ -1,10 +1,10 @@
 :root {
   --tray-font: 'Helvetica';
-  --player-vertical-padding: 0px;
-  --player-horizontal-padding: 0px;
 
   --player-border-radius: 0px;
   --player-background-color: black;
+  --player-vertical-padding: 0px;
+  --player-horizontal-padding: 0px;
   --menu-gap: 5px;
   --menu-border-radius: 3px;
   --menu-background-color: rgba(0, 0, 0, .7);
@@ -14,6 +14,12 @@
   --scrubber-color-lighter: #1EC95B85;
   --scrubber-color-lightest: #1EC95B72;
 
+  --tray-margin: 5px;
+  --tray-play-button-gap: 0px;
+  --tray-outer-border-radius: 2px;
+  --tray-inner-border-radius: 2px;
+  --tray-play-button-width: 30px;
+  --tray-play-button-border-radius: 2px;
   --spacing-above-tray: 40px;
 }
 
@@ -236,15 +242,14 @@ ul.button-menu-selection li.selected button,
 #tray {
   position:absolute;
   bottom:-20px;
-  bottom:-40px\9;
-  left:5px;
-  right:5px;
+  left:var(--tray-margin);
+  right:var(--tray-margin);
   opacity: 0;
   transition: all 100ms linear;
   z-index: 100;
 }
 .tray-shown #tray {
-  bottom: 5px;
+  bottom: var(--tray-margin);
   opacity: 1;
 }
 .block-tray #tray {
@@ -253,9 +258,27 @@ ul.button-menu-selection li.selected button,
 #traysub {
   display: flex;
   max-width: 1200px;
-  margin: 0 5px;
   margin: 0 auto;
 }
+
+.tray-left, .tray-left .button-container {
+  border-radius:var(--tray-outer-border-radius) var(--tray-inner-border-radius) var(--tray-inner-border-radius) var(--tray-outer-border-radius);
+}
+.tray-left .button-container button {
+  border-radius:
+    calc(max(var(--tray-outer-border-radius), var(--tray-play-button-border-radius)))
+  calc(max(var(--tray-inner-border-radius), var(--tray-play-button-border-radius)))
+  calc(max(var(--tray-inner-border-radius), var(--tray-play-button-border-radius)))
+  calc(max(var(--tray-outer-border-radius), var(--tray-play-button-border-radius)));
+  overflow:hidden;
+}
+.tray-scrubber {
+  border-radius:var(--tray-inner-border-radius) 0 0 var(--tray-inner-border-radius);
+}
+.tray-right {
+  border-radius:0 var(--tray-outer-border-radius) var(--tray-outer-border-radius) 0;
+}
+
 @media all and (min-width: 1200px) {
   #traysub {
     width: 960px;
@@ -264,10 +287,11 @@ ul.button-menu-selection li.selected button,
 .tray-left {
   flex: 0;
   float:left;
+  margin-right:var(--tray-play-button-gap);
 }
 .tray-left .button-container button {
-  width: 30px;
   height: 30px;
+  width: var(--tray-play-button-width);
   transition: background-color 200ms linear;
 }
 .tray-right {
