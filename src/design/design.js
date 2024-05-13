@@ -277,58 +277,22 @@ Player.provide('design',
                    $("filter#icon_hover feFlood").attr("flood-color", $this.scrubberColor);
                    $("filter#icon_color feFlood").attr("flood-color", "white");
 
-                   var css = "";
-                   // Background colors
+                   // CSS variables
+                   var rootStyle = document.documentElement.style;
+                   rootStyle.setProperty('--scrubber-color', $this.scrubberColor);
+                   rootStyle.setProperty('--scrubber-color-light', $this.hexToRGBA($this.scrubberColor, 0.9));
+                   rootStyle.setProperty('--scrubber-color-lighter', $this.hexToRGBA($this.scrubberColor, 0.85));
+                   rootStyle.setProperty('--scrubber-color-lightest', $this.hexToRGBA($this.scrubberColor, 0.72));
+                   rootStyle.setProperty('--tray-font', $this.trayFont + ', sans-serif');
+                   rootStyle.setProperty('--player-vertical-padding', $this.verticalPadding+'px');
+                   rootStyle.setProperty('--player-horizontal-padding', $this.horizontalPadding+'px');
                    if($this.backgroundColor) {
-                     document.documentElement.style.setProperty('--player-background-color', $this.backgroundColor);
+                     rootStyle.setProperty('--player-background-color', $this.backgroundColor);
                    }
                    if($this.borderRadius) {
-                     document.documentElement.style.setProperty('--player-border-radius', $this.borderRadius + 'px');
+                     rootStyle.setProperty('--player-border-radius', $this.borderRadius + 'px');
                    }
-
-                   css += ".tray-left .button-container:hover > button { background-color: " + $this.scrubberColor + "; }";
-                   css += ".scrubber-buffer, .scrubber-play { background-color: " + $this.scrubberColor + "; }";
-                   css += ".volume-slider .volume-level { background-color: " + $this.scrubberColor + "; }";
-                   css += ".big-play-button, .button-container > .loop-play-button { background-color: " + $this.scrubberColor + "; }";
-                   css += ".big-play-button:hover, .button-container:hover > .loop-play-button { background-color: " + $this.hexToRGBA( $this.scrubberColor, 0.85 ) + "; }";
-                   css += ".sharing-info a:hover { color: " + $this.scrubberColor + "; }";
-                   css += ".protection-password input.submitbutton { background-color: " + $this.scrubberColor + "; }";
-                   css += ".protection-password input.submitbutton:hover { background-color: " + $this.hexToRGBA($this.scrubberColor, 0.9) + "; }";
-                   css += ".glue-sections-menu:not(.sections-menu-open) .sections-menu-wrap:hover { background-color: " + $this.scrubberColor + "; }";
-                   css += ".sections-menu-open #section-menu-toggle:hover { background-color: " + $this.scrubberColor + "; }";
-                   css += ".section-item.active:hover { background-color: " + hexToRGB($this.scrubberColor, "0.72") + "; }";
-                   css += ".section-item.active { background-color: " + hexToRGB($this.scrubberColor, "0.72") + "; }";
-
-                   // Text color
-                   css += "ul.button-menu li:hover button, ul.button-menu-selection li.selected button, .menu-list li a:hover { color: " + $this.scrubberColor + "; }";
-
-                   //Font
-                   css += "body { font-family: " + $this.trayFont + ", sans-serif; }";
-
-                   // Border color
-                   css += ".loop-container-cell { border-color: " + $this.scrubberColor + "; }";
-
-                   // Vertical and horisontal padding
-                   css += ".video-display { bottom: " + $this.verticalPadding + "px; left: " + $this.horizontalPadding + "px; }";
-
-                   $this.applyStyle(css);
                  }
-                 $this.applyStyle = function(css){
-                   if(!$this.stylesheet){
-                     var head = document.head || document.getElementsByTagName("head")[0];
-                     $this.stylesheet = document.createElement("style");
-                     $this.stylesheet.type = "text/css";
-                     head.appendChild($this.stylesheet);
-                   }
-                   if($this.stylesheet.styleSheet){
-                     $this.stylesheet.styleSheet.cssText = css;
-                   }else{
-                     if($this.stylesheet.childNodes.length > 0){
-                       $this.stylesheet.removeChild( $this.stylesheet.childNodes[0] );
-                     }
-                     $this.stylesheet.appendChild(document.createTextNode(css));
-                   }
-                 };
 
                  Player.set("forcer", {type: "block", element: "tray", from: "design", active: true});
                  Player.bind("player:playflow:transitioned", function(e, transition){
@@ -338,17 +302,6 @@ Player.provide('design',
                  });
 
                  Player.bind('glue:localechange', function(evt,lang){$('html').attr({lang:lang})});
-                 // Force IE 7,8,9 to constantly check for window resize
-                 // Needed when iframe is not visible when it loads
-                 if(/IE (7|8|9)/.test(navigator.userAgent)){
-                   $this.windowWidth = -1;
-                   window.setInterval(function(){
-                     if($this.windowWidth != $(window).width()){
-                       $this.windowWidth = $(window).width();
-                       $(window).resize();
-                     }
-                   },1000);
-                 }
 
                  $this.render();
 
