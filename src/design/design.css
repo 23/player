@@ -189,7 +189,6 @@ ul.button-menu::after {
   border-radius:0 0 var(--menu-border-radius) var(--menu-border-radius);
 }
 ul.button-menu-selection li.selected button { color: #000000; }
-ul.button-menu-selection li button { padding-left: 30px; }
 ul.button-menu-selection li.selected:hover button { color: #000000; }
 
 /* Close button for overlays */
@@ -245,15 +244,6 @@ ul.button-menu-selection li.selected:hover button { color: #000000; }
 }
 .block-tray #tray {
   visibility: hidden;
-}
-#traysub {
-  display: flex;
-  max-width: 1200px;
-}
-@media all and (min-width: 1200px) {
-  #traysub {
-    width: 960px;
-  }
 }
 .tray-left {
   flex: 0;
