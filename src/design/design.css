@@ -1,19 +1,26 @@
 :root {
   --tray-font: 'Helvetica';
-  --player-vertical-padding: 0px;
-  --player-horizontal-padding: 0px;
 
   --player-border-radius: 0px;
   --player-background-color: black;
+  --player-vertical-padding: 0px;
+  --player-horizontal-padding: 0px;
+
   --menu-gap: 0px;
   --menu-border-radius: 0px;
-  --menu-background-color: rgba(255,255,255,0.72);
+  --menu-background-color: rgba(255,255,255,0.8);
 
   --scrubber-color: #1EC95B;
   --scrubber-color-light: #1EC95B90;
   --scrubber-color-lighter: #1EC95B85;
   --scrubber-color-lightest: #1EC95B72;
 
+  --tray-margin: 0px;
+  --tray-play-button-gap: 0px;
+  --tray-outer-border-radius: 0px;
+  --tray-inner-border-radius: 0px;
+  --tray-play-button-width: 71px;
+  --tray-play-button-border-radius: 0px;
   --spacing-above-tray: 60px;
 }
 
@@ -128,6 +135,7 @@ p {
   z-index:99999;
 }
 ul.button-menu {
+  display:none;
   position: absolute;
   bottom: 100%;
   right: 0px;
@@ -147,6 +155,7 @@ ul.button-menu::before, ul.button-menu::after {
   height:6px;
 }
 .button-container:hover ul.button-menu, .button-container-active ul.button-menu {
+  display:block;
   height: 1em;
   overflow: auto;
   transition-delay: 0s,200ms;
@@ -200,9 +209,6 @@ ul.button-menu::before {
 ul.button-menu::after {
   border-radius:0 0 var(--menu-border-radius) var(--menu-border-radius);
 }
-.tray-left .button-container:hover > button {
-  background-color: var(--scrubber-color);
-}
 ul.button-menu li:hover button,
 ul.button-menu-selection li.selected button,
 .menu-list li a:hover {
@@ -226,10 +232,9 @@ ul.button-menu-selection li.selected button,
 /* === tray === */
 #tray {
   position:absolute;
-  bottom:-20px;
   bottom:-50px;
-  left:0;
-  width:100%;
+  left:var(--tray-margin);
+  right:var(--tray-margin);
   transition: all 100ms linear;
   z-index: 100;
 }
@@ -241,7 +246,6 @@ ul.button-menu-selection li.selected button,
   padding-bottom: 10px;
   margin: 0 auto;
   background: transparent;
-  background: var(--menu-background-color);
   transition: background-color 100ms linear;
 }
 .size-tiny #traysub {
@@ -263,12 +267,42 @@ ul.button-menu-selection li.selected button,
 .block-tray #tray {
   visibility: hidden;
 }
+#traysub {
+  display: flex;
+  margin: 0 auto var(--tray-margin) auto;
+}
+.tray-left,
+.tray-scrubber,
+.tray-right {
+  background: var(--menu-background-color);
+
+}
+
+.tray-left, .tray-left .button-container {
+  border-radius:var(--tray-outer-border-radius) var(--tray-inner-border-radius) var(--tray-inner-border-radius) var(--tray-outer-border-radius);
+}
+.tray-left .button-container button {
+  border-radius:
+    calc(max(var(--tray-outer-border-radius), var(--tray-play-button-border-radius)))
+  calc(max(var(--tray-inner-border-radius), var(--tray-play-button-border-radius)))
+  calc(max(var(--tray-inner-border-radius), var(--tray-play-button-border-radius)))
+  calc(max(var(--tray-outer-border-radius), var(--tray-play-button-border-radius)));
+  overflow:hidden;
+}
+.tray-scrubber {
+  border-radius:var(--tray-inner-border-radius) 0 0 var(--tray-inner-border-radius);
+}
+.tray-right {
+  border-radius:0 var(--tray-outer-border-radius) var(--tray-outer-border-radius) 0;
+}
+
 .tray-left {
   flex: 0;
   float:left;
+  margin-right:var(--tray-play-button-gap);
 }
 .tray-left .button-container button {
-  width: 71px;
+  width: var(--tray-play-button-width);
   transition: background-color 200ms linear;
 }
 .tray-right {
