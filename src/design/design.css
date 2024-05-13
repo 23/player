@@ -13,6 +13,8 @@
   --scrubber-color-light: #1EC95B90;
   --scrubber-color-lighter: #1EC95B85;
   --scrubber-color-lightest: #1EC95B72;
+
+  --spacing-above-tray: 50px;
 }
 
 
@@ -961,12 +963,12 @@ body.overlay-shown .button-container-share {
   transition:bottom 200ms linear;
 }
 .tray-shown .muted-auto-play {
-  bottom:40px;
+  bottom:var(--spacing-above-tray);
 }
 .muted-auto-play-button {
   display:inline-block;
   margin:0 auto;
-  margin-bottom:20px;
+  margin-bottom:10px;
   cursor:pointer;
   border-radius:20px;
   background-color:#181818;
