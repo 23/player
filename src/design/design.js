@@ -279,10 +279,10 @@ Player.provide('design',
                    var css = "";
                    // Background colors
                    if($this.backgroundColor) {
-                     css += ".player-design, #player, .video-display { background-color: " + $this.backgroundColor + "; }";
+                     document.documentElement.style.setProperty('--player-background-color', $this.backgroundColor);
                    }
                    if($this.borderRadius) {
-                     css += "body { border-radius: " + $this.borderRadius + "px; }";
+                     document.documentElement.style.setProperty('--player-border-radius', $this.borderRadius + 'px');
                    }
                    css += ".scrubber-buffer, .scrubber-play { background-color: " + $this.scrubberColor + "; }";
                    css += ".volume-slider .volume-level { background-color: " + $this.scrubberColor + "; }";
@@ -297,8 +297,7 @@ Player.provide('design',
                    css += ".section-item.active { background-color: " + hexToRGB($this.scrubberColor, "0.72") + "; }";
 
                    // Text color
-                   css += "ul.button-menu li:hover button { color: " + $this.scrubberColor + "; }";
-                   css += ".menu-list li a:hover { color: " + $this.scrubberColor + "; }";
+                   css += "ul.button-menu li:hover button, ul.button-menu-selection li.selected button, .menu-list li a:hover { color: " + $this.scrubberColor + "; }";
 
                    //Font
                    css += "body { font-family: " + $this.trayFont + ", sans-serif; }";
