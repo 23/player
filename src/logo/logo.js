@@ -24,11 +24,11 @@ Player.provide('logo',
           var ratio = img.naturalWidth / img.naturalHeight;
           var style = {"display": "block"};
           if(ratio > 1.2){
-              style["max-width"] = "90px";
+              style["max-width"] = "80px";
           }else if(ratio < 0.8){
-              style["max-height"] = "90px";
+              style["max-height"] = "80px";
           }else{
-              style["max-width"] = "75px";
+              style["max-width"] = "60px";
           }
           $this.logo.css(style);
       };
