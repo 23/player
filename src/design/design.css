@@ -135,6 +135,7 @@ p {
   z-index:99999;
 }
 ul.button-menu {
+  display:none;
   position: absolute;
   bottom: 100%;
   right: 0px;
@@ -154,6 +155,7 @@ ul.button-menu::before, ul.button-menu::after {
   height:6px;
 }
 .button-container:hover ul.button-menu, .button-container-active ul.button-menu {
+  display:block;
   height: 1em;
   overflow: auto;
   transition-delay: 0s,200ms;
