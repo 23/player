@@ -229,6 +229,7 @@ ul.button-menu::after {
 @media all and (min-width: 1200px) {
   #traysub {
     width: 960px;
+    margin:0 auto;
   }
 }
 .tray-left {
