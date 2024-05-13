@@ -11,6 +11,7 @@ Player.provide('design',
                  trayFont:'Helvetica',
                  scrubberColor:'#1EC95B',
                  backgroundColor:'black',
+                 borderRadius:'',
                  endOn:'share',
                  start: 0,
                  loop: false
@@ -170,7 +171,7 @@ Player.provide('design',
                  });
 
                  Player.bind('player:settings', function(e){
-                   PlayerUtilities.mergeSettings($this, ['verticalPadding', 'horizontalPadding', 'trayFont', 'scrubberColor', 'backgroundColor', 'showTray', 'endOn', 'start', 'loop', 'alwaysShowTray']);
+                   PlayerUtilities.mergeSettings($this, ['verticalPadding', 'horizontalPadding', 'trayFont', 'scrubberColor', 'backgroundColor', 'borderRadius', 'showTray', 'endOn', 'start', 'loop', 'alwaysShowTray']);
                    Player.set("forcer", {
                      type: "block",
                      element: "tray",
@@ -278,7 +279,10 @@ Player.provide('design',
                    var css = "";
                    // Background colors
                    if($this.backgroundColor) {
-                     css += "html, body, .player-design, #player, .video-display { background-color: " + $this.backgroundColor + "; }";
+                     css += ".player-design, #player, .video-display { background-color: " + $this.backgroundColor + "; }";
+                   }
+                   if($this.borderRadius) {
+                     css += "body { border-radius: " + $this.borderRadius + "px; }";
                    }
                    css += ".scrubber-buffer, .scrubber-play { background-color: " + $this.scrubberColor + "; }";
                    css += ".volume-slider .volume-level { background-color: " + $this.scrubberColor + "; }";

@@ -7,8 +7,10 @@ html, body, .player-design, #player {
   /* Make sure that iOS Safari doesn't try to expand the player iframe */
   width:100%;
   height:100%;
-  background-color: #000000;
   overflow:hidden;
+}
+.player-design, #player, .video-display {
+  background-color: black;
 }
 body, .player-design, #player {
   position: relative;
