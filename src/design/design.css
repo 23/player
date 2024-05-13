@@ -232,7 +232,7 @@ ul.button-menu::after {
 }
 @media all and (min-width: 1200px) {
   #traysub {
-    width: 9600px;
+    width: 960px;
   }
 }
 .tray-left {
