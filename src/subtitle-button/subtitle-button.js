@@ -1,13 +1,13 @@
-/* 
+/*
    MODULE: SUBTITLE BUTTON
    Handle subtitle button
-   
+
   Listens for:
    - player:subtitlechange
 */
 
-Player.provide('subtitle-button', 
-  {}, 
+Player.provide('subtitle-button',
+  {},
   function(Player,$,opts){
     var $this = this;
     $.extend($this, opts);
@@ -21,7 +21,7 @@ Player.provide('subtitle-button',
         $this.button.one("mouseenter", function(){
           $this.buttonMenu.css({
             right: ($this.buttonMenu.width()-30)/-2,
-            fontSize: $this.container.find("li").height()*(localeCount+1),
+            fontSize: $this.container.find("li").height()*(localeCount+1) + 12,
             maxHeight: $this.container.find("li").height()*4
           });
         });
@@ -33,7 +33,7 @@ Player.provide('subtitle-button',
       if (subtitleOn) return "subtitle_on";
       else return "subtitle_off";
     });
-      
+
     return $this;
   }
 );
