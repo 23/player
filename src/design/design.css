@@ -1,3 +1,15 @@
+:root {
+  --player-border-radius: 0px;
+  --player-background-color: black;
+  --menu-gap: 0px;
+  --menu-border-radius: 0px;
+  --menu-background-color: #1e1e1e;
+}
+
+
+
+
+
 /* ========================= BROWSER RESET ======================== */
 body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td,button{margin:0;padding:0;}table{border-collapse:collapse;border-spacing:0;}fieldset,img,button{border:0;}address,caption,cite,code,dfn,em,strong,th,var{font-style:normal;font-weight:normal;}ol,ul {list-style:none;}caption,th {text-align:left;}h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:normal;}q:before,q:after{content:'';}abbr,acronym {border:0;}* focus, video, object, player, embed {outline:none} *{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;-o-user-select:none;user-select:none;}iframe{border:0} input,textarea{-webkit-user-select:text;-moz-user-select:text;-ms-user-select:text;-o-user-select:text;user-select:text;}iframe{border:0}button{background-color:transparent;border-radius:0;}
 
@@ -10,7 +22,8 @@ html, body, .player-design, #player {
   overflow:hidden;
 }
 .player-design, #player, .video-display {
-  background-color: black;
+  background-color: var(--player-background-color);
+  border-radius: var(--player-border-radius);
 }
 body, .player-design, #player {
   position: relative;
@@ -107,14 +120,19 @@ ul.button-menu {
   bottom: 100%;
   right: 0px;
   height: 0;
-  background-color: #1E1E1E;
-  padding: 0px;
+  padding:0;
   font-size: 0;
   overflow: hidden;
-  scrollbar-color: #aaa rgba(0,0,0,.72);
+  scrollbar-color: #aaa var(--menu-background-color);
   scrollbar-width: thin;
   scrollbar-gutter: stable;
   transition: height 200ms ease, overflow 1ms ease 0s allow-discrete;
+  border-bottom:0 solid transparent;
+}
+ul.button-menu::before, ul.button-menu::after {
+  content:'';
+  display:block;
+  height:6px;
 }
 .button-container:hover ul.button-menu, .button-container-active ul.button-menu {
   height: 1em;
@@ -123,13 +141,14 @@ ul.button-menu {
 }
 ul.button-menu li {
   display: block;
-  text-align: right;
+  text-align: left;
   font-size: 11px;
-  background: transparent none 10px center no-repeat;
+  background-position: right center;
+  background-repeat: no-repeat;
 }
 ul.button-menu li button { /* menu items */
   height: 30px;
-  padding: 0 14px 0 20px;
+  padding: 0 16px;
   line-height: 30px;
   text-align: right;
   white-space:nowrap;
@@ -139,28 +158,36 @@ ul.button-menu li button { /* menu items */
   width: auto; /* Display buttons with correct width in IE7 http://jehiah.cz/a/button-width-in-ie */
   overflow: visible; /* See above */
 }
-ul.button-menu li:hover button { color: #1EC95B; }
-
-/* Hack for IE7+8 to display menus properly */
-ul.button-menu {
-  overflow: visible\9;
-  visibility: hidden\9;
-}
-.button-container:hover ul,
-.button-container:hover li,
-.button-container:hover button {
-  visibility: visible\9;
-}
-
-/* Menu with selection */
 ul.button-menu-selection li.selected {
-  background-image:url('checkmark.svg');
-  filter: url(#icon_color);
-  -webkit-filter: url(#icon_color);
+  position:relative;
+  padding-right:20px;
 }
-ul.button-menu-selection li.selected button { color: #FFFFFF; }
-ul.button-menu-selection li button { padding-left: 30px; }
-ul.button-menu-selection li.selected:hover button { color: #FFFFFF; }
+ul.button-menu-selection li.selected::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 10px;
+  width: 50px;
+  height: 100%;
+  background-repeat: no-repeat;
+  background-position: right center;
+  background-image:url('checkmark.svg');
+  filter: url(#icon_hover);
+  -webkit-filter: url(#icon_hover);
+}
+
+ul.button-menu {
+  border-bottom-width:var(--menu-gap)
+}
+ul.button-menu li, ul.button-menu::before, ul.button-menu::after {
+  background: var(--menu-background-color) none right center no-repeat;
+}
+ul.button-menu::before {
+  border-radius:var(--menu-border-radius) var(--menu-border-radius) 0 0;
+}
+ul.button-menu::after {
+  border-radius:0 0 var(--menu-border-radius) var(--menu-border-radius);
+}
 
 /* Close button for overlays */
 .button-container-close {
@@ -205,7 +232,7 @@ ul.button-menu-selection li.selected:hover button { color: #FFFFFF; }
 }
 @media all and (min-width: 1200px) {
   #traysub {
-    width: 800px;
+    width: 9600px;
   }
 }
 .tray-left {
@@ -231,7 +258,7 @@ ul.button-menu-selection li.selected:hover button { color: #FFFFFF; }
 }
 .tray-right .button-container:hover,
 .tray-left .button-container:hover {
-  background-color: #1E1E1E;
+  background-color: var(--menu-background-color);
   -webkit-box-shadow: inset 0 0 1px #000;
   -moz-box-shadow: inset 0 0 1px #000;
   box-shadow: inset 0 0 1px #000;
@@ -420,7 +447,7 @@ ul.button-menu-selection li.selected:hover button { color: #FFFFFF; }
   left: 0;
   width: 100%;
   height: 0;
-  background-color: #1E1E1E;
+  background: var(--menu-background-color);
   overflow: hidden;
   transition: height 200ms ease;
 }
@@ -535,6 +562,7 @@ a.info-overlay-domain:hover {
   top: 12px;
   right: 12px;
   transition: opacity 200ms linear;
+  background-color: var(--menu-background-color);
 }
 .tray-shown .button-container-share {
   opacity: 1;
@@ -554,7 +582,7 @@ body.overlay-shown .button-container-share {
   width: 100%;
   height: 100%;
   background:rgb(0,0,0);
-  background:rgba(0,0,0,.72);
+  background:var(--menu-background-color);
   transition: opacity 200ms linear;
 }
 .sharing-container-active {
@@ -644,7 +672,7 @@ body.overlay-shown .button-container-share {
   width: 100%;
   height: 100%;
   background:rgb(0,0,0);
-  background:rgba(0,0,0,.72);
+  background:var(--menu-background-color);
   transition: opacity 200ms linear;
 }
 .browse-container-activated {
