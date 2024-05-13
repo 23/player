@@ -19,6 +19,8 @@
   --tray-play-button-gap: 0px;
   --tray-outer-border-radius: 0px;
   --tray-inner-border-radius: 0px;
+  --tray-play-button-width: 71px;
+  --tray-play-button-border-radius: 0px;
   --spacing-above-tray: 50px;
 }
 
@@ -262,7 +264,11 @@ ul.button-menu-selection li.selected button,
   border-radius:var(--tray-outer-border-radius) var(--tray-inner-border-radius) var(--tray-inner-border-radius) var(--tray-outer-border-radius);
 }
 .tray-left .button-container button {
-  border-radius:var(--tray-outer-border-radius) var(--tray-inner-border-radius) var(--tray-inner-border-radius) var(--tray-outer-border-radius);
+  border-radius:
+    calc(max(var(--tray-outer-border-radius), var(--tray-play-button-border-radius)))
+  calc(max(var(--tray-inner-border-radius), var(--tray-play-button-border-radius)))
+  calc(max(var(--tray-inner-border-radius), var(--tray-play-button-border-radius)))
+  calc(max(var(--tray-outer-border-radius), var(--tray-play-button-border-radius)));
   overflow:hidden;
 }
 .tray-scrubber {
@@ -283,7 +289,7 @@ ul.button-menu-selection li.selected button,
   margin-right:var(--tray-play-button-gap);
 }
 .tray-left .button-container button {
-  width: 71px;
+  width: var(--tray-play-button-width);
   transition: background-color 200ms linear;
 }
 .tray-right {
