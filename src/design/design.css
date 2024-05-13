@@ -1,9 +1,18 @@
 :root {
+  --tray-font: 'Helvetica';
+  --player-vertical-padding: 0px;
+  --player-horizontal-padding: 0px;
+
   --player-border-radius: 0px;
   --player-background-color: black;
   --menu-gap: 5px;
   --menu-border-radius: 3px;
   --menu-background-color: rgba(0, 0, 0, .7);
+
+  --scrubber-color: #1EC95B;
+  --scrubber-color-light: #1EC95B90;
+  --scrubber-color-lighter: #1EC95B85;
+  --scrubber-color-lightest: #1EC95B72;
 }
 
 
@@ -32,6 +41,7 @@ body {
   margin:0;
   color:white;  /*updated in js via player settings */
   font:11px/14px Helvetica;  /*updated in js via player settings */
+  font-family: var(--tray-font);
 
   scrollbar-base-color: #000;
   scrollbar-3dlight-color: #000;
@@ -1072,3 +1082,24 @@ body.overlay-shown .button-container-share {
 
 /* === Hide any cookie popup from HubSpot === */
 div#hs-eu-cookie-confirmation{display:none!important;}
+
+
+
+
+
+.tray-left .button-container:hover > button { background-color: var(--scrubber-color); }
+.scrubber-buffer, .scrubber-play { background-color: var(--scrubber-color); }
+.volume-slider .volume-level { background-color: var(--scrubber-color); }
+.big-play-button, .button-container > .loop-play-button { background-color: var(--scrubber-color); }
+.big-play-button:hover, .button-container:hover > .loop-play-button { background-color: var(--scrubber-color-lighter); }
+.sharing-info a:hover { color: var(--scrubber-color); }
+.protection-password input.submitbutton { background-color: var(--scrubber-color); }
+.protection-password input.submitbutton:hover { background-color: var(--scrubber-color-light); }
+.glue-sections-menu:not(.sections-menu-open) .sections-menu-wrap:hover { background-color: var(--scrubber-color); }
+.sections-menu-open #section-menu-toggle:hover { background-color: var(--scrubber-color); }
+.section-item.active:hover { background-color: var(--scrubber-color-lightest); }
+.section-item.active { background-color: var(--scrubber-color-lightest); }
+ul.button-menu li:hover button, ul.button-menu-selection li.selected button, .menu-list li a:hover { color: var(--scrubber-color); }
+
+.loop-container-cell { border-color: var(--scrubber-color); }
+.video-display { bottom: var(--player-vertical-padding); left: var(--player-horizontal-padding) }
