@@ -22,7 +22,7 @@
     display: table-cell;
     text-align: center;
     vertical-align: middle;
-    border-color: #1EC95B;
+    border-color: var(--scrubber-color);
     border-width: 0px;
 }
 
