@@ -56,9 +56,11 @@
 }
 .protection-password input.submitbutton {
     font-size: 13px;
-    background-color: #1EC95B;
+    background-color: var(--scrubber-color);
     color: #FFF;
     cursor: pointer;
     transition: background-color 200ms linear;
 }
-
+.protection-password input.submitbutton:hover {
+    background-color: var(--scrubber-color-light);
+}

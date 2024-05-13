@@ -40,7 +40,7 @@ body, .player-design, #player {
 body {
   margin:0;
   color:white;  /*updated in js via player settings */
-  font:11px/14px Helvetica;  /*updated in js via player settings */
+  font:11px/14px Helvetica;
   font-family: var(--tray-font);
 
   scrollbar-base-color: #000;
@@ -52,14 +52,14 @@ body {
   scrollbar-dark-shadow-color: #000;
 }
 h1 {
-  font-size:14px; /*updated in js via player settings */
+  font-size:14px;
   line-height:2em;
   font-weight:normal;
   letter-spacing:.3px;
 }
 p {
-  font-size:12px; /*updated in js via player settings */
-  font-weight:normal; /*updated in js via player settings */
+  font-size:12px;
+  font-weight:normal;
   line-height:1.5em;
   letter-spacing:.3px;
 }
@@ -198,6 +198,14 @@ ul.button-menu::before {
 ul.button-menu::after {
   border-radius:0 0 var(--menu-border-radius) var(--menu-border-radius);
 }
+.tray-left .button-container:hover > button {
+  background-color: var(--scrubber-color);
+}
+ul.button-menu li:hover button,
+ul.button-menu-selection li.selected button,
+.menu-list li a:hover {
+  color: var(--scrubber-color);
+}
 
 /* Close button for overlays */
 .button-container-close {
@@ -326,12 +334,12 @@ ul.button-menu::after {
   width:100%;
   background-color:#222222;
 }
-.scrubber-buffer {
-  background: #1EC95B;
-  opacity: 0.2;
-}
+.scrubber-buffer,
 .scrubber-play {
-  background-color: #1EC95B;
+  background-color: var(--scrubber-color);
+}
+.scrubber-buffer {
+  opacity: 0.2;
 }
 
 .scrubber-thumbnail {
@@ -507,7 +515,7 @@ ul.button-menu::after {
   left: 0;
   width: 100%;
   height: 0;
-  background-color: #1EC95B;
+  background-color: var(--scrubber-color);
   transition: height 100ms linear;
 }
 .volume-button-off img.volume-off-icon, .volume-button-on img.volume-on-icon {
@@ -635,6 +643,9 @@ body.overlay-shown .button-container-share {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+.sharing-info a:hover {
+  color: var(--scrubber-color);
 }
 .sharing-info .current-time-select {
   display: none;
@@ -933,6 +944,12 @@ body.overlay-shown .button-container-share {
   filter: url(#icon_white) !important;
   -webkit-filter: url(#icon_white) !important;
 }
+.big-play-button,
+.button-container > .loop-play-button,
+.big-play-button:hover,
+.button-container:hover > .loop-play-button {
+  background-color: var(--scrubber-color);
+}
 
 /* Muted autoplay button */
 .muted-auto-play {
@@ -1093,24 +1110,3 @@ body.overlay-shown .button-container-share {
 
 /* === Hide any cookie popup from HubSpot === */
 div#hs-eu-cookie-confirmation{display:none!important;}
-
-
-
-
-
-.tray-left .button-container:hover > button { background-color: var(--scrubber-color); }
-.scrubber-buffer, .scrubber-play { background-color: var(--scrubber-color); }
-.volume-slider .volume-level { background-color: var(--scrubber-color); }
-.big-play-button, .button-container > .loop-play-button { background-color: var(--scrubber-color); }
-.big-play-button:hover, .button-container:hover > .loop-play-button { background-color: var(--scrubber-color-lighter); }
-.sharing-info a:hover { color: var(--scrubber-color); }
-.protection-password input.submitbutton { background-color: var(--scrubber-color); }
-.protection-password input.submitbutton:hover { background-color: var(--scrubber-color-light); }
-.glue-sections-menu:not(.sections-menu-open) .sections-menu-wrap:hover { background-color: var(--scrubber-color); }
-.sections-menu-open #section-menu-toggle:hover { background-color: var(--scrubber-color); }
-.section-item.active:hover { background-color: var(--scrubber-color-lightest); }
-.section-item.active { background-color: var(--scrubber-color-lightest); }
-ul.button-menu li:hover button, ul.button-menu-selection li.selected button, .menu-list li a:hover { color: var(--scrubber-color); }
-
-.loop-container-cell { border-color: var(--scrubber-color); }
-.video-display { bottom: var(--player-vertical-padding); left: var(--player-horizontal-padding) }
