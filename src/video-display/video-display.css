@@ -2,9 +2,9 @@
     position:absolute;
     top:0;
     left:0;
-    bottom:0; /*might be updated in js via player settings in the 'design' module */
-    right:0; /*might be updated in js via player settings in the 'design' module */
-    background-color:var(--player-background-color); /* this is needed for fullscreen to have a black background in webkit fullscreen */
+    background-color:var(--player-background-color);
+    bottom: var(--player-vertical-padding);
+    left: var(--player-horizontal-padding)
 }
 .video-display .video-canvas {
     position:absolute;

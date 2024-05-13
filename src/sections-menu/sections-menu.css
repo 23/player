@@ -314,11 +314,11 @@
     }
 }
 
-/* IE7 & IE8 */
-.ie-compat.glue-sections-menu  {top: 50%; margin-top: -55px;}
-.ie-compat.glue-sections-menu.sections-menu-open   {top: 0%; margin-top: 0px;}
-.ie-compat.glue-sections-menu.fixed-to-top.sections-menu-open  {top: 0%;}
-.ie-compat #section-menu-toggle { background-image: url('toggleSectionsMenuClosed.svg'); }
-.ie-compat.sections-menu-open #section-menu-toggle { background-image: url('toggleSectionsMenuOpen.svg');}
-.ie-compat .section-item { background-color: black; }
-.ie-compat .glue-sections-menu .chevron, .ie-compat .glue-sections-menu .chevron::before { display: none; }
+.section-item.active,
+.section-item.active:hover {
+  background-color: var(--scrubber-color-lightest);
+}
+.glue-sections-menu:not(.sections-menu-open) .sections-menu-wrap:hover,
+.sections-menu-open #section-menu-toggle:hover {
+  background-color: var(--scrubber-color);
+}
