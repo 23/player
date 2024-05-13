@@ -20,7 +20,7 @@ Player.provide('quality-button',
             var qualityCount = Player.get('qualitiesArray').length;
             $this.button.one("mouseenter", function(){
                 $this.buttonMenu.css({
-                    fontSize: $this.container.find("li").height()*qualityCount
+                    fontSize: $this.container.find("li").height()*qualityCount + 12
                 });
             });
         });

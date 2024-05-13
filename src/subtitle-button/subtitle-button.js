@@ -20,7 +20,7 @@ Player.provide('subtitle-button',
         var localeCount = Player.get('localesArray').length;
         $this.button.one("mouseenter", function(){
           $this.buttonMenu.css({
-            fontSize: $this.container.find("li").height()*(localeCount+1),
+            fontSize: $this.container.find("li").height()*(localeCount+1) + 12,
             maxHeight: $this.container.find("li").height()*4
           });
         });

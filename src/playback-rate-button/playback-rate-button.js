@@ -22,7 +22,7 @@ Player.provide('playback-rate-button',
       var playbackRatesCount = Player.get('playbackRatesArray').length;
       $this.button.one("mouseenter", function () {
         $this.buttonMenu.css({
-          fontSize: $this.container.find("li").height() * playbackRatesCount
+          fontSize: $this.container.find("li").height() * playbackRatesCount + 12
         });
       });
     }

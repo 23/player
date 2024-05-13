@@ -17,7 +17,7 @@ Player.provide('audiodescription-button',
           var localeCount = Player.get('audioDescriptionTracksArray').length;
           $this.button.one("mouseenter", function(){
             $this.buttonMenu.css({
-              fontSize: $this.container.find("li").height()*(localeCount+1),
+              fontSize: $this.container.find("li").height()*(localeCount+1) + 12,
               maxHeight: $this.container.find("li").height()*4
             });
           });
