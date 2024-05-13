@@ -10,7 +10,7 @@
     text-wrap:balance;
 }
 /* Raise the subtitles to not overlap with the tray */
-.tray-shown .subtitles-container, .force-tray .subtitles-container { bottom: 45px; }
+.tray-shown .subtitles-container, .force-tray .subtitles-container { bottom: var(--spacing-above-tray); }
 .block-tray .subtitles-container { bottom: 10px; }
 .subtitles-container span {
     padding:3px 5px;
