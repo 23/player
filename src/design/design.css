@@ -193,8 +193,8 @@ ul.button-menu-selection li.selected:hover button { color: #FFFFFF; }
   position:absolute;
   bottom:-20px;
   bottom:-40px\9;
-  left:0;
-  width:100%;
+  left:5px;
+  right:5px;
   opacity: 0;
   transition: all 100ms linear;
   z-index: 100;
@@ -548,7 +548,6 @@ a.info-overlay-domain:hover {
   top: 12px;
   right: 12px;
   transition: opacity 200ms linear;
-  background-color: rgba(0,0,0,0.7);
 }
 .tray-shown .button-container-share {
   opacity: 1;
