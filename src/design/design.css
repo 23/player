@@ -456,7 +456,7 @@ ul.button-menu-selection li.selected button,
   width:4px;
   height:10px;
   margin-left: -2px;
-  background: var(--menu-background-color)
+  background: white;
   cursor:pointer;
   transition: background 200ms linear;
 }
