@@ -1,10 +1,12 @@
-/* 
+/*
    MODULE: MUTED AUTO PLAY BUTTON
    Muted auto play
 */
 
-Player.provide('muted-auto-play-button', 
-  {},
+Player.provide('muted-auto-play-button',
+  {
+    unmuteButtonPosition: 'bottomCenter'
+  },
   function(Player,$,opts){
     var $this = this;
     $.extend($this, opts);

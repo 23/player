@@ -481,7 +481,7 @@ ul.button-menu-selection li.selected button,
   right: 0;
   height: var(--tray-height);
   font-size: 10px;
-  line-height: var(--tray-height);
+  line-height: calc(var(--tray-height) + 3px);
 }
 .video-stream .time-container {
   padding-left: 10px;
@@ -681,8 +681,8 @@ a.info-overlay-domain:hover {
 .button-container-share {
   opacity: 0;
   position: absolute;
-  top: 12px;
-  right: 12px;
+  top: calc(max(var(--tray-margin), 6px));
+  right: calc(max(var(--tray-margin), 6px));
   transition: opacity 200ms linear;
   background-color: var(--tray-background-color);
   border-radius:var(--menu-border-radius);
@@ -1057,24 +1057,26 @@ body.overlay-shown .button-container-share {
 }
 .muted-auto-play-button {
   display:inline-block;
+  position:relative;
   margin:0 auto;
-  margin-bottom:10px;
   cursor:pointer;
   border-radius:20px;
-  background-color:#181818;
-  color:white;
-  height:40px;
-  line-height:41px;
+  background-color: var(--menu-background-color);
+  color:var(--tray-text-color);
+  height:36px;
+  line-height:37px;
   font-size:14px;
-  border:1px solid #555;
-  padding:0 20px 0 10px;
+  border:1px solid #333;
+  padding:0 16px 0 32px;
 }
 .muted-auto-play-button::before {
   content:'';
-  display:inline-block;
-  float:left;
-  height:40px;
-  width:30px;
+  display:block;
+  position:absolute;
+  left:0;
+  top:0;
+  height:36px;
+  width:36px;
   background-image: url('volume-off.svg');
   filter: var(--icon-color-filter);
   -webkit-filter: var(--icon-color-filter);
@@ -1082,32 +1084,28 @@ body.overlay-shown .button-container-share {
   background-repeat: no-repeat;
 }
 .muted-auto-play-button:hover {
-  background-color:#303030;
+  opacity:.9;
 }
 
+.muted-auto-play-topRight .muted-auto-play-button, .muted-auto-play-rightTop .muted-auto-play-button,
+.muted-auto-play-topLeft .muted-auto-play-button, .muted-auto-play-leftTop .muted-auto-play-button {
+  font-size:0;
+  padding:0;
+  height:36px;
+  width:36px;
+}
 .muted-auto-play-topRight, .muted-auto-play-rightTop {
   left:auto;
   width:auto;
   bottom:auto;
-  top:6px;
-  right:6px;
+  top:calc(max(var(--tray-margin), 6px));
+  right:calc(max(var(--tray-margin), 6px));
 }
-.muted-auto-play-topRight .muted-auto-play-button, .muted-auto-play-rightTop .muted-auto-play-button {
-  height:38px;
-  line-height:39px;
-  font-size:14px;
-}
-
 .muted-auto-play-topLeft, .muted-auto-play-leftTop {
   width:auto;
   bottom:auto;
-  top:6px;
-  left:6px;
-}
-.muted-auto-play-topLeft .muted-auto-play-button, .muted-auto-play-leftTop .muted-auto-play-button {
-  height:38px;
-  line-height:39px;
-  font-size:14px;
+  top:calc(max(var(--tray-margin), 6px));
+  left:calc(max(var(--tray-margin), 6px));
 }
 
 
