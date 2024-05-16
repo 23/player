@@ -14,7 +14,8 @@ Player.provide('design',
                  borderRadius:'',
                  endOn:'share',
                  start: 0,
-                 loop: false
+                 loop: false,
+                 rev:''
                },
                function(Player,$,opts){
                  var $this = this;
@@ -171,7 +172,7 @@ Player.provide('design',
                  });
 
                  Player.bind('player:settings', function(e){
-                   PlayerUtilities.mergeSettings($this, ['verticalPadding', 'horizontalPadding', 'trayFont', 'scrubberColor', 'backgroundColor', 'borderRadius', 'showTray', 'endOn', 'start', 'loop', 'alwaysShowTray']);
+                   PlayerUtilities.mergeSettings($this, ['rev', 'verticalPadding', 'horizontalPadding', 'trayFont', 'scrubberColor', 'backgroundColor', 'borderRadius', 'showTray', 'endOn', 'start', 'loop', 'alwaysShowTray']);
                    Player.set("forcer", {
                      type: "block",
                      element: "tray",
@@ -274,7 +275,8 @@ Player.provide('design',
                  }
                  $this.applyDesignPreferences = function(){
                    $("filter#icon_hover feFlood").attr("flood-color", $this.scrubberColor);
-                   $("filter#icon_color feFlood").attr("flood-color", "#333");
+
+                   if($this.rev) $('body').addClass($this.rev);
 
                    // CSS variables
                    var rootStyle = document.documentElement.style;
