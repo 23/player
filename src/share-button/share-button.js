@@ -1,22 +1,22 @@
-/* 
+/*
  MODULE: SHARE BUTTON
  Show share button, engaging the sharing pane
- 
+
  Listens for:
  - player:sharing
 */
 
-Player.provide('share-button', 
-  {}, 
+Player.provide('share-button',
+  {},
   function(Player,$,opts){
     var $this = this;
     $.extend($this, opts);
-      
+
     $this.render($this.toggleShareButton);
 
     $this.toggleShareButton = function(){
       window.setTimeout(function(){
-        $this.container.toggle(!!Player.get("socialSharing"));
+        $this.container.toggle(!!Player.get("socialSharing") && Player.get('unmuteButtonPosition')!='topRight');
       }, 10);
     };
 
@@ -24,7 +24,7 @@ Player.provide('share-button',
 
     return $this;
   }
-          
+
 );
 
 /* Translations for this module */
