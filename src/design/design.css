@@ -1,30 +1,44 @@
 :root {
-  --tray-font: 'Helvetica';
-
-  --player-border-radius: 0px;
+  --player-border-radius: 0;
   --player-background-color: black;
   --player-vertical-padding: 0px;
   --player-horizontal-padding: 0px;
 
-  --menu-gap: 0px;
-  --menu-border-radius: 0px;
-  --menu-background-color: rgba(0, 0, 0, .6);
-
-  --scrubber-color: #1EC95B;
-  --scrubber-color-light: #1EC95B90;
-  --scrubber-color-lighter: #1EC95B85;
-  --scrubber-color-lightest: #1EC95B72;
-
+  --tray-font: 'Helvetica';
+  --tray-background-color: var(--menu-background-color);
+  --tray-full-background-color: transparent;
   --tray-margin: 5px;
+  --tray-height: 40px;
+  --tray-button-border:0px;
   --tray-play-button-gap: 5px;
   --tray-outer-border-radius: 0px;
   --tray-inner-border-radius: 0px;
   --tray-play-button-width: 60px;
   --tray-play-button-border-radius: 0px;
-  --spacing-above-tray: 60px;
+  --tray-text-color: white;
+
+  --scrubber-color: #1EC95B;
+  --scrubber-color-light: #1EC95B90;
+  --scrubber-color-lighter: #1EC95B85;
+  --scrubber-color-lightest: #1EC95B72;
+  --scrubber-track-color: #222222;
+
+  --menu-gap: 0px;
+  --menu-border-radius: 0px;
+  --menu-background-color: rgba(0, 0, 0, .6);
+  --menu-text-color: #bbb;
+
+  --icon-color-filter: url(#icon_white);
 }
 
 
+/* We don't support revisioned designs for this player out of the box */
+
+body {
+  --tray-button-height: 30px;
+  --tray-button-width: 30px;
+  --spacing-above-tray: calc(var(--tray-height) + var(--tray-margin) + 10px);
+}
 
 
 
@@ -48,7 +62,7 @@ body, .player-design, #player {
 }
 body {
   margin:0;
-  color:white;  /*updated in js via player settings */
+  color:var(--tray-text-color);
   font:11px/14px Helvetica;
   font-family: var(--tray-font);
 
@@ -106,8 +120,8 @@ p {
   display: block;
   overflow: hidden;
   position:relative;
-  height:40px;
-  width:40px;
+  width: var(--tray-button-width);
+  height: var(--tray-button-height);
   background-position:center center;
   background-repeat:no-repeat;
   cursor:pointer;
@@ -122,8 +136,8 @@ p {
   height: 100%;
   background-repeat: no-repeat;
   background-position: center;
-  filter: url(#icon_color);
-  -webkit-filter: url(#icon_color);
+  filter: var(--icon-color-filter);
+  -webkit-filter: var(--icon-color-filter);
 }
 .button-container > select {
   opacity:0;
@@ -173,9 +187,8 @@ ul.button-menu li button { /* menu items */
   line-height: 30px;
   text-align: right;
   white-space:nowrap;
-  color: white;
   cursor: pointer;
-  color: #BBBBBB;
+  color: var(--menu-text-color);
   width: auto; /* Display buttons with correct width in IE7 http://jehiah.cz/a/button-width-in-ie */
   overflow: visible; /* See above */
 }
@@ -241,6 +254,8 @@ ul.button-menu-selection li.selected button,
   opacity: 0;
   transition: all 100ms linear;
   z-index: 100;
+  color: var(--tray-text-color);
+  background: var(--tray-full-background-color);
 }
 .tray-shown #tray {
   bottom: 0;
@@ -269,6 +284,13 @@ ul.button-menu-selection li.selected button,
   calc(max(var(--tray-inner-border-radius), var(--tray-play-button-border-radius)))
   calc(max(var(--tray-outer-border-radius), var(--tray-play-button-border-radius)));
   overflow:hidden;
+  margin:var(--tray-button-border);
+}
+.tray-right .button-container button {
+  margin:var(--tray-button-border) 0;
+}
+.tray-right .button-container li button {
+  margin:0;
 }
 .tray-scrubber {
   border-radius:var(--tray-inner-border-radius) 0 0 var(--tray-inner-border-radius);
@@ -305,8 +327,8 @@ ul.button-menu-selection li.selected button,
   padding-right: 5px;
 }
 .tray-right .button-container > button, .tray-right .button-container > button img {
-  width: 30px;
-  height: 30px;
+  width: var(--tray-button-height);
+  height: var(--tray-button-height);
 }
 .tray-scrubber {  /* scrubber position */
   flex: 1;
@@ -363,7 +385,7 @@ ul.button-menu-selection li.selected button,
 }
 .scrubber-track {
   width:100%;
-  background-color:#222222;
+  background-color:var(--scrubber-track-color);
 }
 .scrubber-buffer,
 .scrubber-play {
@@ -379,7 +401,7 @@ ul.button-menu-selection li.selected button,
   left: 0;
   bottom:54px;
   width: 94px;
-  border:2px solid #222222;
+  border:2px solid var(--scrubber-track-color);
   overflow: hidden;
 }
 .tray-shown .scrubber:hover .scrubber-thumbnail {
@@ -405,19 +427,18 @@ ul.button-menu-selection li.selected button,
 }
 .scrubber-thumbnail-time {
   padding: 4px;
-  background: #222222;
-  background: rgba(34,34,34,0.8);
+  background: var(--scrubber-track-color);
   font-size: 10px;
   line-height: 1em;
 }
 
 .time-container {
   position: absolute;
-  top: 4px;
+  top: 0;
   right: 0;
-  height: 10px;
   font-size: 10px;
-  line-height: 1em;
+  height: 18px;
+  line-height: 18px;
 }
 .video-stream .time-container {
   padding-left: 10px;
@@ -538,7 +559,7 @@ ul.button-menu-selection li.selected button,
   bottom: 12px;
   left: 13px;
   width: 4px;
-  background-color: #222222;
+  background-color: var(--scrubber-track-color);
 }
 .volume-slider .volume-level {
   position: absolute;
@@ -627,7 +648,8 @@ a.info-overlay-domain:hover {
   top: 12px;
   right: 12px;
   transition: opacity 200ms linear;
-  background-color: var(--menu-background-color);
+  background-color: var(--tray-background-color);
+  border-radius:var(--menu-border-radius);
 }
 .tray-shown .button-container-share {
   opacity: 1;
@@ -669,7 +691,7 @@ body.overlay-shown .button-container-share {
   display: block;
   font-size: 14px;
   line-height: 1.2em;
-  color: #AAAAAA;
+  color: var(--menu-text-color);
   text-decoration: none;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -706,6 +728,8 @@ body.overlay-shown .button-container-share {
   background-image:url('checkmark.svg');
   background-repeat:no-repeat;
   background-position:center center;
+  filter: var(--icon-color-filter);
+  -webkit-filter: var(--icon-color-filter);
 }
 .share-buttons-container {
   display: table;
@@ -855,8 +879,8 @@ body.overlay-shown .button-container-share {
   background-image: url('vr.svg');
   background-size: 50px;
   background-color: rgba(0,0,0,0.5);
-  filter: url(#icon_color);
-  -webkit-filter: url(#icon_color);
+  filter: var(--icon-color-filter);
+  -webkit-filter: var(--icon-color-filter);
 }
 
 /* === Subtitle button === */
@@ -904,8 +928,8 @@ body.overlay-shown .button-container-share {
 /* Tray left buttons */
 .tray-left button::after {
   background-size: 54px;
-  filter: url(#icon_color);
-  -webkit-filter: url(#icon_color);
+  filter: var(--icon-color-filter);
+  -webkit-filter: var(--icon-color-filter);
 }
 
 .play-button::after {
@@ -923,9 +947,9 @@ body.overlay-shown .button-container-share {
 
 /* Tray right buttons */
 .tray-right button::after {
-  background-size: 40px;
-  filter: url(#icon_color);
-  -webkit-filter: url(#icon_color);
+  background-size: calc(var(--tray-button-width)+6px) calc(var(--tray-button-width)+6px);
+  filter: var(--icon-color-filter);
+  -webkit-filter: var(--icon-color-filter);
 }
 .tray-right button:hover::after {
   filter: url(#icon_hover);
@@ -1015,8 +1039,8 @@ body.overlay-shown .button-container-share {
   height:40px;
   width:30px;
   background-image: url('volume-off.svg');
-  filter: url(#icon_color);
-  -webkit-filter: url(#icon_color);
+  filter: var(--icon-color-filter);
+  -webkit-filter: var(--icon-color-filter);
   background-position: center center;
   background-repeat: no-repeat;
 }
@@ -1056,8 +1080,8 @@ body.overlay-shown .button-container-share {
 .share-button {
   background-image: url('share.svg');
   transition: background-color 200ms linear;
-  filter: url(#icon_white);
-  -webkit-filter: url(#icon_white);
+  filter: var(--icon-color-filter);
+  -webkit-filter: var(--icon-color-filter);
 }
 .close-button:hover,
 .share-button:hover {
@@ -1068,13 +1092,13 @@ body.overlay-shown .button-container-share {
   background-image: url('close.svg');
 }
 .share-button {
-  background-image: url('share.svg');
+  background-image: curl('share.svg');
 }
 .share-buttons button {
   background-size: 60px;
   transition: background-color 200ms linear;
-  filter: url(#icon_white);
-  -webkit-filter: url(#icon_white);
+  filter: var(--icon-color-filter);
+  -webkit-filter: var(--icon-color-filter);
 }
 .share-buttons button:hover {
   filter: url(#icon_hover);

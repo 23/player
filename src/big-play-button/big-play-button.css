@@ -12,10 +12,10 @@
 }
 
 .big-play-container {
-    position:absolute; 
-    top:0; 
-    left:0; 
-    width:91px; 
+    position:absolute;
+    top:0;
+    left:0;
+    width:91px;
     height:51px;
 }
 .size-tiny .big-play-container {
@@ -33,6 +33,8 @@
 }
 .big-play-container .button-container {
     background: #000000;
+    border-radius:var(--menu-border-radius);
+    overflow:hidden;
 }
 .big-play-container .button-container > .big-play-button {
     width: 91px;
