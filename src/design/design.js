@@ -280,10 +280,10 @@ Player.provide('design',
 
                    // CSS variables
                    var rootStyle = document.documentElement.style;
-                   rootStyle.setProperty('--scrubber-color', $this.scrubberColor);
-                   rootStyle.setProperty('--scrubber-color-light', $this.hexToRGBA($this.scrubberColor, 0.9));
-                   rootStyle.setProperty('--scrubber-color-lighter', $this.hexToRGBA($this.scrubberColor, 0.85));
-                   rootStyle.setProperty('--scrubber-color-lightest', $this.hexToRGBA($this.scrubberColor, 0.72));
+                   rootStyle.setProperty('--brand-color', $this.scrubberColor);
+                   rootStyle.setProperty('--brand-color-light', $this.hexToRGBA($this.scrubberColor, 0.9));
+                   rootStyle.setProperty('--brand-color-lighter', $this.hexToRGBA($this.scrubberColor, 0.8));
+                   rootStyle.setProperty('--brand-color-lightest', $this.hexToRGBA($this.scrubberColor, 0.6));
                    rootStyle.setProperty('--tray-font', $this.trayFont + ', sans-serif');
                    rootStyle.setProperty('--player-vertical-padding', $this.verticalPadding+'px');
                    rootStyle.setProperty('--player-horizontal-padding', $this.horizontalPadding+'px');
