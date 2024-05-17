@@ -59,6 +59,7 @@ Player.provide(
                 var active = $(".button-container-active").removeClass(
                   "button-container-active"
                 );
+                active.children("button.menu-trigger-button").attr("aria-expanded", false)
               
                 var parent = $(document.activeElement).parent();
                 // Opening a menu
