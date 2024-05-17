@@ -69,6 +69,7 @@ Player.provide('video-display',
     autoPlay: false,
     autoMute: false,
     ambient: false,
+    loop: false,
     mutedAutoPlay: false,
     unmuteButtonPosition: 'rightTop',
     inlinePlayback: true,
@@ -173,7 +174,7 @@ Player.provide('video-display',
 
       // Merge in player settings
       Player.bind('player:settings', function(e,s){
-        PlayerUtilities.mergeSettings($this, ['autoPlay', 'mutedAutoPlay', 'autoMute', 'ambient', 'verticalPadding', 'horizontalPadding', 'displayDevice', 'fullscreenQuality', 'showThumbnailOnEnd', 'inlinePlayback', 'hlsjsDebug', 'hlsjsAbrBandWidthFactor', 'hlsjsAbrBandWidthUpFactor', 'liveLatencyMode', 'videoFit']);
+        PlayerUtilities.mergeSettings($this, ['autoPlay', 'mutedAutoPlay', 'autoMute', 'ambient', 'loop', 'verticalPadding', 'horizontalPadding', 'displayDevice', 'fullscreenQuality', 'showThumbnailOnEnd', 'inlinePlayback', 'hlsjsDebug', 'hlsjsAbrBandWidthFactor', 'hlsjsAbrBandWidthUpFactor', 'liveLatencyMode', 'videoFit']);
         $this.canvas.addClass('video-canvas-fit-' + $this.videoFit)
         if (typeof (_AP) != 'undefined' && _AP === false && $this.autoPlay && !($this.autoMute || $this.mutedAutoPlay)) $this.autoPlay = false;
         if ($this.video) $this.video.hlsjsConfig = { debug: ($this.hlsjsDebug ? true : false), abrBandWidthFactor: $this.hlsjsAbrBandWidthFactor, abrBandWidthUpFactor: $this.hlsjsAbrBandWidthUpFactor };
@@ -315,6 +316,10 @@ Player.provide('video-display',
           // Auto-mute from property
           Player.set("volumeMuted", true);
         }
+
+        try {
+          Player.get('videoElement').video[0].loop = Player.get('loop');
+        }catch(e){}
 
         Player.fire('player:video:qualitychange');
 
@@ -780,6 +785,9 @@ Player.provide('video-display',
       });
       Player.getter('ambient', function(){
           return $this.ambient;
+      });
+      Player.getter('loop', function(){
+          return $this.loop;
       });
       Player.getter('playbackRate', function() {
           return ($this.video ? $this.video.getPlaybackRate() : 1);
