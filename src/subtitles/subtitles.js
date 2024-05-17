@@ -1,14 +1,14 @@
 /*
-  MODULE: SUBTITLES
-  Show subtitles for the video
+   MODULE: SUBTITLES
+   Show subtitles for the video
 
-  Listens for:
-  - player:video:progress
-  - player:video:timeupdate
-  - player:video:seeked
-  - player:video:ended
-  - player:video:loaded
-  - player:settings
+   Listens for:
+   - player:video:progress
+   - player:video:timeupdate
+   - player:video:seeked
+   - player:video:ended
+   - player:video:loaded
+   - player:settings
 
    Fires:
    - player:subtitlechange
@@ -26,7 +26,7 @@
    - audioDescriptionTracksArray [get]
    - audioDescriptionLocale [get/set]
    - audioDescriptionLocaleMessages [get]
-*/
+ */
 
 Player.provide('subtitles',
   {
