@@ -42,7 +42,7 @@
 }
 
 
-.rounded {
+body.theme-rounded {
   --tray-margin: 10px;
   --tray-play-button-gap: 10px;
   --tray-outer-border-radius: 6px;
@@ -52,7 +52,7 @@
   --menu-border-radius: 6px;
 }
 
-.squared {
+body.theme-squared {
   --tray-margin: 10px;
   --tray-button-border:4px;
   --tray-play-button-width: 40px;
@@ -60,7 +60,7 @@
   --menu-gap: 10px;
 }
 
-.circled {
+body.theme-circled {
   --tray-margin: 10px;
   --tray-button-border:3px;
   --tray-play-button-width: 34px;
@@ -71,7 +71,7 @@
   --menu-border-radius: 10px;
 }
 
-.bordered {
+body.theme-bordered {
   --tray-margin: 10px;
   --tray-button-border:3px;
   --tray-play-button-width: 34px;
@@ -81,14 +81,16 @@
   --menu-gap: 8px;
   --menu-border-radius: 4px;
 }
-.cinematic {
+
+body.theme-cinematic {
   --tray-play-button-width: 40px;
   --tray-background-color: transparent;
   --tray-full-background-color: linear-gradient(180deg, rgba(0, 0, 0, .0) 0%, #000000 190%);
 
   --scrubber-track-color: white;
 }
-.angelic {
+
+body.theme-angelic {
   --tray-background-color: rgba(255,255,255,.9);
   --tray-margin: 10px;
   --tray-button-border:3px;
@@ -107,7 +109,7 @@
   --icon-color-filter: url(#icon_dark);
 }
 
-.colorburst {
+body.theme-colorburst {
   --tray-margin: 10px;
   --tray-background-color: var(--brand-color-lightest);
   --tray-button-border:3px;
