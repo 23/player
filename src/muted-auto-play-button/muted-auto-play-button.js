@@ -14,12 +14,20 @@ Player.provide('muted-auto-play-button',
     PlayerUtilities.mergeSettings($this, ['unmuteButtonPosition']);
 
     // Update element on play, pause and more
-    Player.bind('player:video:volumechange player:video:play player:video:pause player:video:loaded', function(e){
+    Player.bind('player:video:volumechange player:video:play player:video:pause player:video:loaded player:subtitlechange', function(e){
       $this.render();
     });
 
     Player.getter('unmuteButtonPosition', function() {
-      return $this.unmuteButtonPosition || 'bottomCenter';
+      var ret = $this.unmuteButtonPosition || 'bottomCenter';
+      if(ret=='bottomCenter' && Player.get('hasSubtitles') && Player.get('enableSubtitles')) {
+        ret = 'topRight';
+      }
+      return ret;
+    });
+    Player.setter('unmuteButtonPosition', function(ubp) {
+      $this.unmuteButtonPosition = ubp;
+      $this.render();
     });
 
     return $this;

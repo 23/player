@@ -20,7 +20,7 @@ Player.provide('share-button',
       }, 10);
     };
 
-    Player.bind('player:settings player:video:loaded', $this.toggleShareButton);
+    Player.bind('player:settings player:video:loaded player:subtitlechange', $this.toggleShareButton);
 
     return $this;
   }
