@@ -1,4 +1,9 @@
 :root {
+  --brand-color: #1EC95B;
+  --brand-color-light: #1EC95B90;
+  --brand-color-lighter: #1EC95B85;
+  --brand-color-lightest: #1EC95B72;
+
   --player-border-radius: 0;
   --player-background-color: black;
   --player-vertical-padding: 0px;
@@ -17,10 +22,10 @@
   --tray-play-button-border-radius: 0px;
   --tray-text-color: white;
 
-  --scrubber-color: #1EC95B;
-  --scrubber-color-light: #1EC95B90;
-  --scrubber-color-lighter: #1EC95B85;
-  --scrubber-color-lightest: #1EC95B72;
+  --scrubber-color: var(--brand-color);
+  --scrubber-color-light: var(--brand-color-light);
+  --scrubber-color-lighter: var(--brand-color-lighter);
+  --scrubber-color-lightest: var(--brand-color-lightest);
   --scrubber-track-color: #222222;
 
   --menu-gap: 0px;
@@ -29,6 +34,11 @@
   --menu-text-color: #bbb;
 
   --icon-color-filter: url(#icon_white);
+
+  --big-play-background-color: var(--scrubber-color);
+  --big-play-icon-color-filter: url(#icon_white);
+  --big-play-width: 91px;
+  --big-play-height: 51px;
 }
 
 
@@ -996,14 +1006,14 @@ body.overlay-shown .button-container-share {
 .big-play-button::after, .loop-play-button::after {
   background-image: url('big-play.svg');
   background-size: 64px;
-  filter: url(#icon_white) !important;
-  -webkit-filter: url(#icon_white) !important;
+  filter: var(--big-play-icon-color-filter) !important;
+  -webkit-filter: var(--big-play-icon-color-filter) !important;
 }
 .big-play-button,
 .button-container > .loop-play-button,
 .big-play-button:hover,
 .button-container:hover > .loop-play-button {
-  background-color: var(--scrubber-color);
+  background-color: var(--big-play-background-color);
 }
 
 /* Muted autoplay button */
@@ -1014,6 +1024,7 @@ body.overlay-shown .button-container-share {
   width:100%;
   bottom:0;
   transition:bottom 200ms linear;
+  bottom:10px;
 }
 .tray-shown .muted-auto-play {
   bottom:var(--spacing-above-tray);
