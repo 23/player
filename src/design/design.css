@@ -39,6 +39,8 @@
   --big-play-icon-color-filter: url(#icon_white);
   --big-play-width: 91px;
   --big-play-height: 51px;
+
+  --outline: 3px solid #aaa;
 }
 
 
@@ -105,6 +107,8 @@
   --menu-text-color: #666;
 
   --icon-color-filter: url(#icon_dark);
+
+  --outline: 3px solid #000;
 }
 
 .colorburst {
@@ -168,6 +172,19 @@ body {
   scrollbar-arrow-color: #555;
   scrollbar-shadow-color: #000;
   scrollbar-dark-shadow-color: #000;
+}
+/* Accessibility */
+[tabindex]:focus {
+  outline: none !important;
+}
+
+*:active {
+  outline: none !important;
+}
+
+body.tabbed [tabindex]:focus {
+  outline: var(--outline) !important;
+  outline-offset:-3px;
 }
 h1 {
   font-size:14px;
