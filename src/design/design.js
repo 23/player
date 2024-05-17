@@ -14,7 +14,6 @@ Player.provide('design',
                  borderRadius:'',
                  endOn:'share',
                  start: 0,
-                 loop: false,
                  rev:''
                },
                function(Player,$,opts){
@@ -123,7 +122,7 @@ Player.provide('design',
                  Player.bind("player:playflow:transitioned", function(e, transition){
                    // Read from settings the action to take when the playflow has been completed
                    setTimeout(function(){
-                     if(transition.currentPosition == 5 && $this.loop){
+                     if(transition.currentPosition == 5 && Player.get('loop')){
                        _setPlayflowPosition(2);
                      }else if(transition.currentPosition == 5 && !Player.get("actionsShown")){
                        if($this.endOn == "browse") {
@@ -252,7 +251,6 @@ Player.provide('design',
 
 
                  /* === END TRAY HANDLING === */
-
                  $this.hexToRGBA = function(hex, alpha){
                    var colorTest = hex.match(/^\#(..)(..)(..)$/);
                    if(colorTest && colorTest.length==4) {
