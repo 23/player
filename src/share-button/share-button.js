@@ -16,7 +16,7 @@ Player.provide('share-button',
 
     $this.toggleShareButton = function(){
       window.setTimeout(function(){
-        $this.container.toggle(!!Player.get("socialSharing") && Player.get('unmuteButtonPosition')!='topRight');
+        $this.container.toggle(!!Player.get("socialSharing") && !(Player.get('unmuteButtonPosition')=='topRight' && Player.get('showMutedAutoPlayButton')));
       }, 10);
     };
 
