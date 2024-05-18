@@ -260,7 +260,7 @@ ul.button-menu::after {
 ul.button-menu li:hover button,
 ul.button-menu-selection li.selected button,
 .menu-list li a:hover {
-  color: var(--scrubber-color);
+  color: var(--brand-color);
 }
 
 /* Close button for overlays */
@@ -420,7 +420,7 @@ ul.button-menu-selection li.selected button,
   left: 0;
   bottom:44px;
   width: 94px;
-  border:2px solid var(--scrubber-track-color);
+  border:2px solid var(--tray-background-color);
   overflow: hidden;
 }
 .tray-shown .scrubber:hover .scrubber-thumbnail {
@@ -446,7 +446,7 @@ ul.button-menu-selection li.selected button,
 }
 .scrubber-thumbnail-time {
   padding: 4px;
-  background: var(--scrubber-track-color);
+  background: var(--tray-background-color);
   font-size: 10px;
   line-height: 1em;
 }
@@ -712,7 +712,7 @@ body.overlay-shown .button-container-share {
   white-space: nowrap;
 }
 .sharing-info a:hover {
-  color: var(--scrubber-color);
+  color: var(--brand-color);
 }
 .sharing-info .current-time-select {
   display: none;

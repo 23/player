@@ -1,4 +1,4 @@
-{% if playing and volumeMuted and mutedAutoPlay and ambient == false %}
+{% if showMutedAutoPlayButton %}
   <div class="muted-auto-play muted-auto-play-{{unmuteButtonPosition|escape}}">
     <div
       click="$toggle:mutedAutoPlay"
