@@ -15,8 +15,8 @@
   position:absolute;
   top:0;
   left:0;
-  width:91px;
-  height:51px;
+  width: var(--big-play-width);
+  height: var(--big-play-height);
 }
 .size-tiny .big-play-container {
   width: 70px;
@@ -32,7 +32,7 @@
   vertical-align:middle;
 }
 .big-play-container .button-container {
-  border-radius:var(--menu-border-radius);
+  border-radius:var(--big-play-border-radius);
   overflow:hidden;
 }
 .big-play-container .button-container > .big-play-button {
