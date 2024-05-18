@@ -18,6 +18,10 @@ Player.provide('muted-auto-play-button',
       $this.render();
     });
 
+    Player.getter('showMutedAutoPlayButton', function() {
+      return Player.get('playing') && Player.get('volumeMuted') && Player.get('mutedAutoPlay') && !Player.get('ambient')
+    })
+
     Player.getter('unmuteButtonPosition', function() {
       var ret = $this.unmuteButtonPosition || 'bottomCenter';
       if(ret=='bottomCenter' && Player.get('hasSubtitles') && Player.get('enableSubtitles')) {
