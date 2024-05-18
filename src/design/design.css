@@ -489,7 +489,7 @@ ul.button-menu-selection li.selected button,
   left: 0;
   bottom:44px;
   width: 94px;
-  border:2px solid var(--scrubber-track-color);
+  border:2px solid var(--tray-background-color);
   overflow: hidden;
 }
 .tray-shown .scrubber:hover .scrubber-thumbnail {
@@ -515,7 +515,7 @@ ul.button-menu-selection li.selected button,
 }
 .scrubber-thumbnail-time {
   padding: 4px;
-  background: var(--scrubber-track-color);
+  background: var(--tray-background-color);
   font-size: 10px;
   line-height: 1em;
 }
