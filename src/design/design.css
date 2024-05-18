@@ -127,13 +127,13 @@ body.theme-colorburst {
   --tray-play-button-hover-background-color: rgba(255,255,255,.9);
   --tray-play-button-hover-color-filter: url(#icon_hover);
 
-  --scrubber-track-color: white;
+  --scrubber-color: rgba(255,255,255,.8);
+  --scrubber-track-color: rgba(0,0,0,.3);
 
   --menu-gap: 8px;
   --menu-background-color: var(--brand-color-lightest);
   --menu-border-radius: 5px;
   --menu-text-color: white;
-
 
   --big-play-background-color: var(--menu-background-color);
 }
@@ -339,7 +339,7 @@ ul.button-menu::after {
 ul.button-menu li:hover button,
 ul.button-menu-selection li.selected button,
 .menu-list li a:hover {
-  color: var(--scrubber-color);
+  color: var(--brand-color);
 }
 
 /* Close button for overlays */
@@ -778,7 +778,7 @@ body.overlay-shown .button-container-share {
   white-space: nowrap;
 }
 .sharing-info a:hover {
-  color: var(--scrubber-color);
+  color: var(--brand-color);
 }
 .sharing-info .current-time-select {
   display: none;
