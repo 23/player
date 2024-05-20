@@ -217,6 +217,9 @@ Player.provide('design',
                      _hideTray();
                    }
                  });
+                 Player.getter('showTray', function(){
+                   return $this.showTray;
+                 });
 
                  /*
                     Allow modules to set "blocking" and "persisting" forcing classes on body.
