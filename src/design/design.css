@@ -58,6 +58,8 @@ body.theme-rounded {
 
   --menu-gap: 6px;
   --menu-border-radius: 6px;
+
+  --big-play-border-radius: 6px;
 }
 
 body.theme-hip {

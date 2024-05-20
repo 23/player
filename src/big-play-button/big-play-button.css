@@ -34,7 +34,7 @@
   transition: background-color 100ms linear;
 }
 .big-play-button::after, .loop-play-button::after {
-  background-size: 80%;
+  background-size: auto 130%;
   filter: var(--big-play-icon-color-filter) !important;
   -webkit-filter: var(--big-play-icon-color-filter) !important;
 }
