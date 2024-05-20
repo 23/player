@@ -1022,6 +1022,12 @@ button.real-button {
 .big-play-button::after, .loop-play-button::after {
   background-image: url('big-play.svg');
 }
+.big-play-button.pause::after {
+  background-image: url('pause.svg');
+}
+.big-play-button.stop::after {
+  background-image: url('stop.svg');
+}
 
 /* Muted autoplay button */
 .muted-auto-play {
