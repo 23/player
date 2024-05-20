@@ -1014,6 +1014,12 @@ body.overlay-shown .button-container-share {
 .slides-button::after  {
   background-image: url('slides.svg');
 }
+button.real-button {
+  cursor:default;
+}
+.real-button::after {
+  background-image: url('real.svg');
+}
 
 .player-playback-rate-button ul.button-menu li {
   text-align:left;
