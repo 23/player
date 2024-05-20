@@ -1,7 +1,7 @@
 /*
    MODULE: BIG PLAY BUTTON
    Show a play/pause button
-*/
+ */
 
 Player.provide('big-play-button',
   {
@@ -14,11 +14,11 @@ Player.provide('big-play-button',
 
     // Get relevant settings
     Player.bind('player:settings', function(e,settings){
-        PlayerUtilities.mergeSettings($this, ['hideBigPlay', 'bigPlaySource']);
-        if($this.bigPlaySource.length>0 && !/\/\//.test($this.bigPlaySource)){
-            $this.bigPlaySource = Player.get('url')+$this.bigPlaySource;
-        }
-        $this.render(_onRender);
+      PlayerUtilities.mergeSettings($this, ['hideBigPlay', 'bigPlaySource']);
+      if($this.bigPlaySource.length>0 && !/\/\//.test($this.bigPlaySource)){
+        $this.bigPlaySource = Player.get('url')+$this.bigPlaySource;
+      }
+      $this.render();
     });
 
     // Update element on play, pause and more
@@ -28,67 +28,45 @@ Player.provide('big-play-button',
 
     /* GETTERS */
     Player.getter('bigPlaySource', function(){
-        return $this.bigPlaySource;
+      return $this.bigPlaySource;
     });
     Player.getter('hideBigPlay', function(){
-        return $this.hideBigPlay;
+      return $this.hideBigPlay;
     });
     /* SETTERS */
     Player.setter('bigPlaySource', function(bps){
-        $this.bigPlaySource = bps;
-        $this.render(_onRender);
+      $this.bigPlaySource = bps;
+      $this.render();
     });
     Player.setter('hideBigPlay', function(hbp){
-        $this.hideBigPlay = hbp;
-        _updateBigPlay();
+      $this.hideBigPlay = hbp;
+      _updateBigPlay();
     });
 
     var _prevShow = false;
     var _bigPlayTimeouts = [];
     var _updateBigPlay = function(){
-        var show = (
-            !Player.get("playing") &&
-            !Player.get("seeking") &&
-            Player.get("video_playable") &&
-            !Player.get("actionsShown") &&
-            !$this.hideBigPlay
-        );
-        if (show != _prevShow) {
-            while(_bigPlayTimeouts.length > 0){
-                clearTimeout(_bigPlayTimeouts.pop());
-            }
-            $this.container.show();
-            _bigPlayTimeouts.push(setTimeout(function(){
-                $this.container.toggleClass("big-play-shown", show);
-            }, 10));
-            _bigPlayTimeouts.push(setTimeout(function(){
-                $this.container.css({display: ""});
-            }, 210));
-            _prevShow = show;
+      var show = (
+        !Player.get("playing") &&
+        !Player.get("seeking") &&
+        Player.get("video_playable") &&
+        !Player.get("actionsShown") &&
+        !$this.hideBigPlay
+      );
+      if (show != _prevShow) {
+        while(_bigPlayTimeouts.length > 0){
+          clearTimeout(_bigPlayTimeouts.pop());
         }
-    };
-
-    var _onRender = function(){
-      $this.button = $this.container.find("button");
-      _resize();
-    };
-    var _resize = function(){
-      var ww = $(window).width();
-      var wh = $(window).height();
-      if($this.bigPlaySource != ""){
-        $this.bigPlayWidth = 100;
-        $this.bigPlayHeight = 100;
-      }else{
-        if(ww < 300){
-          $this.bigPlayWidth = 70;
-          $this.bigPlayHeight = 39;
-        }else{
-          $this.bigPlayWidth = 91;
-          $this.bigPlayHeight = 51;
-        }
+        $this.container.show();
+        _bigPlayTimeouts.push(setTimeout(function(){
+          $this.container.toggleClass("big-play-shown", show);
+        }, 10));
+        _bigPlayTimeouts.push(setTimeout(function(){
+          $this.container.css({display: ""});
+        }, 210));
+        _prevShow = show;
       }
     };
-    $(window).resize(_resize);
 
     return $this;
   }
