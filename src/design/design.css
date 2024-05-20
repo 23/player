@@ -1015,15 +1015,6 @@ button.real-button {
 /* Big play */
 .big-play-button::after, .loop-play-button::after {
   background-image: url('big-play.svg');
-  background-size: 64px;
-  filter: var(--big-play-icon-color-filter) !important;
-  -webkit-filter: var(--big-play-icon-color-filter) !important;
-}
-.big-play-button,
-.button-container > .loop-play-button,
-.big-play-button:hover,
-.button-container:hover > .loop-play-button {
-  background-color: var(--big-play-background-color);
 }
 
 /* Muted autoplay button */
