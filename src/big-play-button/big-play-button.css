@@ -1,3 +1,29 @@
+/* Alt style for circle, meant for display in the bottom */
+.big-play-container-style-circle {
+  --big-play-width: min(60px, 8vw);
+  --big-play-height: min(60px, 8vw);
+  --big-play-border-radius: 100%;
+}
+/* Alt style for slack style preview, meant for display in the bottom */
+.big-play-container-style-lax {
+  --big-play-background-color: rgba(0,0,0,.3);
+  --big-play-icon-color-filter: url(#icon_white);
+  --big-play-width: auto;
+  --big-play-height: 30px;
+  --big-play-border-radius: 5px;;
+
+}
+
+.big-play-container-style-lax .current-time {
+  color: white;
+  font-size: 12px;
+  display: inline-block;
+  padding: 0 12px 0 28px;
+}
+.big-play-container-style-lax .button-container > button::after {
+  background-position: -5px center ;
+}
+
 /* Control hide show for play button */
 .player-big-play-button .big-play-container {
   display: none;
@@ -12,9 +38,12 @@
   display: none  !important;
   opacity: 0 !important;
 }
+.player-big-play-button .big-play-container:hover {
+  filter: saturate(1.1);
+}
 
 /* Position the play button in the center */
-.big-play-container {
+.big-play-container.big-play-container-position-center {
   position:absolute;
   margin: auto;
   top:0;
@@ -22,8 +51,18 @@
   bottom: 0;
   right: 0;
 }
+.big-play-container.big-play-container-position-bottomLeft {
+  position:absolute;
+  left:10px;
+  bottom: 10px;
+}
+.big-play-container.big-play-container-position-bottomRight {
+  position:absolute;
+  right:10px;
+  bottom: 10px;
+}
 
-/* Size and design for the play button */
+/* Size and design for the play */
 .big-play-container {
   width: var(--big-play-width);
   height: var(--big-play-height);
@@ -49,6 +88,9 @@
 .big-play-button:hover,
 .button-container:hover > .loop-play-button {
   background-color: var(--big-play-background-color);
+}
+.currentTime {
+  display:none;
 }
 
 /* Custom big play button */
