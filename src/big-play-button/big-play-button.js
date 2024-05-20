@@ -87,12 +87,6 @@ Player.provide('big-play-button',
           $this.bigPlayHeight = 51;
         }
       }
-      var left = ww / 2 - $this.bigPlayWidth / 2;
-      var top = wh / 2 - $this.bigPlayHeight / 2;
-      $this.container.find(".big-play-container").css({
-        top: top,
-        left: left
-      });
     };
     $(window).resize(_resize);
 
