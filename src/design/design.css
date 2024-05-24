@@ -528,7 +528,7 @@ ul.button-menu-selection li.selected button,
   right: 0;
   height: var(--tray-height);
   font-size: 10px;
-  line-height: 1em;
+  line-height: var(--tray-height);
 }
 .video-stream .time-container {
   padding-left: 10px;
