@@ -4,7 +4,7 @@
   --brand-color-lighter: #1EC95BDD;
   --brand-color-lightest: #1EC95BCC;
 
-  --player-border-radius: 0;
+  --player-border-radius: 0px;
   --player-background-color: black;
   --player-vertical-padding: 0px;
   --player-horizontal-padding: 0px;
@@ -56,7 +56,7 @@
 body {
   --tray-button-height: calc(var(--tray-height) - var(--tray-button-border) - var(--tray-button-border));
   --tray-button-width: var(--tray-height);
-  --spacing-above-tray: calc(var(--tray-height) + var(--tray-margin) - -20px);
+  --spacing-above-tray: calc(var(--tray-height) + var(--tray-margin) + 20px);
 }
 
 /* ========================= BROWSER RESET ======================== */
