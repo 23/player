@@ -56,7 +56,7 @@
 body {
   --tray-button-height: calc(var(--tray-height) - var(--tray-button-border) - var(--tray-button-border));
   --tray-button-width: var(--tray-height);
-  --spacing-above-tray: calc(var(--tray-height) + var(--tray-margin) + 10px + 10px);
+  --spacing-above-tray: calc(var(--tray-height) + var(--tray-margin) - -20px);
 }
 
 /* ========================= BROWSER RESET ======================== */
