@@ -55,7 +55,7 @@
 body {
   --tray-button-height: calc(var(--tray-height) - var(--tray-button-border) - var(--tray-button-border));
   --tray-button-width: var(--tray-height);
-  --spacing-above-tray: calc(var(--tray-height) + var(--tray-margin) + 10px);
+  --spacing-above-tray: calc(var(--tray-height) + var(--tray-margin) - -10px);
 }
 
 /* ========================= BROWSER RESET ======================== */
@@ -456,7 +456,7 @@ ul.button-menu-selection li.selected button,
   right: 0;
   height: var(--tray-height);
   font-size: 10px;
-  line-height: calc(var(--tray-height) + 3px);
+  line-height: calc(var(--tray-height) - -3px);
 }
 .video-stream .time-container {
   padding-left: 10px;

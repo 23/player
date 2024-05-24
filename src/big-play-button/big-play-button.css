@@ -116,10 +116,10 @@
 
 /* Resizing for small players */
 .size-small .big-play-container  {
-  width: calc(var(--big-play-width)*0.8);
-  height: calc(var(--big-play-height)*0.8);
+  width: calc(var(--big-play-width) * 0.8);
+  height: calc(var(--big-play-height) * 0.8);
 }
 .size-tiny .big-play-container  {
-  width: calc(var(--big-play-width)*0.6);
-  height: calc(var(--big-play-height)*0.6);
+  width: calc(var(--big-play-width) * 0.6);
+  height: calc(var(--big-play-height) * 0.6);
 }
