@@ -64,9 +64,18 @@ Player.provide('big-play-button',
       _updateBigPlay();
     });
 
+    function debounce(callback, delay) {
+      var timer
+      return function() {
+        clearTimeout(timer)
+        timer = setTimeout(() => {
+          callback();
+        }, delay)
+      }
+    }
+
     var _prevShow = false;
-    var _bigPlayTimeouts = [];
-    var _updateBigPlay = function(){
+    var _updateBigPlay = debounce(function(){
       var show = (
         !$this.hideBigPlay &&
         ($this.bigPlayPosition=='center' || !Player.get('showTray') || Player.get('currentTime')==0) &&
@@ -75,19 +84,11 @@ Player.provide('big-play-button',
         !Player.get("actionsShown")
       );
       if (show != _prevShow) {
-        while(_bigPlayTimeouts.length > 0){
-          clearTimeout(_bigPlayTimeouts.pop());
-        }
-        $this.container.show();
-        _bigPlayTimeouts.push(setTimeout(function(){
-          $this.container.toggleClass("big-play-shown", show);
-        }, 10));
-        _bigPlayTimeouts.push(setTimeout(function(){
-          $this.container.css({display: ""});
-        }, 210));
+        $this.container.toggle(show);
+        $this.container.toggleClass("big-play-shown", show);
         _prevShow = show;
       }
-    };
+    }, 200);
 
     return $this;
   }
