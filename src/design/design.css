@@ -1,10 +1,10 @@
 :root {
   --brand-color: #1EC95B;
-  --brand-color-light: #1EC95B90;
-  --brand-color-lighter: #1EC95B85;
-  --brand-color-lightest: #1EC95B72;
+  --brand-color-light: #1EC95BEE;
+  --brand-color-lighter: #1EC95BDD;
+  --brand-color-lightest: #1EC95BCC;
 
-  --player-border-radius: 0;
+  --player-border-radius: 0px;
   --player-background-color: black;
   --player-vertical-padding: 0px;
   --player-horizontal-padding: 0px;
@@ -15,11 +15,17 @@
   --tray-margin: 0px;
   --tray-height: 40px;
   --tray-button-border:0px;
-  --tray-play-button-gap: 0px;
+  --tray-button-highlight-background-color:transparent;
+  --tray-button-highlight-border-radius:0px;
   --tray-outer-border-radius: 0px;
   --tray-inner-border-radius: 0px;
+  --tray-play-button-gap: 0px;
   --tray-play-button-width: 71px;
   --tray-play-button-border-radius: 0px;
+  --tray-play-button-background-color: transparent;
+  --tray-play-button-color-filter: var(--icon-color-filter);
+  --tray-play-button-hover-background-color: var(--scrubber-color);
+  --tray-play-button-hover-color-filter: var(--icon-color-filter);
   --tray-text-color: white;
 
   --scrubber-color: var(--brand-color);
@@ -34,17 +40,19 @@
   --menu-text-color: #bbb;
 
   --icon-color-filter: url(#icon_white);
+  --icon-color-hover-filter: url(#icon_hover);
 
   --big-play-background-color: var(--scrubber-color);
   --big-play-icon-color-filter: url(#icon_white);
   --big-play-width: 91px;
   --big-play-height: 51px;
+  --big-play-border-radius: var(--menu-border-radius);
 
   --outline: 3px solid #aaa;
 }
 
 
-.rounded {
+body.theme-rounded {
   --tray-margin: 10px;
   --tray-play-button-gap: 10px;
   --tray-outer-border-radius: 6px;
@@ -52,9 +60,11 @@
 
   --menu-gap: 6px;
   --menu-border-radius: 6px;
+
+  --big-play-border-radius: 6px;
 }
 
-.squared {
+body.theme-hip {
   --tray-margin: 10px;
   --tray-button-border:4px;
   --tray-play-button-width: 40px;
@@ -62,47 +72,44 @@
   --menu-gap: 10px;
 }
 
-.circled {
+body.theme-circular {
   --tray-margin: 10px;
   --tray-button-border:3px;
   --tray-play-button-width: 34px;
   --tray-outer-border-radius: 20px;
   --tray-play-button-border-radius: 20px;
 
+  --big-play-width: 60px;
+  --big-play-height: 60px;
+  --big-play-border-radius: 100%;
+
   --menu-gap: 8px;
   --menu-border-radius: 10px;
 }
 
-.bordered {
-  --tray-margin: 10px;
-  --tray-button-border:3px;
-  --tray-play-button-width: 34px;
-  --tray-outer-border-radius: 5px;
-  --tray-play-button-border-radius: 4px;
-
-  --menu-gap: 8px;
-  --menu-border-radius: 4px;
-}
-.cinematic {
+body.theme-cinematic {
   --tray-play-button-width: 40px;
   --tray-background-color: transparent;
-  --tray-full-background-color: linear-gradient(180deg, rgba(0, 0, 0, .0) 0%, #000000 190%);
+  --tray-full-background-color: linear-gradient(180deg, transparent 0%, #000000 100%);
 
   --scrubber-track-color: white;
 }
-.angelic {
+
+body.theme-angelic {
   --tray-background-color: rgba(255,255,255,.9);
   --tray-margin: 10px;
   --tray-button-border:3px;
   --tray-play-button-width: 34px;
   --tray-outer-border-radius: 20px;
   --tray-play-button-border-radius: 20px;
+  --tray-play-button-color-filter: url(#icon_dark);
+  --tray-play-button-hover-color-filter: url(#icon_white);
   --tray-text-color: #333;
 
   --scrubber-track-color: #ccc;
 
   --menu-gap: 8px;
-  --menu-background-color: rgba(255,255,255,.9);
+  --menu-background-color: rgba(255,255,255,.7);
   --menu-border-radius: 10px;
   --menu-text-color: #666;
 
@@ -111,23 +118,28 @@
   --outline: 3px solid #000;
 }
 
-.colorburst {
+body.theme-colorburst {
   --tray-margin: 10px;
-  --tray-background-color: var(--brand-color-lightest);
+  --tray-background-color: var(--brand-color-lighter);
   --tray-button-border:3px;
+  --tray-button-highlight-background-color: rgba(255,255,255,.9);
+  --tray-button-highlight-border-radius:3px;
   --tray-play-button-width: 34px;
-  --tray-outer-border-radius: 20px;
-  --tray-play-button-border-radius: 20px;
+  --tray-outer-border-radius: 8px;
+  --tray-play-button-border-radius: 8px;
 
-  --scrubber-color: white;
-  --scrubber-color-light: #eeee;
-  --scrubber-color-lighter: #ddd;
-  --scrubber-color-lightest: #ccc;
-  --scrubber-track-color: var(--brand-color);
+  --tray-play-button-background-color: transparent;
+  --tray-play-button-color-filter: url(#icon_white);
+  --tray-play-button-hover-background-color: rgba(255,255,255,.9);
+  --tray-play-button-hover-color-filter: url(#icon_hover);
+
+  --scrubber-color: rgba(255,255,255,.8);
+  --scrubber-track-color: rgba(0,0,0,.3);
 
   --menu-gap: 8px;
   --menu-background-color: var(--brand-color-lightest);
-  --menu-border-radius: 10px;
+  --menu-border-radius: 5px;
+  --menu-text-color: white;
 
   --big-play-background-color: var(--menu-background-color);
 }
@@ -138,8 +150,6 @@ body {
   --tray-button-width: var(--tray-height);
   --spacing-above-tray: calc(var(--tray-height) + var(--tray-margin) + 10px);
 }
-
-
 
 /* ========================= BROWSER RESET ======================== */
 body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td,button{margin:0;padding:0;}table{border-collapse:collapse;border-spacing:0;}fieldset,img,button{border:0;}address,caption,cite,code,dfn,em,strong,th,var{font-style:normal;font-weight:normal;}ol,ul {list-style:none;}caption,th {text-align:left;}h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:normal;}q:before,q:after{content:'';}abbr,acronym {border:0;}* focus, video, object, player, embed {outline:none} *{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;-o-user-select:none;user-select:none;}iframe{border:0} input,textarea{-webkit-user-select:text;-moz-user-select:text;-ms-user-select:text;-o-user-select:text;user-select:text;}iframe{border:0}button{background-color:transparent;border-radius:0;}
@@ -238,6 +248,7 @@ p {
   background-repeat:no-repeat;
   cursor:pointer;
   font-size:0;
+  transition: background-color 200ms ease;
 }
 .button-container > button::after {
   content: '';
@@ -298,16 +309,20 @@ ul.button-menu li button { /* menu items */
   height: 30px;
   padding: 0 16px;
   line-height: 30px;
-  text-align: right;
   white-space:nowrap;
   cursor: pointer;
   color: var(--menu-text-color);
-  width: auto; /* Display buttons with correct width in IE7 http://jehiah.cz/a/button-width-in-ie */
+  width: 100%;
+  text-align: left;
   overflow: visible; /* See above */
 }
 ul.button-menu-selection li.selected {
   position:relative;
-  padding-right:20px;
+}
+ul.button-menu-selection li.selected button {
+  padding-right: 40px;
+  background-color:var(--tray-button-highlight-background-color);
+  border-radius:var(--tray-button-highlight-border-radius);
 }
 ul.button-menu-selection li.selected::after {
   content: '';
@@ -319,10 +334,9 @@ ul.button-menu-selection li.selected::after {
   background-repeat: no-repeat;
   background-position: right center;
   background-image:url('checkmark.svg');
-  filter: url(#icon_hover);
-  -webkit-filter: url(#icon_hover);
+  filter: var(--icon-color-hover-filter);
+  -webkit-filter: var(--icon-color-hover-filter);
 }
-
 ul.button-menu {
   border-bottom-width:var(--menu-gap)
 }
@@ -336,12 +350,15 @@ ul.button-menu::after {
   border-radius:0 0 var(--menu-border-radius) var(--menu-border-radius);
 }
 .tray-left .button-container:hover > button {
-  background-color: var(--scrubber-color);
+  background-color:var(--tray-play-button-hover-background-color);
+}
+.tray-left .button-container > button {
+  background-color:var(--tray-play-button-background-color);
 }
 ul.button-menu li:hover button,
 ul.button-menu-selection li.selected button,
 .menu-list li a:hover {
-  color: var(--scrubber-color);
+  color: var(--brand-color);
 }
 
 /* Close button for overlays */
@@ -436,11 +453,10 @@ ul.button-menu-selection li.selected button,
 .tray-right .button-container > button, .tray-right .button-container > button img {
   width: 30px;
 }
-.tray-scrubber {  /* scrubber position */
+.tray-scrubber {
   flex: 1;
   position: relative;
   margin: 0;
-  /* margin-left: 71px; */
   margin-right: 0; /* Width of buttons to the right of the scrubber. Updated in js. */
   padding: 0 10px;
 }
@@ -492,7 +508,7 @@ ul.button-menu-selection li.selected button,
   left: 0;
   bottom:44px;
   width: 94px;
-  border:2px solid var(--scrubber-track-color);
+  border:2px solid var(--tray-background-color);
   overflow: hidden;
 }
 .tray-shown .scrubber:hover .scrubber-thumbnail {
@@ -518,7 +534,7 @@ ul.button-menu-selection li.selected button,
 }
 .scrubber-thumbnail-time {
   padding: 4px;
-  background: var(--scrubber-track-color);
+  background: var(--tray-background-color);
   font-size: 10px;
   line-height: 1em;
 }
@@ -529,7 +545,7 @@ ul.button-menu-selection li.selected button,
   right: 0;
   height: var(--tray-height);
   font-size: 10px;
-  line-height: calc(var(--tray-height) + 3px);
+  line-height: var(--tray-height);
 }
 .video-stream .time-container {
   padding-left: 10px;
@@ -752,7 +768,6 @@ body.overlay-shown .button-container-share {
   left: 0;
   width: 100%;
   height: 100%;
-  background:rgb(0,0,0);
   background:var(--menu-background-color);
   transition: opacity 200ms linear;
 }
@@ -775,14 +790,14 @@ body.overlay-shown .button-container-share {
   display: block;
   font-size: 14px;
   line-height: 1.2em;
-  color: var(--menu-text-color);
-  text-decoration: none;
+  color: var(--tray-text-color);
+  text-decoration: underline;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 .sharing-info a:hover {
-  color: var(--scrubber-color);
+  color: var(--brand-color);
 }
 .sharing-info .current-time-select {
   display: none;
@@ -1013,8 +1028,12 @@ body.overlay-shown .button-container-share {
 /* Tray left buttons */
 .tray-left button::after {
   background-size: 54px;
-  filter: var(--icon-color-filter);
-  -webkit-filter: var(--icon-color-filter);
+  filter: var(--tray-play-button-color-filter);
+  -webkit-filter: var(--tray-play-button-color-filter);
+}
+.tray-left button:hover::after {
+  filter: var(--tray-play-button-hover-color-filter);
+  -webkit-filter: var(--tray-play-button-hover-color-filter);
 }
 
 .play-button::after {
@@ -1036,9 +1055,17 @@ body.overlay-shown .button-container-share {
   filter: var(--icon-color-filter);
   -webkit-filter: var(--icon-color-filter);
 }
-.tray-right button:hover::after {
-  filter: url(#icon_hover);
-  -webkit-filter: url(#icon_hover);
+.tray-right button:hover,
+.subtitle-button-active,
+.audiodescription-button-active {
+  background-color:var(--tray-button-highlight-background-color);
+  border-radius:var(--tray-button-highlight-border-radius);
+}
+.tray-right button:hover::after,
+.subtitle-button-active::after,
+.audiodescription-button-active::after {
+  filter: var(--icon-color-hover-filter) !important;
+  -webkit-filter: var(--icon-color-hover-filter) !important;
 }
 
 .fullscreen-button::after {
@@ -1065,14 +1092,13 @@ body.overlay-shown .button-container-share {
 .slides-button::after  {
   background-image: url('slides.svg');
 }
-.subtitle-button-active::after,
-.audiodescription-button-active::after {
-  filter: url(#icon_hover) !important;
-  -webkit-filter: url(#icon_hover) !important;
+button.real-button {
+  cursor:default;
+}
+.real-button::after {
+  background-image: url('real.svg');
 }
 
-.button-container .quality-button { transform: rotate(0deg); transition: transform 200ms linear; }
-.button-container:hover .quality-button { transform: rotate(20deg); } /* Rotate quality icon on hover */
 .player-playback-rate-button ul.button-menu li {
   text-align:left;
 }
@@ -1080,15 +1106,12 @@ body.overlay-shown .button-container-share {
 /* Big play */
 .big-play-button::after, .loop-play-button::after {
   background-image: url('big-play.svg');
-  background-size: 64px;
-  filter: var(--big-play-icon-color-filter) !important;
-  -webkit-filter: var(--big-play-icon-color-filter) !important;
 }
-.big-play-button,
-.button-container > .loop-play-button,
-.big-play-button:hover,
-.button-container:hover > .loop-play-button {
-  background-color: var(--big-play-background-color);
+.big-play-button.pause::after {
+  background-image: url('pause.svg');
+}
+.big-play-button.stop::after {
+  background-image: url('stop.svg');
 }
 
 /* Muted autoplay button */
@@ -1170,8 +1193,8 @@ body.overlay-shown .button-container-share {
 }
 .close-button:hover,
 .share-button:hover {
-  filter: url(#icon_hover);
-  -webkit-filter: url(#icon_hover);
+  filter: var(--icon-color-hover-filter);
+  -webkit-filter: var(--icon-color-hover-filter);
 }
 .close-button {
   background-image: url('close.svg');
@@ -1186,8 +1209,8 @@ body.overlay-shown .button-container-share {
   -webkit-filter: var(--icon-color-filter);
 }
 .share-buttons button:hover {
-  filter: url(#icon_hover);
-  -webkit-filter: url(#icon_hover);
+  filter: var(--icon-color-hover-filter);
+  -webkit-filter: var(--icon-color-hover-filter);
 }
 .facebook-button {
   background-image: url('facebook.svg');

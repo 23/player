@@ -1,42 +1,34 @@
-<div class="big-play-container {% if bigPlaySource != "" %}big-play-custom-container{% endif %}">
-  <table width="100%" height="100%">
-    <tr>
-      <td
-        width="100%"
-        height="100%"
-        valign="middle"
-        align="center">
-        {% if bigPlaySource == empty or bigPlaySource == "" %}
-          <div class="button-container">
-            <button
-              class="big-play-button"
-              click="$set:playing:true"
-              aria-label="{{"play_video"|translate}}"
-              label="{{"play_video"|translate}}"
-              tabindex="0">
-              <span class="hide-visually">
-                {{ "play_video" | translate }}
-              </span>
+<div class="big-play-container big-play-container-position-{{bigPlayPosition}} big-play-container-style-{{bigPlayStyle}} {% if bigPlaySource != "" %}big-play-custom-container{% endif %}">
+  {% if bigPlaySource == empty or bigPlaySource == "" %}
+    <div class="button-container">
+      <button
+        class="big-play-button"
+        click="$toggle:playing:true"
+        aria-label="{{"play_video"|translate}}"
+        label="{{"play_video"|translate}}"
+        tabindex="0">
+        <span class="hide-visually">
+          {{ "play_video" | translate }}
+        </span>
 
-            </button>
-          </div>
-        {% else %}
-          <button
-            class="big-play-button"
-            click="$set:playing:true"
-            aria-label="{{"play_video"|translate}}"
-            label="{{"play_video"|translate}}"
-            tabindex="0">
+        <span class="current-time">{{duration|formatTime}}</span>
 
-            <img src="{{bigPlaySource|escape}}" alt="" />
+      </button>
+    </div>
+  {% else %}
+    <button
+      class="big-play-button"
+      click="$set:playing:true"
+      aria-label="{{"play_video"|translate}}"
+      label="{{"play_video"|translate}}"
+      tabindex="0">
 
-            <span class="hide-visually">
-              {{ "play_video" | translate }}
-            </span>
+      <img src="{{bigPlaySource|escape}}" alt="" />
 
-          </button>
-        {% endif %}
-      </td>
-    </tr>
-  </table>
+      <span class="hide-visually">
+        {{ "play_video" | translate }}
+      </span>
+
+    </button>
+  {% endif %}
 </div>
