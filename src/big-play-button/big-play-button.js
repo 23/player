@@ -76,7 +76,7 @@ Player.provide('big-play-button',
     }
 
     var _prevShow = false;
-    var _updateBigPlay = denounce(function(){
+    var _updateBigPlay = debounce(function(){
       var show = (
         !$this.hideBigPlay &&
         ($this.bigPlayPosition=='center' || !Player.get('showTray') || Player.get('currentTime')==0) &&
