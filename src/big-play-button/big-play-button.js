@@ -26,10 +26,10 @@ Player.provide('big-play-button',
     });
 
     // Update element on play, pause and more
-    Player.bind('player:video:loaded player:video:loadstart player:video:play player:video:seeked player:video:pause player:video:ended player:action:loaded player:action:dispatched', function (e) {
+    Player.bind('player:video:loaded player:video:loadstart player:video:play player:video:playing player:video:seeked player:video:pause player:video:ended player:action:loaded player:action:dispatched', function (e) {
       _updateBigPlay();
     });
-    Player.bind('player:video:play player:video:seeked player:video:pause player:video:ended', function(e) {
+    Player.bind('player:video:play player:video:playing player:video:seeked player:video:pause player:video:ended', function(e) {
       $this.container.find('.big-play-button').toggleClass((Player.get('isStream') ? 'stop' : 'pause'), Player.get("playing") || Player.get("seeking"))
     });
     Player.bind('player:video:progress player:video:timeupdate player:video:seeked player:video:ended', function() {
