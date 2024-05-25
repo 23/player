@@ -47,6 +47,8 @@
   --big-play-width: 91px;
   --big-play-height: 51px;
   --big-play-border-radius: var(--menu-border-radius);
+
+  --outline: 3px solid #aaa;
 }
 
 
@@ -90,6 +92,19 @@ body {
   scrollbar-arrow-color: #555;
   scrollbar-shadow-color: #000;
   scrollbar-dark-shadow-color: #000;
+}
+/* Accessibility */
+[tabindex]:focus {
+  outline: none !important;
+}
+
+*:active {
+  outline: none !important;
+}
+
+body.tabbed [tabindex]:focus {
+  outline: var(--outline) !important;
+  outline-offset:-3px;
 }
 h1 {
   font-size:14px;
