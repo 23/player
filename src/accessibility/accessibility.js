@@ -11,7 +11,6 @@ Player.provide(
   "accessibility",
   {
     showTray: true,
-    scrubberColor: "#aaa",
   },
   function (Player, $, opts) {
     var $this = this;
@@ -192,18 +191,6 @@ Player.provide(
         }
       } catch (e) {}
       return $this.shortcutsDisabled;
-    });
-
-    // Modify highlight color to match the player scrubber
-    Player.bind("player:settings", function (e) {
-      PlayerUtilities.mergeSettings($this, ["showTray", "scrubberColor"]);
-      if ($this.scrubberColor.length > 0) {
-        $("head").append(
-          "<style>body.tabbed [tabindex]:focus {outline: 3px solid " +
-            $this.scrubberColor +
-            " !important;}</style>"
-        );
-      }
     });
 
     var updateTabIndex = function () {
