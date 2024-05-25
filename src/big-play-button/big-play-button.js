@@ -64,7 +64,6 @@ Player.provide('big-play-button',
       _updateBigPlay();
     });
 
-
     function debounce(callback, delay) {
       var timer
       return function() {
