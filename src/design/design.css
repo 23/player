@@ -317,8 +317,6 @@ ul.button-menu-selection li.selected button,
   margin: 0 auto 0 auto;
 }
 
-}
-
 .tray-left, .tray-left .button-container {
   border-radius:var(--tray-outer-border-radius) var(--tray-inner-border-radius) var(--tray-inner-border-radius) var(--tray-outer-border-radius);
 }
