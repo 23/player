@@ -78,7 +78,7 @@
   border-radius: 0px;
   left: 0;
   top: 0;
-  background-color: black; //Fallback color
+  background-color: black;
   background-color: rgba(0,0,0,0.72);
   -webkit-transition: background 100ms linear;
   -o-transition: background 100ms linear;
