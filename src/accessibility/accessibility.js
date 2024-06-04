@@ -136,8 +136,7 @@ Player.provide(
           }
           // Disable tray timeout on tab
           if (e.keyCode == 9) {
-            $("body").addClass("tabbed");
-            Player.set("alwaysShowTray", true);
+            if(Player.get('started')) Player.set("alwaysShowTray", true);
           }
           if (e.keyCode == 27) {
             // Destroy menus
