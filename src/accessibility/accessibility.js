@@ -136,6 +136,7 @@ Player.provide(
           }
           // Disable tray timeout on tab
           if (e.keyCode == 9) {
+            // If we make a version that shows the tray and the controls on hover before the video is started we will have to modify this.
             if(Player.get('started')) Player.set("alwaysShowTray", true);
           }
           if (e.keyCode == 27) {
