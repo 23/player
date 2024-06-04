@@ -48,7 +48,7 @@
   --big-play-height: 51px;
   --big-play-border-radius: var(--menu-border-radius);
 
-  --outline: 3px solid #aaa;
+  --outline: 3px solid #fff;
 }
 
 /* We don't support revisioned designs for this player out of the box */

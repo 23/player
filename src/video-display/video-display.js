@@ -909,18 +909,18 @@ var formatTimeToReadable = function(time){
 
   minute = Math.floor(time/60).toString();
   if(Math.floor(time/60).toString() == 1){
-    minute += 'min';
+    minute += Player.translate('min');
   }else if (Math.floor(time/60).toString() > 1){
-    minute += 'mins';
+    minute += Player.translate('mins');
   } else {
     minute = '';
   }
 
   second = Math.round(time%60).toString();
   if(Math.round(time%60).toString() == 1){
-    second += 'sec';
+    second += Player.translate('sec');
   }else if (Math.round(time%60).toString() != 1){
-    second += 'secs';
+    second += Player.translate('secs');
   }
 
   return(minute + second);
@@ -954,8 +954,8 @@ Player.translate("mins",{
   en: " minutes "
 });
 Player.translate("sec",{
-  en: "second"
+  en: " second"
 });
 Player.translate("secs",{
-  en: "seconds"
+  en: " seconds"
 });
