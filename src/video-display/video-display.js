@@ -26,6 +26,7 @@
 
   Answers properties:
   - playing [get/set]
+  - started [get]
   - currentTime [get/set]
   - pendingCurrentTime [set]
   - seekedTime [get]
@@ -65,6 +66,7 @@ Player.provide('video-display',
     className: 'video-display',
     displayDevice: 'html5',
     videoFit: 'contain',
+    started: false,
     quality: '',
     autoPlay: false,
     autoMute: false,
@@ -102,9 +104,6 @@ Player.provide('video-display',
       // Create a container with the correct aspect ratio and a video element
       $this.canvas = $(document.createElement('div')).addClass('video-canvas');
       $this.container.append($this.canvas);
-
-      var _toggleMuteButton = $("<div class='toggle-mute-button'>Turn on sound</div>");
-      $this.container.append(_toggleMuteButton);
 
       var _360Screen = $("<div class='screen-360'></div>");
       $this.container.append(_360Screen);
@@ -193,6 +192,9 @@ Player.provide('video-display',
               $this.loadContent();
           }
           $this._waiting = false;
+      });
+      Player.bind('player:video:play player:video:playing', function(){
+        $this.started = true
       });
 
       $this._loadVolumeCookie = true;
@@ -654,6 +656,9 @@ Player.provide('video-display',
           return ret;
       });
 
+      Player.getter('started', function(){
+        return $this.started;
+      })
       Player.getter('playing', function(){
           return ($this.video ? $this.video.getPlaying() : false);
       });
@@ -674,7 +679,7 @@ Player.provide('video-display',
       });
       Player.getter('subtitleMenuExpanded', function(){
         return $this.subtitleMenuExpanded
-    });
+      });
       Player.getter('ended', function(){
           return ($this.video ? $this.video.getEnded() : false);
       });
@@ -819,8 +824,10 @@ Player.provide('video-display',
       // When new video is loaded, reset maxBufferTime and seekedTime
       Player.bind("player:video:loaded",function(){
           $this.maxBufferTime = 0;
+          $this.started = false;
           $this.seekedTime = Player.get("currentTime");
           _seekEnded = false;
+
       });
       Player.bind("player:video:seeked player:video:seek",function(e){
           $this.seekedTime = Player.get("currentTime");
