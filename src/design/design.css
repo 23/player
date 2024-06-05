@@ -102,7 +102,7 @@ body {
   outline: none !important;
 }
 
-body.tabbed [tabindex]:focus {
+body [tabindex]:focus-visible {
   outline: var(--outline) !important;
   outline-offset:-3px;
 }
