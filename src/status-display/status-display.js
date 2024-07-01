@@ -75,7 +75,7 @@ Player.provide('status-display',
       }
     });
     Player.getter('showSeeking', function(){
-        return Player.get('video_playable') && (Player.get('seeking') || Player.get('stalled'))
+        return Player.get('video_playable') && !Player.get('showNativeVideoControls') && (Player.get('seeking') || Player.get('stalled'))
       });
 
 
