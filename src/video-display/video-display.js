@@ -81,6 +81,7 @@ Player.provide('video-display',
     fullscreenQuality: '',
     verticalPadding: 0,
     horizontalPadding: 0,
+    showNativeVideoControls: 0,
     maxLengthDVR: 10800,
     liveBufferRegion: 60,
     hlsjsDebug: false,
@@ -173,7 +174,7 @@ Player.provide('video-display',
 
       // Merge in player settings
       Player.bind('player:settings', function(e,s){
-        PlayerUtilities.mergeSettings($this, ['autoPlay', 'mutedAutoPlay', 'autoMute', 'ambient', 'loop', 'verticalPadding', 'horizontalPadding', 'displayDevice', 'fullscreenQuality', 'showThumbnailOnEnd', 'inlinePlayback', 'hlsjsDebug', 'hlsjsAbrBandWidthFactor', 'hlsjsAbrBandWidthUpFactor', 'liveLatencyMode', 'videoFit']);
+        PlayerUtilities.mergeSettings($this, ['autoPlay', 'mutedAutoPlay', 'autoMute', 'ambient', 'loop', 'verticalPadding', 'horizontalPadding', 'showNativeVideoControls', 'displayDevice', 'fullscreenQuality', 'showThumbnailOnEnd', 'inlinePlayback', 'hlsjsDebug', 'hlsjsAbrBandWidthFactor', 'hlsjsAbrBandWidthUpFactor', 'liveLatencyMode', 'videoFit']);
         $this.canvas.addClass('video-canvas-fit-' + $this.videoFit)
         if (typeof (_AP) != 'undefined' && _AP === false && $this.autoPlay && !($this.autoMute || $this.mutedAutoPlay)) $this.autoPlay = false;
         if ($this.video) $this.video.hlsjsConfig = { debug: ($this.hlsjsDebug ? true : false), abrBandWidthFactor: $this.hlsjsAbrBandWidthFactor, abrBandWidthUpFactor: $this.hlsjsAbrBandWidthUpFactor };
@@ -319,6 +320,7 @@ Player.provide('video-display',
           Player.get('videoElement').video[0].loop = Player.get('loop');
         }catch(e){}
 
+        Player.get('videoElement').video[0].controls = !!$this.showNativeVideoControls
         Player.fire('player:video:qualitychange');
 
         // Set crossorigin attribute on 360 live streams playing through html5
@@ -675,6 +677,9 @@ Player.provide('video-display',
       });
       Player.getter('subtitleMenuExpanded', function(){
         return $this.subtitleMenuExpanded
+      });
+      Player.getter('showNativeVideoControls', function(){
+        return $this.showNativeVideoControls
       });
       Player.getter('ended', function(){
           return ($this.video ? $this.video.getEnded() : false);
