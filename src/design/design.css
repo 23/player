@@ -700,8 +700,12 @@ a.info-overlay-domain:hover {
 .tray-shown .button-container-share {
   opacity: 1;
 }
+.button-container-share:focus-within {
+  opacity: 1;
+}
 body.overlay-shown .button-container-share {
   opacity: 0;
+  visibility: hidden;
 }
 /* === /Share button === */
 
