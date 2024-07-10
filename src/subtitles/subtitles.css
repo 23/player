@@ -1,46 +1,47 @@
 .subtitles-container {
-    position:absolute;
-    bottom:10px;
-    width:100%;
-    text-align:center;
-    font-size:16px;
-    line-height:28px;
-    text-align:center;
-    transition: bottom 100ms linear;
-    text-wrap:balance;
+  position:absolute;
+  bottom:10px;
+  width:100%;
+  text-align:center;
+  font-size:16px;
+  line-height:28px;
+  text-align:center;
+  transition: bottom 100ms linear;
+  text-wrap:balance;
 }
 /* Raise the subtitles to not overlap with the tray */
 .tray-shown .subtitles-container, .force-tray .subtitles-container { bottom: var(--spacing-above-tray); }
 .block-tray .subtitles-container { bottom: 10px; }
 .subtitles-container span {
-    padding:3px 5px;
-    margin:0 auto;
-    text-shadow: -1px -1px 0 #333, 1px -1px 0 #333, -1px 1px 0 #333, 1px 1px 0 #333;
-    color:white;
+  padding:3px 5px;
+  margin:0 auto;
+  text-shadow: -1px -1px 0 #333, 1px -1px 0 #333, -1px 1px 0 #333, 1px 1px 0 #333;
+  color:white;
+  -webkit-text-size-adjust: 100%;
 }
 .design-bars .subtitles-container span {
-    background-color:black;
+  background-color:black;
 }
 
 
 .size-large .subtitles-container {
-    font-size:20px;
-    line-height:32px;
+  font-size:20px;
+  line-height:32px;
 }
 .size-large .subtitles-container span {
-    padding:5px 8px;
+  padding:5px 8px;
 }
 .size-full .subtitles-container {
-    font-size:30px;
-    line-height:50px;
+  font-size:30px;
+  line-height:50px;
 }
 .size-full .subtitles-container span {
-    padding:6px 10px;
+  padding:6px 10px;
 }
 .size-tiny .subtitles-container, .size-small .subtitles-container {
-    font-size:14px;
-    line-height:20px;
+  font-size:14px;
+  line-height:20px;
 }
 .size-tiny .subtitles-container span, .size-small .subtitles-container span {
-    padding:2px 4px;
+  padding:2px 4px;
 }
