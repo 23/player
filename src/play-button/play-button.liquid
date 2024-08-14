@@ -2,7 +2,7 @@
   <button
     class="{% if playing %}{% if isStream %}stop-button{% else %}pause-button{% endif %}{% else %}play-button{% endif %}"
     click="$toggle:playing"
-    aria-label="{% if playing %}{{"pause_video"|translate}}{% else %}{{"play_video"|translate}}{% endif %}"
+    aria-label="{% if playing %}{{"pause_video_aria"|translate}}{% else %}{{"play_video_aria"|translate}}{% endif %}"
     aria-live="polite"
     label="{% if playing %}{{"pause_video"|translate}}{% else %}{{"play_video"|translate}}{% endif %}"
     tabindex="0">
