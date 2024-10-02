@@ -108,7 +108,7 @@ Player.provide('subtitles',
           Player.set('subtitles', subtitles);
         });
         $this.subtitleLocale = sl;
-        $this.enableSubtitles = true;
+        $this.enableSubtitles = !Player.get('showNativeVideoControls');
         Player.fire("player:subtitlesactivated");
       } else {
         $this.subtitleLocale = '';
