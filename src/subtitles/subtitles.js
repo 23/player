@@ -239,7 +239,7 @@ Player.provide('subtitles',
           track.attr("kind", "subtitles");
           track.attr("src", o.href.replace(/\.srt|\.websrt/, ".vtt"));
           track.attr("srclang", o.locale.replace(/_/, '-'));
-          track.attr("label", o.language.match(/^([^\(]+)\(/)[1]);
+          track.attr("label", (/^([^\(]+)\(/.test(o.language) ? o.language.match(/^([^\(]+)\(/)[1] : o.language));
           track.prop("mode", "disabled");
           v.append(track);
         });
