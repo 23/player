@@ -19,6 +19,7 @@
       id="qualityOptions"
       class="button-menu button-menu-selection"
       role="menu"
+      aria-labelledby="quality-button"
       >
       {% for q in qualitiesArray %}
         <li {% if q.quality == quality %}class="selected"{% endif %}>
@@ -26,8 +27,8 @@
             class="button-menu-item"
             click="$set:quality:{{q.quality}}; $set:playing:true"
             {% if q.quality == quality %}aria-checked="true"{% else %}aria-checked="false"{% endif %}
-            aria-label="{{q.quality}} {{"quality_2"|translate}}"
-            label="{{q.quality}} {{"quality_2"|translate}}"
+            aria-label="{{q.displayQuality}} {{"quality_2"|translate}}"
+            label="{{q.displayQuality}} {{"quality_2"|translate}}"
             role="menuitemradio"
             tabindex="0">{{ q.displayQuality }}</button>
         </li>
