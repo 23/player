@@ -134,7 +134,9 @@ Player.provide('core',
       // used for embedding the player. Updated on first request to the API
       $this.mainUrl = $this.url;
       $this.api = new Visualplatform($this.domain,[
-          "/api/deck/timeline/list-slides"
+          "/api/deck/timeline/list-slides",
+          "/api/live/transcription/locales",
+          "/api/live/transcription/list"
       ]);
       $this.api.protocol = $this.protocol;
       $this.api.crossDomain = (document.domain!=$this.domain);
