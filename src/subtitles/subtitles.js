@@ -17,12 +17,12 @@
    - hasSubtitles [get]
    - subtitleText [get/set]
    - subtitles [get/set]
-   - locales [get]
+   - locales [get/set]
    - localesArray [get]
    - subtitleLocale [get/set]
    - supportsAudioDescriptions [get]
    - hasAudioDescriptions [get]
-   - audioDescriptionTracks [get]
+   - audioDescriptionTracks [get/set]
    - audioDescriptionTracksArray [get]
    - audioDescriptionLocale [get/set]
    - audioDescriptionLocaleMessages [get]
@@ -43,6 +43,7 @@ Player.provide('subtitles',
     var forceReloadSubtitles = false;
 
     // Properties
+    $this.subtitleStreamType = 'video';
     var _reset = function () {
       $this.locales = {};
       $this.subtitleLocale = '';
@@ -101,12 +102,24 @@ Player.provide('subtitles',
       $this.render();
       Player.fire('player:subtitlechange');
     });
+    Player.setter('locales', function (l) {
+      $this.locales = l;
+      $this.hasSubtitles = Object.keys($this.locales).length > 0;
+      Player.fire('player:subtitlechange');
+    });
+    Player.setter('audioDescriptionTracks', function (adt) {
+      $this.audioDescriptionTracks = adt;
+      $this.hasAudioDescriptions = Object.keys($this.audioDescriptionTracks).length > 0;
+      Player.fire("player:audiodescriptionchanged");
+    });
     Player.setter('subtitleLocale', function (sl) {
       if ($this.locales[sl]) {
         Player.set('subtitles', '');
-        loadTrackFromApi(sl, 'general', function (subtitles) {
-          Player.set('subtitles', subtitles);
-        });
+        if($this.subtitleStreamType=='video') {
+          loadVideoTrackFromApi(sl, 'general', function (subtitles) {
+            Player.set('subtitles', subtitles);
+          });
+        }
         $this.subtitleLocale = sl;
         $this.enableSubtitles = !Player.get('showNativeVideoControls');
         Player.fire("player:subtitlesactivated");
@@ -142,7 +155,7 @@ Player.provide('subtitles',
       // Load messages
       $this.audioDescriptionLocaleMessages = [];
       if ($this.audioDescriptionLocale != '') {
-        loadTrackFromApi($this.audioDescriptionLocale, 'audiodescriptions', function (data) {
+        loadVideoTrackFromApi($this.audioDescriptionLocale, 'audiodescriptions', function (data) {
           var messages = [];
           for (var i = 0; i < data.length; i++) {
             var text = data[i].text.join('\n');
@@ -211,7 +224,22 @@ Player.provide('subtitles',
       Player.set('subtitleText', '');
     });
     $this.possiblyRender = function () {
-      var time = Player.get('currentTime');
+      var time = 0
+      if($this.subtitleStreamType=='video') {
+        time = Player.get('currentTime');
+      } else {
+        var ve = Player.get('videoElement')
+        if(ve) {
+          if (ve.hls && ve.hls.playingDate) {
+            time = (Player.get('videoElement').hls.playingDate)*1.0
+          } else {
+            var v = ve.video[0]
+            if (v.getStartDate) {
+              time = (v.getStartDate()*1) + (v.currentTime*1000)
+            }
+          }
+        }
+      }
       if (time > 0 && $this.subtitles.length > 0) {
         var text = '';
         $.each($this.subtitles, function (i, s) {
@@ -234,16 +262,18 @@ Player.provide('subtitles',
           return;
         }
         v.find("track").remove();
-        $.each($this.locales, function (i, o) {
-          var track = $("<track>");
-          track.attr("kind", "subtitles");
-          track.attr("src", o.href.replace(/\.srt|\.websrt/, ".vtt"));
-          track.attr("srclang", o.locale.replace(/_/, '-'));
-          track.attr("label", (/^([^\(]+)\(/.test(o.language) ? o.language.match(/^([^\(]+)\(/)[1] : o.language));
-          track.prop("mode", "disabled");
-          v.append(track);
-        });
-        $this.bindFullscreenListeners(v);
+        if($this.subtitleStreamType=='video') {
+          $.each($this.locales, function (i, o) {
+            var track = $("<track>");
+            track.attr("kind", "subtitles");
+            track.attr("src", o.href.replace(/\.srt|\.websrt/, ".vtt"));
+            track.attr("srclang", o.locale.replace(/_/, '-'));
+            track.attr("label", (/^([^\(]+)\(/.test(o.language) ? o.language.match(/^([^\(]+)\(/)[1] : o.language));
+            track.prop("mode", "disabled");
+            v.append(track);
+          });
+          $this.bindFullscreenListeners(v);
+        }
       }
     };
     Player.bind("player:video:loadedmetadata", function () {
@@ -293,9 +323,8 @@ Player.provide('subtitles',
       $this.fullscreenListenersBound = true;
     };
 
-    // Load some list of available subtitles
-    // Uses the /api/photo/subtitle/list API endpoint
-    var loadSubtitlesFromApi = function () {
+    // Load some list of available video subtitles from /api/photo/subtitle/list
+    var loadVideoSubtitlesFromApi = function () {
       var v = Player.get('video');
       var includeDraftSubtitles = ($this.includeDraftSubtitles ? 1 : 0)
       if (includeDraftSubtitles) forceReloadSubtitles = true;
@@ -308,21 +337,21 @@ Player.provide('subtitles',
           query,
           function (data) {
             // Load a list of languages to support
-            $this.hasSubtitles = false;
-            $this.hasAudioDescriptions = false;
+            var locales = {}
+            var audioDescriptionTracks = {}
             $.each(data.subtitles, function (i, o) {
               if (o.type != 'audiodescriptions') {
-                $this.hasSubtitles = true;
                 if (o.default_p && !o.draft_p && $this.defaultLocale == '') {
                   $this.defaultLocale = o.locale;
                 }
-                $this.locales[o.locale] = o;
+                locales[o.locale] = o;
               } else {
-                $this.hasAudioDescriptions = true;
-                $this.audioDescriptionTracks[o.locale] = o;
+                audioDescriptionTracks[o.locale] = o;
               }
             });
+            Player.set('locales', locales);
             Player.set('subtitleLocale', (!!$this.defaultLocale && !!$this.subtitlesOnByDefault ? $this.defaultLocale : ''));
+            Player.set('audioDescriptionTracks', audioDescriptionTracks);
             Player.set('audioDescriptionLocale', $this.defaultAudioDescripionLocale);
             $this.pendingSubtitleTracks = true;
             Player.fire('player:subtitlechange');
@@ -332,32 +361,11 @@ Player.provide('subtitles',
         );
       }
     }
-    Player.bind('player:video:loaded', function () {
-      _reset();
-      loadSubtitlesFromApi(false);
-    });
-    Player.setter('reloadSubtitles', function () {
-      forceReloadSubtitles = true;
-      // clear cache
-      localTrackCache = {};
-
-      var locale = Player.get('subtitleLocale');
-      if (locale) {
-        $this.defaultLocale = locale;
-      }
-      if ($this.audioDescriptionLocale != '') {
-        $this.defaultAudioDescripionLocale = $this.audioDescriptionLocale;
-      }
-      _reset();
-      loadSubtitlesFromApi(true);
-    });
-
-    // Load track data from the API with local caching
-    var localTrackCache = {};
-    var loadTrackFromApi = function (locale, type, callback) {
+    var localVideoTrackCache = {};
+    var loadVideoTrackFromApi = function (locale, type, callback) {
       var key = [Player.get('video_photo_id'), locale, type].join(':');
-      if (localTrackCache[key]) {
-        callback(localTrackCache[key], locale, type);
+      if (localVideoTrackCache[key]) {
+        callback(localVideoTrackCache[key], locale, type);
       } else {
         var query = { photo_id: Player.get('video_photo_id'), token: Player.get('video_token'), locale: locale, type: type, subtitle_format: 'json' }
         if (forceReloadSubtitles) {
@@ -367,13 +375,99 @@ Player.provide('subtitles',
           query,
           function (data) {
             var s = $.parseJSON(data.data.json);
-            localTrackCache[key] = s.subtitles;
+            localVideoTrackCache[key] = s.subtitles;
             callback(s.subtitles, locale, type);
           },
           Player.fail
         );
       }
     }
+
+    // Load locales for live
+    var loadLiveSubtitlesFromApi = function () {
+      var v = Player.get('video');
+      // Empty by default
+      Player.set('locales', {});
+      Player.set('subtitleLocale', (!!$this.defaultLocale && !!$this.subtitlesOnByDefault ? $this.defaultLocale : ''));
+      Player.set('audioDescriptionTracks', {});
+      Player.set('audioDescriptionLocale', $this.defaultAudioDescripionLocale);
+      // Load locales
+      Player.get('api').live.transcription.locales(
+        {live_id:v.live_id, token:v.token},
+        function (data) {
+          var locales = {}
+          $.each(data.livelocales, function (i, o) {
+            if (o.default_p) {
+              $this.defaultLocale = o.locale;
+            }
+            o.type = 'live';
+            locales[o.locale] = o;
+          });
+          Player.set('subtitleLocale', (!!$this.defaultLocale && !!$this.subtitlesOnByDefault ? $this.defaultLocale : ''));
+          Player.set('locales', locales);
+          //$this.pendingSubtitleTracks = true;
+        },
+        Player.fail
+      );
+    }
+    var liveSubtitleRefreshInterval = null;
+    Player.bind('player:subtitlechange', function(){
+      if($this.subtitleStreamType!='live' || Player.get('subtitleLocale').length==0) {
+        if(liveSubtitleRefreshInterval) {
+          window.clearInterval(liveSubtitleRefreshInterval)
+          liveSubtitleRefreshInterval = null;
+        }
+      } else {
+        if(!liveSubtitleRefreshInterval) {
+          v = Player.get('video')
+          liveSubtitleRefreshInterval = window.setInterval(function(){
+            var subtitles = []
+            Player.get('api').live.transcription.list(
+              {live_id:v.live_id, token:v.token, recent_p:1, locale:Player.get('subtitleLocale')},
+              function(data){
+                $.each(data.livetranscriptions, function(i,t) {
+                  subtitles.push({
+                    text:[t.text],
+                    timestamp_begin:parseFloat(t.start_time)*1000,
+                    timestamp_end:parseFloat(t.end_time)*1000
+                  });
+                });
+                $this.subtitles = subtitles;
+              },
+              Player.fail
+            )
+          }, 1000)
+        }
+      }
+    });
+
+    var resetAndLoadSubtitles = function(){
+      _reset();
+      if($this.subtitleStreamType=='live'){
+        loadLiveSubtitlesFromApi(false);
+      } else {
+        loadVideoSubtitlesFromApi(false);
+      }
+    }
+    Player.bind('player:video:loaded', function (e,v) {
+      $this.subtitleStreamType = (v.type=='stream' ? 'live' : 'video');
+      resetAndLoadSubtitles();
+    });
+    Player.setter('reloadSubtitles', function () {
+      forceReloadSubtitles = true;
+      // clear cache
+      localVideoTrackCache = {};
+
+      var locale = Player.get('subtitleLocale');
+      if (locale) {
+        $this.defaultLocale = locale;
+      }
+      if ($this.audioDescriptionLocale != '') {
+        $this.defaultAudioDescripionLocale = $this.audioDescriptionLocale;
+      }
+      resetAndLoadSubtitles();
+    });
+
 
     // Bootstrap and load
     _reset();
