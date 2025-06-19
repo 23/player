@@ -1,6 +1,6 @@
-/* 
+/*
    MODULE: SHARINGS
-   Core module to handle sharing options, include enable sharing, 
+   Core module to handle sharing options, include enable sharing,
    links to social services, embeds, and backlinks.
 
    Listens for:
@@ -11,7 +11,7 @@
    - player:sharing: Whenever the sharing options are updated
    - player:sharing:shareengaged: Fires when sharing options are engaged (used by analytics)
    - player:sharing:embedengaged: Fires when embed is engaged (used by analytics)
-   
+
    Answers properties:
    - socialSharing [get]: Is social sharing even supported by the video site? And is is enabled in settings?
    - showSharing [get/set]: Show and hide the share pane.
@@ -29,9 +29,9 @@
    - mailLink [get]
 */
 
-Player.provide('sharing', 
+Player.provide('sharing',
   {
-    socialSharing: true,
+    socialSharing: false,
     showSharing: false,
     showDownload: false
   },
@@ -140,7 +140,7 @@ Player.provide('sharing',
       Player.getter('linkedinLink', function(){return socialLink('linkedin');});
       Player.getter('diggLink', function(){return socialLink('digg');});
       Player.getter('mailLink', function(){return socialLink('mail');});
-     
+
       /* SETTERS */
       var _sharingTimeouts = [];
       var _prevShow = false;
@@ -162,7 +162,7 @@ Player.provide('sharing',
 
               // Block a few other modules
               Player.set("forcer", {type: "block", element: "tray big-play info", from: "sharing", active: $this.showSharing});
-              
+
               // Animate the container in/out
               $this.container.find(".sharing-container").show();
               _sharingTimeouts.push(setTimeout(function(){
