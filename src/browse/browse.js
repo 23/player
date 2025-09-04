@@ -187,7 +187,6 @@ Player.provide('browse',
               _browseTimeouts.push(setTimeout(function(){
                   $this.container.find(".browse-container").css({display: ""});
               }, 210));
-              if($this.browseMode){ _resize(); }
               _prevShow = $this.browseMode;
           }
         });
@@ -219,31 +218,6 @@ Player.provide('browse',
           }
           return info;
       });
-
-      var _resize = function(){
-          $this.container.find(".recommendation").each(function(i, el){
-              var $el = $(el), $img = $el.find("img");
-              var cw = $el.width(), ch = $el.height()
-              var cr = cw / ch;
-              var ir = 16/9;
-              if(ir > cr){
-                  $img.css({
-                      top: 0,
-                      left: (ir*ch-cw)/-2,
-                      height: "100%",
-                      width: "auto"
-                  });
-              }else{
-                  $img.css({
-                      top: (cw/ir-ch)/-2,
-                      left: 0,
-                      height: "auto",
-                      width: "100%"
-                  });
-              }
-          });
-      };
-      $(window).resize(_resize);
 
       return $this;
   }

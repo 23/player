@@ -862,17 +862,21 @@ body.overlay-shown .button-container-share {
 .recommendations-grid .recommendation-5 {
   bottom: -1px;
 }
-.recommendation img {
+.recommendation .recommendation-image {
   display: block;
-  position: relative;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  -webkit-filter: blur(0); filter: blur(0); /* If this is not set, image bounce around in Chrome */
+  height: 100%;
+  filter: blur(0);
+  -webkit-filter: blur(0);
   transform: scale(1);
   transition: transform 300ms ease-in-out;
+  background-size: cover;
+  background-repeat: no-repeat;
 }
-.recommendation:hover img {
+.recommendation:hover .recommendation-image {
   transform: scale(1.1);
 }
 .recommendation-meta {

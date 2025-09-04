@@ -805,6 +805,7 @@ Player.provide('video-display',
       Player.bind('player:video:autoplayfailed', function(){
         if(Player.get('mutedAutoPlay')) {
           // Running with muted auto play
+          $this.mutedAutoPlay = false;  // ... but only once
           Player.set('volumeMuted', true);
           Player.set('playing', true);
         }
