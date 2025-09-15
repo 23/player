@@ -802,10 +802,11 @@ Player.provide('video-display',
         $this.mutedAutoPlay = map;
         Player.set("volumeMuted", $this.mutedAutoPlay);
       });
+      var autoPlayHasFailed = false;
       Player.bind('player:video:autoplayfailed', function(){
-        if(Player.get('mutedAutoPlay')) {
+        if(Player.get('mutedAutoPlay') && !autoPlayHasFailed) {
           // Running with muted auto play
-          $this.mutedAutoPlay = false;  // ... but only once
+          autoPlayHasFailed = true;
           Player.set('volumeMuted', true);
           Player.set('playing', true);
         }
