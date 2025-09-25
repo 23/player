@@ -804,11 +804,18 @@ Player.provide('video-display',
       });
       var autoPlayHasFailed = false;
       Player.bind('player:video:autoplayfailed', function(){
-        if(Player.get('mutedAutoPlay') && !autoPlayHasFailed) {
-          // Running with muted auto play
-          autoPlayHasFailed = true;
-          Player.set('volumeMuted', true);
-          Player.set('playing', true);
+        if(Player.get('mutedAutoPlay')) {
+          if(!autoPlayHasFailed) {
+            // Running with muted auto play
+            autoPlayHasFailed = true;
+            Player.set('volumeMuted', true);
+            Player.set('playing', true);
+          } else {
+            // Autoplay has failed more than once,
+            // make sure there's a user-interaction
+            // to resolve it.
+            Player.set('hideBigPlay', false);
+          }
         }
       });
       Player.bind("player:playflow:transitioned", function(e, transition){
