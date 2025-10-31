@@ -234,7 +234,9 @@ Player.provide('subtitles',
             time = (Player.get('videoElement').hls.playingDate)*1.0
           } else {
             var v = ve.video[0]
-            if (v.getStartDate) {
+            if (v.getProgramDate) {
+              time = v.getProgramDate()
+            } else if  (v.getStartDate) {
               time = (v.getStartDate()*1) + (v.currentTime*1000)
             }
           }
