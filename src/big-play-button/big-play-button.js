@@ -26,7 +26,7 @@ Player.provide('big-play-button',
     });
 
     // Update element on play, pause and more
-    Player.bind('player:video:loaded player:video:loadstart player:video:play player:video:playing player:video:seeked player:video:pause player:video:ended player:action:loaded player:action:dispatched', function (e) {
+    Player.bind('player:video:loaded player:video:loadstart player:video:play player:video:playing player:video:seeked player:video:pause player:video:ended player:action:loaded player:action:activated player:action:deactivated', function (e) {
       _updateBigPlay();
     });
     Player.bind('player:video:play player:video:playing player:video:seeked player:video:pause player:video:ended', function(e) {
