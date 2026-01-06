@@ -66,6 +66,7 @@ Player.provide('video-display',
     className: 'video-display',
     displayDevice: 'html5',
     videoFit: 'contain',
+    videoPosition: '',
     quality: '',
     autoPlay: false,
     autoMute: false,
@@ -174,8 +175,9 @@ Player.provide('video-display',
 
       // Merge in player settings
       Player.bind('player:settings', function(e,s){
-        PlayerUtilities.mergeSettings($this, ['autoPlay', 'mutedAutoPlay', 'autoMute', 'ambient', 'loop', 'verticalPadding', 'horizontalPadding', 'showNativeVideoControls', 'displayDevice', 'fullscreenQuality', 'showThumbnailOnEnd', 'inlinePlayback', 'hlsjsDebug', 'hlsjsAbrBandWidthFactor', 'hlsjsAbrBandWidthUpFactor', 'liveLatencyMode', 'videoFit']);
+        PlayerUtilities.mergeSettings($this, ['autoPlay', 'mutedAutoPlay', 'autoMute', 'ambient', 'loop', 'verticalPadding', 'horizontalPadding', 'showNativeVideoControls', 'displayDevice', 'fullscreenQuality', 'showThumbnailOnEnd', 'inlinePlayback', 'hlsjsDebug', 'hlsjsAbrBandWidthFactor', 'hlsjsAbrBandWidthUpFactor', 'liveLatencyMode', 'videoFit', 'videoPosition']);
         $this.canvas.addClass('video-canvas-fit-' + $this.videoFit)
+        if($this.videoPosition) $this.canvas.addClass('video-canvas-position-' + $this.videoPosition)
         if (typeof (_AP) != 'undefined' && _AP === false && $this.autoPlay && !($this.autoMute || $this.mutedAutoPlay)) $this.autoPlay = false;
         if ($this.video) $this.video.hlsjsConfig = { debug: ($this.hlsjsDebug ? true : false), abrBandWidthFactor: $this.hlsjsAbrBandWidthFactor, abrBandWidthUpFactor: $this.hlsjsAbrBandWidthUpFactor };
         if($this.video) $this.video.showPosterOnEnd = $this.showThumbnailOnEnd;
