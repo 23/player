@@ -217,7 +217,7 @@ Player.provide('design',
                      _hideTray();
                    }
                  });
-                 Player.getter('showTray', function () {
+                 Player.getter('showTray', function(){
                    return $this.showTray;
                  });
                  Player.setter('showTray', function (st) {
