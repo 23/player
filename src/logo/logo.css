@@ -1,21 +1,18 @@
 .logo {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  opacity: 0.8;
+    position:absolute;
+    top:20px;
+    left:20px;
+    opacity:.8;
 }
 .logo.align-right {
-  left: auto;
-  right: 20px;
+    left: auto;
+    right: 20px;
 }
-
 .logo img {
-  display: absolute;
-  width: 20px;
-  height: 20px;
-  object-fit: "cover";
+    display: none;
+    width: auto;
+    height: auto;
 }
-
 .size-tiny .logo {
-  display: none !important;
+    display:none !important;
 }
