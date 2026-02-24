@@ -17,6 +17,7 @@
    - hasSubtitles [get]
    - subtitleText [get/set]
    - subtitles [get/set]
+   - subtitlesDesign [get/set]
    - locales [get/set]
    - localesArray [get]
    - subtitleLocale [get/set]
@@ -72,6 +73,9 @@ Player.provide(
     });
     Player.getter("subtitleText", function () {
       return $this.subtitleText;
+    });
+    Player.getter("subtitlesDesign", function () {
+      return $this.subtitlesDesign;
     });
     Player.getter("subtitles", function () {
       return $this.subtitles;

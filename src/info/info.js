@@ -67,7 +67,6 @@ Player.provide(
     Player.setter("showDescriptions", function (sd) {
       $this.showDescriptions = sd;
       $this.render($this.onRender);
-      //$this.render();
     });
 
     Player.setter("infoShown", function (is) {
