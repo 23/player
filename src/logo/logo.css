@@ -10,11 +10,11 @@
 }
 
 .logo img {
-    display: absolute;
-    width: 20px;
-    height: 20px;
-    object-fit: 'cover';
+    display: none;
+    width: auto;
+    height: auto;
 }
+
 
 .size-tiny .logo {
     display:none !important;

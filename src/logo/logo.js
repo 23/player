@@ -64,7 +64,7 @@ Player.provide('logo',
       /* SETTERS */
       Player.setter('logoSource', function(ls) {
       $this.logoSource = ls;
-      $this.render();
+      $this.render(_onRender);
     });
 
       return $this;
