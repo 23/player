@@ -217,8 +217,13 @@ Player.provide('design',
                      _hideTray();
                    }
                  });
-                 Player.getter('showTray', function(){
+                 Player.getter('showTray', function () {
                    return $this.showTray;
+                 });
+                 Player.setter('showTray', function (st) {
+                   $this.showTray = st;
+                   $this.render();
+                   Player.fire("player:settings");
                  });
 
                  /*
@@ -251,7 +256,11 @@ Player.provide('design',
                  Player.getter('accentColor', function(){
                    return $this.scrubberColor;
                  });
-
+                
+                 Player.setter('accentColor', function (sc) {
+                   $this.scrubberColor = sc;
+                   $this.render();
+                 });
 
                  /* === END TRAY HANDLING === */
                  $this.hexToRGBA = function(hex, alpha){

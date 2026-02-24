@@ -67,6 +67,7 @@ Player.provide('subtitles',
     Player.getter('enableSubtitles', function () { return $this.enableSubtitles; });
     Player.getter('hasSubtitles', function () { return $this.hasSubtitles; });
     Player.getter('subtitleText', function () { return $this.subtitleText; });
+    Player.getter("subtitlesDesign", function () { return $this.subtitlesDesign; });
     Player.getter('subtitles', function () { return $this.subtitles; });
     Player.getter('locales', function () { return $this.locales; });
     Player.getter('localesArray', function () {
@@ -143,6 +144,15 @@ Player.provide('subtitles',
       Player.fire('player:subtitlechange');
       $this.possiblyRender();
     });
+
+    Player.setter('subtitlesDesign', function (sd) {
+      $this.subtitlesDesign = sd;
+      $this.container.removeClass("design-bars").removeClass("design-outline");
+      $this.container.addClass("design-" + $this.subtitlesDesign || "bars");
+      $this.render();
+      Player.fire("player:subtitlechange");
+    });
+
     Player.setter('audioDescriptionLocale', function (adl) {
       if (!$this.supportsAudioDescriptions) {
         $this.audioDescriptionLocale = '';

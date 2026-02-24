@@ -185,6 +185,15 @@ Player.provide('sharing',
           }
       });
 
+      Player.setter('showDownload', function (sd) {
+          $this.showDownload = sd;
+          Player.fire("player:module:overlayactivated", {
+              name: "download",
+              prevented: true,}).prevented;
+          $this.render();
+      });
+
+
       Player.bind("player:module:overlayactivated", function(e, info){
           if(info.name != "sharing"){
               Player.set("showSharing", false);

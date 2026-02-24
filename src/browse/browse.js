@@ -15,7 +15,7 @@
    Answers properties:
    - showBrowse [get/set]
    - browseMode [get/set]
-   - recommendationMethod [get]
+   - recommendationMethod [get/set]
    - hasRecommendations [get]
    - playlistClickMode [get/set]
    - browse_video_id [set]
@@ -168,6 +168,12 @@ Player.provide('browse',
           $this.showBrowse = sb;
           $this.loadRecommendations();
       });
+
+      Player.setter('recommendationMethod', function (rm) {
+          $this.recommendationMethod = rm;
+          $this.loadRecommendations();
+      });
+
       var _browseTimeouts = [];
       var _prevShow = false;
       Player.setter('browseMode', function(bm){

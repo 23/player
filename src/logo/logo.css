@@ -8,11 +8,14 @@
     left: auto;
     right: 20px;
 }
+
 .logo img {
-    display: none;
-    width: auto;
-    height: auto;
+    display: absolute;
+    width: 20px;
+    height: 20px;
+    object-fit: 'cover';
 }
+
 .size-tiny .logo {
     display:none !important;
 }
