@@ -8,10 +8,7 @@
 
 Player.provide(
   'share-button',
-  {
-    socialSharing: false,
-    showDownload: false,
-  },
+  {},
   function (Player, $, opts) {
     var $this = this;
     $.extend($this, opts);
@@ -29,30 +26,6 @@ Player.provide(
         );
       }, 10);
     };
-
-    Player.bind(
-      "player:settings player:video:loaded player:subtitlechange",
-      $this.toggleShareButton,
-    );
-
-    Player.getter('socialSharing', function () {
-        return (
-          typeof $this.socialSharing != "undefined" &&
-          $this.socialSharing &&
-          $this.socialSharing != "0" &&
-          Player.get("video_sharable")
-        );
-    });
-    Player.getter('showDownload', function () {
-        return $this.showDownload && Player.get("video_type") == "clip";
-    });
-
-    Player.setter('socialSharing', function (ss) {
-        $this.socialSharing = ss;
-        $this.container
-          .find(".share-button")
-          .css({ display: $this.socialSharing ? "block" : "none" });
-    });
 
     return $this;
   },

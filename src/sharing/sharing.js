@@ -193,6 +193,15 @@ Player.provide('sharing',
           $this.render();
       });
 
+      Player.setter("socialSharing", function (ss) {
+        $this.socialSharing = ss;
+        $this.container
+          .find(".sharing-container")
+          .css({ display: $this.socialSharing ? "block" : "none" });
+        $this.render();
+      });
+
+
 
       Player.bind("player:module:overlayactivated", function(e, info){
           if(info.name != "sharing"){
