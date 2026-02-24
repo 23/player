@@ -13,8 +13,7 @@
    - player:sharing:embedengaged: Fires when embed is engaged (used by analytics)
 
    Answers properties:
-   - socialSharing [get]: Is social sharing even supported by the video site? And is is enabled in settings?
-   - showSharing [get/set]: Show and hide the share pane.
+   - socialSharing [get/set]
    - showDownload [get/set]
    - rssLink [get]
    - podcastLink [get]
