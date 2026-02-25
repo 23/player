@@ -62,10 +62,15 @@ Player.provide('logo',
       Player.getter('logoSource', function(){return $this.logoSource||'';});
 
       /* SETTERS */
+      Player.setter("showLogo", function (sl) {
+        $this.showLogo = sl;
+        $this.render(_onRender);
+      });
+      
       Player.setter('logoSource', function(ls) {
       $this.logoSource = ls;
       $this.render(_onRender);
-    });
+      });
 
       return $this;
   }
