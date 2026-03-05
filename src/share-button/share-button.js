@@ -25,6 +25,12 @@ Player.provide(
             ),
         );
       }, 10);
+
+    Player.bind("player:sharing:buttonChange", function (e, ss) {
+        $this.container
+          .find(".share-button")
+          .css({ display: ss ? "block" : "none" });
+      });
     };
 
     return $this;

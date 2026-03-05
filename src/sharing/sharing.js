@@ -11,9 +11,11 @@
    - player:sharing: Whenever the sharing options are updated
    - player:sharing:shareengaged: Fires when sharing options are engaged (used by analytics)
    - player:sharing:embedengaged: Fires when embed is engaged (used by analytics)
+   - player:sharing:buttonChange: Fires when button should appear/disappear from the player
 
    Answers properties:
    - socialSharing [get/set]
+   - showSharing [get/set]
    - showDownload [get/set]
    - rssLink [get]
    - podcastLink [get]
@@ -195,9 +197,7 @@ Player.provide('sharing',
 
       Player.setter("socialSharing", function (ss) {
         $this.socialSharing = ss;
-        $this.container
-          .find(".sharing-container")
-          .css({ display: $this.socialSharing ? "block" : "none" });
+        Player.fire("player:sharing:buttonChange", ss);
         $this.render();
       });
 
