@@ -6,25 +6,40 @@
  - player:sharing
 */
 
-Player.provide('share-button',
+Player.provide(
+  'share-button',
   {},
-  function(Player,$,opts){
+  function (Player, $, opts) {
     var $this = this;
     $.extend($this, opts);
 
     $this.render($this.toggleShareButton);
 
-    $this.toggleShareButton = function(){
-      window.setTimeout(function(){
-        $this.container.toggle(!!Player.get("socialSharing") && !(Player.get('unmuteButtonPosition')=='topRight' && Player.get('showMutedAutoPlayButton')));
+    $this.toggleShareButton = function () {
+      window.setTimeout(function () {
+        $this.container.toggle(
+          !!Player.get("socialSharing") &&
+            !(
+              Player.get("unmuteButtonPosition") == "topRight" &&
+              Player.get("showMutedAutoPlayButton")
+            ),
+        );
       }, 10);
+
+    Player.bind(
+      "player:settings player:video:loaded player:subtitlechange",
+      $this.toggleShareButton,
+    );
+
+    Player.bind("player:sharing:buttonChange", function (e, ss) {
+      $this.container
+        .find(".share-button")
+        .css({ display: ss ? "block" : "none" });
+      });
     };
 
-    Player.bind('player:settings player:video:loaded player:subtitlechange', $this.toggleShareButton);
-
     return $this;
-  }
-
+  },
 );
 
 /* Translations for this module */
