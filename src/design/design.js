@@ -220,6 +220,11 @@ Player.provide('design',
                  Player.getter('showTray', function(){
                    return $this.showTray;
                  });
+                 Player.setter('showTray', function (st) {
+                   $this.showTray = st;
+                   $this.render();
+                   Player.fire("player:settings");
+                 });
 
                  /*
                     Allow modules to set "blocking" and "persisting" forcing classes on body.
@@ -251,7 +256,11 @@ Player.provide('design',
                  Player.getter('accentColor', function(){
                    return $this.scrubberColor;
                  });
-
+                
+                 Player.setter('accentColor', function (sc) {
+                   $this.scrubberColor = sc;
+                   $this.render();
+                 });
 
                  /* === END TRAY HANDLING === */
                  $this.hexToRGBA = function(hex, alpha){
