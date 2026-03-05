@@ -10,6 +10,7 @@
    - player:infoengaged: Info pane was toggles somehow
 
    Answers properties:
+   - showDomain [get/set]
    - showDescriptions [get/set]
    - infoTimeout [get]
 */
@@ -23,8 +24,12 @@ Player.provide('info',
       var $this = this;
       $.extend($this, opts);
 
-      $this.onRender = function(){
-          Player.set('infoShown', (!!$this.showDescriptions && Player.get("playflowPosition") <= 1));
+      $this.onRender = function () {
+        Player.set(
+          'infoShown',
+          (!!$this.showDescriptions || !!$this.showDomain) &&
+            Player.get("playflowPosition") <= 1,
+        );
       };
 
       // Bind to events
@@ -40,12 +45,31 @@ Player.provide('info',
       });
 
       /* GETTERS */
-      Player.getter('infoShown', function(){
-          return $this.infoShown;
+
+      Player.getter('showDomain', function () {
+        return $this.showDomain;
       });
-      Player.getter('showDomain', function(){ return $this.showDomain; });
+
+      Player.getter('showDescriptions', function () {
+        return $this.showDescriptions;
+      });
+
+      Player.getter("infoShown", function () {
+        return $this.infoShown;
+      });
 
       /* SETTERS */
+
+      Player.setter('showDomain', function (sd) {
+        $this.showDomain = sd;
+        $this.render($this.onRender);
+      });
+
+      Player.setter('showDescriptions', function (sd) {
+        $this.showDescriptions = sd;
+        $this.render($this.onRender);
+      });
+
       Player.setter('infoShown', function(is){
           $this.infoShown = is;
           Player.set("forcer", {type: "block", element: "tray", from: "info", active: $this.infoShown});

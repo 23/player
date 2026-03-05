@@ -11,10 +11,12 @@
    - player:sharing: Whenever the sharing options are updated
    - player:sharing:shareengaged: Fires when sharing options are engaged (used by analytics)
    - player:sharing:embedengaged: Fires when embed is engaged (used by analytics)
+   - player:sharing:buttonChange: Fires when button should appear/disappear from the player
 
    Answers properties:
-   - socialSharing [get]: Is social sharing even supported by the video site? And is is enabled in settings?
-   - showSharing [get/set]: Show and hide the share pane.
+   - socialSharing [get/set]
+   - showSharing [get/set]
+   - showDownload [get/set]
    - rssLink [get]
    - podcastLink [get]
    - embedCode [get]
@@ -184,6 +186,22 @@ Player.provide('sharing',
               window.open(Player.get(service + 'Link'));
           }
       });
+
+      Player.setter('showDownload', function (sd) {
+          $this.showDownload = sd;
+          Player.fire("player:module:overlayactivated", {
+              name: "download",
+              prevented: true,}).prevented;
+          $this.render();
+      });
+
+      Player.setter("socialSharing", function (ss) {
+        $this.socialSharing = ss;
+        Player.fire("player:sharing:buttonChange", ss);
+        $this.render();
+      });
+
+
 
       Player.bind("player:module:overlayactivated", function(e, info){
           if(info.name != "sharing"){
