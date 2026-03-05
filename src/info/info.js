@@ -44,12 +44,18 @@ Player.provide('info',
           Player.set('infoShown', false);
       });
 
+      /* GETTERS */
+
       Player.getter('showDomain', function () {
         return $this.showDomain;
       });
 
       Player.getter('showDescriptions', function () {
         return $this.showDescriptions;
+      });
+
+      Player.getter("infoShown", function () {
+        return $this.infoShown;
       });
 
       /* SETTERS */
