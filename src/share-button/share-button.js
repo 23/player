@@ -26,10 +26,15 @@ Player.provide(
         );
       }, 10);
 
+    Player.bind(
+      "player:settings player:video:loaded player:subtitlechange",
+      $this.toggleShareButton,
+    );
+
     Player.bind("player:sharing:buttonChange", function (e, ss) {
-        $this.container
-          .find(".share-button")
-          .css({ display: ss ? "block" : "none" });
+      $this.container
+        .find(".share-button")
+        .css({ display: ss ? "block" : "none" });
       });
     };
 
