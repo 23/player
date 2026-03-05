@@ -7,7 +7,7 @@
 
    Answers properties:
    - showLogo [get/set]
-   - logoSource [get]
+   - logoSource [get/set]
 */
 
 Player.provide('logo',
@@ -60,6 +60,17 @@ Player.provide('logo',
       /* GETTERS */
       Player.getter('showLogo', function(){return $this.showLogo||false;});
       Player.getter('logoSource', function(){return $this.logoSource||'';});
+
+      /* SETTERS */
+      Player.setter("showLogo", function (sl) {
+        $this.showLogo = sl;
+        $this.render(_onRender);
+      });
+      
+      Player.setter('logoSource', function(ls) {
+      $this.logoSource = ls;
+      $this.render(_onRender);
+      });
 
       return $this;
   }
