@@ -68,6 +68,7 @@ Player.provide('sharing',
       // Helper function
       var absolutize = function(u){
         if(!/\/\//.test(u)) u = Player.get('mainUrl')+u;
+        u = u.replace(/^http:\/\//i, 'https://');
         return u;
       };
 
