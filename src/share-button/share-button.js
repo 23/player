@@ -19,24 +19,18 @@ Player.provide(
       window.setTimeout(function () {
         $this.container.toggle(
           !!Player.get("socialSharing") &&
-            !(
-              Player.get("unmuteButtonPosition") == "topRight" &&
-              Player.get("showMutedAutoPlayButton")
-            ),
+          !(
+            Player.get("unmuteButtonPosition") == "topRight" &&
+            Player.get("showMutedAutoPlayButton")
+          )
         );
       }, 10);
+    };
 
     Player.bind(
-      "player:settings player:video:loaded player:subtitlechange",
-      $this.toggleShareButton,
+      "player:settings player:video:loaded player:subtitlechange player:sharing:changed",
+      $this.toggleShareButton
     );
-
-    Player.bind("player:sharing:buttonChange", function (e, ss) {
-      $this.container
-        .find(".share-button")
-        .css({ display: ss ? "block" : "none" });
-      });
-    };
 
     return $this;
   },
