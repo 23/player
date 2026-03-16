@@ -68,6 +68,7 @@ Player.provide('sharing',
       // Helper function
       var absolutize = function(u){
         if(!/\/\//.test(u)) u = Player.get('mainUrl')+u;
+        u = u.replace(/^http:\/\//i, 'https://');
         return u;
       };
 
@@ -197,7 +198,7 @@ Player.provide('sharing',
 
       Player.setter("socialSharing", function (ss) {
         $this.socialSharing = ss;
-        Player.fire("player:sharing:buttonChange", ss);
+        Player.fire("player:sharing:changed");
         $this.render();
       });
 
