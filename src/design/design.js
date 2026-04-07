@@ -203,6 +203,14 @@ Player.provide('design',
                  $(document).mousemove(_showTray);
                  $(document).mouseleave(_hideTray);
 
+                 /* Setter + Getter for endOn */
+                 Player.getter('endOn', function(){
+                   return $this.endOn;
+                 });
+                 Player.setter('endOn', function(eo){
+                   $this.endOn = eo;
+                 });
+                 
                  /* Setter + Getter for alwaysShowTray */
                  Player.getter('alwaysShowTray', function(){
                    return $this.alwaysShowTray;
