@@ -123,7 +123,7 @@ Player.provide('subtitles',
           });
         }
         $this.subtitleLocale = sl;
-        $this.enableSubtitles = !Player.get('showNativeVideoControls');
+        if(Player.get('showNativeVideoControls')) $this.enableSubtitles = false;
         Player.fire("player:subtitlesactivated");
       } else {
         $this.subtitleLocale = '';
@@ -226,6 +226,7 @@ Player.provide('subtitles',
       PlayerUtilities.mergeSettings($this, ['enableSubtitles', 'subtitlesOnByDefault', 'subtitlesDesign', 'includeDraftSubtitles', 'defaultLocale', 'defaultAudioDescripionLocale']);
       $this.container.removeClass('design-bars').removeClass('design-outline');
       $this.container.addClass('design-' + $this.subtitlesDesign || 'bars');
+      $this.render();
       Player.fire('player:subtitlechange');
     });
     Player.bind('player:video:play play:video:playing player:video:pause player:video:progress player:video:timeupdate player:video:seeked', function (e, o) {
