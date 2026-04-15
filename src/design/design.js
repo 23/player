@@ -233,6 +233,13 @@ Player.provide('design',
                    $this.render();
                    Player.fire("player:settings");
                  });
+                 Player.getter('borderRadius', function () {
+                   return $this.borderRadius;
+                 });
+                 Player.setter('borderRadius', function (br) {
+                   $this.borderRadius = br;
+                   $this.applyDesignPreferences();
+                 });
 
                  /*
                     Allow modules to set "blocking" and "persisting" forcing classes on body.
@@ -264,7 +271,7 @@ Player.provide('design',
                  Player.getter('accentColor', function(){
                    return $this.scrubberColor;
                  });
-                
+
                  Player.setter('accentColor', function (sc) {
                    $this.scrubberColor = sc;
                    $this.render();
