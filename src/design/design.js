@@ -203,6 +203,14 @@ Player.provide('design',
                  $(document).mousemove(_showTray);
                  $(document).mouseleave(_hideTray);
 
+                 /* Setter + Getter for endOn */
+                 Player.getter('endOn', function(){
+                   return $this.endOn;
+                 });
+                 Player.setter('endOn', function(eo){
+                   $this.endOn = eo;
+                 });
+                 
                  /* Setter + Getter for alwaysShowTray */
                  Player.getter('alwaysShowTray', function(){
                    return $this.alwaysShowTray;
@@ -224,6 +232,13 @@ Player.provide('design',
                    $this.showTray = st;
                    $this.render();
                    Player.fire("player:settings");
+                 });
+                 Player.getter('borderRadius', function () {
+                   return $this.borderRadius;
+                 });
+                 Player.setter('borderRadius', function (br) {
+                   $this.borderRadius = br;
+                   $this.applyDesignPreferences();
                  });
 
                  /*
@@ -256,7 +271,7 @@ Player.provide('design',
                  Player.getter('accentColor', function(){
                    return $this.scrubberColor;
                  });
-                
+
                  Player.setter('accentColor', function (sc) {
                    $this.scrubberColor = sc;
                    $this.render();
