@@ -254,3 +254,7 @@ Player.translate("more_sharing_options",{
 Player.translate("download_video",{
     en: "Download video"
 });
+Player.translate("close_share_menu", {
+    en: "Close share menu"
+} )
+
