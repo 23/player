@@ -196,6 +196,10 @@ Player.provide('sharing',
           $this.render();
       });
 
+      Player.setter("showShare", function (ss) {
+          Player.set("socialSharing", ss);
+      });
+
       Player.setter("socialSharing", function (ss) {
         $this.socialSharing = ss;
         Player.fire("player:sharing:changed");
