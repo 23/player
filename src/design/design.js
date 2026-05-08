@@ -210,7 +210,7 @@ Player.provide('design',
                  Player.setter('endOn', function(eo){
                    $this.endOn = eo;
                  });
-                 
+
                  /* Setter + Getter for alwaysShowTray */
                  Player.getter('alwaysShowTray', function(){
                    return $this.alwaysShowTray;
@@ -269,12 +269,25 @@ Player.provide('design',
                  });
 
                  Player.getter('accentColor', function(){
+                   return Player.get('scrubberColor');
+                 });
+                 Player.setter('accentColor', function (ac) {
+                   return Player.set('scrubberColor', ac);
+                 });
+                 Player.getter('scrubberColor', function(){
                    return $this.scrubberColor;
                  });
-
-                 Player.setter('accentColor', function (sc) {
+                 Player.setter('scrubberColor', function (sc) {
                    $this.scrubberColor = sc;
-                   $this.render();
+                   $this.applyDesignPreferences()
+                 });
+
+                 Player.getter('trayFont', function(){
+                   return $this.trayFont;
+                 });
+                 Player.setter('trayFont', function (tf) {
+                   $this.trayFont = tf;
+                   $this.applyDesignPreferences()
                  });
 
                  /* === END TRAY HANDLING === */
