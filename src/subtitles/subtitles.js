@@ -136,6 +136,7 @@ Player.provide('subtitles',
       if (typeof (st) != 'object') st = (st == '' ? [] : [st]);
       if ($this.subtitleText != st) {
         $this.subtitleText = st;
+        setCurrentVideoTrackText($this.subtitleText.join("\n"));
         $this.render();
       }
     });
@@ -261,6 +262,57 @@ Player.provide('subtitles',
         Player.set('subtitleText', '');
       }
     };
+    var setCurrentVideoTrackText = function(text){
+      var v = Player.get('videoElement');
+      if(v) {
+        var ve = v.video[0];
+        if(ve && ve.textTracks) {
+          for (var track of ve.textTracks) {
+            if(track.cues) {
+              for (var cue of track.cues) {
+                track.removeCue(cue);
+              }
+            }
+            track.addCue(new VTTCue(0, 0.1, ''));
+            if(text.length) {
+              var start = ve.currentTime - 1;
+              var end = start + 5;
+              track.addCue(new VTTCue(start, end, text));
+            }
+          }
+        }
+      }
+    }
+    var addVideoTracks = function(video){
+      // Clear current tracks
+      video.find("track").remove();
+      //
+      $.each($this.locales, function (i, o) {
+        var track = $("<track>");
+        track.attr("kind", "subtitles");
+        track.attr("id", o.locale);
+        track.attr("label", (/^([^\(]+)\(/.test(o.language) ? o.language.match(/^([^\(]+)\(/)[1] : o.language));
+        track.prop("mode", "disabled");
+        if($this.subtitleStreamType=='video') {
+          // For ondemand video, connect vtt files directly
+          track.attr("src", o.href.replace(/\.srt|\.websrt/, ".vtt"));
+          track.attr("srclang", o.locale.replace(/_/, '-'));
+        }
+        video.append(track);
+      });
+      // Listing for changes in selected language
+      var ve = video[0];
+      ve.textTracks.addEventListener('change', function(){
+        var currentLocale = Player.get('subtitleLocale');
+        var hasShowing = false;
+        for (var track of ve.textTracks) {
+          if(track.mode=='showing' && track.id != currentLocale) {
+            Player.set('subtitleLocale', track.id)
+            var hasShowing = true;
+          }
+        }
+      });
+    }
     $this.possiblyInsertSubtitleTracks = function () {
       if (/iPhone|iPad/.test(navigator.userAgent)) {
         var ve = Player.get("videoElement");
@@ -270,19 +322,8 @@ Player.provide('subtitles',
         } else {
           return;
         }
-        v.find("track").remove();
-        if($this.subtitleStreamType=='video') {
-          $.each($this.locales, function (i, o) {
-            var track = $("<track>");
-            track.attr("kind", "subtitles");
-            track.attr("src", o.href.replace(/\.srt|\.websrt/, ".vtt"));
-            track.attr("srclang", o.locale.replace(/_/, '-'));
-            track.attr("label", (/^([^\(]+)\(/.test(o.language) ? o.language.match(/^([^\(]+)\(/)[1] : o.language));
-            track.prop("mode", "disabled");
-            v.append(track);
-          });
-          $this.bindFullscreenListeners(v);
-        }
+        addVideoTracks(v);
+        $this.bindFullscreenListeners(v);
       }
     };
     Player.bind("player:video:loadedmetadata", function () {
@@ -414,7 +455,7 @@ Player.provide('subtitles',
           });
           Player.set('subtitleLocale', (!!$this.defaultLocale && !!$this.subtitlesOnByDefault ? $this.defaultLocale : ''));
           Player.set('locales', locales);
-          //$this.pendingSubtitleTracks = true;
+          $this.pendingSubtitleTracks = true;
         },
         Player.fail
       );
