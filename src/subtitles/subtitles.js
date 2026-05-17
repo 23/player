@@ -262,22 +262,26 @@ Player.provide('subtitles',
         Player.set('subtitleText', '');
       }
     };
+    $this.addNativeVideoCaptionCues = false;
     var setCurrentVideoTrackText = function(text){
-      var v = Player.get('videoElement');
-      if(v) {
-        var ve = v.video[0];
-        if(ve && ve.textTracks) {
-          for (var track of ve.textTracks) {
-            if(track.cues) {
-              for (var cue of track.cues) {
-                track.removeCue(cue);
+      // Only explicitly add cue when for live webinars
+      if($this.subtitleStreamType!='video') {
+        var v = Player.get('videoElement');
+        if(v) {
+          var ve = v.video[0];
+          if(ve && ve.textTracks) {
+            for (var track of ve.textTracks) {
+              if(track.cues) {
+                for (var cue of track.cues) {
+                  track.removeCue(cue);
+                }
               }
-            }
-            track.addCue(new VTTCue(0, 0.1, ''));
-            if(text.length) {
-              var start = ve.currentTime - 1;
-              var end = start + 5;
-              track.addCue(new VTTCue(start, end, text));
+              track.addCue(new VTTCue(0, 0.1, ''));
+              if($this.addNativeVideoCaptionCues && text.length) {
+                var start = ve.currentTime - 1;
+                var end = start + 5;
+                track.addCue(new VTTCue(start, end, text));
+              }
             }
           }
         }
@@ -302,6 +306,17 @@ Player.provide('subtitles',
       });
       // Listing for changes in selected language
       var ve = video[0];
+      // Some devices might automatically turn on native <track> subtitles
+      window.setTimeout(function(){
+        if(ve && ve.textTracks) {
+          for (var textTrack of ve.textTracks) {
+            if(textTrack.mode == 'showing') {
+              textTrack.mode = 'disabled';
+            }
+          }
+        }
+      }, 1000);
+      //
       ve.textTracks.addEventListener('change', function(){
         var currentLocale = Player.get('subtitleLocale');
         var hasShowing = false;
@@ -338,6 +353,7 @@ Player.provide('subtitles',
         var ve = v.get(0);
         // Possibly show track elements when we enter fullscreen
         ve.addEventListener('webkitbeginfullscreen', function () {
+          $this.addNativeVideoCaptionCues = true;
           for (var i = 0; i < ve.textTracks.length; i += 1) {
             if (
               ve.textTracks[i].language.substr(0, 2) == Player.get("subtitleLocale").substr(0, 2)
@@ -353,6 +369,7 @@ Player.provide('subtitles',
         // Disable native track elements when we leave fullscreen
         // and mirror showing/disabled subtitles in the subtitles module
         ve.addEventListener('webkitendfullscreen', function () {
+          $this.addNativeVideoCaptionCues = false;
           var _showingSubtitlesFound = false;
           for (var i = 0; i < ve.textTracks.length; i += 1) {
             if (ve.textTracks[i].mode == "showing") {
