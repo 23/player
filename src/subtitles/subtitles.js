@@ -476,7 +476,7 @@ Player.provide('subtitles',
           Player.set('locales', locales);
           $this.pendingSubtitleTracks = true;
           if (!hasLocales) {
-            window.setTimeout(loadLiveSubtitlesFromApi, (30+(90*Math.random()))*1000);
+            window.setTimeout(loadLiveSubtitlesFromApi, (10+(20*Math.random()))*1000);
           }
         },
         Player.fail
