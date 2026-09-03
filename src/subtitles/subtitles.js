@@ -463,16 +463,21 @@ Player.provide('subtitles',
         {live_id:v.live_id, token:v.token},
         function (data) {
           var locales = {}
+          var hasLocales = false;
           $.each(data.livelocales, function (i, o) {
             if (o.default_p) {
               $this.defaultLocale = o.locale;
             }
             o.type = 'live';
             locales[o.locale] = o;
+            hasLocales = true;
           });
           Player.set('subtitleLocale', (!!$this.defaultLocale && !!$this.subtitlesOnByDefault ? $this.defaultLocale : ''));
           Player.set('locales', locales);
           $this.pendingSubtitleTracks = true;
+          if (!hasLocales) {
+            window.setTimeout(loadLiveSubtitlesFromApi, (30+(90*Math.random()))*1000);
+          }
         },
         Player.fail
       );
