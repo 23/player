@@ -190,18 +190,51 @@ Player.provide('design',
 
                  /* Showing/hiding the tray */
                  var _trayTimeoutId = null;
-                 var _showTray = function(){
+                 // Keyboard users: the tray must stay visible while one of its controls has focus
+                 var _trayHasFocus = function(){
+                   return document.hasFocus() && $(document.activeElement).closest("#tray").length > 0;
+                 };
+                 var _scheduleHideTray = function(){
                    window.clearTimeout(_trayTimeoutId);
-                   $('body').addClass("tray-shown");
                    _trayTimeoutId = window.setTimeout(_hideTray, 5000);
+                 };
+                 var _showTray = function(){
+                   $('body').addClass("tray-shown");
+                   _scheduleHideTray();
                  };
                  var _hideTray = function(){
                    if($this.alwaysShowTray) return;
+                   if(_trayHasFocus()){
+                     // Focus is still inside the tray, keep it shown and check again later
+                     _scheduleHideTray();
+                     return;
+                   }
                    window.clearTimeout(_trayTimeoutId);
                    $('body').removeClass("tray-shown");
                  };
                  $(document).mousemove(_showTray);
                  $(document).mouseleave(_hideTray);
+                 // Show the tray when focus moves into it (e.g. tabbing), and start the
+                 // hide countdown again when focus leaves it or leaves the window
+                 $(document).on("focusin", function(e){
+                   if($(e.target).closest("#tray").length > 0) _showTray();
+                 });
+                 $(document).on("focusout", function(e){
+                   if($(e.target).closest("#tray").length > 0) _scheduleHideTray();
+                 });
+                 $(window).on("blur", _scheduleHideTray);
+
+                 /* Setter + Getter for trayShown */
+                 Player.getter('trayShown', function(){
+                   return $('body').hasClass("tray-shown");
+                 });
+                 Player.setter('trayShown', function(shown){
+                   if(shown) {
+                     _showTray();
+                   } else {
+                     _hideTray();
+                   }
+                 });
 
                  /* Setter + Getter for endOn */
                  Player.getter('endOn', function(){

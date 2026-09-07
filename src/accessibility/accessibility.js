@@ -134,9 +134,10 @@ Player.provide(
             Player.set("currentTime", Player.get("currentTime") - 5);
             matched = true;
           }
-          // Disable tray timeout on tab
+          // Show the tray on tab. The design module keeps it visible
+          // for as long as focus stays within the tray.
           if (e.keyCode == 9) {
-            if(Player.get('trayAvailable')) Player.set("alwaysShowTray", true);
+            if(Player.get('trayAvailable')) Player.set("trayShown", true);
           }
           if (e.keyCode == 27) {
             // Destroy menus
