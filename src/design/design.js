@@ -189,40 +189,34 @@ Player.provide('design',
                  /* === TRAY HANDLING === */
 
                  /* Showing/hiding the tray */
+                 // Mouse and keyboard interaction bring the tray up. It hides again when
+                 // there has been no interaction for a while, or shortly after the mouse
+                 // leaves the player.
+                 var TRAY_INACTIVITY_HIDE_DELAY = 5000;
+                 var TRAY_UNHOVER_HIDE_DELAY = 1000;
                  var _trayTimeoutId = null;
-                 // Keyboard users: the tray must stay visible while one of its controls has focus
-                 var _trayHasFocus = function(){
-                   return document.hasFocus() && $(document.activeElement).closest("#tray").length > 0;
-                 };
-                 var _scheduleHideTray = function(){
+                 var _scheduleHideTray = function(delay){
                    window.clearTimeout(_trayTimeoutId);
-                   _trayTimeoutId = window.setTimeout(_hideTray, 5000);
+                   _trayTimeoutId = window.setTimeout(_hideTray, delay);
                  };
                  var _showTray = function(){
                    $('body').addClass("tray-shown");
-                   _scheduleHideTray();
+                   _scheduleHideTray(TRAY_INACTIVITY_HIDE_DELAY);
                  };
                  var _hideTray = function(){
                    if($this.alwaysShowTray) return;
-                   if(_trayHasFocus()){
-                     // Focus is still inside the tray, keep it shown and check again later
-                     _scheduleHideTray();
-                     return;
-                   }
                    window.clearTimeout(_trayTimeoutId);
                    $('body').removeClass("tray-shown");
                  };
-                 $(document).mousemove(_showTray);
-                 $(document).mouseleave(_hideTray);
-                 // Show the tray when focus moves into it (e.g. tabbing), and start the
-                 // hide countdown again when focus leaves it or leaves the window
+                 $(document).on("mousemove keydown", _showTray);
+                 // Tabbing into the player from the host page fires no keydown here,
+                 // so also treat focus landing on a tray control as interaction
                  $(document).on("focusin", function(e){
                    if($(e.target).closest("#tray").length > 0) _showTray();
                  });
-                 $(document).on("focusout", function(e){
-                   if($(e.target).closest("#tray").length > 0) _scheduleHideTray();
+                 $(document).mouseleave(function(){
+                   _scheduleHideTray(TRAY_UNHOVER_HIDE_DELAY);
                  });
-                 $(window).on("blur", _scheduleHideTray);
 
                  /* Setter + Getter for trayShown */
                  Player.getter('trayShown', function(){
