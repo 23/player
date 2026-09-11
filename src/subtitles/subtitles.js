@@ -45,6 +45,15 @@ Player.provide('subtitles',
 
     // Properties
     $this.subtitleStreamType = 'video';
+
+    var speech = window.speechSynthesis;
+    var cancelSpeechQueue = function () {
+      if (!speech) return;
+      speech.cancel();
+      var messages = $this.audioDescriptionLocaleMessages;
+      for (var i = 0; i < messages.length; i++) messages[i].queued = false;
+    };
+
     var _reset = function () {
       $this.locales = {};
       $this.subtitleLocale = '';
@@ -58,6 +67,7 @@ Player.provide('subtitles',
       $this.audioDescriptionTracks = {};
       $this.audioDescriptionLocale = '';
       $this.audioDescriptionLocaleMessages = [];
+      cancelSpeechQueue();
 
       Player.set('subtitles', '');
       Player.fire('player:subtitlechange');
@@ -183,8 +193,7 @@ Player.provide('subtitles',
       }
     });
 
-    if (window.speechSynthesis && true) {
-      var speech = window.speechSynthesis;
+    if (speech) {
       var queueSpeech = function () {
         if (!Player.get('playing')) return;
         var ct = Player.get('currentTime');
@@ -197,23 +206,12 @@ Player.provide('subtitles',
           }
         }
       };
-      var cancelSpeechQueue = function () {
-        // Cancel speaking
-        speech.cancel();
-        // Reset status on messages
-        var messages = $this.audioDescriptionLocaleMessages;
-        for (var i = 0; i < messages.length; i++) messages[i].queued = false;
-      };
 
-
-      // Cancel on: new AD data, locale change, seek (incl. replay-from-start), or a different video loading.
-      Player.bind('player:audiodescriptionsupdated player:audiodescriptionchanged player:video:seeked player:video:loaded', cancelSpeechQueue);
+      Player.bind('player:audiodescriptionsupdated player:audiodescriptionchanged player:video:seeked', cancelSpeechQueue);
       Player.bind('player:video:timeupdate', queueSpeech);
       Player.bind('player:video:pause', function () {
-        // Native 'pause' fires right before 'ended' when playback reaches the end of
-        // the video, with Player.get('ended') already true. Don't pause speech in that
-        // case, or it's left paused forever (nothing ever resumes it), which cuts the
-        // audio description off mid-sentence instead of letting it finish.
+        // 'pause' fires just before 'ended' on natural end-of-video, so skip it there
+        // or the description is left paused forever instead of finishing.
         if (!Player.get('ended')) speech.pause();
       });
       Player.bind('player:video:play', function () {
