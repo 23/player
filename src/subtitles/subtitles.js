@@ -206,10 +206,15 @@ Player.provide('subtitles',
       };
 
 
-      Player.bind('player:audiodescriptionsupdated player:audiodescriptionchanged player:video:seeked', cancelSpeechQueue);
+      // Cancel on: new AD data, locale change, seek (incl. replay-from-start), or a different video loading.
+      Player.bind('player:audiodescriptionsupdated player:audiodescriptionchanged player:video:seeked player:video:loaded', cancelSpeechQueue);
       Player.bind('player:video:timeupdate', queueSpeech);
       Player.bind('player:video:pause', function () {
-        speech.pause();
+        // Native 'pause' fires right before 'ended' when playback reaches the end of
+        // the video, with Player.get('ended') already true. Don't pause speech in that
+        // case, or it's left paused forever (nothing ever resumes it), which cuts the
+        // audio description off mid-sentence instead of letting it finish.
+        if (!Player.get('ended')) speech.pause();
       });
       Player.bind('player:video:play', function () {
         speech.resume();
