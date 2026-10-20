@@ -18,7 +18,8 @@
     <ul
       id="playbackRateOptions"
       class="button-menu button-menu-selection"
-      role="menu">
+      role="menu"
+      aria-labelledby="playback-rate-button">
       {% for pr in playbackRatesArray %}
         <li {% if pr.rate == playbackRate %}class="selected"{% endif %}>
           <button
