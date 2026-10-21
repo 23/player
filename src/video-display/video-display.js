@@ -323,6 +323,7 @@ Player.provide('video-display',
         }catch(e){}
 
         Player.get('videoElement').video[0].controls = !!$this.showNativeVideoControls
+        $("body").toggleClass("native-video-controls", !!$this.showNativeVideoControls);
         Player.fire('player:video:qualitychange');
 
         // Set crossorigin attribute on 360 live streams playing through html5
